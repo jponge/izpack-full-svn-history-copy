@@ -44,7 +44,7 @@ import java.util.Iterator;
  */
 public class InstallerBase
 {
-	/**
+  /**
    *  Loads the installation data.
    *
    * @exception  Exception  Description of the Exception
@@ -90,11 +90,12 @@ public class InstallerBase
     size = objIn.readInt();
     ArrayList availablePacks = new ArrayList();
     ArrayList allPacks = new ArrayList();
-    for (i = 0; i < size; i++) {
-	Pack pk = (Pack) objIn.readObject();
-	allPacks.add(pk);
-	if (null == pk.os || os.toLowerCase().indexOf(pk.os.toLowerCase()) > -1)
-	    availablePacks.add(pk);
+    for (i = 0; i < size; i++) 
+    {
+      Pack pk = (Pack) objIn.readObject();
+      allPacks.add(pk);
+      if (null == pk.os || os.toLowerCase().indexOf(pk.os.toLowerCase()) > -1)
+        availablePacks.add(pk);
     }
     objIn.close();
 
@@ -157,5 +158,5 @@ public class InstallerBase
         installdata.selectedPacks.add (pack);
     }
 
-	}
+  }
 }
