@@ -92,6 +92,7 @@ public class InstallPanelAutomationHelper implements PanelAutomation, InstallLis
 	 */
 	public void stopUnpack()
 	{
+		System.out.println("[ Unpacking finished. ]");
 		done = true;
 	}
 
