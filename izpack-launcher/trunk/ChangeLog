@@ -2,6 +2,7 @@
 
 2004.05.28 (Julien Ponge):
 * New Brazilian translation by Alex Carlos Braga Antao.
+* Merged Dustin Sacks's Win98 fixes (with minor changes).
 
 2004.05.08 (Julien Ponge):
 * Clicking on the cancel button while manually selecting a JRE will return the

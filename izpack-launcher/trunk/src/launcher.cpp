@@ -1,4 +1,5 @@
 /* Copyright (c) 2004 Julien Ponge - All rights reserved.
+ * Some windows 98 debugging done by Dustin Sacks.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -171,12 +172,23 @@ void LauncherApp::runJRE()
     error(_("There is no installer to launch."));
   }
 
-  wxString cmd = javaExecPath + wxString(" -jar ") + params["jar"];
-  if (wxExecute(cmd) <= 0)
+  /* On win98 using an ASYNC wxExecute call retuns a negative return value.
+   * So the wxExecute call is SYNC. This means that flow of control will not 
+   * return until the other program (the java installer) has finished.
+   *
+   * On win98 this SYNC call returns 0 on success.
+   */
+  wxString cmd = javaExecPath + wxString(" -jar ") + params["jar"];        
+#ifdef __WINDOWS__
+  int code = wxExecute(cmd, wxEXEC_SYNC);
+#else
+  int code = wxExecute(cmd);
+#endif
+  if(code < 0)
   {
-    error(_("The installer launch failed."));
-  }
-  
+    error(_("The installer launch failed.")); 
+  }  
+
   completed = true;
 }
 
@@ -247,11 +259,12 @@ void LauncherApp::netDownload()
   }
 #endif
 
-#ifdef __APPLE__
-  // TODO: add and try some browsers commands here
-#endif
-
+#ifdef __WINDOWS__
+  // On win98 this wxExecute call returns 0 on success
+  if (wxExecute(browser + params["download"], wxEXEC_SYNC) == 0)
+#else
   if (wxExecute(browser + params["download"]) >= 0)
+#endif
   {
     completed = true;
   }
