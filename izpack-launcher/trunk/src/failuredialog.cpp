@@ -57,7 +57,7 @@ void FailureDialog::buildUI()
 
   wxString rlabels[] = {
     _("manually specify a 'java' executable."),
-    _("install the Java[tm] runtime environment provided by the software"
+    _("install the Java[tm] runtime environment provided by the software "
     "package."),
     _("download it from the Internet.")
   };
