@@ -24,11 +24,13 @@ msgid ""
 "Environment.\n"
 "The Java Runtime Environment could not be detected on your computer but it "
 "can be installed for you."
-msgstr ""
+msgstr "Die zu installierende Software benötigt eine Java[tm] Runtime Environment.\n"
+"Auf Ihrem System konnte keine Java[tm] Runtime Environment gefunden werden.\n"
+"Das Setup kann diese für sie installieren."
 
 #: failuredialog.cpp:62
 msgid "manually locate an already installed Java Runtime Environment"
-msgstr ""
+msgstr "Eine Java[tm] Runtime Environment manuell auswählen."
 
 #: failuredialog.cpp:63
 #, fuzzy
@@ -41,11 +43,11 @@ msgstr "Mitgelieferte Java[tm] Runtime Environment installieren."
 msgid ""
 "download the latest version of the Java Runtime Environment from the "
 "Internet."
-msgstr ""
+msgstr "Die neueste Java[tm] Runtime Environment über das Internet laden."
 
 #: failuredialog.cpp:69
 msgid "You have the following installation choices:"
-msgstr ""
+msgstr "Sie haben folgende Auswahlmöglichkeiten:"
 
 #: failuredialog.cpp:75
 msgid "Ok"
