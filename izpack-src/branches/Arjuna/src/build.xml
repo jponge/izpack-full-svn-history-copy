@@ -467,6 +467,10 @@
       <param name="panel" value="PasswordGroup" />
       <param name="panel-dir" value="UserInputPanel" />
     </antcall>
+    <antcall target="compile.panel">
+      <param name="panel" value="CompilePanel" />
+      <param name="panel-dir" value="CompilePanel" />
+    </antcall>
   </target>
 
   <!-- Deletes the classes directory -->
