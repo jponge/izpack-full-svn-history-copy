@@ -27,7 +27,7 @@
 
 FailureDialog::FailureDialog(const bool &enableJREInstall,
                              const bool &enableNetDownload)
-  : wxDialog(0, -1, "IzPack launcher", wxDefaultPosition, wxDefaultSize,
+  : wxDialog(0, -1, _("IzPack launcher"), wxDefaultPosition, wxDefaultSize,
              wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
   userAction     = INTERNET;
@@ -46,8 +46,8 @@ FailureDialog::~FailureDialog()
 void FailureDialog::buildUI()
 {
   // Inits
-  wxString explanationMsg = "The launcher could not find a Java[tm] runtime "
-                            "environment on this system.";
+  wxString explanationMsg = _("The launcher could not find a Java[tm] runtime "
+                            "environment on this system.");
   sizer = new wxBoxSizer(wxVERTICAL);
 
   // Widgets
@@ -56,16 +56,17 @@ void FailureDialog::buildUI()
   sizer->Add(explanationText, 0, wxALIGN_LEFT | wxALL, 10);
 
   wxString rlabels[] = {
-    "manually specify a 'java' executable.",
-    "install the Java[tm] runtime environment provided by the software package.",
-    "download it from the Internet."
+    _("manually specify a 'java' executable."),
+    _("install the Java[tm] runtime environment provided by the software"
+    "package."),
+    _("download it from the Internet.")
   };
-  optionsBox = new wxRadioBox(this, -1, "I want to ...", wxDefaultPosition,
+  optionsBox = new wxRadioBox(this, -1, _("I want to ..."), wxDefaultPosition,
                               wxDefaultSize, 3, rlabels, 1, wxRA_SPECIFY_COLS);
   optionsBox->SetSelection(0);
   sizer->Add(optionsBox, 1, wxGROW | wxALL, 10);
 
-  okButton = new wxButton(this, wxID_OK, "Ok");
+  okButton = new wxButton(this, wxID_OK, _("Ok"));
   okButton->SetFocus();
   sizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_CENTER_HORIZONTAL
                           | wxALL, 10);

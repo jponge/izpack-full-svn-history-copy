@@ -24,7 +24,7 @@
 LauncherApp::LauncherApp()
   : wxApp()
 {
-  SetAppName("IzPack launcher");
+  SetAppName(_("IzPack launcher"));
   loadParams();
 }
 
@@ -69,13 +69,13 @@ void LauncherApp::loadParams()
 
   if (params["jar"] == wxEmptyString)
   {
-    error("The configuration file is broken.");
+    error(_("The configuration file is broken."));
   }
 }
 
 void LauncherApp::error(const wxString &msg)
 {
-  wxMessageDialog dlg(0, msg, "IzPack launcher", wxOK | wxICON_ERROR);
+  wxMessageDialog dlg(0, msg, _("IzPack launcher"), wxOK | wxICON_ERROR);
   dlg.ShowModal();
   exit(1);
 }
@@ -120,13 +120,13 @@ bool LauncherApp::searchJRE()
       wxString home;
       if (vKey.QueryValue("JavaHome", home))
       {
-	javaExecPath = home + "\\bin\\javaw";
-	return true;
+        javaExecPath = home + "\\bin\\javaw";
+        return true;
       }
     }
   }
 #endif
-  
+
   // Try to use JAVA_HOME
   char* envRes = getenv("JAVA_HOME");
   if (envRes)
@@ -152,16 +152,21 @@ bool LauncherApp::searchJRE()
 
 void LauncherApp::runJRE()
 {
+  if (!wxFile::Exists(params["jar"]))
+  {
+    error(_("There is no installer to launch."));
+  }
+
   wxString cmd = javaExecPath + wxString(" -jar ") + params["jar"];
   if (wxExecute(cmd) <= 0)
   {
-    error("The installer launch failed.");
+    error(_("The installer launch failed."));
   }
 }
 
 void LauncherApp::manualLaunch()
 {
-  wxString java = wxFileSelector("Please choose a 'java' executable");
+  wxString java = wxFileSelector(_("Please choose a 'java' executable"));
   if (java.empty())
   {
     exit(1);
@@ -178,12 +183,12 @@ void LauncherApp::jreInstall()
 #ifdef __WINDOWS__
   if (wxExecute(params["jre"]) <= 0)
   {
-    error("Could not launch the JRE installation process.");
+    error(_("Could not launch the JRE installation process."));
   }
 #else
   if (!wxShell(params["jre"]));
   {
-    error("Could not launch the JRE installation process.");
+    error(_("Could not launch the JRE installation process."));
   }
 #endif
 }
@@ -234,7 +239,7 @@ void LauncherApp::netDownload()
   }
   else
   {
-    error("Could not find a web browser.");
+    error(_("Could not find a web browser."));
   }
 }
 
