@@ -88,12 +88,12 @@ public class InstallerFrame extends JFrame
    * @param  installdata    The installation data.
    * @exception  Exception  Description of the Exception
    */
-  public InstallerFrame(String title, LocaleDatabase langpack, InstallData installdata)
+  public InstallerFrame(String title, InstallData installdata)
      throws Exception
   {
     super(title);
-    this.langpack = langpack;
     this.installdata = installdata;
+    this.langpack = installdata.langpack;
 
     // Sets the window events handler
     addWindowListener(new WindowHandler());

@@ -45,9 +45,6 @@ import javax.swing.plaf.metal.*;
  */
 public class GUIInstaller extends InstallerBase
 {
-  /**  The language pack. */
-  private LocaleDatabase langpack;
-
   /**  The installation data. */
   private InstallData installdata;
 
@@ -158,7 +155,7 @@ public class GUIInstaller extends InstallerBase
     // We load the langpack
     this.installdata.localeISO3 = selectedPack;
     InputStream in = getClass().getResourceAsStream("/langpacks/" + selectedPack + ".xml");
-    langpack = new LocaleDatabase(in);
+    this.installdata.langpack = new LocaleDatabase(in);
   }
 
 
@@ -242,12 +239,12 @@ public class GUIInstaller extends InstallerBase
    */
   private void loadGUI() throws Exception
   {
-    UIManager.put("OptionPane.yesButtonText", langpack.getString("installer.yes"));
-    UIManager.put("OptionPane.noButtonText", langpack.getString("installer.no"));
-    UIManager.put("OptionPane.cancelButtonText", langpack.getString("installer.cancel"));
+    UIManager.put("OptionPane.yesButtonText", installdata.langpack.getString("installer.yes"));
+    UIManager.put("OptionPane.noButtonText", installdata.langpack.getString("installer.no"));
+    UIManager.put("OptionPane.cancelButtonText", installdata.langpack.getString("installer.cancel"));
 
-    String title = langpack.getString("installer.title") + this.installdata.info.getAppName();
-    InstallerFrame installerFrame = new InstallerFrame(title, langpack, this.installdata);
+    String title = installdata.langpack.getString("installer.title") + this.installdata.info.getAppName();
+    InstallerFrame installerFrame = new InstallerFrame(title, this.installdata);
   }
 
 

@@ -76,26 +76,26 @@ public class AutomatedInstaller extends InstallerBase
     InputStream in = getClass().getResourceAsStream("/langpacks/" +
       idata.localeISO3 +
       ".xml");
-    LocaleDatabase langpack = new LocaleDatabase(in);
+    idata.langpack = new LocaleDatabase(in);
 
     // create the resource manager singleton
     ResourceManager.create (idata);
 
     this.panelInstanceCount = new TreeMap();
 
-    doInstall(langpack, idata);
+    doInstall(idata);
   }
 
   /**
    * Runs the automated installation logic for each panel in turn.
    *
-   * @param langpack currently unused, could support e.g. locale specific progress msgs.
    * @param installdata the installation data.
    * @throws Exception
    */
-  private void doInstall(LocaleDatabase langpack, AutomatedInstallData installdata)
+  private void doInstall(AutomatedInstallData installdata)
      throws Exception
   {
+    // TODO: i18n
     System.out.println("[ Starting automated installation ]");
 
     // walk the panels in order

@@ -71,6 +71,9 @@ public class AutomatedInstallData
   /**  The language code. */
   public String localeISO3;
 
+  /**  The language pack. */
+  public LocaleDatabase langpack;
+
   /**  The installer kind. */
   public String kind;
 
