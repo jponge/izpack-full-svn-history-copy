@@ -24,21 +24,107 @@
 package izpack.frontend.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Vector;
+
+import net.n3.nanoxml.IXMLParser;
+import net.n3.nanoxml.IXMLReader;
+import net.n3.nanoxml.StdXMLReader;
+import net.n3.nanoxml.XMLElement;
+import net.n3.nanoxml.XMLException;
+import net.n3.nanoxml.XMLParserFactory;
 
 /**
  * @author Andy Gombos
  * 
  * Provides a common class to query about <code>Page</code>s.  
  * 
- * Reads the XML data files which specify data for each panel, as well as the master file
- * which lists panels.  
+ * Reads the XML data files which specify data for each panel, and creates a <code>PageInfo</code>
+ * object out of that data
  */
 
 public class PageInfoManager
 {
+    private static PageInfo loadPage(String filename)
+    {
+		try {
+			IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+			IXMLReader reader = StdXMLReader.fileReader(filename);
+			parser.setReader(reader);
+			xml = (XMLElement)parser.parse();
+			
+			String name = xml.getAttribute("name");
+			
+			//Load panel descriptions			
+			String shortDesc = xml.getFirstChildNamed("panel-desc-short").getContent();
+			String longDesc  = xml.getFirstChildNamed("panel-desc-long").getContent();
+			
+			//Load the authors array
+			Vector authorsElem = xml.getFirstChildNamed("authors").getChildrenNamed("author");
+			ArrayList authors = new ArrayList();
+			for (Iterator iter = authorsElem.iterator(); iter.hasNext();)
+            {
+                XMLElement element = (XMLElement) iter.next();
+                String aname = element.getAttribute("name");
+                String email = element.getAttribute("email");
+                PageInfo.Author author = new PageInfo.Author(aname, email);
+                authors.add(author);
+            }
+			
+			XMLElement resourcesElem = xml.getFirstChildNamed("resources");			
+			ArrayList resources = new ArrayList();
+			if (resourcesElem != null)
+			{			
+			    Vector resourceElem = resourcesElem.getChildrenNamed("res");				
+				for (Iterator iter = resourceElem.iterator(); iter.hasNext();)
+	            {
+	                XMLElement element = (XMLElement) iter.next();
+	                String id = element.getAttribute("id");
+	                String req = element.getAttribute("required");
+	                String sType = element.getAttribute("type");
+	                
+	                boolean required = req.equalsIgnoreCase("true");
+	                int type;
+	                
+	                if (sType.equalsIgnoreCase("txt"))
+	                    type = PageInfo.Resource.TXT;
+	                else if (sType.equalsIgnoreCase("img"))
+	                    type = PageInfo.Resource.IMG;
+	                else if (sType.equalsIgnoreCase("xml"))
+	                    type = PageInfo.Resource.XML;
+	                else if (sType.equalsIgnoreCase("html"))
+	                    type = PageInfo.Resource.HTML;
+	                else
+	                    type = PageInfo.Resource.UNKNOWN;
+	                
+	                PageInfo.Resource resource = new PageInfo.Resource(id, required, type);
+	                resources.add(resource);                              
+	        	}
+			}
+			
+			System.out.println("panel configuration loaded: " + filename);			
+			
+			return new PageInfo(name, shortDesc, longDesc, (PageInfo.Author[]) authors.toArray(new PageInfo.Author[0]), (PageInfo.Resource[]) resources.toArray(new PageInfo.Resource[0]));					
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} catch (XMLException e) {
+			throw new RuntimeException(e);
+		}
+    }    
     
-    private String[] getConfigFiles()
+    private static String[] getConfigFiles()
     {
         return new File(CONFIG_PATH).list(new FilenameFilter() 
 	        {
@@ -49,5 +135,18 @@ public class PageInfoManager
 	        });
     }
     
-    private static final String CONFIG_PATH = "/conf/pages/";
+    public static ArrayList getAvailablePages()
+    {
+        String[] confFiles = getConfigFiles();
+        for (int i = 0; i < confFiles.length; i++)
+        {
+            pages.add(loadPage(CONFIG_PATH + confFiles[i]));
+    	}
+
+        return pages;
+    }
+    
+    private static final String CONFIG_PATH = "conf/pages/";    
+    private static XMLElement xml;
+    private static ArrayList pages = new ArrayList();
 }

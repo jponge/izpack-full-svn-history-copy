@@ -32,6 +32,21 @@ package izpack.frontend.model;
 
 public class PageInfo
 {
+    public PageInfo(String name, String shortDesc, String longDesc, Author[] authors, Resource[] resources)
+    {
+        this.name = name;
+        this.authors = authors;
+        this.shortDesc = shortDesc;
+        this.longDesc = longDesc;
+        this.resources = resources;
+        
+        if (authors.length == 0)
+            authors = null;
+        
+        if (resources.length == 0)
+            resources = null;
+    }
+    
     public Author[] getAuthors()
     {
         return authors;
@@ -49,6 +64,14 @@ public class PageInfo
         return shortDesc;
     }
     
+    public String getName()
+    {
+        return name;
+    }
+    
+    /** Name of the panel */
+    private String name;
+    
     /** Short (few words) description */
     private String shortDesc;
     
@@ -62,7 +85,7 @@ public class PageInfo
     private Resource[] resources;
     
     /** Represents an author of a Page */
-    public class Author
+    public static class Author
     {        
         private String name;
         private String email;
@@ -88,14 +111,14 @@ public class PageInfo
         public void setName(String name)
         {
             this.name = name;
-        }
+        }        
     }
     
     /** Represents a resource that the panel understands */
-    public class Resource
+    public static class Resource
     {
         /** Name of the resource (what the panel calls it) */
-        private String name;
+        private String id;
         
         /** Is this resource required for the panel to function? */
         private boolean required;
@@ -104,21 +127,22 @@ public class PageInfo
         private int type;
         
         /* Resource type definitions */
-        private static final int TXT = 0;
-        private static final int IMG = 1;
-        private static final int XML = 2;
-        private static final int HTML = 3;
+        public static final int TXT = 0;
+        public static final int IMG = 1;
+        public static final int XML = 2;
+        public static final int HTML = 3;
+        public static final int UNKNOWN = 4;
         
-        public Resource(String name, boolean required, int type)
+        public Resource(String id, boolean required, int type)
         {
-            this.name = name;
+            this.id = id;
             this.required = required;
             this.type = type;
         }
         
-        public String getName()
+        public String getID()
         {
-            return name;
+            return id;
         }
         public boolean isRequired()
         {
@@ -128,9 +152,9 @@ public class PageInfo
         {
             return type;
         }
-        public void setName(String name)
+        public void setID(String id)
         {
-            this.name = name;
+            this.id = id;
         }
         public void setRequired(boolean required)
         {

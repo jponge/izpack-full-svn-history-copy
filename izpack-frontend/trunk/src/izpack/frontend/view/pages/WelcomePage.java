@@ -51,7 +51,7 @@ public class WelcomePage extends IzPackPage {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		helpButton.setText(langResources().getText("UI.WelcomePage.ELEMENT.HelpButton"));
 		helpButton2.setText(langResources().getText("UI.WelcomePage.ELEMENT.HelpButton") + " Aba");
-		helpButton.addActionListener(new DisplayPageAction(GUIConstants.PAGE_HELP));
+		helpButton.addActionListener(new DisplayPageAction(GUIConstants.PAGE_PANEL_SELECT));
 		panel.add(helpButton);
 		panel.add(helpButton2);
 		

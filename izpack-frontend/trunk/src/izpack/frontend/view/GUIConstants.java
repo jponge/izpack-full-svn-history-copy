@@ -33,4 +33,6 @@ public class GUIConstants {
 	public final static String PAGE_WELCOME = "WelcomePage";
 	/** Name of the HelpPage*/
 	public final static String PAGE_HELP = "HelpPage";
+	
+	public final static String PAGE_PANEL_SELECT = "PanelSelectPage";
 }
