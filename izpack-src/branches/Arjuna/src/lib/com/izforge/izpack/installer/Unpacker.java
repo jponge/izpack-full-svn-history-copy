@@ -91,7 +91,25 @@ public class Unpacker extends Thread
     return instances;
   }
 
-  private boolean matchOS(String actualOS, String targetOS)
+  private static String actualOS = System.getProperty ("os.name").toLowerCase ();
+
+  /**
+   *  Check whether the given OS matches the current OS.
+   *
+   * Currently supported:
+   * <ul>
+   * <li>unix: linux, solaris, sunos, aix, bsd, hpux, hp-ux, irix, bsd</li>
+   * <li>windows</li>
+   * <li>mac</li>
+   * </ul>
+   * The matching is performed very fuzzy - it only checks for some
+   * substrings within the current OS's name.
+   *
+   * @param targetOS OS name
+   *
+   * @return true if targetOS somehow matches the current OS
+   */
+  public static boolean matchOS(String targetOS)
   {
 
     if(targetOS.equalsIgnoreCase("unix"))
@@ -102,6 +120,9 @@ public class Unpacker extends Thread
          actualOS.lastIndexOf("solaris") > -1 ||
          actualOS.lastIndexOf("sunos")   > -1 ||
          actualOS.lastIndexOf("aix")     > -1 ||
+         actualOS.lastIndexOf("hpux")     > -1 ||
+         actualOS.lastIndexOf("hp-ux")     > -1 ||
+         actualOS.lastIndexOf("irix")     > -1 ||
          actualOS.lastIndexOf("bsd")     > -1 )
       {
 
@@ -181,7 +202,7 @@ public class Unpacker extends Thread
         {
           // We read the header
           PackFile pf = (PackFile) objIn.readObject();
-          if (null == pf.os || matchOS(currentOs, pf.os.toLowerCase()))
+          if (null == pf.os || matchOS(pf.os.toLowerCase()))
           {
             // We translate & build the path
             String path = translatePath(pf.targetPath);
@@ -219,7 +240,7 @@ public class Unpacker extends Thread
             }
 
             // We copy the file
-            out = new FileOutputStream(path);
+            out = new FileOutputStream(pathFile);
             byte[] buffer = new byte[5120];
             long bytesCopied = 0;
             while (bytesCopied < pf.length)
@@ -237,6 +258,10 @@ public class Unpacker extends Thread
             }
             // Cleanings
             out.close();
+
+            // Set file modification time if specified
+            if (pf.mtime >= 0)
+              pathFile.setLastModified (pf.mtime);
 
             // Empty dirs restoring
             String _n = pathFile.getName();

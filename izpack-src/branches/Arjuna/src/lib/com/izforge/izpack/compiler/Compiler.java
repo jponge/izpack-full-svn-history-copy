@@ -314,6 +314,7 @@ public class Compiler extends Thread
         File f = new File(p.src);
         FileInputStream in = new FileInputStream(f);
         long nbytes = f.length();
+        long mtime = f.lastModified();
 
         String targetFilename = p.getTargetFilename ();
 
@@ -324,7 +325,7 @@ public class Compiler extends Thread
         }
 
         // Writing
-        objOut.writeObject(new PackFile(targetFilename, p.os, nbytes, p.override));
+        objOut.writeObject(new PackFile(targetFilename, p.os, nbytes, mtime, p.override));
         byte[] buffer = new byte[5120];
         long bytesWritten = 0;
         int bytesInBuffer;
@@ -495,8 +496,9 @@ public class Compiler extends Thread
             throw new Exception ("targetfile attribute missing for <parsable>");
           pack.parsables.add
             (new ParsableFile(targetFile,
-            p.getAttribute("type", "plain"),
-            p.getAttribute("encoding", null)));
+                   p.getAttribute("type", "plain"),
+                   p.getAttribute("encoding", null),
+                   p.getAttribute("os", null)));
         }
       }
 
@@ -560,11 +562,13 @@ public class Compiler extends Thread
           while (osIterator.hasNext())
           {
             XMLElement os = (XMLElement) osIterator.next();
-            osList.add
-              (new com.izforge.izpack.util.Os(os.getAttribute("family", null),
-              os.getAttribute("name", null),
-              os.getAttribute("version", null),
-              os.getAttribute("arch", null)));
+            osList.add (new com.izforge.izpack.util.OsConstraint (
+                os.getAttribute("family", null),
+                os.getAttribute("name", null),
+                os.getAttribute("version", null),
+                os.getAttribute("arch", null)
+                )
+              );
           }
           String targetFile = e.getAttribute("targetfile");
           pack.executables.add(new ExecutableFile(targetFile,

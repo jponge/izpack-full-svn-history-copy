@@ -283,7 +283,7 @@ public class FileExecutor
       }
       while (osIterator.hasNext())
       {
-        Os os = (Os) osIterator.next();
+        OsConstraint os = (OsConstraint) osIterator.next();
 
         Debug.trace("checking if os param on file "+os+" equals current os");
         if (os.matchCurrentSystem())

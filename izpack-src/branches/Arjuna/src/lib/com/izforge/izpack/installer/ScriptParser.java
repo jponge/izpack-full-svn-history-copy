@@ -92,6 +92,13 @@ public class ScriptParser
       // Create a temporary file for the parsed data
       // (Use the same directory so that renaming works later)
       ParsableFile pfile = (ParsableFile) iter.next();
+
+      // check whether the OS matches
+      if ((pfile.os != null) && (! Unpacker.matchOS (pfile.os)))
+      {
+        continue;
+      }
+
       File file = new File(pfile.path);
       File parsedFile
          = File.createTempFile("izpp", null, file.getParentFile());

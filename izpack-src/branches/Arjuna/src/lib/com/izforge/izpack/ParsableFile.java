@@ -37,18 +37,16 @@ public class ParsableFile implements Serializable
 {
 
   /**  The file path */
-  public String path;
+  public String path = null;
 
   /**  The file type (or null for default) */
-  public String type;
+  public String type = null;
 
   /**  The file encoding (or null for default) */
-  public String encoding;
+  public String encoding = null;
 
-
-  /**  Constructs a new uninitialized instance.  */
-  public ParsableFile() { }
-
+  /**  The OS where this file is installed. */
+  public String os = null;
 
   /**
    *  Constructs and initializes a new instance.
@@ -56,8 +54,9 @@ public class ParsableFile implements Serializable
    * @param  path      the file path
    * @param  type      the file type (or null for default)
    * @param  encoding  the file encoding (or null for default)
+   * @param  os        the OS constraint (or null for any OS)
    */
-  public ParsableFile(String path, String type, String encoding)
+  public ParsableFile(String path, String type, String encoding, String os)
   {
     this.path = path;
     this.type = type;
