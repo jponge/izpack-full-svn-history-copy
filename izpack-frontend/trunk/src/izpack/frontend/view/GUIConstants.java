@@ -27,12 +27,19 @@ package izpack.frontend.view;
  * @author	Daniel Guggi
  */
 public class GUIConstants {
-	/** Name of HelpButton. */
-	public final static String BUTTON_HELP = "HelpButton";
 	/** Name of the WelcomePage. */
 	public final static String PAGE_WELCOME = "WelcomePage";
 	/** Name of the HelpPage*/
 	public final static String PAGE_HELP = "HelpPage";
 	
 	public final static String PAGE_PANEL_SELECT = "PanelSelectPage";
+	
+	/* Welcome Page buttons */
+	public final static String BUTTON_NEW = "NewButton";
+	public final static String BUTTON_COMPILE = "CompileButton";
+	public final static String BUTTON_WEBSITE = "WebsiteButton";
+	public final static String BUTTON_RECENT = "RecentButton";
+	public final static String BUTTON_OPEN = "OpenButton";
+	public final static String BUTTON_HELP = "HelpButton";
+	public final static String BUTTON_MAILLIST = "MailListButton";
 }

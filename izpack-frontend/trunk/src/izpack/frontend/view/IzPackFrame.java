@@ -24,6 +24,7 @@ import izpack.frontend.controller.FrameListener;
 import izpack.frontend.controller.GUIController;
 import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.LangResources;
+import izpack.frontend.model.PageInfoManager;
 import izpack.frontend.view.pages.*;
 
 import java.awt.CardLayout;
@@ -93,6 +94,7 @@ public class IzPackFrame extends JFrame implements AppBase {
 		}
 		// we didnt find the page
 		if (createFlag) {
+		    System.out.println("Locating " + name);
 			String pageClass =
 				GUIController.getInstance().appConfiguration().getClass4Page(
 					name);

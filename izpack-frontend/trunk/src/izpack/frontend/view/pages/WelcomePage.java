@@ -22,14 +22,21 @@
 package izpack.frontend.view.pages;
 
 import izpack.frontend.controller.DisplayPageAction;
+import izpack.frontend.view.*;
 import izpack.frontend.view.GUIConstants;
 
 import java.awt.BorderLayout;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.debug.FormDebugPanel;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 
 /**
  * @author dguggi
@@ -43,21 +50,40 @@ public class WelcomePage extends IzPackPage {
 	 * Quick implementation of the help page, to test framework.
 	 */
 	public void initComponents() {
-		setLayout(new BorderLayout());
-		JLabel label = new JLabel(this.langResources().getText("UI.WelcomePage.INFO.Text"));
-		JButton helpButton = (JButton)this.addElement(GUIConstants.BUTTON_HELP, new JButton());
-		JButton helpButton2 = (JButton)this.addElement(GUIConstants.BUTTON_HELP, new JButton());
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		helpButton.setText(langResources().getText("UI.WelcomePage.ELEMENT.HelpButton"));
-		helpButton2.setText(langResources().getText("UI.WelcomePage.ELEMENT.HelpButton") + " Aba");
-		helpButton.addActionListener(new DisplayPageAction(GUIConstants.PAGE_PANEL_SELECT));
-		panel.add(helpButton);
-		panel.add(helpButton2);
+	    
+	    FormLayout layout = new FormLayout("left:pref, 15dlu, left:pref", "center:pref, 25dlu, pref, 10dlu, pref, 10dlu, pref, 10dlu, pref");
+	    DefaultFormBuilder builder = new DefaultFormBuilder(new FormDebugPanel(), layout);
+	    	    
+	    JLabel header = new JLabel("<html> <font size=\"+2\">What would you like to do?</font>");
+	    header.setAlignmentY(CENTER_ALIGNMENT);
+	    builder.add(header, new CellConstraints().xyw(1, 1, 3));
+	    builder.nextRow();
+	    builder.nextRow();
+	    
+	    //Columns first, off the prototype image
+		String buttonNames[] = new String[]{GUIConstants.BUTTON_NEW, GUIConstants.BUTTON_COMPILE, GUIConstants.BUTTON_WEBSITE,
+		        GUIConstants.BUTTON_RECENT, GUIConstants.BUTTON_OPEN, GUIConstants.BUTTON_HELP, GUIConstants.BUTTON_MAILLIST};
+		JButton buttons[] = new JButton[7];
 		
-		// add components to the content pane
-		this.add(label, BorderLayout.NORTH);
-		this.add(panel, BorderLayout.CENTER);
+		//Create the buttons, and add them to the layout
+		for (int i = 0; i < buttonNames.length; i++)
+        {
+            buttons[i] = new JButton(langResources().getText("UI.WelcomePage.ELEMENT." + buttonNames[i]),
+                    new ImageIcon("res/imgs/" + buttonNames[i] + ".png"));
+            
+            buttons[i].setBorder(null);            
+            
+            builder.add(buttons[i]);
+            builder.nextRow();
+            builder.nextRow();
+            
+            if (i == 3)
+            {
+                builder.setRow(3);
+                builder.setColumn(3);
+            }
+        }
+		
+		add(builder.getPanel());		
 	}
-
 }
