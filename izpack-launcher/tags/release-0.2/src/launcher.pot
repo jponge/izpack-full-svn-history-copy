@@ -1,0 +1,77 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-04-29 10:35+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: failuredialog.cpp:30 launcher.cpp:27 launcher.cpp:78
+msgid "IzPack launcher"
+msgstr ""
+
+#: failuredialog.cpp:49
+msgid ""
+"The software that you are trying to install requires a Java Runtime "
+"Environment.\n"
+"The Java Runtime Environment could not be detected on your computer but it "
+"can be installed for you."
+msgstr ""
+
+#: failuredialog.cpp:62
+msgid "manually locate an already installed Java Runtime Environment"
+msgstr ""
+
+#: failuredialog.cpp:63
+msgid ""
+"automatically install the Java Runtime Environment included with this "
+"software"
+msgstr ""
+
+#: failuredialog.cpp:65
+msgid ""
+"download the latest version of the Java Runtime Environment from the "
+"Internet."
+msgstr ""
+
+#: failuredialog.cpp:69
+msgid "You have the following installation choices:"
+msgstr ""
+
+#: failuredialog.cpp:75
+msgid "Ok"
+msgstr ""
+
+#: launcher.cpp:72
+msgid "The configuration file is broken."
+msgstr ""
+
+#: launcher.cpp:166
+msgid "There is no installer to launch."
+msgstr ""
+
+#: launcher.cpp:172
+msgid "The installer launch failed."
+msgstr ""
+
+#: launcher.cpp:178
+msgid "Please choose a 'java' executable"
+msgstr ""
+
+#: launcher.cpp:195 launcher.cpp:200
+msgid "Could not launch the JRE installation process."
+msgstr ""
+
+#: launcher.cpp:251
+msgid "Could not find a web browser."
+msgstr ""

@@ -1,0 +1,81 @@
+# translation of da.po to Danish
+# translation of launcher.po to Danish
+# This file is distributed under the same license as the izpack-launcher package
+# Copyright (C) 2004 Julien Ponge.
+# Frank Bille Jesen <i18n@frank-bille.dk>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: da\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-04-29 10:35+0000\n"
+"PO-Revision-Date: 2004-04-29 11:35+0200\n"
+"Last-Translator: Frank Bille Jesen <i18n@frank-bille.dk>\n"
+"Language-Team: Danish <da@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.3.1\n"
+
+#: failuredialog.cpp:30 launcher.cpp:27 launcher.cpp:78
+msgid "IzPack launcher"
+msgstr "IzPack starter"
+
+#: failuredialog.cpp:49
+msgid ""
+"The software that you are trying to install requires a Java Runtime "
+"Environment.\n"
+"The Java Runtime Environment could not be detected on your computer but it "
+"can be installed for you."
+msgstr ""
+"Programmet, som du prøver på at installere, kræver et Java runtime miljø.\n"
+"Java runtime miljøet kunne ikke findes på din computer, men det kan installeres for dig."
+
+#: failuredialog.cpp:62
+msgid "manually locate an already installed Java Runtime Environment"
+msgstr "lokaliser selv et allerede installeret Java runtime miljø"
+
+#: failuredialog.cpp:63
+msgid ""
+"automatically install the Java Runtime Environment included with this "
+"software"
+msgstr "automatisk installer Java runtime miljøet der er vedlagt denne program pakke"
+
+#: failuredialog.cpp:65
+msgid ""
+"download the latest version of the Java Runtime Environment from the "
+"Internet."
+msgstr "nedlæs den seneste version af Java runtime miljøet fra internettet."
+
+#: failuredialog.cpp:69
+msgid "You have the following installation choices:"
+msgstr "Du har følgende installationsmuligheder:"
+
+#: failuredialog.cpp:75
+msgid "Ok"
+msgstr "O.k."
+
+#: launcher.cpp:72
+msgid "The configuration file is broken."
+msgstr "Konfigurationsfilen er i stykker."
+
+#: launcher.cpp:166
+msgid "There is no installer to launch."
+msgstr "Der er ingen installer der kan startes."
+
+#: launcher.cpp:172
+msgid "The installer launch failed."
+msgstr "Installeren kunne ikke starte."
+
+#: launcher.cpp:178
+msgid "Please choose a 'java' executable"
+msgstr "Vælg venligst en 'java' udførbar"
+
+#: launcher.cpp:195 launcher.cpp:200
+msgid "Could not launch the JRE installation process."
+msgstr "Kunne ikke starte JRE installations processen."
+
+#: launcher.cpp:251
+msgid "Could not find a web browser."
+msgstr "Kunne ikke finde en web browser."
+
