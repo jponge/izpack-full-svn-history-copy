@@ -22,11 +22,29 @@
 
 #include "launcher.h"
 
+/*
+ * Helper function to run an external program. It takes care of the subtule
+ * differences between the OS-specific implementations.
+ *
+ * @param cmd The command to run.
+ * @return <code>true</code> in case of a success, <code>false</code> otherwise.
+ */
+bool run_external(wxString cmd)
+{
+#ifdef __WINDOWS__
+  int code = wxExecute(cmd, wxEXEC_SYNC);
+  return (code == 0);
+#else
+  int code = wxExecute(cmd);
+  return (code >= 0);
+#endif
+}
+
 LauncherApp::LauncherApp()
   : wxApp()
 {
   completed = false;
-  
+
   SetAppName(_("IzPack launcher"));
   loadParams();
 }
@@ -172,22 +190,11 @@ void LauncherApp::runJRE()
     error(_("There is no installer to launch."));
   }
 
-  /* On win98 using an ASYNC wxExecute call retuns a negative return value.
-   * So the wxExecute call is SYNC. This means that flow of control will not 
-   * return until the other program (the java installer) has finished.
-   *
-   * On win98 this SYNC call returns 0 on success.
-   */
-  wxString cmd = javaExecPath + wxString(" -jar ") + params["jar"];        
-#ifdef __WINDOWS__
-  int code = wxExecute(cmd, wxEXEC_SYNC);
-#else
-  int code = wxExecute(cmd);
-#endif
-  if(code < 0)
+  wxString cmd = javaExecPath + wxString(" -jar ") + params["jar"];
+  if (!run_external(cmd))
   {
-    error(_("The installer launch failed.")); 
-  }  
+    error(_("The installer launch failed."));
+  }
 
   completed = true;
 }
@@ -209,16 +216,13 @@ void LauncherApp::manualLaunch()
 void LauncherApp::jreInstall()
 {
 #ifdef __WINDOWS__
-  if (wxExecute(params["jre"]) <= 0)
-  {
-    error(_("Could not launch the JRE installation process."));
-  }
+  if (!run_external(params["jre"]))
 #else
-  if (!wxShell(params["jre"]));
+  if (!wxShell(params["jre"]))
+#endif
   {
     error(_("Could not launch the JRE installation process."));
   }
-#endif
 
   completed = true;
 }
@@ -259,12 +263,7 @@ void LauncherApp::netDownload()
   }
 #endif
 
-#ifdef __WINDOWS__
-  // On win98 this wxExecute call returns 0 on success
-  if (wxExecute(browser + params["download"], wxEXEC_SYNC) == 0)
-#else
-  if (wxExecute(browser + params["download"]) >= 0)
-#endif
+  if (run_external(browser + params["download"]))
   {
     completed = true;
   }
