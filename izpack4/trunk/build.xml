@@ -43,6 +43,7 @@
     <property name="src.dir" value="src/java"/>
     <property name="tests.dir" value="tests/java"/>
     <property name="reports.dir" value="reports"/>
+    <property name="javadoc.dir" value="doc/javadoc"/>
     <property name="src-contrib.dir" value="src/java-contrib"/>
 
     <property name="junit.jar" value="${lib.dir}/junit-3.8.1.jar"/>
@@ -58,6 +59,8 @@
     <target name="init">
         <tstamp/>
         <mkdir dir="${build.dir}"/>
+        <mkdir dir="${javadoc.dir}"/>
+        <mkdir dir="${reports.dir}"/>
     </target>
 
     <!--
@@ -95,7 +98,6 @@
       Runs the unit tests.
     -->
     <target name="run.tests" depends="build.tests">
-        <mkdir dir="${reports.dir}"/>
         <junit fork="yes" dir="${tests.dir}">
             <classpath>
                 <pathelement path="${src.dir}"/>
@@ -122,6 +124,20 @@
     </target>
 
     <!--
+        Produces the javadocs.
+    -->
+    <target name="doc.javadoc" depends="init">
+        <javadoc destdir="${javadoc.dir}"
+                 access="private"
+                 version="yes"
+                 author="yes">
+            <fileset dir="${src.dir}">
+                <include name="**/*.java"/>
+            </fileset>
+        </javadoc>
+    </target>
+
+    <!--
       Prepares a source distribution.
     -->
     <target name="dist.src" depends="clean">
@@ -139,6 +155,7 @@
     <target name="clean">
         <delete dir="${build.dir}"/>
         <delete dir="${reports.dir}"/>
+        <delete dir="${javadoc.dir}"/>
         <delete>
             <fileset dir="${tests.dir}">
                 <include name="**/*.class"/>
