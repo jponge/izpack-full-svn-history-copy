@@ -2293,19 +2293,17 @@ private class SearchField implements ActionListener
 
       if (result == JFileChooser.APPROVE_OPTION)
       {
-        String file_chosen = chooser.getSelectedFile().getAbsolutePath ();
-
-        File f = new File (file_chosen);
+        File f = chooser.getSelectedFile();
 
         // use any given directory directly
         if (f.isDirectory ())
         {
-          this.pathComboBox.setSelectedItem (file_chosen);
+          this.pathComboBox.setSelectedItem (f.getAbsolutePath());
         }
         else
         {
           // the combo box only contains path names
-          this.pathComboBox.setSelectedItem (f.getParent ());
+          this.pathComboBox.setSelectedItem (f.getAbsoluteFile().getParent ());
         }
       }
 
