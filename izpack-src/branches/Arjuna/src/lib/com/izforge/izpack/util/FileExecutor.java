@@ -183,6 +183,7 @@ public class FileExecutor
         // save command output
         output[0] = c.getOutputData();
         output[1] = c.getErrorData();
+        exitStatus = process.exitValue();
       }
       else
       {
@@ -215,13 +216,17 @@ public class FileExecutor
 
         // save command output
         output[0] = outWriter.toString();
+        Debug.trace ("stdout:");
+        Debug.trace (output[0]);
         output[1] = errWriter.toString();
+        Debug.trace ("stderr:");
+        Debug.trace (output[1]);
       }
-      exitStatus = process.exitValue();
+      Debug.trace ("exit status: " + Integer.toString (exitStatus));
     }
     catch (InterruptedException e)
     {
-      e.printStackTrace(System.err);
+      if (Debug.tracing()) e.printStackTrace(System.err);
       stopThread(t1, outMonitor);
       stopThread(t2, errMonitor);
       output[0] = "";
@@ -230,7 +235,7 @@ public class FileExecutor
     }
     catch (IOException e)
     {
-      e.printStackTrace(System.err);
+      if (Debug.tracing()) e.printStackTrace(System.err);
       output[0] = "";
       output[1] = e.getMessage() + "\n";
     }
