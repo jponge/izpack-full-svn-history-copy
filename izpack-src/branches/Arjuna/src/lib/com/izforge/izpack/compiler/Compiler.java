@@ -300,7 +300,7 @@ public class Compiler extends Thread
     {
       Pack pack = (Pack) iter.next();
       ZipOutputStream zipOut = packager.addPack(i++, pack.name, pack.os, pack.required,
-        pack.description);
+        pack.description, pack.preselected);
       ObjectOutputStream objOut = new ObjectOutputStream(zipOut);
 
       // We write the pack data
@@ -315,10 +315,7 @@ public class Compiler extends Thread
         FileInputStream in = new FileInputStream(f);
         long nbytes = f.length();
 
-        if(!p.targetdir.endsWith(File.separator)) {
-          p.targetdir = p.targetdir+File.separatorChar;
-        }
-        String targetFilename = p.targetdir + f.getName();
+        String targetFilename = p.getTargetFilename ();
 
         // pack paths in canonical (unix) form regardless of current host o/s:
         if('/' != File.separatorChar)
@@ -462,6 +459,8 @@ public class Compiler extends Thread
     // Initialisation
     ArrayList packs = new ArrayList();
     XMLElement root = data.getFirstChildNamed("packs");
+    // dummy variable used for values from XML
+    String val;
 
     // We process each pack markup
     int npacks = root.getChildrenCount();
@@ -476,6 +475,11 @@ public class Compiler extends Thread
       pack.os = el.getAttribute("os");
       pack.required = el.getAttribute("required").equalsIgnoreCase("yes");
       pack.description = el.getFirstChildNamed("description").getContent();
+      pack.preselected = true;
+
+      val = el.getAttribute ("preselected");
+      if ((null != val) && ("no".compareToIgnoreCase (val) == 0))
+        pack.preselected = false;
 
       // We get the parsables list
       Iterator iter = null;
@@ -486,7 +490,7 @@ public class Compiler extends Thread
         while (iter.hasNext())
         {
           XMLElement p = (XMLElement) iter.next();
-	  String targetFile = p.getAttribute("targetfile");
+          String targetFile = p.getAttribute("targetfile");
           pack.parsables.add
             (new ParsableFile(targetFile,
             p.getAttribute("type", "plain"),
@@ -505,7 +509,7 @@ public class Compiler extends Thread
 
           // when to execute this executable
           int executeOn = ExecutableFile.NEVER;
-          String val = e.getAttribute("stage", "never");
+          val = e.getAttribute("stage", "never");
           if ("postinstall".compareToIgnoreCase(val) == 0)
             executeOn = ExecutableFile.POSTINSTALL;
           else if ("uninstall".compareToIgnoreCase(val) == 0)
@@ -527,6 +531,12 @@ public class Compiler extends Thread
             onFailure = ExecutableFile.ABORT;
           else if ("warn".compareToIgnoreCase(val) == 0)
             onFailure = ExecutableFile.WARN;
+
+          // whether to keep the executable after executing it
+          boolean keepFile = false;
+          val = e.getAttribute ("keep");
+          if ((null != val) && ("true".compareToIgnoreCase(val) == 0))
+            keepFile = true;
 
           // get arguments for this executable
           ArrayList argList = new ArrayList();
@@ -554,10 +564,10 @@ public class Compiler extends Thread
               os.getAttribute("version", null),
               os.getAttribute("arch", null)));
           }
-	  String targetFile = e.getAttribute("targetfile");
+          String targetFile = e.getAttribute("targetfile");
           pack.executables.add(new ExecutableFile(targetFile,
             executeType, executeClass,
-            executeOn, onFailure, argList, osList));
+            executeOn, onFailure, argList, osList, keepFile));
         }
       }
 
@@ -575,6 +585,25 @@ public class Compiler extends Thread
 
         addFile(file,
           f.getAttribute("targetdir"),
+          f.getAttribute("os"),
+          override,
+          pack.packFiles);
+      }
+
+      // We get the singlefiles list
+      iter = el.getChildrenNamed("singlefile").iterator();
+      while (iter.hasNext())
+      {
+        XMLElement f = (XMLElement) iter.next();
+        String path = basedir + File.separator + f.getAttribute("src");
+        File file = new File(path);
+
+        boolean override = true;
+        if (f.getAttribute("override") != null)
+          override = f.getAttribute("override").equalsIgnoreCase("true");
+
+        addSingleFile(file,
+          f.getAttribute("target"),
           f.getAttribute("os"),
           override,
           pack.packFiles);
@@ -614,7 +643,7 @@ public class Compiler extends Thread
           }
         }
 
-	String targetDir = f.getAttribute("targetdir");
+        String targetDir = f.getAttribute("targetdir");
         addFileSet(path, includes, excludes,
           targetDir,
           f.getAttribute("os"),
@@ -758,13 +787,34 @@ public class Compiler extends Thread
     {
       PackSource nf = new PackSource();
       nf.src = file.getAbsolutePath();
-      nf.targetdir = relPath;
+      nf.setTargetDir (relPath);
       nf.os = targetOs;
       nf.override = override;
       list.add(nf);
     }
   }
 
+  /**
+   *  Method to add a single file in a pack.
+   *
+   * @param  file           The file to add.
+   * @param  targetFile     The target to add the file as.
+   * @param  targetOs       The target OS.
+   * @param  override       Overriding behaviour.
+   * @param  list           The files list.
+   * @exception  Exception  Description of the Exception
+   */
+  protected void addSingleFile(File file, String targetFile, String targetOs,
+                         boolean override, ArrayList list) throws Exception
+  {
+    //System.out.println ("adding single file " + file.getName() + " as " + targetFile);
+    PackSource nf = new PackSource();
+    nf.src = file.getAbsolutePath();
+    nf.setTargetFile (targetFile);
+    nf.os = targetOs;
+    nf.override = override;
+    list.add(nf);
+  }
 
   /**
    *  Returns a list of the panels names to add.
@@ -1071,9 +1121,10 @@ public class Compiler extends Thread
     /**  The executable files list. */
     public ArrayList executables;
 
-      /**  The target operation system of this file */
-      public String os;
+    /**  The target operation system of this file */
+    public String os;
 
+    public boolean preselected;
 
     /**  The constructor. */
     public Pack()
@@ -1096,14 +1147,57 @@ public class Compiler extends Thread
     /**  The source. */
     public String src;
 
-    /**  The target directory. */
-    public String targetdir;
-
     /**  Shall we override the file ? */
     public boolean override = true;
 
     /**  The target operation system of this file */
     public String os;
+
+    /**  The target directory. */
+    private String targetdir = null;
+
+    /**  The target file. */
+    private String targetfile = null;
+
+    public String getTargetFilename ()
+    {
+      // targetfile overrides targetdir
+      if (this.targetfile != null)
+        return this.targetfile;
+
+       File f = new File (this.src);
+
+       return this.targetdir + f.getName ();
+    }
+
+    public void setTargetFile (String targetFile)
+    {
+      this.targetdir = null;
+      this.targetfile = targetFile;
+    }
+
+    public String getTargetFile ()
+    {
+      return this.targetfile;
+    }
+
+    public void setTargetDir (String targetDir)
+    {
+      this.targetfile = null;
+      this.targetdir = targetDir;
+
+      if (! this.targetdir.endsWith (File.separator))
+      {
+        this.targetdir = this.targetdir + File.separatorChar;
+      }
+
+    }
+
+    public String getTargetDir ()
+    {
+      return this.targetdir;
+    }
+
   }
 
 
