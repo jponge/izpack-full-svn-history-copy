@@ -109,16 +109,6 @@ public class IzPanel extends JPanel
 
 
   /**
-   *  Makes the panel work in automated mode. Default is to do nothing, but any
-   *  panel doing something 'effective' during the installation process should
-   *  implement this method.
-   *
-   * @param  panelRoot  The XML root element of the panels blackbox tree.
-   */
-  public void runAutomated(XMLElement panelRoot) { }
-
-
-  /**
    *  Called when the installer works in non-GUI mode. All the panel job must be
    *  done from here.
    */

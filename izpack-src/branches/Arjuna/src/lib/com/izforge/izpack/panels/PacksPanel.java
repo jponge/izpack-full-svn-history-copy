@@ -152,7 +152,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
 			public void setBorder(Border b)
 			{
 			}
-			
+
 //			public void setFont(Font f)
 //			{
 //				super.setFont(new Font("Monospaced",Font.PLAIN,11));
@@ -164,9 +164,9 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
 
 		//remove header,so we don't need more strings
 	    tableScroller.remove(packsTable.getTableHeader());
-	    tableScroller.setColumnHeaderView(null); 
-	    tableScroller.setColumnHeader(null); 
-		
+	    tableScroller.setColumnHeaderView(null);
+	    tableScroller.setColumnHeader(null);
+
 		// set the JCheckBoxes to the currently selected panels. The selection meight have changes in another panel
 		java.util.Iterator iter = idata.availablePacks.iterator();
 		bytes = 0;
@@ -225,48 +225,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
    */
   public void makeXMLData(XMLElement panelRoot)
   {
-    // Selected packs markup
-    XMLElement sel = new XMLElement("selected");
-
-    // We add each selected pack to sel
-    int size = idata.selectedPacks.size();
-    for (int i = 0; i < size; i++)
-    {
-      XMLElement el = new XMLElement("pack");
-      Pack pack = (Pack) idata.selectedPacks.get(i);
-      Integer integer = new Integer(idata.availablePacks.indexOf(pack));
-      el.setAttribute("index", integer.toString());
-      sel.addChild(el);
-    }
-
-    // Joining
-    panelRoot.addChild(sel);
-  }
-
-
-  /**
-   *  Asks to run in the automated mode.
-   *
-   * @param  panelRoot  The root of the panel data.
-   */
-  public void runAutomated(XMLElement panelRoot)
-  {
-    // We get the selected markup
-    XMLElement sel = panelRoot.getFirstChildNamed("selected");
-
-    // We get the packs markups
-    Vector pm = sel.getChildrenNamed("pack");
-
-    // We select each of them
-    int size = pm.size();
-    idata.selectedPacks.clear();
-    for (int i = 0; i < size; i++)
-    {
-      XMLElement el = (XMLElement) pm.get(i);
-      Integer integer = new Integer(el.getAttribute("index"));
-      int index = integer.intValue();
-      idata.selectedPacks.add(idata.availablePacks.get(index));
-    }
+    new PacksPanelAutomationHelper().makeXMLData(idata, panelRoot);
   }
 
 	private class PacksModel extends AbstractTableModel
@@ -278,7 +237,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
 			this.packs = packs;
 			this.packsToInstall = packsToInstall;
 		}
-		
+
 			/*
 		 * @see TableModel#getRowCount()
 		 */
@@ -286,7 +245,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
 		{
 			return packs.size();
 		}
-	
+
 		/*
 		 * @see TableModel#getColumnCount()
 		 */
@@ -294,7 +253,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
 		{
 			return 3;
 		}
-	
+
 		/*
 		 * @see TableModel#getColumnClass(int)
 		 */
@@ -309,7 +268,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
 					return String.class;
 			}
 		}
-	
+
 		/*
 		 * @see TableModel#isCellEditable(int, int)
 		 */
@@ -329,7 +288,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
 				return false;
 		    }
 		}
-	
+
 		/*
 		 * @see TableModel#getValueAt(int, int)
 		 */
@@ -346,7 +305,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
 					}
 					else
 					{
-						val = (packsToInstall.contains(pack) ? 1 : 0 ); 
+						val = (packsToInstall.contains(pack) ? 1 : 0 );
 					}
 					return new Integer( val );
 
@@ -360,7 +319,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
 					return null;
 			}
 		}
-	
+
 		/*
 		 * @see TableModel#setValueAt(Object, int, int)
 		 */
@@ -402,7 +361,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
     static class CheckBoxEditorRenderer extends AbstractCellEditor implements TableCellRenderer,TableCellEditor,ActionListener
     {
     	private JCheckBox display;
-		public CheckBoxEditorRenderer(boolean useAsEditor) 
+		public CheckBoxEditorRenderer(boolean useAsEditor)
 		{
 		    display = new JCheckBox();
 		    display.setHorizontalAlignment(JLabel.CENTER);
@@ -442,8 +401,8 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
 		{
 			return new Integer(display.isSelected() ? 1 : 0);
 		}
-	
-		
+
+
 		public void actionPerformed(ActionEvent e)
 		{
 			stopCellEditing();

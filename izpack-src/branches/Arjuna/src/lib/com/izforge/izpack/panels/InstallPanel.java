@@ -212,18 +212,5 @@ public class InstallPanel extends IzPanel implements ActionListener, InstallList
     parent.install(this);
 
   }
-
-
-  /**
-   *  Asks to run in the automated mode.
-   *
-   * @param  panelRoot  The panel XML tree root.
-   */
-  public void runAutomated(XMLElement panelRoot)
-  {
-    parent.install(this);
-    while (!validated)
-      Thread.yield();
-  }
 }
 

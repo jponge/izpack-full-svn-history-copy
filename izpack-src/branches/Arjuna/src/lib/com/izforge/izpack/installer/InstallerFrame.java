@@ -108,65 +108,6 @@ public class InstallerFrame extends JFrame
     switchPanel(0);
   }
 
-
-  /**
-   *  The constructor (automated mode)
-   *
-   * @param  langpack       The language pack.
-   * @param  installdata    The installation data.
-   * @exception  Exception  Description of the Exception
-   */
-  public InstallerFrame(LocaleDatabase langpack, InstallData installdata)
-     throws Exception
-  {
-    super("IzPack - automated installation");
-    this.langpack = langpack;
-    this.installdata = installdata;
-
-    // Loadings to make the panels able to be run properly
-    loadIcons();
-    loadPanels();
-    buildGUI();
-    switchPanel(0);
-
-    // Runs the automated process
-    runAutomation();
-
-    // Bye
-    Housekeeper.getInstance().shutDown(0);
-  }
-
-
-  /**
-   *  Runs the automated mode.
-   *
-   * @exception  Exception  Description of the Exception
-   */
-  private void runAutomation() throws Exception
-  {
-    // Echoes a start message
-    System.out.println("[ Running automated installation ... ]");
-
-    // We process each panel
-    int size = installdata.panels.size();
-    for (int i = 0; i < size; i++)
-    {
-      // We get the panel
-      IzPanel panel = (IzPanel) installdata.panels.get(i);
-      String className = (String) installdata.panelsOrder.get(i);
-
-      // We get its root xml markup
-      XMLElement panelRoot = installdata.xmlData.getFirstChildNamed(className);
-
-      // We invoke it
-      panel.runAutomated(panelRoot);
-    }
-
-    // Echoes a end message
-    System.out.println("[ Automated installation done ]");
-  }
-
-
   /**
    *  Loads the panels.
    *
@@ -560,7 +501,7 @@ public class InstallerFrame extends JFrame
       File f = new File(p);
       f.delete();
     }
-    cleanWipe(new File(InstallData.getInstance().getInstallPath()));
+    cleanWipe(new File(installdata.getInstallPath()));
   }
 
 

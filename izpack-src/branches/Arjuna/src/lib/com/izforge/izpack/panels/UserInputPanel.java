@@ -108,7 +108,7 @@ public class UserInputPanel extends IzPanel
   // - POS_TYPE
   // - POS_CONSTRAINTS
   // - POS_PACKS
-  
+
   private static final int    POS_DISPLAYED                 = 0;
   private static final int    POS_TYPE                      = 1;
   private static final int    POS_VARIABLE                  = 2;
@@ -184,18 +184,6 @@ public class UserInputPanel extends IzPanel
 
   private static final String PACKS                         = "createForPack";
   private static final String NAME                          = "name";
-
-  // ------------------------------------------------------
-  // automatic script section keys
-  // ------------------------------------------------------
-  private static final String AUTO_KEY_USER_INPUT           = "userInput";
-  private static final String AUTO_KEY_ENTRY                = "entry";
-
-  // ------------------------------------------------------
-  // automatic script keys attributes
-  // ------------------------------------------------------
-  private static final String AUTO_ATTRIBUTE_KEY            = "key";
-  private static final String AUTO_ATTRIBUTE_VALUE          = "value";
 
   /** specifies the percentage of the total panel width to use for the space
       buffer on the right and left side. */
@@ -422,73 +410,17 @@ public class UserInputPanel extends IzPanel
  /*--------------------------------------------------------------------------*/
   public void makeXMLData (XMLElement panelRoot)
   {
-    XMLElement    userInput;
-    XMLElement    dataElement;
+		Map entryMap = new HashMap();
 
-    // ----------------------------------------------------
-    // add the item that combines all entries
-    // ----------------------------------------------------
-    userInput = new XMLElement (AUTO_KEY_USER_INPUT);
-    panelRoot.addChild (userInput);
+		for (int i = 0; i < entries.size (); i++)
+		{
+			TextValuePair pair = (TextValuePair)entries.elementAt(i);
+			entryMap.put( pair.toString(), pair.getValue() );
+		}
 
-    // ----------------------------------------------------
-    // add all entries
-    // ----------------------------------------------------
-    for (int i = 0; i < entries.size (); i++)
-    {
-      dataElement = new XMLElement (AUTO_KEY_ENTRY);
-      dataElement.setAttribute (AUTO_ATTRIBUTE_KEY, (((TextValuePair)entries.elementAt (i)).toString ()));
-      dataElement.setAttribute (AUTO_ATTRIBUTE_VALUE, (((TextValuePair)entries.elementAt (i)).getValue ()));
-      
-      userInput.addChild (dataElement);
-    }
+		new UserInputPanelAutomationHelper(entryMap).makeXMLData(idata, panelRoot);
   }
- /*--------------------------------------------------------------------------*/
- /**
-  * Makes the panel work in automated mode. Default is to do nothing, but any
-  * panel doing something 'effective' during the installation process should
-  * implement this method.
-  *
-  * @param     panelRoot    The XML root element of the panels blackbox tree.
-  */
- /*--------------------------------------------------------------------------*/
-  public void runAutomated (XMLElement panelRoot)
-  {
-    XMLElement    userInput;
-    XMLElement    dataElement;
-    String        variable;
-    String        value;
 
-    // ----------------------------------------------------
-    // get the section containing the user entries
-    // ----------------------------------------------------
-    userInput = panelRoot.getFirstChildNamed (AUTO_KEY_USER_INPUT);
-    
-    if (userInput == null)
-    {
-      return;
-    }
-    
-    Vector userEntries = userInput.getChildrenNamed (AUTO_KEY_ENTRY);
-    
-    if (userEntries == null)
-    {
-      return;
-    }
-  
-    // ----------------------------------------------------
-    // retieve each entrie and substitute the associated
-    // variable
-    // ----------------------------------------------------
-    for (int i = 0; i < userEntries.size (); i++)
-    {
-      dataElement = (XMLElement)userEntries.elementAt (i);
-      variable    = dataElement.getAttribute (AUTO_ATTRIBUTE_KEY);
-      value       = dataElement.getAttribute (AUTO_ATTRIBUTE_VALUE);
-
-      idata.getVariableValueMap ().setVariable (variable, value);
-    }
-  }
  /*--------------------------------------------------------------------------*/
  /**
   * Builds the UI and makes it ready for display
@@ -867,9 +799,9 @@ public class UserInputPanel extends IzPanel
     boolean success = ruleField.validateContents ();
     if (!success)
     {
-      JOptionPane.showMessageDialog (parent, 
-                                     (String)field [POS_MESSAGE], 
-                                     parent.langpack.getString ("UserInputPanel.error.caption"), 
+      JOptionPane.showMessageDialog (parent,
+                                     (String)field [POS_MESSAGE],
+                                     parent.langpack.getString ("UserInputPanel.error.caption"),
                                      JOptionPane.WARNING_MESSAGE);
       return (false);
     }
@@ -1269,7 +1201,7 @@ public class UserInputPanel extends IzPanel
     String        message   = null;
     String        processor = null;
     XMLElement    element   = null;
-    PasswordGroup group     = null; 
+    PasswordGroup group     = null;
     int           size      = 0;
 
     // ----------------------------------------------------
@@ -1295,7 +1227,7 @@ public class UserInputPanel extends IzPanel
       processor = element.getAttribute (CLASS);
     }
 
-    group = new PasswordGroup (validator, 
+    group = new PasswordGroup (validator,
                                processor);
 
     // ----------------------------------------------------
@@ -1348,7 +1280,7 @@ public class UserInputPanel extends IzPanel
         group.addField (field);
       }
     }
-    
+
     passwordGroups.add (group);
   }
  /*--------------------------------------------------------------------------*/
@@ -1385,15 +1317,15 @@ public class UserInputPanel extends IzPanel
       return (true);
     }
     passwordGroups.add (group);
-  
+
 
     boolean success = group.validateContents ();
 
     if (!success)
     {
-      JOptionPane.showMessageDialog (parent, 
-                                     message, 
-                                     parent.langpack.getString ("UserInputPanel.error.caption"), 
+      JOptionPane.showMessageDialog (parent,
+                                     message,
+                                     parent.langpack.getString ("UserInputPanel.error.caption"),
                                      JOptionPane.WARNING_MESSAGE);
       return (false);
     }

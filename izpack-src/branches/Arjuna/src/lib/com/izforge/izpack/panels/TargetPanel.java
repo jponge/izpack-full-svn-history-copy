@@ -280,23 +280,7 @@ public class TargetPanel extends IzPanel implements ActionListener
    */
   public void makeXMLData(XMLElement panelRoot)
   {
-    // Installation path markup
-    XMLElement ipath = new XMLElement("installpath");
-    ipath.setContent(idata.getInstallPath());
-    panelRoot.addChild(ipath);
-  }
-
-
-  /**
-   *  Asks to run in the automated mode.
-   *
-   * @param  panelRoot  The XML tree to read the data from.
-   */
-  public void runAutomated(XMLElement panelRoot)
-  {
-    // We set the installation path
-    XMLElement ipath = panelRoot.getFirstChildNamed("installpath");
-    idata.setInstallPath(ipath.getContent());
+    new TargetPanelAutomationHelper().makeXMLData(idata, panelRoot);
   }
 }
 

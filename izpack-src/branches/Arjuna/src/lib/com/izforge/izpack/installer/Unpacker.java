@@ -46,7 +46,7 @@ import java.util.jar.*;
 public class Unpacker extends Thread
 {
   /**  The installdata. */
-  private InstallData idata;
+  private AutomatedInstallData idata;
 
   /**  The installer listener. */
   private InstallListener listener;
@@ -70,7 +70,7 @@ public class Unpacker extends Thread
    * @param  idata     The installation data.
    * @param  listener  The installation listener.
    */
-  public Unpacker(InstallData idata, InstallListener listener)
+  public Unpacker(AutomatedInstallData idata, InstallListener listener)
   {
     super("IzPack - Unpacker thread");
 
@@ -92,10 +92,10 @@ public class Unpacker extends Thread
     return instances;
   }
 
-  private boolean matchOS(String actualOS, String targetOS) 
+  private boolean matchOS(String actualOS, String targetOS)
   {
 
-    if(targetOS.equalsIgnoreCase("unix")) 
+    if(targetOS.equalsIgnoreCase("unix"))
     {
 
       if(actualOS.lastIndexOf("unix")    > -1 ||
@@ -105,7 +105,7 @@ public class Unpacker extends Thread
          actualOS.lastIndexOf("aix")     > -1 ||
          actualOS.lastIndexOf("bsd")     > -1 )
       {
-                
+
         return true;
       }
       else
