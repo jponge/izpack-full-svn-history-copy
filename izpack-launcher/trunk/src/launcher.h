@@ -46,9 +46,9 @@ private:
   wxString javaExecPath;
 
   std::map<wxString, wxString> params;
-  
+
   wxLocale locale;
-  
+
   bool completed;
 
   void loadParams();
@@ -56,6 +56,8 @@ private:
   void error(const wxString &msg);
 
   bool searchJRE();
+
+  inline bool isValidPath();
 
   void runJRE();
 

@@ -1,5 +1,9 @@
 [ ChangeLog file for the IzPack launcher project ]
 
+2004.07.24 (Julien Ponge):
+* A check is now performed to make sure that a JRE is really existing when
+  found.
+
 2004.05.31 (Julien Ponge):
 * SVN commits should now be sent to izpack-changes@lists.berlios.de.
 
