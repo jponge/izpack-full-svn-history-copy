@@ -106,7 +106,22 @@ bool LauncherApp::OnInit()
 
 bool LauncherApp::searchJRE()
 {
-  // First, try to use JAVA_HOME
+
+#ifdef __WINDOWS__
+
+  // Windows[tm] registry lookup
+  wxRegConfig reg("JavaSoft");
+  reg.SetPath("Java Runtime Environment");
+  wxString home;
+  if (reg.Read("JavaHome", &home))
+  {
+    javaExecPath = home + "\\bin\\java";
+    return true;
+  }
+
+#endif
+  
+  // Try to use JAVA_HOME
   char* envRes = getenv("JAVA_HOME");
   if (envRes)
   {
@@ -114,18 +129,12 @@ bool LauncherApp::searchJRE()
     return true;
   }
 
-  // Now, let's try to launch just 'java'
+  // Let's try to launch just 'java'
   if (wxExecute("java -version", wxEXEC_SYNC) == 0)
   {
     javaExecPath = "java";
     return true;
   }
-
-#ifdef __WINDOWS__
-
-  // Windows[tm] registry lookup (TODO)
-
-#endif
 
   // Failure
   return false;

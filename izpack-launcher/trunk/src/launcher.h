@@ -33,6 +33,10 @@
 #include <wx/fileconf.h>
 #include <wx/wfstream.h>
 
+#ifdef __WINDOWS__
+  #include <wx/msw/regconf.h>
+#endif
+
 #include "failuredialog.h"
 
 class LauncherApp : public wxApp
