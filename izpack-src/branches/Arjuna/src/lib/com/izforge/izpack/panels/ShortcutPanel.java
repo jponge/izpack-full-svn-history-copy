@@ -63,7 +63,6 @@ import    net.n3.nanoxml.*;
  * conditions are met.
  *
  * @see      com.izforge.izpack.util.os.ShellLink
- * @see      com.izforge.izpack.util.os.Alias
  *
  * @version  0.0.1 / 2/26/02
  * @author   Elmar Grom

@@ -82,7 +82,7 @@ public class InstallPanelAutomationHelper extends PanelAutomationHelper
 	/**
 	 * Sets state variable for thread sync.
 	 *
-	 * @see InstallListener#stopUnpack
+	 * @see com.izforge.izpack.util.AbstractUIProgressHandler#stopAction()
 	 */
 	public void stopAction()
 	{
@@ -95,7 +95,7 @@ public class InstallPanelAutomationHelper extends PanelAutomationHelper
 	 *
 	 * @param val
 	 * @param msg
-	 * @see AbstractUIProgressHandler#progress(int, String)
+   * @see com.izforge.izpack.util.AbstractUIProgressHandler#progress(int, String)
 	 */
 	public void progress(int val, String msg)
 	{
@@ -108,7 +108,7 @@ public class InstallPanelAutomationHelper extends PanelAutomationHelper
    * @param packName The currently installing pack.
 	 * @param stepno The number of the pack
 	 * @param max unused
-	 * @see InstallListener#changeUnpack
+   * @see com.izforge.izpack.util.AbstractUIProgressHandler#nextStep(String, int, int)
 	 */
 	public void nextStep (String packName, int stepno, int stepsize)
 	{

@@ -400,7 +400,7 @@ public class UninstallerFrame extends JFrame
    * 
    * @return The user's choice.
    * 
-   * @see AbstractUIHandler#askQuestion(String, int)
+   * @see AbstractUIHandler#askQuestion(String, String, int)
    */
   public int askQuestion (String title, String question, int choices)
   {
@@ -416,7 +416,7 @@ public class UninstallerFrame extends JFrame
    * @param default_choice The default choice. (-1 = no default choice)
    * 
    * @return The user's choice.
-   * @see AbstractUIHandler#askQuestion(String, int, int)
+   * @see AbstractUIHandler#askQuestion(String, String, int, int)
    */
   public int askQuestion (String title, String question, int choices, int default_choice)
   {

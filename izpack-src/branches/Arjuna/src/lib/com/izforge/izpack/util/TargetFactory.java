@@ -500,8 +500,8 @@ public class TargetFactory
   *
   * @return    an index for the processor architecture
   *
-  * @see       X86
-  * @see       OTHER
+  * @see       #X86
+  * @see       #OTHER
   */
  /*--------------------------------------------------------------------------*/
   public int getArchitecture ()

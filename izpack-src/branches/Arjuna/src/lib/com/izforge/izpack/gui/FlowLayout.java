@@ -161,8 +161,8 @@ public class FlowLayout implements LayoutManager
      * specify the space between components.
      *
      * @serial
-     * @see getHgap
-     * @see setHgap
+     * @see #getHgap
+     * @see #setHgap
      */
     int hgap;
     /**
@@ -171,8 +171,8 @@ public class FlowLayout implements LayoutManager
      * specify the space between rows.
      *
      * @serial
-     * @see getVgap
-     * @see setVgap
+     * @see #getVgap
+     * @see #setVgap
      */
     int vgap;
 
@@ -274,7 +274,7 @@ public class FlowLayout implements LayoutManager
   *
   * @return     the horizontal gap between components.
   *
-  * @see        #setHgap()
+  * @see        #setHgap(int)
   */
  /*--------------------------------------------------------------------------*/
   public int getHgap ()
@@ -300,7 +300,7 @@ public class FlowLayout implements LayoutManager
   *
   * @return     the vertical gap between components.\
   *
-  * @see        #setVgap()
+  * @see        #setVgap(int)
   */
  /*--------------------------------------------------------------------------*/
   public int getVgap ()
@@ -338,7 +338,6 @@ public class FlowLayout implements LayoutManager
   *
   * @param comp the component to remove
   *
-  * @see       #removeAll()
   */
  /*--------------------------------------------------------------------------*/
   public void removeLayoutComponent (Component comp)
@@ -352,7 +351,7 @@ public class FlowLayout implements LayoutManager
   *
   * @return    the preferred dimensions to lay out the
   *            subcomponents of the specified container.
-  * @see #minimumLayoutSize()
+  * @see #minimumLayoutSize(Container)
   */
  /*--------------------------------------------------------------------------*/
   public Dimension preferredLayoutSize (Container target)
@@ -399,7 +398,7 @@ public class FlowLayout implements LayoutManager
   * @return    the minimum dimensions to lay out the
   *                    subcomponents of the specified container.
   *
-  * @see #preferredLayoutSize()
+  * @see #preferredLayoutSize(Container)
   */
  /*--------------------------------------------------------------------------*/
   public Dimension minimumLayoutSize (Container target)
@@ -497,7 +496,6 @@ public class FlowLayout implements LayoutManager
   *
   * @param target the specified component being laid out.
   *
-  * @see       #doLayout()
   */
  /*--------------------------------------------------------------------------*/
   public void layoutContainer (Container target)

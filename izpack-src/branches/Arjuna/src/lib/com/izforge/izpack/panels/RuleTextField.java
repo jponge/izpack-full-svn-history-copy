@@ -37,7 +37,7 @@ import    javax.swing.text.*;
  * <BR><BR>
  * Enter detailed class description here.
  *
- * @see      
+ * @see UserInputPanel     
  *
  * @version  0.0.1 / 10/20/02
  * @author   Elmar Grom
