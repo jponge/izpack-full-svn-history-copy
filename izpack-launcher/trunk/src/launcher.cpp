@@ -174,10 +174,12 @@ void LauncherApp::netDownload()
   wxString browser;
 
 #ifdef __WINDOWS__
-  // TODO: add and try some browsers commands here
+  // We use the default browser.
+  browser = "rundll32 url.dll,FileProtocolHandler ";
 #endif
 
 #ifdef __UNIX__
+  // We try some browsers and use the first successful one.
   std::list<std::pair<wxString, wxString> > commands;
   std::pair<wxString, wxString> cmd;
   cmd.first = "konqueror "; cmd.second = "konqueror -v";
