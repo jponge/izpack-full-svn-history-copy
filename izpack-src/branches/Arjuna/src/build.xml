@@ -172,8 +172,10 @@
             debug="${debug}">
       <include name="com/izforge/izpack/*.java"/>
       <include name="com/izforge/izpack/compiler/*.java"/>
-          <include name="com/izforge/izpack/ant/*.java"/>
-          <include name="net/n3/nanoxml/*.java"/>
+      <include name="com/izforge/izpack/ant/*.java"/>
+      <include name="com/izforge/izpack/util/Debug.java"/>
+      <include name="com/izforge/izpack/util/OsConstraint.java"/>
+      <include name="net/n3/nanoxml/*.java"/>
     </javac>
         <copy todir="${build.dir}/com/izforge/izpack/ant/langpacks">
             <fileset dir="${src.dir}/com/izforge/izpack/ant/langpacks"/>
@@ -203,9 +205,10 @@
       <fileset dir="${build.dir}">
         <include name="com/izforge/izpack/*.class"/>
         <include name="com/izforge/izpack/compiler/*.class"/>
-            <include name="com/izforge/izpack/util/OsConstraint.class"/>
-            <include name="com/izforge/izpack/ant/*.class"/>
-            <include name="com/izforge/izpack/ant/langpacks/*.properties"/>
+        <include name="com/izforge/izpack/util/OsConstraint.class"/>
+        <include name="com/izforge/izpack/util/Debug.class"/>
+        <include name="com/izforge/izpack/ant/*.class"/>
+        <include name="com/izforge/izpack/ant/langpacks/*.properties"/>
         <include name="com/izforge/izpack/installer/VariableValueMap.class"/>
         <include name="com/izforge/izpack/installer/VariableValueMapImpl.class"/>
         <include name="com/izforge/izpack/installer/VariableSubstitutor.class"/>
@@ -503,7 +506,7 @@
   <!-- Builds the Javadoc -->
   <target name="build.javadoc" depends="prepare">
     <mkdir dir="${build.dir}/javadoc"/>
-    <javadoc destdir="${build.dir}/javadoc" access="private">
+    <javadoc destdir="${build.dir}/javadoc" access="private" classpath="${basedir}/lib/kunststoff.jar:${basedir}/lib/ant.jar">
       <packageset dir="${src.dir}">
         <exclude name="**/CVS" />
       </packageset>

@@ -43,6 +43,7 @@ import org.apache.tools.ant.DirectoryScanner;
 import com.izforge.izpack.installer.VariableValueMapImpl;
 import com.izforge.izpack.installer.VariableSubstitutor;
 import com.izforge.izpack.util.OsConstraint;
+import com.izforge.izpack.util.Debug;
 
 /**
  * @author tisc
@@ -157,7 +158,14 @@ public class Compiler extends Thread
     }
     catch (Exception e)
     {
-      e.printStackTrace();
+      if (Debug.stackTracing ())
+      {
+         e.printStackTrace(); 
+      }
+      else
+      {
+        System.out.println (e.getMessage ()); 
+      }
     }
   }
 
@@ -467,6 +475,11 @@ public class Compiler extends Thread
     // Initialisation
     ArrayList packs = new ArrayList();
     XMLElement root = data.getFirstChildNamed("packs");
+    
+    if (root == null)
+    {
+      throw new Exception ("no packs specified");
+    }
     // dummy variable used for values from XML
     String val;
 
@@ -480,6 +493,10 @@ public class Compiler extends Thread
       Pack pack = new Pack();
       pack.number = i;
       pack.name = el.getAttribute("name");
+      if (pack.name == null)
+      {
+        throw new Exception ("missing \"name\" attribute for <pack> in line "+el.getLineNr());
+      }
       pack.os = el.getAttribute("os");
       pack.required = el.getAttribute("required").equalsIgnoreCase("yes");
       pack.description = el.getFirstChildNamed("description").getContent();
@@ -500,7 +517,7 @@ public class Compiler extends Thread
           XMLElement p = (XMLElement) iter.next();
           String targetFile = p.getAttribute("targetfile");
           if (targetFile == null)
-            throw new Exception ("targetfile attribute missing for <parsable>");
+            throw new Exception ("missing \"targetfile\" attribute for <parsable> in line "+p.getLineNr());
             
           List osList = getOsList (p);
           
@@ -568,8 +585,14 @@ public class Compiler extends Thread
 
           List osList = getOsList(e);
           
-          String targetFile = e.getAttribute("targetfile");
-          pack.executables.add(new ExecutableFile(targetFile,
+          String targetfile_attr = e.getAttribute("targetfile");
+          
+          if (targetfile_attr == null)
+          {
+            throw new Exception ("missing \"targetfile\" attribute for <parsable> in line "+e.getLineNr());
+          }
+          
+          pack.executables.add(new ExecutableFile(targetfile_attr,
             executeType, executeClass,
             executeOn, onFailure, argList, osList, keepFile));
         }
@@ -580,15 +603,26 @@ public class Compiler extends Thread
       while (iter.hasNext())
       {
         XMLElement f = (XMLElement) iter.next();
-        String path = basedir + File.separator + f.getAttribute("src");
+        String src_attr = f.getAttribute ("src");
+        if (src_attr == null)
+        {
+          throw new Exception ("missing \"src\" attribute for <file> in line "+f.getLineNr());
+        }
+        String path = basedir + File.separator + src_attr;
         File file = new File(path);
 
         int override = getOverrideValue (f);
 
         List osList = getOsList (f);
         
+        String targetdir_attr = f.getAttribute ("targetdir");
+        if (targetdir_attr == null)
+        {
+          throw new Exception ("missing \"targetdir\" attribute for <file> in line "+f.getLineNr());
+        }
+        
         addFile(file,
-          f.getAttribute("targetdir"),
+          targetdir_attr,
           osList,
           override,
           pack.packFiles);
@@ -599,15 +633,25 @@ public class Compiler extends Thread
       while (iter.hasNext())
       {
         XMLElement f = (XMLElement) iter.next();
-        String path = basedir + File.separator + f.getAttribute("src");
+        String src_attr = f.getAttribute ("src");
+        if (src_attr == null)
+        {
+          throw new Exception ("missing \"src\" attribute for <file> in line "+f.getLineNr());
+        }
+        String path = basedir + File.separator + src_attr;
         File file = new File(path);
 
         int override = getOverrideValue (f);
 
         List osList = getOsList (f);
         
+        String target_attr = f.getAttribute ("target");
+        if (target_attr == null)
+        {
+          throw new Exception ("missing \"target\" attribute for <file> in line "+f.getLineNr());
+        }
         addSingleFile(file,
-          f.getAttribute("target"),
+          target_attr,
           osList,
           override,
           pack.packFiles);
@@ -618,7 +662,12 @@ public class Compiler extends Thread
       while (iter.hasNext())
       {
         XMLElement f = (XMLElement) iter.next();
-        String path = basedir + File.separator + f.getAttribute("dir");
+        String dir_attr = f.getAttribute ("dir");
+        if (dir_attr == null)
+        {
+          throw new Exception ("missing \"dir\" attribute for fileset in line "+f.getLineNr());
+        }
+        String path = basedir + File.separator + dir_attr;
         String casesensitive = f.getAttribute("casesensitive");
         //  get includes and excludes
         Vector xcludesList = f.getChildrenNamed("include");
@@ -649,10 +698,15 @@ public class Compiler extends Thread
 
         int override = getOverrideValue (f);
 
-        String targetDir = f.getAttribute("targetdir");
+        String targetdir_attr = f.getAttribute ("targetdir");
+        if (targetdir_attr == null)
+        {
+          throw new Exception ("missing \"targetdir\" attribute for <fileset> in line "+f.getLineNr());
+        }
+        
         List osList = getOsList (f);
         addFileSet(path, includes, excludes,
-          targetDir,
+          targetdir_attr,
           osList,
           pack.packFiles,
           casesensitive,
