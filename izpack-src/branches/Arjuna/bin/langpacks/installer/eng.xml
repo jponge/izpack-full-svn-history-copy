@@ -97,6 +97,10 @@
     <str id="ShortcutPanel.location.startup"      txt="Startup Group"/>
     
     <str id="UserInputPanel.error.caption"        txt="Input Problem"/>
+    <str id="UserInputPanel.search.autodetect"    txt="Autodetect"/>
+    <!-- more descriptive error message would be cool, like specifying what we looked for -->
+    <str id="UserInputPanel.search.autodetect.failed.message"    txt="Autodetection failed."/>
+    <str id="UserInputPanel.search.autodetect.failed.caption"    txt="Autodetection failed."/>
 
     <!-- Add your own panels specific strings here if you need -->
 
