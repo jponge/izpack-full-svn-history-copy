@@ -1,5 +1,8 @@
 [ ChangeLog file for the IzPack launcher project ]
 
+2004.09.23 (Julien Ponge):
+* JAVA_HOME checking: make sure that the java executable does exist.
+
 2004.07.30 (Julien Ponge):
 * New Spanish translation by David Perez Carmona.
 

@@ -166,7 +166,7 @@ bool LauncherApp::searchJRE()
 #else
     javaExecPath = wxString(envRes) + "/bin/java";
 #endif
-    return true;
+    if (wxFileExists(javaExecPath)) return true;
   }
 
 #ifndef __WINDOWS__
