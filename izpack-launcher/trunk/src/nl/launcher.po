@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: IzPack Native Launcher Language File\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-05-30 11:37+0200\n"
+"PO-Revision-Date: 2004-11-08 00:29+0100\n"
+"Last-Translator: Martin <martin@mbouman.tmfweb.nl>\n"
+"Language-Team: Dutch <martin@mbouman.tmfweb.nl>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: failuredialog.cpp:30
+#: launcher.cpp:48
+#: launcher.cpp:99
+msgid "IzPack launcher"
+msgstr "IzPack launcher"
+
+#: failuredialog.cpp:49
+msgid ""
+"The software that you are trying to install requires a Java Runtime Environment.\n"
+"The Java Runtime Environment could not be detected on your computer but it can be installed for you."
+msgstr ""
+"De software die u probeert te installeren vereist een Java Runtime Environment.\n"
+"De Java Runtime Environment kon niet worden gedetecteerd op uw computer, maar deze kan voor u worden geïnstalleerd."
+
+#: failuredialog.cpp:62
+msgid "manually locate an already installed Java Runtime Environment"
+msgstr "handmatig een al geïnstalleerd Java Runtime Environment lokaliseren"
+
+#: failuredialog.cpp:63
+msgid "automatically install the Java Runtime Environment included with this software"
+msgstr "automatisch de bij deze software bijgesloten Java Runtime Environment installeren"
+
+#: failuredialog.cpp:65
+msgid "download the latest version of the Java Runtime Environment from the Internet."
+msgstr "download de laatste versie van de Java Runtime Environment van het Internet."
+
+#: failuredialog.cpp:69
+msgid "You have the following installation choices:"
+msgstr "U heeft de volgende installatiekeuzes:"
+
+#: failuredialog.cpp:75
+msgid "Ok"
+msgstr "Ok"
+
+#: launcher.cpp:93
+msgid "The configuration file is broken."
+msgstr "Het configuratiebestand is corrupt."
+
+#: launcher.cpp:190
+msgid "There is no installer to launch."
+msgstr "Er is geen installatieprogramma om te starten."
+
+#: launcher.cpp:196
+msgid "The installer launch failed."
+msgstr "Het installatieprogramma kon niet worden gestart."
+
+#: launcher.cpp:204
+msgid "Please choose a 'java' executable"
+msgstr "Kiest u alstublieft een 'java' toepassing"
+
+#: launcher.cpp:224
+msgid "Could not launch the JRE installation process."
+msgstr "Kon het JRE installatieproces niet starten."
+
+#: launcher.cpp:272
+msgid "Could not find a web browser."
+msgstr "Kon geen webbrowser vinden."
+
+
