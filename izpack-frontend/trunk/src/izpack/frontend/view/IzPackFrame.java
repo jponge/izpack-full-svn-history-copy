@@ -24,9 +24,9 @@ import izpack.frontend.controller.FrameListener;
 import izpack.frontend.controller.GUIController;
 import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.LangResources;
-import izpack.frontend.view.pages.Page;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.Stage;
+import izpack.frontend.view.stages.panels.IzPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -84,13 +84,13 @@ public class IzPackFrame extends JFrame implements AppBase {
 	 * 
 	 * @see AppBase#getPage()
 	 */
-	public Page getPage(String name, boolean createFlag) {
+	public IzPanel getPanel(String name, boolean createFlag) {
 		Container cp = getContentPane();
 		Component[] pages = cp.getComponents();
 		for (int i = 0; i < pages.length; i++) {
 			if (pages[i].getName().equalsIgnoreCase(name)) {
 				// we found the page with the given name
-				return (Page)pages[i];
+				return (IzPanel)pages[i];
 			}
 		}
 		// we didnt find the page
@@ -101,9 +101,9 @@ public class IzPackFrame extends JFrame implements AppBase {
 					name);		
 			
 			// create the page
-			Page page = null;
+			IzPanel page = null;
 			try {
-				page = (Page)Class.forName(pageClass).newInstance();
+				page = (IzPanel)Class.forName(pageClass).newInstance();
 				page.setName(name);
 			} catch (InstantiationException e) {
 				throw new RuntimeException(
@@ -202,7 +202,7 @@ public class IzPackFrame extends JFrame implements AppBase {
 		// display the stage
 		//layout.show(cp, stage.getName());
 		pack();
-		show();
+		setVisible(true);
 	}
 
 	/**

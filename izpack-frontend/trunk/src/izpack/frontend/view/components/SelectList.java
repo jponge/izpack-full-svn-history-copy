@@ -21,13 +21,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view;
-
-import izpack.frontend.model.PageInfo;
-import izpack.frontend.model.PageInfoManager;
-
-import java.util.ArrayList;
-import java.util.Iterator;
+package izpack.frontend.view.components;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -35,9 +29,9 @@ import javax.swing.JList;
 /**
  * @author Andy Gombos
  */
-public class PageSelectList extends JList
+public class SelectList extends JList
 {    
-    public PageSelectList()
+    public SelectList()
     {
         super();
         
@@ -45,19 +39,8 @@ public class PageSelectList extends JList
         model = new DefaultListModel();
         
         setModel(model);      
-    }
-    
-    public void initializeListWithPages()
-	{
-	    ArrayList panels = PageInfoManager.getAvailablePages();    	    
-        for (Iterator iter = panels.iterator(); iter.hasNext();)
-        {
-            PageInfo page = (PageInfo) iter.next();
-            
-            addElement( new ImageLabel(page.getName(), page.getShortDesc(), "res/imgs/folder.png") );
-        }
-	}
-    
+    }    
+        
     public Object getElementAt(int index)
     {        
         return model.get(index);

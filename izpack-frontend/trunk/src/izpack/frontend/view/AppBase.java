@@ -24,8 +24,8 @@ package izpack.frontend.view;
 
 import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.LangResources;
-import izpack.frontend.view.pages.Page;
 import izpack.frontend.view.stages.Stage;
+import izpack.frontend.view.stages.panels.IzPanel;
 
 import java.util.Observer;
 
@@ -61,7 +61,7 @@ public interface AppBase extends Observer {
 	 * @return The page associated with the given name or null if the page does
 	 *               not exist and the createFlag was false.
 	 */
-	public Page getPage(String name, boolean createFlag);
+	public IzPanel getPanel(String name, boolean createFlag);
 	
 	/**
 	 * Get a stage by a name. The createFlag specifies whether or not to create

@@ -19,7 +19,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.pages;
+package izpack.frontend.view.stages.panels;
 
 import java.util.Observer;
 
@@ -29,7 +29,7 @@ import java.util.Observer;
  * 
  * @author Daniel Guggi
  */
-public interface Page extends Observer {
+public interface IzPanel extends Observer {
 	/**
 	 * Add a element to the private elements collection.
 	 * @param name The name of the element.

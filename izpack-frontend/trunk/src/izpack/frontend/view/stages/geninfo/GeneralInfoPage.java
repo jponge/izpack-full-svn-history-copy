@@ -21,11 +21,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.pages;
+package izpack.frontend.view.stages.geninfo;
 
 import izpack.frontend.model.Author;
 import izpack.frontend.model.AuthorManager;
 import izpack.frontend.view.IzPackFrame;
+import izpack.frontend.view.stages.panels.ConfigurePanel;
+import izpack.frontend.view.stages.panels.IzPackPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,6 +42,9 @@ import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -48,14 +53,14 @@ import com.jgoodies.forms.layout.FormLayout;
 /**
  * @author Andy Gombos
  */
-public class GeneralInfoPage extends IzPackPage implements ActionListener
+public class GeneralInfoPage extends IzPackPanel implements ActionListener, ConfigurePanel
 {
     public void initComponents()
     {
         FormLayout layout = new FormLayout("pref, 3dlu, max(50dlu;pref), max(50dlu;pref), max(50dlu;pref), 3dlu, pref", 
                 "pref, 3dlu, pref, 3dlu, pref, 3dlu, pref, 3dlu, pref, 3dlu, pref, 40dlu");
         //DefaultFormBuilder builder = new DefaultFormBuilder(new FormDebugPanel(), layout);
-        DefaultFormBuilder builder = new DefaultFormBuilder(this, layout);
+        DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);
 
         CellConstraints cc = new CellConstraints();
         builder.add(new JLabel(langResources().getText("UI.GeneralInfoPage.APPNAME.Text")));
@@ -192,12 +197,29 @@ public class GeneralInfoPage extends IzPackPage implements ActionListener
                 
         dialog.getContentPane().add(builder.getPanel());
         dialog.pack();
-        dialog.show();
+        dialog.setVisible(true);
         
         return returnValue;
     }
     
     DefaultListModel authorModel;
     JList authorList;
-    JButton actions[];    
+    JButton actions[];
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.panels.ConfigurePanel#createXML()
+     */
+    public Element createXML()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.panels.ConfigurePanel#initFromXML(org.w3c.dom.Document)
+     */
+    public void initFromXML(Document xmlFile)
+    {
+        // TODO Auto-generated method stub
+        
+    }    
 }

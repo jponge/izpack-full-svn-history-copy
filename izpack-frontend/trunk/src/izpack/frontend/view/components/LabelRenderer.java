@@ -1,4 +1,4 @@
-package izpack.frontend.view;
+package izpack.frontend.view.components;
 import java.awt.Component;
 
 import javax.swing.DefaultListCellRenderer;

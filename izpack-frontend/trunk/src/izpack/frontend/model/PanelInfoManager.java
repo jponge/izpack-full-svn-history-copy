@@ -23,9 +23,12 @@
  */
 package izpack.frontend.model;
 
+import izpack.frontend.controller.GUIController;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -47,18 +50,17 @@ import utils.XML;
  * object out of that data
  */
 
-public class PageInfoManager
+public class PanelInfoManager
 {
-    private static PageInfo loadPage(String filename)
-    {		
+    private static PanelInfo loadPage(String filename)
+    {	        
         try
         {
-			Document doc = XML.createDocument(filename);
+			Document doc = XML.createDocument(filename);			
 			XPath xpath = XPathFactory.newInstance().newXPath();
 			
-			String name = ( (Element) xpath.evaluate("/", doc, XPathConstants.NODE) ).getAttribute("name");			
-			System.out.println("Name: " + name);
-			
+			String name = ( (Element) xpath.evaluate("/izpack-panel", doc, XPathConstants.NODE) ).getAttribute("name");			
+						
 			//Load panel descriptions			
 			String shortDesc = xpath.evaluate("//panel-desc-short", doc);
 			String longDesc  = xpath.evaluate("//panel-desc-long", doc);
@@ -91,24 +93,22 @@ public class PageInfoManager
 	                int type;
 	                
 	                if (sType.equalsIgnoreCase("txt"))
-	                    type = PageInfo.Resource.TXT;
+	                    type = PanelInfo.Resource.TXT;
 	                else if (sType.equalsIgnoreCase("img"))
-	                    type = PageInfo.Resource.IMG;
+	                    type = PanelInfo.Resource.IMG;
 	                else if (sType.equalsIgnoreCase("xml"))
-	                    type = PageInfo.Resource.XML;
+	                    type = PanelInfo.Resource.XML;
 	                else if (sType.equalsIgnoreCase("html"))
-	                    type = PageInfo.Resource.HTML;
+	                    type = PanelInfo.Resource.HTML;
 	                else
-	                    type = PageInfo.Resource.UNKNOWN;
+	                    type = PanelInfo.Resource.UNKNOWN;
 	                
-	                PageInfo.Resource resource = new PageInfo.Resource(id, required, type);
+	                PanelInfo.Resource resource = new PanelInfo.Resource(id, required, type);
 	                resources.add(resource);                              
 	        	}
-			}
+			}			
 			
-			System.out.println("panel configuration loaded: " + filename);			
-			
-			return new PageInfo(name, shortDesc, longDesc, (Author[]) authors.toArray(new Author[0]), (PageInfo.Resource[]) resources.toArray(new PageInfo.Resource[0]));					
+			return new PanelInfo(name, shortDesc, longDesc, (Author[]) authors.toArray(new Author[0]), (PanelInfo.Resource[]) resources.toArray(new PanelInfo.Resource[0]));					
         }
         catch (XPathExpressionException e)
         {
@@ -117,7 +117,7 @@ public class PageInfoManager
     }    
     
     private static String[] getConfigFiles()
-    {
+    {        
         return new File(CONFIG_PATH).list(new FilenameFilter() 
 	        {
 	            public boolean accept(File dir, String name)
@@ -131,13 +131,18 @@ public class PageInfoManager
     {
         String[] confFiles = getConfigFiles();
         for (int i = 0; i < confFiles.length; i++)
-        {
-            pages.add(loadPage(CONFIG_PATH + confFiles[i]));
-    	}
+        {                       
+            pages.add(loadPage(CONFIG_PATH + confFiles[i]));            
+    	}        
+               
+        Object[] sortedPages = pages.toArray();
+        Arrays.sort(sortedPages);
+        pages = new ArrayList(Arrays.asList(sortedPages));
 
         return pages;
     }
     
-    private static final String CONFIG_PATH = "conf/pages/";
+    //Determine the correct path by requesting the language code of the application
+    private static String CONFIG_PATH = "conf/pages/" + GUIController.getInstance().appConfiguration().getI18NLangCode() + "/";
     private static ArrayList pages = new ArrayList();
 }

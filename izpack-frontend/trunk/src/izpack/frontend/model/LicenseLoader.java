@@ -61,7 +61,7 @@ public class LicenseLoader
 	        
 	        for (int i = 0; i < nodeSet.getLength(); i++)
 	        {            
-	            License lic = new License();	            
+	            LicenseModel lic = new LicenseModel();	            
 	            
 	            //Use XPath to grab each value
 	            //I don't think this is very efficient, but it is only done once

@@ -42,7 +42,7 @@ import utils.XML;
 public class AppConfiguration {
 	// Tags (names) used within the config file
 	public final static String T_I18N = "i18n";
-	public final static String T_PAGE = "page";
+	public final static String T_PANEL = "panel";
 	public final static String T_STAGE = "stage";
 	public final static String T_UI = "user-interface";
 	public final static String T_APP_VERSION = "app-version";
@@ -123,7 +123,7 @@ public class AppConfiguration {
 	    NodeList pages = null;
         try
         {
-            pages = (NodeList) xpath.evaluate("//" + T_UI + "/" + T_PAGE, document, XPathConstants.NODESET);
+            pages = (NodeList) xpath.evaluate("//" + T_UI + "/" + T_PANEL, document, XPathConstants.NODESET);
         }
         catch (XPathExpressionException e)
         {

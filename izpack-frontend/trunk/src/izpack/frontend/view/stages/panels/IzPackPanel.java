@@ -19,7 +19,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.pages;
+package izpack.frontend.view.stages.panels;
 
 import izpack.frontend.controller.GUIController;
 import izpack.frontend.model.AppConfiguration;
@@ -41,7 +41,7 @@ import javax.swing.JPanel;
  * 
  * @author Daniel Guggi
  */
-public abstract class IzPackPage extends JPanel implements Page {
+public abstract class IzPackPanel extends JPanel implements IzPanel {
 	/** Collection contains components/element of this page. */
 	private ArrayList elements = null;
 	
@@ -49,7 +49,7 @@ public abstract class IzPackPage extends JPanel implements Page {
 	 * Constructor. Observers <code>LangResources</code>.
 	 *
 	 */
-	public IzPackPage() {
+	public IzPackPanel() {
 		super();
 		// i18n
 		langResources().addObserver(this);

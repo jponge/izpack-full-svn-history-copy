@@ -38,31 +38,11 @@ import org.w3c.dom.Document;
  * @author Andy Gombos
  */
 public abstract class IzPackStage extends JPanel implements Stage
-{
-    public Document createXMLSaveData()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public void readXMLSaveData(Document data)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public Document createInstallerData()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public boolean validateStage()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
+{        
+    public abstract Document createInstallerData();
+    
+    public abstract boolean validateStage();
+    
     public void registerStage(Object stage)
     {        
         stageList.add(stage);

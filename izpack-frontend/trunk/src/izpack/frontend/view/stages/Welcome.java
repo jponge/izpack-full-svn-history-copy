@@ -23,10 +23,11 @@
  */
 package izpack.frontend.view.stages;
 
-import izpack.frontend.model.AppConfiguration;
+import izpack.frontend.controller.GUIController;
+import izpack.frontend.model.LangResources;
 import izpack.frontend.model.RecentFileManager;
 import izpack.frontend.view.GUIConstants;
-import izpack.frontend.view.IzPackFrame;
+import izpack.frontend.view.mode.WizardMode;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -41,6 +42,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import org.w3c.dom.Document;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -53,10 +56,10 @@ public class Welcome extends IzPackStage implements ActionListener
     public void initializeStage()
     {
         FormLayout layout = new FormLayout("left:pref, 15dlu, left:pref", "center:pref, 25dlu, pref, 10dlu, pref, 10dlu, pref, 10dlu, pref");
-	    DefaultFormBuilder builder = new DefaultFormBuilder(this, layout);
+	    DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);
 	    	    
 	    JLabel header = new JLabel("<html> <font size=\"+2\">" + 
-	                    langResources().getText("UI.WelcomePage.ELEMENT.HeaderText") + "</font>");
+	                    langResources.getText("UI.WelcomePage.ELEMENT.HeaderText") + "</font>");
 	    
 	    header.setAlignmentY(CENTER_ALIGNMENT);
 	    builder.add(header, new CellConstraints().xyw(1, 1, 3));
@@ -71,7 +74,7 @@ public class Welcome extends IzPackStage implements ActionListener
 		//Create the buttons, and add them to the layout
 		for (int i = 0; i < buttonNames.length; i++)
         {
-            buttons[i] = new JButton(langResources().getText("UI.WelcomePage.ELEMENT." + buttonNames[i]),
+            buttons[i] = new JButton(langResources.getText("UI.WelcomePage.ELEMENT." + buttonNames[i]),
                     new ImageIcon("res/imgs/" + buttonNames[i] + ".png"));
             buttons[i].setName(buttonNames[i]);
             buttons[i].addActionListener(this);
@@ -102,7 +105,8 @@ public class Welcome extends IzPackStage implements ActionListener
         String name = button.getName();
         if (name.equals(GUIConstants.BUTTON_NEW))
         {
-        	IzPackFrame.getInstance().displayStage("GeneralInfoStage");
+        	//IzPackFrame.getInstance().displayStage("GeneralInfoStage");
+            WizardMode.wizardMode();
         }
         if (name.equals(GUIConstants.BUTTON_OPEN))
         {
@@ -149,9 +153,33 @@ public class Welcome extends IzPackStage implements ActionListener
             se.bysoft.sureshot.gui.browser.MiniBrowser.main(browserArgs);
         }
     }
-    
-    private void openFile(String file)
+
+    /**
+     * @param name
+     */
+    private void openFile(String name)
     {
+        // TODO Auto-generated method stub
         
+    }
+    
+    LangResources langResources = GUIController.getInstance().langResources();
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.IzPackStage#createInstallerData()
+     */
+    public Document createInstallerData()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.IzPackStage#validateStage()
+     */
+    public boolean validateStage()
+    {
+        // TODO Auto-generated method stub
+        return true;
     }
 }

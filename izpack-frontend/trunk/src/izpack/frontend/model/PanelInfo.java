@@ -30,9 +30,9 @@ package izpack.frontend.model;
  * Countains all of the configuration data/attributes of a <code>Page</code>
  */
 
-public class PageInfo
+public class PanelInfo implements Comparable
 {
-    public PageInfo(String name, String shortDesc, String longDesc, Author[] authors, Resource[] resources)
+    public PanelInfo(String name, String shortDesc, String longDesc, Author[] authors, Resource[] resources)
     {
         this.name = name;
         this.authors = authors;
@@ -45,6 +45,25 @@ public class PageInfo
         
         if (resources.length == 0)
             resources = null;
+    }
+    
+    public String toString()
+    {
+        return name;
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object arg0)
+    {        
+        if (arg0 instanceof PanelInfo)
+        {
+            PanelInfo pi = (PanelInfo) arg0;
+            return name.compareTo(pi.name);
+        }
+        
+        return 0;
     }
     
     public Author[] getAuthors()

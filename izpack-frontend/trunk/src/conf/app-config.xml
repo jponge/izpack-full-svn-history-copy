@@ -28,12 +28,11 @@
 	<i18n bundle-location="res/i18n/LangResources" lang-code="en"/>
 	
 	<user-interface>
-		<page name="HelpPage" class="izpack.frontend.view.pages.HelpPage"/>
-		<page name="PanelSelectPage" class="izpack.frontend.view.pages.PanelSelectPage"/>
-		<page name="GeneralInfoPage" class="izpack.frontend.view.pages.GeneralInfoPage"/>
+		<panel name="PanelSelect" class="izpack.frontend.view.stages.panelselect.PanelSelect"/>
+		<panel name="GeneralInfoPanel" class="izpack.frontend.view.stages.geninfo.GeneralInfoPanel"/>
 		
 		<stage name="WelcomeStage" class="izpack.frontend.view.stages.Welcome"/>
-		<stage name="PanelSelectionStage" class="izpack.frontend.view.stages.PanelSelection"/>
-		<stage name="GeneralInfoStage" class="izpack.frontend.view.stages.GeneralInformation"/>
+		<stage name="PanelSelectionStage" class="izpack.frontend.view.stages.panelselect.PanelSelection"/>
+		<stage name="GeneralInfoStage" class="izpack.frontend.view.stages.geninfo.GeneralInformation"/>
 	</user-interface>
 </izpack-frontend>

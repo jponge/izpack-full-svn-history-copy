@@ -36,23 +36,7 @@ public interface Stage
      * Initialize the stage by creating any necessary components, pages, etc.
      */
     public void initializeStage(); 
-    
-    /**
-     * Allow the stage to save its state, presumably so it can be
-     * used to reinstate the panel.
-     * 
-     * @return An XML tree containing save data
-     */
-    public Document createXMLSaveData();
-    
-    /**
-     * Reinitialize the panel given the XML tree
-     * This is provided by the <code>StageManager</code>
-     * 
-     * @param data The XML save data
-     */
-    public void readXMLSaveData(Document data);
-    
+          
     /**
      *  Create the IzPack XML file for the compiler, or
      * null if this stage does not support being compiled.
@@ -62,7 +46,7 @@ public interface Stage
     public Document createInstallerData();
     
     /**
-     * Validate all <code>Page</code>s this <code>Stage</code>
+     * Validate all <code>Panels</code>s this <code>Stage</code>
      * uses, or true if the stage requires no validation.
      *  
      * @return true if the Stage is valid

@@ -21,9 +21,10 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.pages;
+package izpack.frontend.view.components;
 
-import izpack.frontend.view.PageSelectList;
+import izpack.frontend.view.stages.panels.ConfigurePanel;
+import izpack.frontend.view.stages.panels.IzPackPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,6 +37,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -46,9 +48,9 @@ import com.jgoodies.forms.layout.FormLayout;
 /**
  * @author Andy Gombos
  */
-public class PanelSelectPage extends IzPackPage implements ActionListener, FocusListener, ListSelectionListener
+public abstract class AbstractListSelect extends IzPackPanel implements ActionListener, FocusListener, ListSelectionListener, ConfigurePanel
 {
-    public PanelSelectPage()
+    public AbstractListSelect()
     {
         super();
         // TODO Auto-generated constructor stub
@@ -62,15 +64,7 @@ public class PanelSelectPage extends IzPackPage implements ActionListener, Focus
                 "100dlu, pref, 3dlu, pref, 20dlu, pref, 3dlu, pref, 100dlu"); //Rows
         layout.setColumnGroups(new int[][] {{1,5}});              
         
-        DefaultFormBuilder builder = new DefaultFormBuilder(this, layout);
-        
-        srcList = new PageSelectList();
-        destList = new PageSelectList();        
-        srcList.initializeListWithPages();
-        srcList.addFocusListener(this);
-        destList.addFocusListener(this);
-        srcList.addListSelectionListener(this);
-        destList.addListSelectionListener(this);
+        DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);
         
         CellConstraints cc = new CellConstraints();
         
@@ -80,11 +74,34 @@ public class PanelSelectPage extends IzPackPage implements ActionListener, Focus
         builder.add(buttons[2], cc.xy(3, 6));
         builder.add(buttons[3], cc.xy(3, 8));
                 
-        builder.add(srcList, cc.xywh(1, 1, 1, 9));
-        builder.add(destList, cc.xywh(5, 1, 1, 9));              
+        //Wrap lists in scrollpanes
+        srcPane = new JScrollPane();        	
+        destPane = new JScrollPane();
+        
+        builder.add(srcPane, cc.xywh(1, 1, 1, 9));
+        builder.add(destPane, cc.xywh(5, 1, 1, 9));              
         
         setBackground(Color.WHITE);
     }   
+    
+    public void initLists(SelectList src, SelectList dest)
+    {
+        srcList = src;
+        destList = dest;
+        
+        srcList.invalidate();
+        destList.setPreferredSize(srcList.getPreferredSize());
+        
+        srcList.addFocusListener(this);
+        destList.addFocusListener(this);
+        srcList.addListSelectionListener(this);
+        destList.addListSelectionListener(this);
+        
+        srcPane.setViewportView(srcList);
+        destPane.setViewportView(destList);
+    }
+    
+    public abstract void initSrcList();
     
     public JButton[] createButtons()
     {
@@ -127,11 +144,15 @@ public class PanelSelectPage extends IzPackPage implements ActionListener, Focus
 	    }
 	    else if (name.equals("up") && destListFocus)
 	    {	        
-	        destList.moveElement(destList.getSelectedIndex(), -1);
+	        int curIndex = destList.getSelectedIndex();
+	        destList.moveElement(curIndex, -1);
+	        destList.setSelectedIndex(curIndex - 1);
 	    }
 	    else if (name.equals("down") && destListFocus)
 	    {
-	        destList.moveElement(destList.getSelectedIndex(), 1);
+	        int curIndex = destList.getSelectedIndex();
+	        destList.moveElement(curIndex, 1);
+	        destList.setSelectedIndex(curIndex + 1);
 	    }
 	}
 	
@@ -194,8 +215,9 @@ public class PanelSelectPage extends IzPackPage implements ActionListener, Focus
     	
     //Keep track if destList has focus last between the lists
 	boolean destListFocus = false;
-	PageSelectList srcList;
-	PageSelectList destList;
+	SelectList srcList,	destList;
+	JScrollPane srcPane, destPane;
+	
     JPanel destJPanel;
     JButton buttons[];    
 }
