@@ -140,9 +140,16 @@ bool LauncherApp::searchJRE()
   }
 
   // Let's try to launch just 'java'
-  if (wxExecute("java -version", wxEXEC_SYNC) == 0)
+#ifdef __WINDOWS__
+  wxString javaTest = "javaw -version";
+  wxString javaExec = "javaw";
+#else
+  wxString javaTest = "java -version";
+  wxString javaExec = "java";
+#endif
+  if (wxExecute(javaTest, wxEXEC_SYNC) == 0)
   {
-    javaExecPath = "java";
+    javaExecPath = javaExec;
     return true;
   }
 

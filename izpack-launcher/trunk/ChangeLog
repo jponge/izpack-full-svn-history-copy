@@ -1,5 +1,8 @@
 [ ChangeLog file for the IzPack launcher project ]
 
+2004.04.06 (Julien Ponge):
+* Win32: enhanced the last-chance JRE detection test.
+
 2004.04.05 (Julien Ponge):
 * The strings are now translatable.
 * A test is done to ensure that the installer Jar archive is existing before
