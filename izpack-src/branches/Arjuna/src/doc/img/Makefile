@@ -14,7 +14,8 @@ EPSPICTURES=\
 	userInput-serial.eps
 
 PNGPICTURES=\
-	userInput-search.png
+	userInput-search.png \
+	compilePanel.png
 
 DESTFILES=\
 	$(EPSPICTURES:.eps=.png) \

@@ -618,3 +618,40 @@ details see the chapter on 'Advanced Features'.\\
 
 This panel is used to create desktop shortcuts. For details on using the
 ShortcutPanel see the chapter 'Desktop Shortcuts'.
+
+\subsection{UserInputPanel}
+
+This panel allows you to prompt the user for data. What the user is prompted
+for is specified using an XML file which is included as a resource to the
+installer. See chapter \ref{chap:userinput} on page \pageref{chap:userinput}
+for a detailed explanation.
+
+\subsection{CompilePanel}
+
+This panel allows you to compile just installed Java sourcecode. The details for the compilation are specified using the resource \texttt{CompilePanel.Spec.xml}.
+The XML file has the following format:
+\begin{verbatim}
+<compilation>
+ <classpath add="$INSTALL_PATH/src/classes/" />
+ <job name="optional name">
+   <directory name="$INSTALL_PATH/src/classes/xyz" />
+ </job>
+ <job name="another job">
+   <packdepency name="some package name" />
+   <classpath sub="$INSTALL_PATH/" />
+   <directory name="$INSTALL_PATH/src/classes/abc" />
+   <file name="$INSTALL_PATH/some/file.java" />
+ </job>
+</compilation>
+\end{verbatim}
+
+In theory, jobs can be nested but this has not been tested at all. A change to
+the classpath within a job only affects this job and nested jobs. The classpath
+should be specified before any files or directories.
+
+The user can change the compiler to use and choose from some default
+compilation options before compilation is started. (In the future, the
+compilers and compilation options might be specified in the XML file too.)
+
+\includegraphics[width=\linewidth]{img/compilePanel}
+
