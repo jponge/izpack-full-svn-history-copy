@@ -41,7 +41,7 @@
     <emphasis>Important:</emphasis> THIS DOCUMENTATION IS PROVIDED BY THE IZPACK PROJECT "AS IS"
     AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
     WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    DISCLAIMED. IN NO EVENT SHALL THE FREEBSD DOCUMENTATION PROJECT BE LIABLE FOR
+    DISCLAIMED. IN NO EVENT SHALL THE IZPACK PROJECT BE LIABLE FOR
     ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
     (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
@@ -101,6 +101,13 @@
       </itemizedlist></para></listitem>
   </itemizedlist></para>
   
+  <figure>
+    <title>The JRE detection failure dialog.</title>
+    <mediaobject>
+      <imageobject><imagedata fileref="failure-dialog.png" format="PNG"/></imageobject>
+    </mediaobject>
+  </figure>
+  
   <para>The IzPack launcher is implemented in C++ and makes use of the portable
   <ulink url="http://www.wxwidgets.org/">wxWidgets</ulink> toolkit. Thus, the IzPack
   launcher can be run on several platforms (*nix, MacOS, Win32). It has been successfully
@@ -156,9 +163,9 @@
   <title>Preparing the configuration file</title>
   
   <para>The configuration file is quite simple. It has groups and entries. The top-level
-  entries (those not belonging to a group) can be overriden by some operating system ones.
+  entries (those not belonging to a group) can be overridden by some operating system ones.
   To customize the behaviour for a specific operating system, you just have to create a group
-  whose name matches the operating system identififer. Then you can simply override the entries.
+  whose name matches the operating system identifier. Then you can simply override the entries.
   </para>
   
   <para>The entries are the following:
@@ -198,7 +205,8 @@
 <itemizedlist>
   <listitem><para>Marcus Stursberg (German translation)</para></listitem>
   <listitem><para>Frank Bille Jensen (Danish translation)</para></listitem>
-  <listitem><para>The wxWidgets staff</para></listitem>
+  <listitem><para>The BerliOS crew</para></listitem>
+  <listitem><para>The wxWidgets crew.</para></listitem>
 </itemizedlist>
 </para>
 </appendix>
