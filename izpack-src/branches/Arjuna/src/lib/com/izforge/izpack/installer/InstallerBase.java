@@ -33,6 +33,7 @@ import java.io.*;
 import java.util.Properties;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 /**
  * Common utility functions for the GUI and text installers.
@@ -147,6 +148,14 @@ public class InstallerBase
     installdata.panelsOrder = panelsOrder;
     installdata.availablePacks = availablePacks;
     installdata.allPacks = allPacks;
-    installdata.selectedPacks = (ArrayList) availablePacks.clone();
+    // get list of preselected packs
+    Iterator pack_it = availablePacks.iterator();
+    while (pack_it.hasNext())
+    {
+      Pack pack = (Pack)pack_it.next();
+      if (pack.preselected)
+        installdata.selectedPacks.add (pack);
+    }
+
 	}
 }
