@@ -30,6 +30,7 @@ import com.izforge.izpack.installer.PanelAutomation;
 import com.izforge.izpack.installer.AutomatedInstallData;
 
 import java.util.Vector;
+import java.util.Iterator;
 
 /**
  * Functions to support automated usage of the PacksPanel
@@ -39,55 +40,97 @@ import java.util.Vector;
  */
 public class PacksPanelAutomationHelper implements PanelAutomation
 {
-	/**
-	 *  Asks to make the XML panel data.
-	 *
-	 * @param idata The installation data.
-	 * @param panelRoot The XML tree to write the data in.
-	 */
-	public void makeXMLData(AutomatedInstallData idata, XMLElement panelRoot)
-	{
-		// We add each pack to the panelRoot element
-		for (int i = 0; i < idata.availablePacks.size(); i++)
-		{
-			Pack pack = (Pack) idata.availablePacks.get(i);
-			XMLElement el = new XMLElement("pack");
-			el.setAttribute ("index", new Integer(i).toString());
+  /**
+   *  Asks to make the XML panel data.
+   *
+   * @param idata The installation data.
+   * @param panelRoot The XML tree to write the data in.
+   */
+  public void makeXMLData(AutomatedInstallData idata, XMLElement panelRoot)
+  {
+    // We add each pack to the panelRoot element
+    for (int i = 0; i < idata.availablePacks.size(); i++)
+    {
+      Pack pack = (Pack) idata.availablePacks.get(i);
+      XMLElement el = new XMLElement("pack");
+      el.setAttribute ("index", new Integer(i).toString());
       el.setAttribute ("name", pack.name);
       Boolean selected = new Boolean (idata.selectedPacks.contains (pack));
       el.setAttribute ("selected", selected.toString ());
 
-			panelRoot.addChild(el);
-		}
-	}
+      panelRoot.addChild(el);
+    }
+  }
 
 
-	/**
-	 *  Asks to run in the automated mode.
-	 *
-	 * @param idata The installation data.
-	 * @param panelRoot The root of the panel data.
-	 */
-	public void runAutomated(AutomatedInstallData idata, XMLElement panelRoot)
-	{
-		// We get the packs markups
-		Vector pm = panelRoot.getChildrenNamed("pack");
+  /**
+   *  Asks to run in the automated mode.
+   *
+   * @param idata The installation data.
+   * @param panelRoot The root of the panel data.
+   */
+  public void runAutomated(AutomatedInstallData idata, XMLElement panelRoot)
+  {
+    // We get the packs markups
+    Vector pm = panelRoot.getChildrenNamed("pack");
 
-		// We figure out the selected ones
-		int size = pm.size();
-		idata.selectedPacks.clear();
-		for (int i = 0; i < size; i++)
-		{
-			XMLElement el = (XMLElement) pm.get(i);
+    // We figure out the selected ones
+    int size = pm.size();
+    idata.selectedPacks.clear();
+    for (int i = 0; i < size; i++)
+    {
+      XMLElement el = (XMLElement) pm.get(i);
       Boolean selected = new Boolean (el.getAttribute ("selected"));
 
       if (selected.booleanValue ())
       {
-        Integer integer = new Integer(el.getAttribute("index"));
-        int index = integer.intValue();
-        idata.selectedPacks.add(idata.availablePacks.get(index));
+        String index_str = el.getAttribute("index");
+        
+        // be liberal in what we accept
+        // (For example, this allows auto-installer files to be fitted to automatically
+        // generated installers, yes I need this! tisc.)
+        if (index_str != null)
+        {
+          Integer integer = new Integer(index_str);
+          int index = integer.intValue();
+          idata.selectedPacks.add(idata.availablePacks.get(index));
+        }
+        else
+        {
+          String name = el.getAttribute ("name");
+          
+          if (name != null)
+          {
+            // search for pack with that name
+            Iterator pack_it = idata.availablePacks.iterator ();
+            
+            boolean found = false;
+            
+            while ((! found) && pack_it.hasNext ())
+            {
+              Pack pack = (Pack)pack_it.next();
+              
+              if (pack.name.equals (name))
+              {
+                idata.selectedPacks.add (pack);
+                found = true;
+              }
+                          
+            }
+            
+            if (! found)
+            {
+              System.out.println ("Could not find selected pack named \""+name+"\".");
+            }
+            
+          }
+          
+        }
+        
       }
 
-		}
-	}
+    }
+    
+  }
+  
 }

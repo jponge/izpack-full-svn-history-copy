@@ -26,7 +26,6 @@ package com.izforge.izpack.panels;
 
 import com.izforge.izpack.installer.*;
 import com.izforge.izpack.gui.*;
-import com.izforge.izpack.util.Debug;
 
 import java.io.*;
 import java.util.*;

@@ -29,8 +29,6 @@ import com.izforge.izpack.installer.*;
 
 import java.io.IOException;
 
-import net.n3.nanoxml.*;
-
 /**
  * Functions to support automated usage of the CompilePanel
  *
