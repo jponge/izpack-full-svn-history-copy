@@ -56,6 +56,8 @@
     <str id="InstallPanel.begin" txt="[Nothing]"/>
     <str id="InstallPanel.finished" txt="[Finished]"/>
     <str id="InstallPanel.progress" txt="Overall installation progress :"/>
+    <str id="InstallPanel.overwrite.title" txt="File already exists"/>
+    <str id="InstallPanel.overwrite.question" txt="The following file already exists. Should it be overwritten?"/>
     
     <str id="FinishPanel.success" txt="Installation has completed successfully."/>
     <str id="FinishPanel.fail" txt="Installation has failed!"/>

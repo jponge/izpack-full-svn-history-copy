@@ -579,9 +579,7 @@ public class Compiler extends Thread
         String path = basedir + File.separator + f.getAttribute("src");
         File file = new File(path);
 
-        boolean override = true;
-        if (f.getAttribute("override") != null)
-          override = f.getAttribute("override").equalsIgnoreCase("true");
+        int override = getOverrideValue (f);
 
         addFile(file,
           f.getAttribute("targetdir"),
@@ -598,9 +596,7 @@ public class Compiler extends Thread
         String path = basedir + File.separator + f.getAttribute("src");
         File file = new File(path);
 
-        boolean override = true;
-        if (f.getAttribute("override") != null)
-          override = f.getAttribute("override").equalsIgnoreCase("true");
+        int override = getOverrideValue (f);
 
         addSingleFile(file,
           f.getAttribute("target"),
@@ -643,12 +639,15 @@ public class Compiler extends Thread
           }
         }
 
+        int override = getOverrideValue (f);
+
         String targetDir = f.getAttribute("targetdir");
         addFileSet(path, includes, excludes,
           targetDir,
           f.getAttribute("os"),
           pack.packFiles,
-          casesensitive);
+          casesensitive,
+          override);
       }
 
       // We add the pack
@@ -670,10 +669,12 @@ public class Compiler extends Thread
    * @param  targetOs       The target os.
    * @param  list           The files list.
    * @param  casesensitive  Case-sensitive stuff.
+   * @param  override       Behaviour if a file already exists during install
    * @exception  Exception  Description of the Exception
    */
   protected void addFileSet(String path, String[] includes, String[] excludes,
-                            String relPath, String targetOs, ArrayList list, String casesensitive)
+                            String relPath, String targetOs, ArrayList list, 
+                            String casesensitive, int override)
      throws Exception
   {
     boolean bCasesensitive = false;
@@ -727,7 +728,7 @@ public class Compiler extends Thread
           instPath = expPath.substring(0, pathLimit);
         else
           instPath = relPath;
-        addFile(file, instPath, targetOs, true, list);
+        addFile(file, instPath, targetOs, override, list);
       }
 
       // Empty directories are left by the previous code section, so we need to
@@ -741,7 +742,7 @@ public class Compiler extends Thread
           instPath = relPath + File.separator + dirs[i];
           pathLimit = instPath.indexOf(dir.getName());
           instPath = instPath.substring(0, pathLimit);
-          addFile(dir, instPath, targetOs, true, list);
+          addFile(dir, instPath, targetOs, override, list);
         }
       }
     }
@@ -761,7 +762,7 @@ public class Compiler extends Thread
    * @exception  Exception  Description of the Exception
    */
   protected void addFile(File file, String relPath, String targetOs,
-                         boolean override, ArrayList list) throws Exception
+                         int override, ArrayList list) throws Exception
   {
     // We check if 'file' is correct
     if (!file.exists())
@@ -805,7 +806,7 @@ public class Compiler extends Thread
    * @exception  Exception  Description of the Exception
    */
   protected void addSingleFile(File file, String targetFile, String targetOs,
-                         boolean override, ArrayList list) throws Exception
+                         int override, ArrayList list) throws Exception
   {
     //System.out.println ("adding single file " + file.getName() + " as " + targetFile);
     PackSource nf = new PackSource();
@@ -1033,6 +1034,35 @@ public class Compiler extends Thread
     return data;
   }
 
+  protected int getOverrideValue (XMLElement f)
+  {
+    int override = PackSource.OVERRIDE_TRUE;
+
+    if (f.getAttribute("override") != null)
+    {
+      String override_val = f.getAttribute("override");
+      
+      if (override_val.equalsIgnoreCase("true"))
+      {
+        override = PackSource.OVERRIDE_TRUE;
+      }
+      else if (override_val.equalsIgnoreCase("false"))
+      {
+        override = PackSource.OVERRIDE_FALSE;
+      }
+      else if (override_val.equalsIgnoreCase("asktrue"))
+      {
+        override = PackSource.OVERRIDE_ASK_TRUE;
+      }
+      else if (override_val.equalsIgnoreCase("askfalse"))
+      {
+        override = PackSource.OVERRIDE_ASK_FALSE;
+      }
+    }
+
+    return override;
+  }
+
 
   /**
    *  Represents a resource.
@@ -1147,8 +1177,13 @@ public class Compiler extends Thread
     /**  The source. */
     public String src;
 
+    public final static int OVERRIDE_TRUE = com.izforge.izpack.PackFile.OVERRIDE_TRUE;
+    public final static int OVERRIDE_FALSE = com.izforge.izpack.PackFile.OVERRIDE_FALSE;
+    public final static int OVERRIDE_ASK_TRUE = com.izforge.izpack.PackFile.OVERRIDE_ASK_TRUE;
+    public final static int OVERRIDE_ASK_FALSE = com.izforge.izpack.PackFile.OVERRIDE_ASK_FALSE;
+
     /**  Shall we override the file ? */
-    public boolean override = true;
+    public int override = OVERRIDE_TRUE;
 
     /**  The target operation system of this file */
     public String os;

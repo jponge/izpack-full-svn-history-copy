@@ -197,11 +197,25 @@ public class Unpacker extends Thread
 
             listener.progressUnpack(j, path);
 
-            //if this file exists and shouldnot override skip this file
-            if (((pf.override == false) && (pathFile.exists())))
+            //if this file exists and should not be overwritten, check
+            //what to do
+            if ((pathFile.exists ()) && (pf.override != PackFile.OVERRIDE_TRUE))
             {
-              objIn.skip(pf.length);
-              continue;
+              boolean overwritefile = false;
+
+              // don't overwrite file if the user said so
+              if (pf.override != PackFile.OVERRIDE_FALSE)
+              {
+                // else: ask user; supply default
+                overwritefile = listener.askOverwrite (pathFile, (pf.override == PackFile.OVERRIDE_ASK_TRUE));
+              }
+
+              if (! overwritefile)
+              {
+                objIn.skip(pf.length);
+                continue;
+              }
+
             }
 
             // We copy the file
@@ -291,8 +305,10 @@ public class Unpacker extends Thread
     }
     catch (Exception err)
     {
+      // TODO: finer grained error handling with useful error messages
       listener.stopUnpack();
       listener.errorUnpack(err.toString());
+      err.printStackTrace ();
     }
     instances.remove(instances.indexOf(this));
   }

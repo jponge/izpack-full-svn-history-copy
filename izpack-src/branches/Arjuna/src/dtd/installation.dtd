@@ -21,7 +21,7 @@
         <!ATTLIST author name CDATA #REQUIRED>
         <!ATTLIST author email CDATA #REQUIRED>
     <!ELEMENT url (#PCDATA)>
-		<!ELEMENT javaversion (#PCDATA)>
+    <!ELEMENT javaversion (#PCDATA)>
 
 
 <!-- The variables markup (variable declarations ) -->    
@@ -68,41 +68,42 @@
             <!ATTLIST file src CDATA #REQUIRED>
             <!ATTLIST file targetdir CDATA #REQUIRED>
             <!ATTLIST file os (unix|windows|mac) #IMPLIED>
-						<!ATTLIST file override (true|false) "true">
+            <!ATTLIST file override (true|false|asktrue|askfalse) "true">
         <!ELEMENT singlefile EMPTY>
             <!ATTLIST singlefile src CDATA #REQUIRED>
             <!ATTLIST singlefile target CDATA #REQUIRED>
             <!ATTLIST singlefile os (unix|windows|mac) #IMPLIED>
-						<!ATTLIST singlefile override (true|false) "true">
-		<!ELEMENT fileset (include*, exclude*)>
-	        <!ATTLIST fileset dir CDATA #REQUIRED>
-	        <!ATTLIST fileset targetdir CDATA #REQUIRED>	
-	    	<!ATTLIST fileset casesensitive (yes|no) #IMPLIED>	
-            <!ATTLIST fileset os (unix|windows|mac) #IMPLIED>
-	    <!ELEMENT include EMPTY>
-           	<!ATTLIST include name CDATA #REQUIRED>
-	    <!ELEMENT exclude EMPTY>
-           	<!ATTLIST exclude name CDATA #REQUIRED>            	
-	          
-			<!ELEMENT parsable EMPTY>
-					<!ATTLIST parsable targetfile CDATA #REQUIRED>
-					<!ATTLIST parsable type CDATA "plain">
-					<!ATTLIST parsable encoding CDATA #IMPLIED>
-			<!ELEMENT executable (args?, os*)>
-					<!ATTLIST executable targetfile CDATA #REQUIRED>
-					<!ATTLIST executable class CDATA #IMPLIED>
-					<!ATTLIST executable type (bin|jar) "bin">
-					<!ATTLIST executable stage (postinstall|never|uninstall) "never">
-					<!ATTLIST executable failure (abort|warn|ask) "ask">
-					<!ATTLIST executable keep (true|false) "false">
-					<!ELEMENT args (arg+)>
-							<!ELEMENT arg EMPTY>
-									<!ATTLIST arg value CDATA #REQUIRED>
-					<!ELEMENT os EMPTY>
-									<!ATTLIST os family (unix|windows|mac) #REQUIRED>
-									<!ATTLIST os name CDATA #IMPLIED>
-									<!ATTLIST os version CDATA #IMPLIED>
-									<!ATTLIST os arch CDATA #IMPLIED>
+            <!ATTLIST singlefile override (true|false|asktrue|askfalse) "true">
+    <!ELEMENT fileset (include*, exclude*)>
+          <!ATTLIST fileset dir CDATA #REQUIRED>
+          <!ATTLIST fileset targetdir CDATA #REQUIRED>  
+          <!ATTLIST fileset casesensitive (yes|no) #IMPLIED>  
+          <!ATTLIST fileset os (unix|windows|mac) #IMPLIED>
+          <!ATTLIST fileset override (true|false|asktrue|askfalse) "true">
+      <!ELEMENT include EMPTY>
+            <!ATTLIST include name CDATA #REQUIRED>
+      <!ELEMENT exclude EMPTY>
+            <!ATTLIST exclude name CDATA #REQUIRED>             
+            
+      <!ELEMENT parsable EMPTY>
+          <!ATTLIST parsable targetfile CDATA #REQUIRED>
+          <!ATTLIST parsable type CDATA "plain">
+          <!ATTLIST parsable encoding CDATA #IMPLIED>
+      <!ELEMENT executable (args?, os*)>
+          <!ATTLIST executable targetfile CDATA #REQUIRED>
+          <!ATTLIST executable class CDATA #IMPLIED>
+          <!ATTLIST executable type (bin|jar) "bin">
+          <!ATTLIST executable stage (postinstall|never|uninstall) "never">
+          <!ATTLIST executable failure (abort|warn|ask) "ask">
+          <!ATTLIST executable keep (true|false) "false">
+          <!ELEMENT args (arg+)>
+              <!ELEMENT arg EMPTY>
+                  <!ATTLIST arg value CDATA #REQUIRED>
+          <!ELEMENT os EMPTY>
+                  <!ATTLIST os family (unix|windows|mac) #REQUIRED>
+                  <!ATTLIST os name CDATA #IMPLIED>
+                  <!ATTLIST os version CDATA #IMPLIED>
+                  <!ATTLIST os arch CDATA #IMPLIED>
 
 <!-- Allows the inclusion in the installer of a native library -->
 <!ELEMENT native EMPTY>

@@ -358,8 +358,9 @@ to be installed. It contains the following XML elements :\\
       (\texttt{unix, windows, mac}) - this means that the file will only be
       installed on its target operating system
       \item \texttt{override} : if \texttt{true} then if the file is already
-      installed, it will be overwritten. By default it is set to
-      \texttt{false}.
+      installed, it will be overwritten. Alternative values: \texttt{asktrue} 
+      and \texttt{askfalse} -- ask the user what to do and supply default 
+      value for non-interactive use. By default it is set to \texttt{true}.
     
     \end{itemize}\
     \item \texttt{<singlefile>} : specifies a single file to include. The difference to \texttt{<file>} is that this tag allows the file to be renamed.
@@ -371,9 +372,7 @@ to be installed. It contains the following XML elements :\\
       \item \texttt{os} : can optionally specify a target operating system
       (\texttt{unix, windows, mac}) - this means that the file will only be
       installed on its target operating system
-      \item \texttt{override} : if \texttt{true} then if the file is already
-      installed, it will be overwritten. By default it is set to
-      \texttt{false}.
+      \item \texttt{override} : see \texttt{<file>} for description
     
     \end{itemize}\
     \item \texttt{<fileset>} : supports the Jakarta Ant powerful set syntax,
@@ -387,6 +386,7 @@ to be installed. It contains the following XML elements :\\
       are case-sensitive or not - takes \texttt{yes} or \texttt{no}
       \item \texttt{os} : specifies the operating system, works like for
       \texttt{<file>}
+      \item \texttt{override} : see \texttt{<file>} for description
     
     \end{itemize}\
     You specify the files with  \texttt{<include>} and \texttt{<exclude>} tags

@@ -27,7 +27,6 @@ package com.izforge.izpack.panels;
 import com.izforge.izpack.installer.*;
 
 import java.awt.*;
-import java.awt.event.*;
 
 import javax.swing.*;
 
@@ -222,6 +221,45 @@ public class InstallPanel extends IzPanel implements InstallListener
 
     this.overallProgressBar.setValue (overall_progress);
     this.overallProgressBar.setString (Integer.toString (overall_progress) + " / " + Integer.toString (this.noOfPacks));
+  }
+
+
+  /**
+   * Ask the user whether the given file should be overwritten.
+   *
+   * @param file           The file in question.
+   * @param default_choice Default choice from installation description.
+   *
+   * @return whether to overwrite the file.
+   */
+  public boolean askOverwrite (java.io.File file, boolean default_choice)
+  {
+    String yes = parent.langpack.getString ("installer.yes");
+    String no = parent.langpack.getString ("installer.no");
+    String[] choices = { yes, no };
+    String initial = default_choice ? yes : no;
+    String[] message = { parent.langpack.getString ("InstallPanel.overwrite.question"), file.getAbsolutePath() };
+
+    int choice = JOptionPane.showOptionDialog (
+        this, 
+        (Object)message,
+        parent.langpack.getString ("InstallPanel.overwrite.title"),
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+        parent.icons.getImageIcon ("help"), 
+        choices, initial);
+
+    boolean result = default_choice;
+
+    if (choice == JOptionPane.YES_OPTION)
+    {
+      result = true;
+    }
+    else if (choice == JOptionPane.NO_OPTION)
+    {
+      result = false;
+    }
+
+    return result;
   }
 
 

@@ -44,8 +44,13 @@ public class PackFile implements Serializable
   /**  The length of the file in bytes */
   public long length = 0;
 
+  public static final int OVERRIDE_FALSE = 0;
+  public static final int OVERRIDE_TRUE = 1;
+  public static final int OVERRIDE_ASK_FALSE = 2;
+  public static final int OVERRIDE_ASK_TRUE = 3;
+
   /**  Whether or not this file is going to override any existing ones */
-  public boolean override = true;
+  public int override = OVERRIDE_FALSE;
 
 
   /**  Constructs a new uninitialized instance. */
@@ -73,7 +78,7 @@ public class PackFile implements Serializable
    * @param  targetOs    Description of the Parameter
    * @param  override    Description of the Parameter
    */
-  public PackFile(String targetPath, String targetOs, long length, boolean override)
+  public PackFile(String targetPath, String targetOs, long length, int override)
   {
     this.targetPath = targetPath;
     this.length = length;

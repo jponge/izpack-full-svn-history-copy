@@ -65,5 +65,15 @@ public interface InstallListener
    * @param  packName  The new pack name.
    */
   public void changeUnpack(int min, int max, String packName);
+
+  /**
+   *  Ask the user whether to overwrite the given file.
+   *
+   * @param file            The file involved.
+   * @param default_choice  The default value.
+   *
+   * @return whether to overwrite the file.
+   */
+  public boolean askOverwrite (java.io.File file, boolean default_choice);
 }
 

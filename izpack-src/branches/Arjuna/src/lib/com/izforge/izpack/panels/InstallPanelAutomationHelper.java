@@ -120,4 +120,14 @@ public class InstallPanelAutomationHelper implements PanelAutomation, InstallLis
 	{
 		System.out.println("[ Processing package: " + packName + " ]");
 	}
+
+  /**
+   * Called when a file should not be overwritten by default.
+   *
+   * Just returns the default choice, since we cannot have user interaction.
+   */
+  public boolean askOverwrite (java.io.File file, boolean default_choice)
+  {
+    return default_choice;
+  }
 }
