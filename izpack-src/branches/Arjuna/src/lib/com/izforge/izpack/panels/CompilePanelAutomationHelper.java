@@ -27,25 +27,35 @@ package com.izforge.izpack.panels;
 import net.n3.nanoxml.XMLElement;
 import com.izforge.izpack.installer.*;
 
+import java.io.IOException;
+
+import net.n3.nanoxml.*;
+
 /**
  * Functions to support automated usage of the CompilePanel
  *
  * @author Jonathan Halliday
+ * @author Tino Schwarze
  */
-public class CompilePanelAutomationHelper implements PanelAutomation
+public class CompilePanelAutomationHelper implements PanelAutomation, CompileListener
 {
-	// state var for thread sync.
-	private boolean done = false;
+  private CompileWorker worker = null;
+
+  private int job_min = 0;
+  private int job_max = 0;
+  private String job_name = null;
+  private int last_line_len = 0;
 
 	/**
-	 * Null op - this panel type has no state to serialize.
+	 * Save data for running automated.
 	 *
-	 * @param installData unused.
+	 * @param installData installation parameters
 	 * @param panelRoot unused.
 	 */
 	public void makeXMLData(AutomatedInstallData installData, XMLElement panelRoot)
 	{
-		// do nothing.
+    // not used here - during automatic installation, no automatic
+    // installation information is generated
 	}
 
 	/**
@@ -55,48 +65,111 @@ public class CompilePanelAutomationHelper implements PanelAutomation
 	 */
 	public void runAutomated(AutomatedInstallData idata, XMLElement panelRoot)
 	{
-    System.out.println ("CompilePanel doesn't yet support automated installation!");
+    XMLElement compiler_xml = panelRoot.getFirstChildNamed ("compiler");
+
+    String compiler = null;
+
+    if (compiler_xml != null)
+      compiler = compiler_xml.getContent ();
+
+    if (compiler == null)
+    {
+      System.out.println ("invalid automation data: could not find compiler");
+      return;
+    }
+
+    XMLElement args_xml = panelRoot.getFirstChildNamed ("arguments");
+
+    String args = null;
+
+    if (args_xml != null)
+      args = args_xml.getContent ();
+
+    if (args_xml == null)
+    {
+      System.out.println ("invalid automation data: could not find compiler arguments");
+      return;
+    }
+
+    try
+    {
+      this.worker = new CompileWorker (idata, this); 
+      this.worker.setCompiler (compiler);
+      this.worker.setCompilerArguments (args);
+
+      this.worker.run ();
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace ();
+    }
+
 	}
 
 	/**
 	 * Reports progress on System.out
 	 *
-	 * @see InstallListener#startUnpack
+	 * @see CompileListener#startCompile
 	 */
-	public void startUnpack()
+	public void startCompilation()
 	{
+    System.out.println ("[ Starting compilation ]");
+    this.job_name = "";
 	}
 
 	/**
 	 * Reports the error to System.err
 	 *
 	 * @param error
-	 * @see InstallListener#errorUnpack
+	 * @see CompileListener#errorCompile
 	 */
-	public void errorUnpack(String error)
+	public void errorCompile(String error)
 	{
+    System.out.println ();
+    System.out.println ("[ Compilation failed ]");
 	}
 
 	/**
 	 * Sets state variable for thread sync.
 	 *
-	 * @see InstallListener#stopUnpack
+	 * @see CompileListener#stopCompile
 	 */
-	public void stopUnpack()
+	public void stopCompilation()
 	{
-		done = true;
+    if ((this.job_name != null) && (this.last_line_len > 0))
+    {
+      String line = this.job_name + ": done.";
+      System.out.print ("\r"+line);
+      for (int i = line.length(); i < this.last_line_len; i++)
+        System.out.print (' ');
+      System.out.println ();
+    }
+
+    System.out.println ("[ Compilation finished ]");
 	}
 
 	/**
-	 * Null op.
+	 * Tell about progress.
 	 *
 	 * @param val
 	 * @param msg
-	 * @see InstallListener#progressUnpack
+	 * @see CompileListener#progressCompile
 	 */
-	public void progressUnpack(int val, String msg)
+	public void progressCompile(int val, String msg)
 	{
-		// silent for now. sould log individual files here, if we had a verbose mode?
+    float range = (float)this.job_max - this.job_min;
+    float percentage = ((float)val - this.job_min)*100.0f/range;
+
+    String percent = (new Integer ((int)percentage)).toString()+'%';
+    String line = this.job_name + ": " + percent;
+
+    int line_len = line.length();
+
+    System.out.print ("\r"+line);
+    for (int i = line_len; i < this.last_line_len; i++)
+      System.out.print (' ');
+
+    this.last_line_len = line_len;
 	}
 
 	/**
@@ -104,10 +177,23 @@ public class CompilePanelAutomationHelper implements PanelAutomation
 	 *
 	 * @param min unused
 	 * @param max unused
-	 * @param packName The currently installing pack.
-	 * @see InstallListener#changeUnpack
+	 * @param jobName The currently installing job.
+	 * @see CompileListener#changeCompile
 	 */
-	public void changeUnpack(int min, int max, String packName)
+	public void changeCompileJob (int min, int max, String jobName)
 	{
+    if ((this.job_name != null) && (this.last_line_len > 0))
+    {
+      String line = this.job_name + ": done.";
+      System.out.print ("\r"+line);
+      for (int i = line.length(); i < this.last_line_len; i++)
+        System.out.print (' ');
+      System.out.println ();
+    }
+
+    this.job_min = min;
+    this.job_max = max;
+    this.job_name = jobName;
+    this.last_line_len = 0;
 	}
 }
