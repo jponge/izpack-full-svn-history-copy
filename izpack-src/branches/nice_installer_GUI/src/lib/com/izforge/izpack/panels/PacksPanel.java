@@ -96,6 +96,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
     add(Box.createRigidArea(new Dimension(0, 5)));
 
 	packsTable = new JTable();
+	packsTable.setIntercellSpacing(new Dimension(0,0));
     packsTable.setBackground(Color.white);
     packsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	packsTable.getSelectionModel().addListSelectionListener(this);
