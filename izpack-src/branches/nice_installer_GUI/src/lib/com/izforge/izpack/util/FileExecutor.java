@@ -143,6 +143,16 @@ public class FileExecutor
    */
 	public int executeCommand(String[] params, String[] output)
 	{
+		StringBuffer retval = new StringBuffer();
+	    retval.append("executeCommand\n");
+	    if (params != null)
+	    {
+	    	for (int i = 0; i < params.length; i++)
+			{
+			    retval.append("\tparams: "+params[i]);
+			    retval.append("\n");
+			}
+	    }
 		Process process = null;
 		MonitorInputStream outMonitor = null;
 		MonitorInputStream errMonitor = null;
@@ -236,22 +246,30 @@ public class FileExecutor
       boolean deleteAfterwards = true;
       ExecutableFile efile = (ExecutableFile) efileIterator.next();
       File file = new File(efile.path);
+      Debug.trace("handeling executable file "+efile);
 
       // fix executable permission for unix systems
       if (pathSep.equals(":") && (!osName.startsWith("mac") ||
         osName.endsWith("x")))
       {
+      	Debug.trace("making file executable (setting executable flag)");
         String[] params = {"/bin/chmod", permissions, file.toString()};
         exitStatus = executeCommand(params, output);
       }
       // loop through all operating systems
       Iterator osIterator = efile.osList.iterator();
+      if (!osIterator.hasNext())
+      {
+      	Debug.trace("no os to install the file on!");
+      }
       while (osIterator.hasNext())
       {
         Os os = (Os) osIterator.next();
 
+      	Debug.trace("checking if os param on file "+os+" equals current os");
         if (os.matchCurrentSystem())
         {
+	      	Debug.trace("match current os");
           // execute command in POSTINSTALL stage
           if ((exitStatus == 0) && (efile.executionStage == ExecutableFile.POSTINSTALL))
           {
@@ -316,7 +334,7 @@ public class FileExecutor
         }
         else
         {
-          //@todo
+	      	Debug.trace("-no match with current os!");
         }
       }
 
