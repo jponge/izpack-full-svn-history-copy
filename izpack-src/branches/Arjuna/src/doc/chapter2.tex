@@ -333,14 +333,17 @@ to be installed. It contains the following XML elements :\\
     \item \texttt{os} : optional attribute that lets you make the pack targeted
     to a specific \textsl{operating system}, for instance \texttt{unix},
     \texttt{mac} and so on.
+    \item \texttt{preselected} : optional attribute that lets you choose whether
+    the pack is by default selected for installation or not. Possible values
+    are \texttt{yes} and \texttt{no}. A pack which is not preselected needs to
+    be explicitly selected by the user during installation to get installed.
     
   \end{itemize}\
   The following tags are available for a \texttt{<pack>} markup :
   \begin{itemize}
   
     \item \texttt{<description>} : text describing the pack
-    \item \texttt{<file>} : specifies a file to include, takes the following
-    attributes :
+    \item \texttt{<file>} : specifies a file (a directory is a file too) to include, takes the following attributes:
     \begin{itemize}
     
       \item \texttt{src} : the file location (relative path) - if this is a
@@ -355,8 +358,22 @@ to be installed. It contains the following XML elements :\\
       \texttt{false}.
     
     \end{itemize}\
+    \item \texttt{<singlefile>} : specifies a single file to include. The difference to \texttt{<file>} is that this tag allows the file to be renamed.
+    \begin{itemize}
+    
+      \item \texttt{src} : the file location (relative path)
+      \item \texttt{target} : the destination file name, could be something
+      like \texttt{\$INSTALL\_PATH/subdirX/fileY}
+      \item \texttt{os} : can optionally specify a target operating system
+      (\texttt{unix, windows, mac}) - this means that the file will only be
+      installed on its target operating system
+      \item \texttt{override} : if \texttt{true} then if the file is already
+      installed, it will be overwritten. By default it is set to
+      \texttt{false}.
+    
+    \end{itemize}\
     \item \texttt{<fileset>} : supports the Jakarta Ant powerful set syntax,
-    takes the following parameters :
+    takes the following parameters:
     \begin{itemize}
     
       \item \texttt{dir} : the base directory for the fileset (relative path)
@@ -418,6 +435,9 @@ to be installed. It contains the following XML elements :\\
       \texttt{abort} will abort the installation process, \texttt{ask} (default)
       will ask the user what to do and \texttt{warn} will just tell the user
       that something's wrong
+      \item \texttt{keep} : specifies whether the file will be kept after
+      execution. The default is to delete the file after is has been executed.
+      This can be changed by specifying \texttt{keep="true"}.
     
     \end{itemize}\
     A \texttt{<args>} tag can also be specified in order to pass
