@@ -1,0 +1,32 @@
+# Makefile for Unix-like systems (Linux, BSD, ...).
+#
+# 'all'     ---> builds the executable.
+# 'clean'   ---> removes the compilation-generated files.
+# 'install' ---> puts the executbale in 'dist'.
+
+FLAGS = -Wall -O -pipe
+CXX = `wx-config --cxx`
+CXX_FLAGS = `wx-config --cxxflags`
+CXX_LIBS = `wx-config --libs`
+
+OS = `uname`
+EXEC = launcher
+OBJS = launcher.o failuredialog.o
+
+all: launcher
+
+launcher: ${OBJS}
+	${CXX} ${FLAGS} ${CXX_FLAGS} -o ${EXEC} ${OBJS} ${CXX_LIBS}
+
+launcher.o: launcher.h launcher.cpp failuredialog.h
+	${CXX} ${FLAGS} ${CXX_FLAGS} -c launcher.cpp
+
+failuredialog.o: failuredialog.h failuredialog.cpp
+	${CXX} ${FLAGS} ${CXX_FLAGS} -c failuredialog.cpp
+
+install: all
+	cp ${EXEC} ../dist/${EXEC}-${OS}
+	strip ../dist/${EXEC}-${OS}
+
+clean:
+	rm -f ${EXEC} ${OBJS}
