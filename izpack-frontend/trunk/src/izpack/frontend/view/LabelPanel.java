@@ -1,10 +1,10 @@
 /*
  * Created on Nov 18, 2004
  * 
- * $Id: VComponent.java Feb 8, 2004 izpack-frontend
+ * $Id: LabelPanel.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : VComponent.java 
+ * File : LabelPanel.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,36 +21,15 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.components.validating;
-
-import java.awt.Color;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+package izpack.frontend.view;
 
 /**
  * @author Andy Gombos
  */
-public abstract class VComponent extends JPanel
+public class LabelPanel
 {
-    /*
-     * Called by pages to validate all the input parts (text in a text box, files from a chooser, etc)
-     */
-    public boolean validateInput()    
+    public LabelPanel()
     {
-        boolean valid = isInputValid();
-        if (!valid)
-            label.setForeground(Color.RED);
         
-        return valid;
     }
-    
-    /*
-     * Called internally to determine if the input is actually valid
-     * 
-     * 
-     */
-    protected abstract boolean isInputValid();
-    
-    JLabel label;    
 }

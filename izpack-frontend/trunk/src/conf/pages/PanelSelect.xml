@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<!--
+	$Id: izpack-frontend Feb 8, 2004 izpack-frontend
+	Copyright (C) 2001-2003 IzPack Development Group
+
+	File : license.xml 
+	Description : The configuration for the license panel
+	Author's email : gumbo@users.berlios.de
+
+	This program is free software; you can redistribute it and/or modify it
+	under the terms of the GNU General Public License as published by the Free
+	Software Foundation; either version 2 of the License, or any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT
+	ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+    more details.
+	
+	You should have received a copy of the GNU General Public License along with
+	this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+	Place - Suite 330, Boston, MA 02111-1307, USA.
+-->
+
+<!-- IzPack frontend panel config file. -->
+<izpack-panel name="Selection Panel">
+	<panel-version>1.0</panel-version>
+	<panel-desc-short>Select installer panels</panel-desc-short>
+	<panel-desc-long>Display a panel to users so they can select the panels and order for installation.</panel-desc-long>
+	
+	<authors>
+		<author name="Sample Developer2" email="example2@invalid.com" />
+	</authors>		
+</izpack-panel>

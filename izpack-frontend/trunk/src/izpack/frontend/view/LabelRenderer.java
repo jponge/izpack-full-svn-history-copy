@@ -33,7 +33,7 @@ import javax.swing.border.SoftBevelBorder;
 /**
  * @author Andy Gombos
  */
-public class LabelRenderer extends DefaultListCellRenderer//implements ListCellRenderer
+public class LabelRenderer extends DefaultListCellRenderer
 {
 
     /* (non-Javadoc)

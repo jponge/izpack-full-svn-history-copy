@@ -24,13 +24,11 @@ import izpack.frontend.controller.FrameListener;
 import izpack.frontend.controller.GUIController;
 import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.LangResources;
-import izpack.frontend.view.pages.IzPackPage;
 import izpack.frontend.view.pages.Page;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.Stage;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;

@@ -24,7 +24,7 @@ package izpack.frontend.view;
 
 import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.LangResources;
-import izpack.frontend.view.pages.*;
+import izpack.frontend.view.pages.Page;
 import izpack.frontend.view.stages.Stage;
 
 import java.util.Observer;

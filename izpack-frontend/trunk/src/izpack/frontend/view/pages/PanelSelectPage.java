@@ -23,7 +23,6 @@
  */
 package izpack.frontend.view.pages;
 
-import izpack.frontend.view.LabelPanel;
 import izpack.frontend.view.PageSelectList;
 
 import java.awt.Color;
@@ -35,7 +34,10 @@ import java.awt.event.FocusListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -44,7 +46,7 @@ import com.jgoodies.forms.layout.FormLayout;
 /**
  * @author Andy Gombos
  */
-public class PanelSelectPage extends IzPackPage implements ActionListener, FocusListener
+public class PanelSelectPage extends IzPackPage implements ActionListener, FocusListener, ListSelectionListener
 {
     public PanelSelectPage()
     {
@@ -67,6 +69,8 @@ public class PanelSelectPage extends IzPackPage implements ActionListener, Focus
         srcList.initializeListWithPages();
         srcList.addFocusListener(this);
         destList.addFocusListener(this);
+        srcList.addListSelectionListener(this);
+        destList.addListSelectionListener(this);
         
         CellConstraints cc = new CellConstraints();
         
@@ -85,7 +89,7 @@ public class PanelSelectPage extends IzPackPage implements ActionListener, Focus
     public JButton[] createButtons()
     {
         String names[] = {"right", "left", "up", "down"};
-        JButton buttons[] = new JButton[names.length];
+        buttons = new JButton[names.length];
         
         for (int i = 0; i < names.length; i++)
         {
@@ -111,8 +115,7 @@ public class PanelSelectPage extends IzPackPage implements ActionListener, Focus
 	    
 	    if (name.equals("left"))
 	    {        
-	        destList.removeElements(destList.getSelectedIndices());
-	        
+	        destList.removeElements(destList.getSelectedIndices());	        
 	    }
 	    else if (name.equals("right"))
 	    {
@@ -120,7 +123,7 @@ public class PanelSelectPage extends IzPackPage implements ActionListener, Focus
 	        for (int i = 0; i < selected.length; i++)	            
 	            destList.addElement(selected[i]);
 	        
-	        srcList.setSelectedIndex(0);
+	        srcList.clearSelection();
 	    }
 	    else if (name.equals("up") && destListFocus)
 	    {	        
@@ -146,12 +149,53 @@ public class PanelSelectPage extends IzPackPage implements ActionListener, Focus
             destListFocus = false;
         }        
     }
-
-    public void focusLost(FocusEvent e){}
+    
+    /* (non-Javadoc)
+     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     */
+    public void valueChanged(ListSelectionEvent e)
+    {
+        for (int i = 0; i < buttons.length; i++)
+        {
+            buttons[i].setEnabled(true);            
+        }
+        
+        JList list = (JList) e.getSource();        
+        
+        //If nothing is selected, we can't move anything around
+        if (srcList.getSelectedIndex() == -1 && destList.getSelectedIndex() == -1)
+        {
+            buttons[0].setEnabled(false);
+            buttons[1].setEnabled(false);
+            buttons[2].setEnabled(false);
+            buttons[3].setEnabled(false);            
+        }
+        
+        //Up and down buttons
+        if (list.getSelectedIndex() == 0)
+            buttons[2].setEnabled(false);       
+        if (list.getSelectedIndex() == list.getModel().getSize() - 1)        
+            buttons[3].setEnabled(false);
+        
+        //Left and right buttons
+        if (list.equals(srcList))
+        {
+            buttons[1].setEnabled(false);
+            buttons[2].setEnabled(false);
+            buttons[3].setEnabled(false);
+        }
+        else if (list.equals(destList))
+            buttons[0].setEnabled(false);
+    }
+        
+    
+    //Unimplemented interface methods
+    public void focusLost(FocusEvent e){}    
     	
     //Keep track if destList has focus last between the lists
 	boolean destListFocus = false;
 	PageSelectList srcList;
 	PageSelectList destList;
     JPanel destJPanel;
+    JButton buttons[];    
 }

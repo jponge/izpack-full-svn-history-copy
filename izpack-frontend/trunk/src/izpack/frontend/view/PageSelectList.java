@@ -27,7 +27,6 @@ import izpack.frontend.model.PageInfo;
 import izpack.frontend.model.PageInfoManager;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
