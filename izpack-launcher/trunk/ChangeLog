@@ -1,4 +1,8 @@
 [ ChangeLog file for the IzPack launcher project ]
 
+2004.04.03 (Julien Ponge):
+* Win32: the port is now operational.
+* FailureDialog: the checkboxes were laid out horizontally on Win32. Fixed.
+
 2004.04.02 (Julien Ponge):
 * Initial appearance to the public on the BerliOS IzPack SVN repository.

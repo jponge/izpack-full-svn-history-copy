@@ -106,26 +106,36 @@ bool LauncherApp::OnInit()
 
 bool LauncherApp::searchJRE()
 {
-
 #ifdef __WINDOWS__
-
   // Windows[tm] registry lookup
-  wxRegConfig reg("JavaSoft");
-  reg.SetPath("Java Runtime Environment");
-  wxString home;
-  if (reg.Read("JavaHome", &home))
+  wxString baseKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\JavaSoft"
+                     "\\Java Runtime Environment\\";
+  wxRegKey bKey(baseKey);
+  if (bKey.Exists())
   {
-    javaExecPath = home + "\\bin\\java";
-    return true;
+    wxString version;
+    if (bKey.QueryValue("CurrentVersion", version))
+    {
+      wxRegKey vKey(baseKey + version);
+      wxString home;
+      if (vKey.QueryValue("JavaHome", home))
+      {
+	javaExecPath = home + "\\bin\\javaw";
+	return true;
+      }
+    }
   }
-
 #endif
   
   // Try to use JAVA_HOME
   char* envRes = getenv("JAVA_HOME");
   if (envRes)
   {
+#ifdef __WINDOWS__
+    javaExecPath = wxString(envRes) + "\\bin\\javaw";
+#else
     javaExecPath = wxString(envRes) + "/bin/java";
+#endif
     return true;
   }
 

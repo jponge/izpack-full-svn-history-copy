@@ -1,0 +1,15 @@
+# Makefile for MinGW on Win32.
+# Based on the samples from wxWidgets.
+
+WXDIR = ${WXWIN}
+FINAL = 1
+
+TARGET=launcher
+OBJECTS = $(TARGET).o failuredialog.o
+
+install: all
+	cp launcher.exe ../dist/launcher-Win32.exe
+	strip ../dist/launcher-Win32.exe
+	cp launcher.exe.manifest ../dist/launcher-Win32.exe.manifest
+
+include $(WXDIR)/src/makeprog.g95

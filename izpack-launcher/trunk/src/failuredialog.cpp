@@ -56,7 +56,7 @@ void FailureDialog::buildUI()
     "download it from the Internet."
   };
   optionsBox = new wxRadioBox(this, -1, "I want to ...", wxDefaultPosition,
-                              wxDefaultSize, 3, rlabels);
+                              wxDefaultSize, 3, rlabels, 1, wxRA_SPECIFY_COLS);
   optionsBox->SetSelection(0);
   sizer->Add(optionsBox, 1, wxGROW | wxALL, 10);
 

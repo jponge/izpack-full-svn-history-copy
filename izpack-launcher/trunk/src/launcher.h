@@ -34,7 +34,7 @@
 #include <wx/wfstream.h>
 
 #ifdef __WINDOWS__
-  #include <wx/msw/regconf.h>
+  #include <wx/msw/registry.h>
 #endif
 
 #include "failuredialog.h"
