@@ -689,6 +689,7 @@ public class CompileWorker implements Runnable
         if (retval != 0)
         {
           CompileResult result = new CompileResult (this.langpack.getString ("CompilePanel.error"), full_cmdline, output[0], output[1]);
+          this.listener.handleError (result);
           if (! result.isContinue())
             return result;
         }
