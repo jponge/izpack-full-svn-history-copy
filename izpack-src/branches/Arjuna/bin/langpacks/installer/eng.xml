@@ -52,9 +52,10 @@
     
     <str id="InstallPanel.info" txt="Click 'Install !' to begin the installation process"/>
     <str id="InstallPanel.install" txt="Install !"/>
-    <str id="InstallPanel.tip" txt="Installation progress :"/>
+    <str id="InstallPanel.tip" txt="Pack installation progress :"/>
     <str id="InstallPanel.begin" txt="[Nothing]"/>
     <str id="InstallPanel.finished" txt="[Finished]"/>
+    <str id="InstallPanel.progress" txt="Overall installation progress :"/>
     
     <str id="FinishPanel.success" txt="Installation has completed successfully."/>
     <str id="FinishPanel.fail" txt="Installation has failed!"/>
@@ -106,10 +107,11 @@
     <str id="UserInputPanel.search.location"           txt="Enter location of "/>
 
     <str id="CompilePanel.heading" txt="Compilation" />
-    <str id="CompilePanel.tip" txt="Compilation progress:" />
-    <str id="CompilePanel.start" txt="Start compilation" />
-    <str id="CompilePanel.progress.initial" txt="[Press start]" />
+    <str id="CompilePanel.tip" txt="Job compilation progress:" />
+    <str id="CompilePanel.start" txt="Start" />
+    <str id="CompilePanel.progress.initial" txt="[Press Start button]" />
     <str id="CompilePanel.progress.finished" txt="[Finished]" />
+    <str id="CompilePanel.progress.overall" txt="Overall compilation progress:" />
     <str id="CompilePanel.error" txt="Compilation failed" />
     <str id="CompilePanel.choose_compiler" txt="Compiler to use:" />
     <str id="CompilePanel.additional_arguments" txt="Additional compiler arguments:" />
