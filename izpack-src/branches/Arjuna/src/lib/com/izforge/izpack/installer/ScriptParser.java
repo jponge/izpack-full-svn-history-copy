@@ -32,7 +32,6 @@ import com.izforge.izpack.ParsableFile;
 
 import java.io.*;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 
 /**

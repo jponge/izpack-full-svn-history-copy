@@ -34,7 +34,6 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.zip.*;
-import java.util.jar.*;
 
 /**
  *  Unpacker class.

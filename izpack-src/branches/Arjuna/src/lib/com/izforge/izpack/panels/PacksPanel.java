@@ -28,13 +28,11 @@
 package com.izforge.izpack.panels;
 
 import com.izforge.izpack.*;
-import com.izforge.izpack.gui.*;
 import com.izforge.izpack.installer.*;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.*;
 
@@ -167,7 +165,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
       tableScroller.setColumnHeaderView(null);
       tableScroller.setColumnHeader(null);
 
-      // set the JCheckBoxes to the currently selected panels. The selection meight have changes in another panel
+      // set the JCheckBoxes to the currently selected panels. The selection might have changed in another panel
       java.util.Iterator iter = idata.availablePacks.iterator();
       bytes = 0;
       while (iter.hasNext())
@@ -190,7 +188,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
   }
 
 
-  /**  Sets the label text of space requiered for installation.  */
+  /**  Sets the label text of space required for installation.  */
   private void showSpaceRequired()
   {
     spaceLabel.setText(Pack.toByteUnitsString(bytes));
@@ -238,7 +236,7 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
             this.packsToInstall = packsToInstall;
         }
 
-            /*
+        /*
          * @see TableModel#getRowCount()
          */
         public int getRowCount()
@@ -370,19 +368,20 @@ public class PacksPanel extends IzPanel implements ActionListener,ListSelectionL
         }
 
         public Component getTableCellRendererComponent(JTable table, Object value,
-                               boolean isSelected, boolean hasFocus, int row, int column) {
-        if (isSelected) {
+                               boolean isSelected, boolean hasFocus, int row, int column) 
+        {
+          if (isSelected) {
             display.setForeground(table.getSelectionForeground());
             display.setBackground(table.getSelectionBackground());
-        }
-        else {
+          }
+          else {
             display.setForeground(table.getForeground());
             display.setBackground(table.getBackground());
-        }
-            int state = ((Integer)value).intValue();
-            display.setSelected((value != null && Math.abs(state) == 1));
-            display.setEnabled(state >= 0);
-            return display;
+          }
+          int state = ((Integer)value).intValue();
+          display.setSelected((value != null && Math.abs(state) == 1));
+          display.setEnabled(state >= 0);
+          return display;
         }
         /**
          * @see javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax.swing.JTable, java.lang.Object, boolean, int, int)

@@ -24,9 +24,6 @@
  */
 package com.izforge.izpack.installer;
 
-import com.izforge.izpack.*;
-import com.izforge.izpack.gui.*;
-
 import javax.swing.*;
 
 import net.n3.nanoxml.*;

@@ -27,7 +27,6 @@ package com.izforge.izpack.panels;
 import net.n3.nanoxml.XMLElement;
 import com.izforge.izpack.Pack;
 import com.izforge.izpack.installer.PanelAutomation;
-import com.izforge.izpack.installer.InstallData;
 import com.izforge.izpack.installer.AutomatedInstallData;
 
 import java.util.Vector;

@@ -26,7 +26,6 @@
 
 package   com.izforge.izpack.util.os;
 
-import    java.lang.*;
 import    java.io.*;
 import    com.izforge.izpack.util.*;
 
@@ -498,6 +497,7 @@ public class ShellLink implements NativeLibraryClient
     // ----------------------------------------------------
     // make sure we hava a valid storage path 
     // ----------------------------------------------------
+    // TODO: handle errors
     int result = GetLinkPath (linkType); 
 
     // ----------------------------------------------------

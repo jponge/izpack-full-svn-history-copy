@@ -24,7 +24,6 @@
  */
 package com.izforge.izpack.panels;
 
-import com.izforge.izpack.*;
 import com.izforge.izpack.gui.*;
 import com.izforge.izpack.installer.*;
 
@@ -32,12 +31,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 import java.io.*;
-import java.util.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
-
-import net.n3.nanoxml.*;
 
 /**
  *  The finish panel class.
@@ -108,8 +103,6 @@ public class FinishPanel extends IzPanel implements ActionListener
     if (idata.installSuccess)
     {
       // We prepare a message for the uninstaller feature
-      String home = "";
-      home = System.getProperty("user.home");
       String path = translatePath("$INSTALL_PATH") + File.separator +
         "Uninstaller";
 

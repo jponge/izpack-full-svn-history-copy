@@ -31,7 +31,6 @@ import    java.awt.*;
 import    java.awt.event.*;
 
 import    javax.swing.*;
-import    javax.swing.border.*;
 
 import    com.izforge.izpack.installer.*;
 import    com.izforge.izpack.util.*;
@@ -197,16 +196,6 @@ public class UserInputPanel extends IzPanel
   private static final String PACKS                         = "createForPack";
   private static final String NAME                          = "name";
 
-  /** specifies the percentage of the total panel width to use for the space
-      buffer on the right and left side. */
-  private static final int    SIDE_BUFFER_RATIO             = 5;
-  /** the margin to use to the left of all input fields, except the
-      RuleInputField. The RuleInputField has a natural margin to the left side
-      because the FlowLayout which is used for laying out the internal fields
-      uses the horizontal gap setting also at the very left and right margin.
-      The margin defined here is used with all other fields to compensate for
-      the layout offset between fields that would otherwise occur. */
-  private static final int    LEFT_FIELD_MARGIN             = 5;
 
   // ------------------------------------------------------------------------
   // Variable Declarations
@@ -675,7 +664,7 @@ public class UserInputPanel extends IzPanel
 
       TwoColumnConstraints constraints = new TwoColumnConstraints ();
       constraints.align     = justify;
-      constraints.position  = constraints.NORTH;
+      constraints.position  = TwoColumnConstraints.NORTH;
 
       add (label, constraints);
     }
@@ -699,7 +688,6 @@ public class UserInputPanel extends IzPanel
     String          set;
     String          separator;
     String          format;
-    String          description   = null;
     String          validator     = null;
     String          message       = null;
     String          processor     = null;
@@ -790,12 +778,12 @@ public class UserInputPanel extends IzPanel
                                 getToolkit ());
 
     TwoColumnConstraints constraints = new TwoColumnConstraints ();
-    constraints.position              = constraints.WEST;
+    constraints.position              = TwoColumnConstraints.WEST;
 
     uiElements.add (new Object [] {null, FIELD_LABEL, null, constraints, label, forPacks});
 
     TwoColumnConstraints constraints2 = new TwoColumnConstraints ();
-    constraints2.position             = constraints2.EAST;
+    constraints2.position             = TwoColumnConstraints.EAST;
 
     uiElements.add (new Object [] {null, RULE_FIELD, variable, constraints2, field, forPacks, null, null, message});
   }
@@ -913,12 +901,12 @@ public class UserInputPanel extends IzPanel
     field.setCaretPosition (0);
 
     TwoColumnConstraints constraints = new TwoColumnConstraints ();
-    constraints.position  = constraints.WEST;
+    constraints.position  = TwoColumnConstraints.WEST;
 
     uiElements.add (new Object [] {null, FIELD_LABEL, null, constraints, label, forPacks});
 
     TwoColumnConstraints constraints2 = new TwoColumnConstraints ();
-    constraints2.position  = constraints2.EAST;
+    constraints2.position  = TwoColumnConstraints.EAST;
 
     uiElements.add (new Object [] {null, TEXT_FIELD, variable, constraints2, field, forPacks});
   }
@@ -1035,12 +1023,12 @@ public class UserInputPanel extends IzPanel
     addDescription (element, forPacks);
 
     TwoColumnConstraints constraints = new TwoColumnConstraints ();
-    constraints.position  = constraints.WEST;
+    constraints.position  = TwoColumnConstraints.WEST;
 
     uiElements.add (new Object [] {null, FIELD_LABEL, null, constraints, label, forPacks});
 
     TwoColumnConstraints constraints2 = new TwoColumnConstraints ();
-    constraints2.position  = constraints2.EAST;
+    constraints2.position  = TwoColumnConstraints.EAST;
 
     uiElements.add (new Object [] {null, COMBO_FIELD, variable, constraints2, field, forPacks});
   }
@@ -1115,7 +1103,7 @@ public class UserInputPanel extends IzPanel
     ButtonGroup           group       = new ButtonGroup ();
 
     TwoColumnConstraints  constraints = new TwoColumnConstraints ();
-    constraints.position              = constraints.BOTH;
+    constraints.position              = TwoColumnConstraints.BOTH;
     constraints.indent                = true;
     constraints.stretch               = true;
 
@@ -1133,6 +1121,7 @@ public class UserInputPanel extends IzPanel
 
     if (element != null)
     {
+      // TODO: label is never added to the UI
       label = new JLabel (getText (element));
 
       Vector choices = element.getChildrenNamed (RADIO_CHOICE);
@@ -1307,12 +1296,12 @@ public class UserInputPanel extends IzPanel
         field.setCaretPosition (0);
 
         TwoColumnConstraints constraints = new TwoColumnConstraints ();
-        constraints.position  = constraints.WEST;
+        constraints.position  = TwoColumnConstraints.WEST;
 
         uiElements.add (new Object [] {null, FIELD_LABEL, null, constraints, label, forPacks});
 
         TwoColumnConstraints constraints2 = new TwoColumnConstraints ();
-        constraints2.position  = constraints2.EAST;
+        constraints2.position  = TwoColumnConstraints.EAST;
 
         uiElements.add (new Object [] {null, PWD_FIELD, variable, constraints2, field, forPacks, null, null, message, group});
         group.addField (field);
@@ -1425,7 +1414,7 @@ public class UserInputPanel extends IzPanel
     addDescription (element, forPacks);
 
     TwoColumnConstraints constraints = new TwoColumnConstraints ();
-    constraints.position  = constraints.BOTH;
+    constraints.position  = TwoColumnConstraints.BOTH;
     constraints.stretch   = true;
     constraints.indent    = true;
 
@@ -1510,7 +1499,6 @@ public class UserInputPanel extends IzPanel
     String        filename    = null;
     int           search_type = 0;
     int           result_type = 0;
-    TextValuePair listItem    = null;
     JComboBox     combobox    = new JComboBox ();
     JLabel        label       = null;
 
@@ -1707,7 +1695,7 @@ public class UserInputPanel extends IzPanel
     JPanel panel    = new JPanel ();
 
     TwoColumnConstraints constraints = new TwoColumnConstraints ();
-    constraints.position  = constraints.BOTH;
+    constraints.position  = TwoColumnConstraints.BOTH;
     constraints.stretch   = true;
 
     uiElements.add (new Object [] {null, SPACE_FIELD, null, constraints, panel, forPacks});
@@ -1743,7 +1731,7 @@ public class UserInputPanel extends IzPanel
     }
 
     TwoColumnConstraints constraints = new TwoColumnConstraints ();
-    constraints.position  = constraints.BOTH;
+    constraints.position  = TwoColumnConstraints.BOTH;
     constraints.stretch   = true;
 
     uiElements.add (new Object [] {null, DIVIDER_FIELD, null, constraints, panel, forPacks});
@@ -1761,7 +1749,7 @@ public class UserInputPanel extends IzPanel
   {
     String               description;
     TwoColumnConstraints constraints = new TwoColumnConstraints ();
-    constraints.position  = constraints.BOTH;
+    constraints.position  = TwoColumnConstraints.BOTH;
     constraints.stretch   = true;
 
     if (spec != null)
@@ -2240,7 +2228,6 @@ private class SearchField implements ActionListener
   /** perform autodetection */
   public boolean autodetect ()
   {
-    String filename = this.filename;
 
     // loop through all items
     for (int i = 0; i < this.pathComboBox.getItemCount(); ++i)

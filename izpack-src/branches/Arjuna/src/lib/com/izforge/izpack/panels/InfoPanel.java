@@ -24,18 +24,11 @@
  */
 package com.izforge.izpack.panels;
 
-import com.izforge.izpack.*;
-import com.izforge.izpack.gui.*;
 import com.izforge.izpack.installer.*;
 
 import java.awt.*;
-import java.awt.event.*;
-
-import java.io.*;
-import java.util.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
 
 /**
  *  The info panel class. Displays some raw-text informations.

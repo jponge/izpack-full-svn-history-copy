@@ -25,7 +25,6 @@
 package com.izforge.izpack.panels;
 
 import com.izforge.izpack.*;
-import com.izforge.izpack.gui.*;
 import com.izforge.izpack.installer.*;
 
 import java.awt.*;
@@ -56,9 +55,6 @@ public class ImgPacksPanel extends IzPanel implements ActionListener, ListSelect
 
   /**  The packs label. */
   private JLabel packsLabel;
-
-  /**  The snapshot label. */
-  private JLabel snapLabel;
 
   /**  The space left label. */
   private JLabel spaceLabel;

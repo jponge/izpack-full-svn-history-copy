@@ -26,8 +26,6 @@
 package   com.izforge.izpack.gui;
 
 import    java.awt.*;
-import    java.io.ObjectInputStream;
-import    java.io.IOException;
 
 /*---------------------------------------------------------------------------*/
 /**

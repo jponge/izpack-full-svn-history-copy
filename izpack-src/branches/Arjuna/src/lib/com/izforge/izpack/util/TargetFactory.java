@@ -207,9 +207,6 @@ public class TargetFactory
   /** The delimiter characters used to tokenize version numbers */
   private static final String VERSION_DELIMITER           = ".-";
 
-  /** the extension used by Java for class files */
-  private static final String CLASS_EXTENSION             = ".class";
-
   // ------------------------------------------------------------------------
   // Variable Declarations
   // ------------------------------------------------------------------------

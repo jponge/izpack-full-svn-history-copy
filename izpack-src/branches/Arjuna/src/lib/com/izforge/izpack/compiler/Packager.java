@@ -31,7 +31,6 @@ package com.izforge.izpack.compiler;
 import java.io.*;
 import java.util.*;
 import java.util.zip.*;
-import java.util.jar.*;
 
 import com.izforge.izpack.*;
 

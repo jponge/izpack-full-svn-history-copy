@@ -82,8 +82,6 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
   // ------------------------------------------------------------------------
   // Constant Definitions
   // ------------------------------------------------------------------------
-  private static final String LOCATION_APPLICATIONS     = "applications";
-  private static final String LOCATION_START_MENU       = "startMenu";
 
   private static final String SEPARATOR_LINE            = "--------------------------------------------------------------------------------";
 
@@ -297,7 +295,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     try
     {
       shortcut = (Shortcut)(TargetFactory.getInstance ().makeObject ("com.izforge.izpack.util.os.Shortcut"));
-      shortcut.initialize (shortcut.APPLICATIONS, "-");
+      shortcut.initialize (Shortcut.APPLICATIONS, "-");
     }
     catch (Throwable exception)
     {
