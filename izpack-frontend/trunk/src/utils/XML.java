@@ -1,0 +1,213 @@
+/*
+ * Created on Dec 8, 2004
+ * 
+ * $Id: XML.java Feb 8, 2004 izpack-frontend
+ * Copyright (C) 2001-2003 IzPack Development Group
+ * 
+ * File : XML.java 
+ * Description : TODO Add description
+ * Author's email : gumbo@users.berlios.de
+ * 
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+package utils;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+/**
+ * @author Andy Gombos
+ */
+public class XML
+{
+    public static Document createDocument()
+    {
+        DocumentBuilder builder = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        
+        try
+        {
+            builder = factory.newDocumentBuilder();
+        }
+        catch (ParserConfigurationException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return builder.newDocument();
+    }
+    
+    public static Document createDocument(String filename)
+    {
+        DocumentBuilder builder;        
+        Document document = null;
+        
+        try
+        {
+            builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            document = builder.parse(new File(filename));
+        }
+        catch (ParserConfigurationException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (SAXException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return document;
+    }
+    
+    public static void writeXML(String filename, Document document)
+    {
+        try
+        {
+            // Prepare the DOM document for writing
+            Source source = new DOMSource(document);
+
+            // Prepare the output file            
+            Result result = new StreamResult(filename);
+
+            // Write the DOM document to the file
+            // Get Transformer
+            //This won't properly indent - research indicates a 1.5 bug (so 1.3 JAXP?)
+            TransformerFactory tFactory = TransformerFactory.newInstance();
+            Transformer xformer = tFactory.newTransformer();
+            xformer.setOutputProperty(OutputKeys.INDENT, "yes");            
+            
+            // Write to a file
+            xformer.transform(source, result);
+        }
+        catch (TransformerConfigurationException e)
+        {
+            System.out.println("TransformerConfigurationException: " + e);
+        }
+        catch (TransformerException e)
+        {
+            System.out.println("TransformerException: " + e);
+        }
+    }
+    
+    /**
+     * Structure:
+     * <resources>
+     * 	<res ...>
+     * </resources>
+     *
+	 * Parse a full install xml file to load a specified resource. Does not handle multiple resource entries with
+	 * the same name
+	 * 
+     * @param document The XML document
+     * @param id The resource ID to look for
+     * @return Value of the src attribute
+     */
+    public static String getResourceValue(Document document, String id)
+    {
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        try
+        {            
+            //Search only for the <res> element we are interested in
+            NodeList resource = (NodeList) xpath.evaluate("//res[@id='" + id + "']", document, XPathConstants.NODESET);
+            
+            if (resource.getLength() == 1)
+            {
+                String filename = xpath.evaluate("//res[1]/@src", resource.item(0));               
+             
+                return filename;
+            }
+        }
+        catch (XPathExpressionException xpee)
+        {
+            UI.showError("Error while searching for resource id: " + id, "Error restoring state");
+            xpee.printStackTrace();
+        } 
+        
+        return null;
+    }
+    
+    /**
+     * Structure:
+     * <resources>
+     * 	<res ...>
+     * </resources>
+     * 
+     * Create a resource tree to be integrated into the complete install file
+     * 
+     * @param id Resource id
+     * @param src Resource value (src attribute)
+     * @return The root (head) element
+     */
+    public static Element createResourceTree(String id, String src)
+    {
+        //Create the head node	    
+	    Document doc = getDocument();
+	    Element root = doc.createElement("resources");
+	    doc.appendChild(root);
+	    
+	    //Create the child node (the one we really want)
+	    Element resource = doc.createElement("res");
+	    resource.setAttribute("id", id);
+	    resource.setAttribute("src", src);
+	    root.appendChild(resource);
+	    
+	    return root;
+    }
+    
+    public static Element createElement(String name)
+    {
+        return getDocument().createElement(name);
+    }
+    
+    public static Document getDocument()
+    {
+        if (doc == null)
+            doc = createDocument();
+        
+        return doc;
+    }
+    
+    private static Document doc;
+}
