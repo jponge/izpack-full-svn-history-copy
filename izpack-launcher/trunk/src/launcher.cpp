@@ -227,6 +227,7 @@ void LauncherApp::jreInstall()
     error(_("Could not launch the JRE installation process."));
   }
 
+  runJRE();
   completed = true;
 }
 
