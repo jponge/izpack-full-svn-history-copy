@@ -67,13 +67,23 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
   /**  The operation label . */
   protected JLabel opLabel;
 
-  /**  The progress bar. */
-  protected JProgressBar progressBar;
+  /**  The pack progress bar. */
+  protected JProgressBar packProgressBar;
+
+  /**  The operation label . */
+  protected JLabel overallLabel;
+
+  /**  The overall progress bar. */
+  protected JProgressBar overallProgressBar;
 
   /**  True if the compilation has been done. */
   private volatile boolean validated = false;
 
+  /**  The compilation worker. Does all the work. */
   private CompileWorker worker;
+
+  /**  Number of jobs to compile. Used for progress indication. */
+  private int noOfJobs;
 
   /**
    *  The constructor.
@@ -91,15 +101,20 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
     GridBagConstraints gridBagConstraints;
 
     JLabel heading = new JLabel();
+    // put everything but the heading into it's own panel
+    // (to center it vertically)
+    JPanel subpanel = new JPanel ();
     JLabel compilerLabel = new JLabel();
     compilerComboBox = new JComboBox();
     JLabel argumentsLabel = new JLabel();
-    argumentsComboBox = new JComboBox();
-    startButton = ButtonFactory.createButton (parent.langpack.getString ("CompilePanel.start"), idata.buttonsHColor);
-    tipLabel = new JLabel(parent.langpack.getString ("CompilePanel.tip"),
+    this.argumentsComboBox = new JComboBox();
+    this.startButton = ButtonFactory.createButton (parent.langpack.getString ("CompilePanel.start"), idata.buttonsHColor);
+    this.tipLabel = new JLabel(parent.langpack.getString ("CompilePanel.tip"),
         parent.icons.getImageIcon ("tip"), JLabel.TRAILING);
-    opLabel = new JLabel();
-    progressBar = new JProgressBar();
+    this.opLabel = new JLabel();
+    packProgressBar = new JProgressBar();
+    this.overallLabel = new JLabel();
+    this.overallProgressBar = new JProgressBar();
 
     setLayout(new GridBagLayout());
 
@@ -110,91 +125,125 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
     heading.setText(parent.langpack.getString ("CompilePanel.heading"));
     heading.setVerticalAlignment(SwingConstants.TOP);
     gridBagConstraints = new GridBagConstraints();
-    gridBagConstraints.gridwidth = 2;
+    gridBagConstraints.gridy = 0;
     gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
     gridBagConstraints.anchor = GridBagConstraints.NORTH;
+    gridBagConstraints.weightx = 1.0;
     gridBagConstraints.weighty = 0.1;
     add(heading, gridBagConstraints);
+
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+    gridBagConstraints.anchor = GridBagConstraints.CENTER;
+    gridBagConstraints.gridy = 1;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 0.9;
+    add (subpanel, gridBagConstraints);
+
+    subpanel.setLayout(new GridBagLayout());
+
+    int row = 0;
 
     compilerLabel.setHorizontalAlignment(SwingConstants.LEFT);
     compilerLabel.setLabelFor(compilerComboBox);
     compilerLabel.setText(parent.langpack.getString ("CompilePanel.choose_compiler"));
     gridBagConstraints = new GridBagConstraints();
-    gridBagConstraints.gridy = 1;
+    gridBagConstraints.gridy = row;
     gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-    gridBagConstraints.weighty = 0.1;
-    add(compilerLabel, gridBagConstraints);
+    //gridBagConstraints.weighty = 0.1;
+    subpanel.add(compilerLabel, gridBagConstraints);
 
     compilerComboBox.setEditable(true);
     gridBagConstraints = new GridBagConstraints();
-    gridBagConstraints.gridy = 1;
+    gridBagConstraints.gridy = row++;
     gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-    gridBagConstraints.weighty = 0.1;
+    //gridBagConstraints.weighty = 0.1;
 
     Iterator it = this.worker.getAvailableCompilers().iterator();
 
     while (it.hasNext())
       compilerComboBox.addItem ((String)it.next());
     
-    add(compilerComboBox, gridBagConstraints);
+    subpanel.add(compilerComboBox, gridBagConstraints);
 
     argumentsLabel.setHorizontalAlignment(SwingConstants.LEFT);
     argumentsLabel.setLabelFor(argumentsComboBox);
     argumentsLabel.setText(parent.langpack.getString ("CompilePanel.additional_arguments"));
     //argumentsLabel.setToolTipText("");
     gridBagConstraints = new GridBagConstraints();
-    gridBagConstraints.gridy = 2;
+    gridBagConstraints.gridy = row;
     gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
     gridBagConstraints.weightx = 0.5;
-    gridBagConstraints.weighty = 0.1;
-    add(argumentsLabel, gridBagConstraints);
+    //gridBagConstraints.weighty = 0.1;
+    subpanel.add(argumentsLabel, gridBagConstraints);
 
     argumentsComboBox.setEditable(true);
     gridBagConstraints = new GridBagConstraints();
-    gridBagConstraints.gridy = 2;
+    gridBagConstraints.gridy = row++;
     gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
     gridBagConstraints.weightx = 0.5;
-    gridBagConstraints.weighty = 0.1;
+    //gridBagConstraints.weighty = 0.1;
 
     it = this.worker.getAvailableArguments ().iterator();
 
     while (it.hasNext())
       argumentsComboBox.addItem ((String)it.next());
     
-    add(argumentsComboBox, gridBagConstraints);
+    subpanel.add(argumentsComboBox, gridBagConstraints);
+
+    // leave some space above the label
+    gridBagConstraints.insets = new Insets (10, 0, 0, 0);
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridy = row++;
+    gridBagConstraints.gridwidth = 2;
+    gridBagConstraints.fill = GridBagConstraints.NONE;
+    gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+    subpanel.add(tipLabel, gridBagConstraints);
+
+    opLabel.setText(" ");
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridy = row++;
+    gridBagConstraints.gridwidth = 2;
+    gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+    subpanel.add(opLabel, gridBagConstraints);
+
+    packProgressBar.setValue(0);
+    packProgressBar.setString(parent.langpack.getString ("CompilePanel.progress.initial"));
+    packProgressBar.setStringPainted(true);
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridy = row++;
+    gridBagConstraints.gridwidth = 2;
+    gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+    gridBagConstraints.anchor = GridBagConstraints.SOUTH;
+    subpanel.add(packProgressBar, gridBagConstraints);
+
+    overallLabel.setText (parent.langpack.getString ("CompilePanel.progress.overall"));
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridy = row++;
+    gridBagConstraints.gridwidth = 2;
+    gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+    subpanel.add(overallLabel, gridBagConstraints);
+
+    overallProgressBar.setValue(0);
+    overallProgressBar.setString("");
+    overallProgressBar.setStringPainted(true);
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridy = row++;
+    gridBagConstraints.gridwidth = 2;
+    gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+    gridBagConstraints.anchor = GridBagConstraints.SOUTH;
+    subpanel.add(overallProgressBar, gridBagConstraints);
 
     startButton.setText(parent.langpack.getString ("CompilePanel.start"));
     startButton.addActionListener (this);
     gridBagConstraints = new GridBagConstraints();
-    gridBagConstraints.gridx = 1;
-    gridBagConstraints.gridy = 3;
-    gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-    gridBagConstraints.weighty = 0.1;
-    add(startButton, gridBagConstraints);
-
-    gridBagConstraints = new GridBagConstraints();
-    gridBagConstraints.gridy = 4;
+    gridBagConstraints.gridx = 0;
     gridBagConstraints.gridwidth = 2;
+    gridBagConstraints.gridy = row++;
     gridBagConstraints.fill = GridBagConstraints.NONE;
-    gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
-    add(tipLabel, gridBagConstraints);
-
-    opLabel.setText(" ");
-    gridBagConstraints = new GridBagConstraints();
-    gridBagConstraints.gridy = 5;
-    gridBagConstraints.gridwidth = 2;
-    gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-    add(opLabel, gridBagConstraints);
-
-    progressBar.setValue(0);
-    progressBar.setString(parent.langpack.getString ("CompilePanel.progress.initial"));
-    progressBar.setStringPainted(true);
-    gridBagConstraints = new GridBagConstraints();
-    gridBagConstraints.gridy = 6;
-    gridBagConstraints.gridwidth = 2;
-    gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-    gridBagConstraints.anchor = GridBagConstraints.SOUTH;
-    add(progressBar, gridBagConstraints);
+    // leave some space above the button
+    gridBagConstraints.insets = new Insets (5, 0, 0, 0);
+    subpanel.add(startButton, gridBagConstraints);
   }
 
 
@@ -245,20 +294,31 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
 
 
   /**  The compiler starts.  */
-  public void startCompilation ()
+  public void startCompilation (int noOfJobs)
   {
+    this.noOfJobs = noOfJobs;
+    overallProgressBar.setMaximum (noOfJobs);
   }
+
 
   /**  The compiler stops.  */
   public void stopCompilation ()
   {
     parent.releaseGUI();
     parent.lockPrevButton();
-    progressBar.setString(parent.langpack.getString("CompilePanel.progress.finished"));
-    progressBar.setEnabled(false);
-    progressBar.setValue (progressBar.getMaximum());
+
+    packProgressBar.setString(parent.langpack.getString("CompilePanel.progress.finished"));
+    packProgressBar.setEnabled(false);
+    packProgressBar.setValue (packProgressBar.getMaximum());
+
+    overallProgressBar.setValue (this.noOfJobs);
+    String no_of_jobs = Integer.toString (this.noOfJobs);
+    overallProgressBar.setString (no_of_jobs + " / " + no_of_jobs);
+    overallProgressBar.setEnabled (false);
+
     opLabel.setText(" ");
     opLabel.setEnabled(false);
+
     validated = true;
     if (idata.panels.indexOf(this) != (idata.panels.size() - 1))
       parent.unlockNextButton();
@@ -273,8 +333,8 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
    */
   public void progressCompile (int val, String msg)
   {
-    Debug.trace ("progress: " + val + " " + msg);
-    progressBar.setValue(val + 1);
+    //Debug.trace ("progress: " + val + " " + msg);
+    packProgressBar.setValue(val + 1);
     opLabel.setText(msg);
   }
 
@@ -285,14 +345,19 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
    * @param  min       The new mnimum progress.
    * @param  max       The new maximum progress.
    * @param  jobName   The job name.
+   * @param  jobNo     The job number.
    */
-  public void changeCompileJob (int min, int max, String jobName)
+  public void changeCompileJob (int min, int max, String jobName, int jobNo)
   {
-    progressBar.setValue(0);
-    progressBar.setMinimum(min);
-    progressBar.setMaximum(max);
-    progressBar.setString(jobName);
+    packProgressBar.setValue(0);
+    packProgressBar.setMinimum(min);
+    packProgressBar.setMaximum(max);
+    packProgressBar.setString(jobName);
+
     opLabel.setText ("");
+
+    overallProgressBar.setValue (jobNo);
+    overallProgressBar.setString (Integer.toString (jobNo) + " / " + Integer.toString (this.noOfJobs));
   }
 
 
@@ -300,14 +365,13 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
   public void panelActivate()
   {
     // We clip the panel
-    /* XXX: what's that good for?
     Dimension dim = parent.getPanelsContainerSize();
     dim.width = dim.width - (dim.width / 4);
     dim.height = 150;
     setMinimumSize(dim);
     setMaximumSize(dim);
     setPreferredSize(dim);
-    */
+    
     parent.lockNextButton();
   }
 

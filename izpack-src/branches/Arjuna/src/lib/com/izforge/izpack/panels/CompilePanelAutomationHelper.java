@@ -111,7 +111,7 @@ public class CompilePanelAutomationHelper implements PanelAutomation, CompileLis
 	 *
 	 * @see CompileListener#startCompile
 	 */
-	public void startCompilation()
+	public void startCompilation(int noOfJobs)
 	{
     System.out.println ("[ Starting compilation ]");
     this.job_name = "";
@@ -177,10 +177,11 @@ public class CompilePanelAutomationHelper implements PanelAutomation, CompileLis
 	 *
 	 * @param min unused
 	 * @param max unused
-	 * @param jobName The currently installing job.
+	 * @param jobName The next job's name.
+	 * @param jobName The next job's number.
 	 * @see CompileListener#changeCompile
 	 */
-	public void changeCompileJob (int min, int max, String jobName)
+	public void changeCompileJob (int min, int max, String jobName, int jobNo)
 	{
     if ((this.job_name != null) && (this.last_line_len > 0))
     {
