@@ -24,6 +24,8 @@
 LauncherApp::LauncherApp()
   : wxApp()
 {
+  completed = false;
+  
   SetAppName(_("IzPack launcher"));
   loadParams();
 }
@@ -95,13 +97,16 @@ bool LauncherApp::OnInit()
     FailureDialog dlg(params["jre"] != wxEmptyString,
                       params["download"] != wxEmptyString);
     dlg.Centre();
-    if (dlg.ShowModal() != wxID_OK) return false;
-    switch (dlg.getUserAction())
+    while (!completed)
     {
-    case MANUAL:   manualLaunch(); break;
-    case PROVIDED: jreInstall();   break;
-    case INTERNET: netDownload();  break;
-    default: break;
+      if (dlg.ShowModal() != wxID_OK) return false;
+      switch (dlg.getUserAction())
+      {
+      case MANUAL:   manualLaunch(); break;
+      case PROVIDED: jreInstall();   break;
+      case INTERNET: netDownload();  break;
+      default: break;
+      }
     }
   }
   return false;
@@ -171,6 +176,8 @@ void LauncherApp::runJRE()
   {
     error(_("The installer launch failed."));
   }
+  
+  completed = true;
 }
 
 void LauncherApp::manualLaunch()
@@ -178,7 +185,7 @@ void LauncherApp::manualLaunch()
   wxString java = wxFileSelector(_("Please choose a 'java' executable"));
   if (java.empty())
   {
-    exit(1);
+    return;
   }
   else
   {
@@ -200,6 +207,8 @@ void LauncherApp::jreInstall()
     error(_("Could not launch the JRE installation process."));
   }
 #endif
+
+  completed = true;
 }
 
 void LauncherApp::netDownload()
@@ -244,7 +253,7 @@ void LauncherApp::netDownload()
 
   if (wxExecute(browser + params["download"]) >= 0)
   {
-    exit(0);
+    completed = true;
   }
   else
   {

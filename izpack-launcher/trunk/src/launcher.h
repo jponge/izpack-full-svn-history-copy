@@ -48,6 +48,8 @@ private:
   std::map<wxString, wxString> params;
   
   wxLocale locale;
+  
+  bool completed;
 
   void loadParams();
 

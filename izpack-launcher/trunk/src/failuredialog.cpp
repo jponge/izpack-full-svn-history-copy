@@ -69,7 +69,7 @@ void FailureDialog::buildUI()
                               _("You have the following installation choices:"),
                               wxDefaultPosition, wxDefaultSize, 3, rlabels, 1,
                               wxRA_SPECIFY_COLS);
-  optionsBox->SetSelection(0);
+  optionsBox->SetSelection(2);
   sizer->Add(optionsBox, 1, wxGROW | wxALL, 10);
 
   okButton = new wxButton(this, wxID_OK, _("Ok"));
