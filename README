@@ -6,11 +6,13 @@ trunk/    ---------> This is where the 'main' development occurs.
 
 branches/ ---------> This is where the branches live. The branches can
                      be used for making experiments as well as doing
-                     some maintainance for a major release.
+                     some maintenance for a major release. Once a branch
+                     is useless (for instance its changes have been merged
+                     in 'trunk') it has to be deleted.
 
 tags/     ---------> This is used to provide a reference for each
                      release that is made on the module. Once a tag is
-                     made, its content should never be modified.
+                     made, its content must never be modified.
 
 The modules hosted in the repository are:
 - izpack-launcher: the IzPack native launcher project.
