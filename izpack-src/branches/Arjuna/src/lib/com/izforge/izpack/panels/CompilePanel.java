@@ -694,6 +694,7 @@ public class CompilePanel extends IzPanel implements ActionListener, Runnable
             System.out.println (output[0]);
             System.out.println ("stdout of command follows:");
             System.out.println (output[1]);
+            this.panel.errorCompile (jobfiles);
             return false;
           }
 
@@ -723,7 +724,7 @@ public class CompilePanel extends IzPanel implements ActionListener, Runnable
           System.out.println (output[1]);
           System.out.println ("stdout of command follows:");
           System.out.println (output[0]);
-          this.panel.errorCompile (output[0] + output[1]);
+          this.panel.errorCompile (jobfiles);
           return false;
         }
       }
