@@ -27,12 +27,15 @@ launcher.o: launcher.h launcher.cpp failuredialog.h
 failuredialog.o: failuredialog.h failuredialog.cpp
 	${CXX} ${FLAGS} ${CXX_FLAGS} -c failuredialog.cpp
 
-install: all
+install: all install_lang
 	cp ${EXEC} ../dist/${EXEC}-${OS}
 	strip ../dist/${EXEC}-${OS}
-	mkdir -p ../dist/fr ../dist/de
+
+install_lang:
+	mkdir -p ../dist/fr ../dist/de ../dist/da
 	cp fr/launcher.mo ../dist/fr
 	cp de/launcher.mo ../dist/de
+	cp da/launcher.mo ../dist/da
 
 clean:
 	rm -f ${EXEC} ${OBJS}
