@@ -58,7 +58,7 @@ public class PanelSelectPage extends IzPackPage
                 "100dlu, pref, 3dlu, pref, 20dlu, pref, 3dlu, pref, 100dlu"); //Rows
         layout.setColumnGroups(new int[][] {{1,5}});
         
-        DefaultFormBuilder builder = new DefaultFormBuilder(layout);
+        DefaultFormBuilder builder = new DefaultFormBuilder(this, layout);
         
         LabelPanel srcPanel = new LabelPanel(false);
         LabelPanel destPanel = new LabelPanel(true);        
@@ -72,12 +72,7 @@ public class PanelSelectPage extends IzPackPage
         builder.add(buttons[3], cc.xy(3, 8));
         
         builder.add(srcPanel.getPanel(), cc.xywh(1, 1, 1, 9));
-        builder.add(destPanel.getPanel(), cc.xywh(5, 1, 1, 9));
-        
-        JPanel builtPanel = builder.getPanel();
-        builtPanel.setBackground(Color.WHITE);      
-        
-        add(builtPanel);
+        builder.add(destPanel.getPanel(), cc.xywh(5, 1, 1, 9));              
         
         setBackground(Color.WHITE);
     }   

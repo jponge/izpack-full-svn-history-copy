@@ -63,7 +63,7 @@ public class IzPackFrame extends JFrame implements AppBase {
 		// init
 		this.initComponents();
 		// display welcome page
-		this.displayPage(GUIConstants.PAGE_WELCOME);
+		this.displayPage(GUIConstants.PAGE_GENERAL_INFO);
 	}
 
 	/**

@@ -71,7 +71,7 @@ public class PageInfoManager
                 XMLElement element = (XMLElement) iter.next();
                 String aname = element.getAttribute("name");
                 String email = element.getAttribute("email");
-                PageInfo.Author author = new PageInfo.Author(aname, email);
+                Author author = new Author(aname, email);
                 authors.add(author);
             }
 			
@@ -108,7 +108,7 @@ public class PageInfoManager
 			
 			System.out.println("panel configuration loaded: " + filename);			
 			
-			return new PageInfo(name, shortDesc, longDesc, (PageInfo.Author[]) authors.toArray(new PageInfo.Author[0]), (PageInfo.Resource[]) resources.toArray(new PageInfo.Resource[0]));					
+			return new PageInfo(name, shortDesc, longDesc, (Author[]) authors.toArray(new Author[0]), (PageInfo.Resource[]) resources.toArray(new PageInfo.Resource[0]));					
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		} catch (InstantiationException e) {

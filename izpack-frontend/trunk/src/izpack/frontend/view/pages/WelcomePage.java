@@ -52,7 +52,7 @@ public class WelcomePage extends IzPackPage {
 	public void initComponents() {
 	    
 	    FormLayout layout = new FormLayout("left:pref, 15dlu, left:pref", "center:pref, 25dlu, pref, 10dlu, pref, 10dlu, pref, 10dlu, pref");
-	    DefaultFormBuilder builder = new DefaultFormBuilder(new FormDebugPanel(), layout);
+	    DefaultFormBuilder builder = new DefaultFormBuilder(this, layout);
 	    	    
 	    JLabel header = new JLabel("<html> <font size=\"+2\">What would you like to do?</font>");
 	    header.setAlignmentY(CENTER_ALIGNMENT);
@@ -82,8 +82,6 @@ public class WelcomePage extends IzPackPage {
                 builder.setRow(3);
                 builder.setColumn(3);
             }
-        }
-		
-		add(builder.getPanel());		
+        }		
 	}
 }

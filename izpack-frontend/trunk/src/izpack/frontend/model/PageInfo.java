@@ -84,36 +84,6 @@ public class PageInfo
     /** The resources the panel accepts/understands */    
     private Resource[] resources;
     
-    /** Represents an author of a Page */
-    public static class Author
-    {        
-        private String name;
-        private String email;
-        
-        public Author(String name, String email)
-        {
-            this.name = name;
-            this.email = email;
-        }
-        
-        public String getEmail()
-        {
-            return email;
-        }
-        public String getName()
-        {
-            return name;
-        }
-        public void setEmail(String email)
-        {
-            this.email = email;
-        }
-        public void setName(String name)
-        {
-            this.name = name;
-        }        
-    }
-    
     /** Represents a resource that the panel understands */
     public static class Resource
     {

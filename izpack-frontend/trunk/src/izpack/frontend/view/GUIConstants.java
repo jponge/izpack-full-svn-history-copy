@@ -34,6 +34,8 @@ public class GUIConstants {
 	
 	public final static String PAGE_PANEL_SELECT = "PanelSelectPage";
 	
+	public final static String PAGE_GENERAL_INFO = "GeneralInfoPage";
+	
 	/* Welcome Page buttons */
 	public final static String BUTTON_NEW = "NewButton";
 	public final static String BUTTON_COMPILE = "CompileButton";

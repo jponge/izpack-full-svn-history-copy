@@ -31,5 +31,6 @@
 		<page name="WelcomePage" class="izpack.frontend.view.pages.WelcomePage"/>
 		<page name="HelpPage" class="izpack.frontend.view.pages.HelpPage"/>
 		<page name="PanelSelectPage" class="izpack.frontend.view.pages.PanelSelectPage"/>
+		<page name="GeneralInfoPage" class="izpack.frontend.view.pages.GeneralInfoPage"/>
 	</user-interface>
 </izpack-frontend>
