@@ -1,5 +1,7 @@
 [ ChangeLog file for the IzPack launcher project ]
 
+( Release 1.2 ) 2005.01.11 [release-1.2]
+
 2004.12.12 (Julien Ponge):
 * Will try to launch an installer after having installed a JRE.
 
