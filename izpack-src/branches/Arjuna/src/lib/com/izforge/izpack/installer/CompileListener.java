@@ -39,9 +39,17 @@ public interface CompileListener
   /**
    *  An error was encountered.
    *
-   * @param  error  The error text.
+   * This is called when the compiler was not found or could
+   * not compile a file.
+   *
+   * @param message  A short error text.
+   * @param cmdline The complete command line of the failed command.
+   * @param stdout The stdout of the failed command.
+   * @param stderr The stderr of the failed command.
+   * @return whether to abort compilation (true = abort, false = continue)
    */
-  public void errorCompile (String error);
+  public boolean errorCompile (
+     String message, String[] cmdline, String stdout, String stderr);
 
   /**  The compiler starts. 
    *

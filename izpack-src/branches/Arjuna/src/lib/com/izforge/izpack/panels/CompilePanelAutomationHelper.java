@@ -120,13 +120,26 @@ public class CompilePanelAutomationHelper implements PanelAutomation, CompileLis
 	/**
 	 * Reports the error to System.err
 	 *
-	 * @param error
+	 * @param message
 	 * @see CompileListener#errorCompile
 	 */
-	public void errorCompile(String error)
+	public boolean errorCompile(
+    String message, String[] cmdline, String stdout, String stderr)
 	{
     System.out.println ();
     System.out.println ("[ Compilation failed ]");
+    System.err.println ("Command line: ");
+    for (int i = 0; i < cmdline.length; ++i)
+    {
+      System.err.print (cmdline[i]+' ');
+    }
+    System.err.println ();
+    System.err.println ("stdout of compiler:");
+    System.err.println (stdout);
+    System.err.println ("stderr of compiler:");
+    System.err.println (stderr);
+    // do not abort compilation, just continue
+    return false;
 	}
 
 	/**

@@ -103,9 +103,11 @@ public class CompileWorker implements Runnable
   }
 
   /** Set the compiler to use. */
-  public void setCompiler (String compiler)
+  public boolean setCompiler (String compiler)
   {
     this.compilerToUse = compiler;
+    // TODO: check whether compiler is valid
+    return true;
   }
 
   /** Get the compiler used. */
@@ -251,7 +253,7 @@ public class CompileWorker implements Runnable
       String value = choice.getAttribute ("value");
 
       if (value != null)
-        result.add (value);
+        result.add (this.vs.substitute (value, "plain"));
     }
 
   }
@@ -573,13 +575,16 @@ public class CompileWorker implements Runnable
           this.listener.progressCompile (last_fileno, jobfiles);
           last_fileno = fileno;
 
-          int retval = executor.executeCommand ((String[])args.toArray(output), output);
+          String[] full_cmdline = (String[])args.toArray (output);
+
+          int retval = executor.executeCommand (full_cmdline, output);
 
           // update progress bar: compilation of fileno files done
           this.listener.progressCompile (fileno, jobfiles);
 
           if (retval != 0)
           {
+            /*
             System.out.println ("failed.");
             System.out.println ("command line: ");
             int argidx = 0;
@@ -590,11 +595,12 @@ public class CompileWorker implements Runnable
               argidx++;
             }
             System.out.println (jobfiles);
-            System.out.println ("stderr of command follows:");
-            System.out.println (output[0]);
             System.out.println ("stdout of command follows:");
+            System.out.println (output[0]);
+            System.out.println ("stderr of command follows:");
             System.out.println (output[1]);
-            this.listener.errorCompile ("compilation failed.");
+            */
+            this.listener.errorCompile ("compilation failed.", full_cmdline, output[0], output[1]);
             return false;
           }
 
@@ -614,12 +620,15 @@ public class CompileWorker implements Runnable
       {
         this.listener.progressCompile (last_fileno, jobfiles);
 
-        int retval = executor.executeCommand ((String[])args.toArray(output), output);
+        String[] full_cmdline = (String[])args.toArray (output);
+
+        int retval = executor.executeCommand (full_cmdline, output);
 
         this.listener.progressCompile (fileno, jobfiles);
 
         if (retval != 0)
         {
+          /*
           System.out.println ("failed.");
           System.out.println ("command line: ");
           int argidx = 0;
@@ -635,6 +644,8 @@ public class CompileWorker implements Runnable
           System.out.println ("stdout of command follows:");
           System.out.println (output[1]);
           this.listener.errorCompile ("compilation failed.");
+          */
+          this.listener.errorCompile ("compilation failed.", full_cmdline, output[0], output[1]);
           return false;
         }
       }
@@ -642,6 +653,28 @@ public class CompileWorker implements Runnable
       Debug.trace ("job "+this.name+" done (" + fileno + " files compiled)");
 
       return true;
+    }
+
+    /** Check whether the given compiler works.
+     *
+     * This performs two steps:
+     * <ol>
+     * <li>check whether we can successfully call "compiler -help"</li>
+     * <li>check whether we can successfully call "compiler -help arguments"
+     * (not all compilers return an error here)</li>
+     * <li>check whether we can compile the first file of this job</li>
+     * </ol>
+     *
+     * On failure, the method CompileListener#errorCompile is called with
+     * a descriptive error message.
+     *
+     * @param compiler the compiler to use
+     * @param arguments additional arguments to pass to the compiler
+     * @return false on error
+     */
+    public boolean checkCompiler (String compiler, ArrayList arguments)
+    {
+      return false;
     }
 
   }

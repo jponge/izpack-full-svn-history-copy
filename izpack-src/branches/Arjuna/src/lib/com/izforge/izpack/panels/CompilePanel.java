@@ -77,7 +77,10 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
   protected JProgressBar overallProgressBar;
 
   /**  True if the compilation has been done. */
-  private volatile boolean validated = false;
+  private boolean validated = false;
+
+  /**  Remember when an error occured during compilation. */
+  private boolean errorOccured = false;
 
   /**  The compilation worker. Does all the work. */
   private CompileWorker worker;
@@ -281,15 +284,26 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
   /**
    *  An error was encountered.
    *
-   * @param  error  The error text.
+   * @param  message  The error text.
+   * @see com.izforge.izpack.installer.CompileListener
    */
-  public void errorCompile (String error)
+  public boolean errorCompile (
+    String message, String[] cmdline, String stdout, String stderr)
   {
-    opLabel.setText(error);
-    idata.installSuccess = false;
-    JOptionPane.showMessageDialog(this, error.toString(),
+    opLabel.setText(message);
+    this.errorOccured = true;
+    /*JOptionPane.showMessageDialog(this, error.toString(),
       parent.langpack.getString("CompilePanel.error"),
       JOptionPane.ERROR_MESSAGE);
+    */
+    CompilerErrorDialog dialog = new CompilerErrorDialog (parent, message);
+    dialog.show (message, cmdline, stdout, stderr);
+    if (dialog.getResult() == CompilerErrorDialog.RESULT_IGNORE)
+    {
+      this.errorOccured = false;
+      return false;
+    }
+    return true;
   }
 
 
@@ -305,23 +319,33 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
   public void stopCompilation ()
   {
     parent.releaseGUI();
-    parent.lockPrevButton();
 
-    packProgressBar.setString(parent.langpack.getString("CompilePanel.progress.finished"));
-    packProgressBar.setEnabled(false);
-    packProgressBar.setValue (packProgressBar.getMaximum());
+    if (! this.errorOccured)
+    {
+      parent.lockPrevButton();
 
-    overallProgressBar.setValue (this.noOfJobs);
-    String no_of_jobs = Integer.toString (this.noOfJobs);
-    overallProgressBar.setString (no_of_jobs + " / " + no_of_jobs);
-    overallProgressBar.setEnabled (false);
+      packProgressBar.setString(parent.langpack.getString("CompilePanel.progress.finished"));
+      packProgressBar.setEnabled(false);
+      packProgressBar.setValue (packProgressBar.getMaximum());
 
-    opLabel.setText(" ");
-    opLabel.setEnabled(false);
+      overallProgressBar.setValue (this.noOfJobs);
+      String no_of_jobs = Integer.toString (this.noOfJobs);
+      overallProgressBar.setString (no_of_jobs + " / " + no_of_jobs);
+      overallProgressBar.setEnabled (false);
 
-    validated = true;
-    if (idata.panels.indexOf(this) != (idata.panels.size() - 1))
-      parent.unlockNextButton();
+      opLabel.setText(" ");
+      opLabel.setEnabled(false);
+
+      validated = true;
+      if (idata.panels.indexOf(this) != (idata.panels.size() - 1))
+        parent.unlockNextButton();
+    }
+    else
+    {
+      this.errorOccured = false;
+      idata.installSuccess = false;
+    }
+
   }
 
 
@@ -388,5 +412,183 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
     panelRoot.addChild (args);
   }
 
+  /**
+   * Show a special dialog for compiler errors.
+   *
+   * This dialog is neccessary because we have lots of information if
+   * compilation failed. We'd also like the user to chose whether
+   * to ignore the error or not.
+   */
+  protected class CompilerErrorDialog extends JDialog implements ActionListener 
+  {
+    /** user closed the dialog without pressing "Ignore" or "Abort" */
+    public static final int RESULT_NONE = 0;
+    /** user pressed "Ignore" button */
+    public static final int RESULT_IGNORE = 23;
+    /** user pressed "Abort" button */
+    public static final int RESULT_ABORT = 42;
+
+    /** Creates new form compilerErrorDialog */
+    public CompilerErrorDialog(java.awt.Frame parent, String title) 
+    {
+      super(parent, title, true);
+      initComponents();
+    }
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     *
+     * Generated with help from NetBeans IDE.
+     */
+    private void initComponents() 
+    {
+      errorMessageText = new JTextArea();
+      errorDisplayPane = new JTabbedPane();
+      commandScrollPane = new JScrollPane();
+      commandText = new JTextArea();
+      stdOutScrollPane = new JScrollPane();
+      stdOutText = new JTextArea();
+      stdErrScrollPane = new JScrollPane();
+      stdErrText = new JTextArea();
+      buttonsPanel = new JPanel();
+      ignoreButton = new JButton();
+      abortButton = new JButton();
+
+      addWindowListener(new java.awt.event.WindowAdapter() {
+          public void windowClosing(java.awt.event.WindowEvent evt) {
+            closeDialog(evt);
+          }
+          });
+
+      errorMessageText.setBackground(super.getBackground());
+      errorMessageText.setEditable(false);
+      errorMessageText.setLineWrap(true);
+      //errorMessageText.setText("The compiler does not seem to work. See below for the command we tried to execute and the results.");
+      //errorMessageText.setToolTipText("null");
+      errorMessageText.setWrapStyleWord(true);
+      getContentPane().add(errorMessageText, java.awt.BorderLayout.NORTH);
+
+      // use 12pt monospace font for compiler output etc.
+      Font output_font = new Font ("Monospaced", Font.PLAIN, 12);
+
+      //errorDisplayPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+      //errorDisplayPane.setName("null");
+      commandText.setFont (output_font);
+      commandText.setEditable(false);
+      commandText.setRows(10);
+      commandText.setColumns(82);
+      commandText.setWrapStyleWord(true);
+      commandText.setLineWrap(true);
+      //commandText.setText("akjfkajfeafjakefjakfkaejfja");
+      commandScrollPane.setViewportView(commandText);
+
+      errorDisplayPane.addTab("Command", commandScrollPane);
+
+      stdOutText.setFont (output_font);
+      stdOutText.setEditable(false);
+      stdOutText.setWrapStyleWord(true);
+      stdOutText.setLineWrap(true);
+      stdOutScrollPane.setViewportView(stdOutText);
+
+      errorDisplayPane.addTab("Standard Output", null, stdOutScrollPane);
+
+      stdErrText.setFont (output_font);
+      stdErrText.setEditable(false);
+      stdErrText.setWrapStyleWord(true);
+      stdErrText.setLineWrap(true);
+      stdErrScrollPane.setViewportView(stdErrText);
+
+      errorDisplayPane.addTab("Standard Error", null, stdErrScrollPane);
+
+      getContentPane().add(errorDisplayPane, java.awt.BorderLayout.CENTER);
+
+      buttonsPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+      ignoreButton.setText("Continue anyway");
+      ignoreButton.addActionListener (this);
+      buttonsPanel.add(ignoreButton);
+
+      abortButton.setText("Abort compilation");
+      abortButton.addActionListener (this);
+      buttonsPanel.add(abortButton);
+
+      getContentPane().add(buttonsPanel, java.awt.BorderLayout.SOUTH);
+
+      pack();
+    }//GEN-END:initComponents
+
+    /** Closes the dialog */
+    private void closeDialog(java.awt.event.WindowEvent evt) 
+    {//GEN-FIRST:event_closeDialog
+      setVisible(false);
+      dispose();
+    }//GEN-LAST:event_closeDialog
+
+
+    public void show (
+      String message, String[] cmdline, String stdout, String stderr)
+    {
+      this.errorMessageText.setText (message);
+      {
+        StringBuffer cmdline_sb = new StringBuffer();
+        for (int i = 0; i < cmdline.length; ++i)
+        {
+          if (cmdline_sb.length() > 0)
+            cmdline_sb.append (' ');
+
+          cmdline_sb.append (cmdline[i]);
+        }
+        this.commandText.setText (cmdline_sb.toString());
+      }
+      this.stdOutText.setText (stdout);
+      this.stdErrText.setText (stderr);
+      super.show();
+    }
+
+    public int getResult ()
+    {
+      return this.result;
+    }
+
+
+    public void actionPerformed (ActionEvent e)
+    {
+      boolean closenow = false;
+
+      if (e.getSource () == this.ignoreButton)
+      {
+        this.result = RESULT_IGNORE;
+        closenow = true;
+      }
+      else if (e.getSource () == this.abortButton)
+      {
+        this.result = RESULT_ABORT;
+        closenow = true;
+      }
+
+      if (closenow)
+      {
+        this.setVisible (false);
+        this.dispose ();
+      }
+
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private JTextArea commandText;
+    private JScrollPane stdOutScrollPane;
+    private JTextArea stdErrText;
+    private JPanel buttonsPanel;
+    private JScrollPane commandScrollPane;
+    private JTextArea errorMessageText;
+    private JScrollPane stdErrScrollPane;
+    private JButton ignoreButton;
+    private JTextArea stdOutText;
+    private JButton abortButton;
+    private JTabbedPane errorDisplayPane;
+    // End of variables declaration//GEN-END:variables
+
+    private int result = RESULT_NONE;
+  }
 }
 
