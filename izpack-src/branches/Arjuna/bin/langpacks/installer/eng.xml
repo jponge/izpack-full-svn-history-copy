@@ -98,9 +98,12 @@
     
     <str id="UserInputPanel.error.caption"        txt="Input Problem"/>
     <str id="UserInputPanel.search.autodetect"    txt="Autodetect"/>
-    <!-- more descriptive error message would be cool, like specifying what we looked for -->
+
+    <!-- more descriptive error message would be cool, like specifying what file we looked for -->
     <str id="UserInputPanel.search.autodetect.failed.message"    txt="Autodetection failed."/>
     <str id="UserInputPanel.search.autodetect.failed.caption"    txt="Autodetection failed."/>
+    <str id="UserInputPanel.search.autodetect.tooltip"           txt="Check for the file or directory in the paths given above."/>
+    <str id="UserInputPanel.search.location"           txt="Enter location of "/>
 
     <!-- Add your own panels specific strings here if you need -->
 

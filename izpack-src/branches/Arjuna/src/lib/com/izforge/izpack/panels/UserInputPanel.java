@@ -1617,9 +1617,13 @@ public class UserInputPanel extends IzPanel
     TwoColumnConstraints eastconstraint1 = new TwoColumnConstraints ();
     eastconstraint1.position  = TwoColumnConstraints.EAST;
 
+    combobox.setToolTipText (parent.langpack.getString ("UserInputPanel.search.location") + filename);
+
     uiElements.add (new Object [] {null, SEARCH_FIELD, variable, eastconstraint1, combobox, forPacks});
 
     JButton autodetectButton = ButtonFactory.createButton (parent.langpack.getString ("UserInputPanel.search.autodetect"), idata.buttonsHColor);
+
+    autodetectButton.setToolTipText (parent.langpack.getString ("UserInputPanel.search.autodetect.tooltip"));
 
     TwoColumnConstraints eastonlyconstraint = new TwoColumnConstraints ();
     eastonlyconstraint.position  = TwoColumnConstraints.EASTONLY;
