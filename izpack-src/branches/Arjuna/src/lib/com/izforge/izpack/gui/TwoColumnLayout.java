@@ -150,7 +150,7 @@ public class TwoColumnLayout implements LayoutManager2
   *                       in % of the total container width. Values less than
   *                       0% and greater than 50% are not accepted.
   * @param     gap        the gap between the two columns.
-  * @param     indent     the indnet to use for components that have that
+  * @param     indent     the indent to use for components that have that
   *                       constraint set. This is a value in pixels.
   * @param     topBuffer  the percentage of left over vertical space to place
   *                       on top of the component cluster. Values between 0%
