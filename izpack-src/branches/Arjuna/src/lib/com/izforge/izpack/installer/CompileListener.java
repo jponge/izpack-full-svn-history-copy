@@ -37,19 +37,18 @@ package com.izforge.izpack.installer;
 public interface CompileListener
 {
   /**
-   *  An error was encountered.
+   * An error was encountered.
    *
-   * This is called when the compiler was not found or could
-   * not compile a file.
+   * This method should notify the user of the error and request a choice
+   * whether to continue, abort or reconfigure. It should alter the error
+   * accordingly.
    *
-   * @param message  A short error text.
-   * @param cmdline The complete command line of the failed command.
-   * @param stdout The stdout of the failed command.
-   * @param stderr The stderr of the failed command.
-   * @return whether to abort compilation (true = abort, false = continue)
+   * Although a CompileResult is passed in, the method is only called if
+   * something failed.
+   *
+   * @param error the error to handle
    */
-  public boolean errorCompile (
-     String message, String[] cmdline, String stdout, String stderr);
+  public void handleError (CompileResult error);
 
   /**  The compiler starts. 
    *
@@ -58,7 +57,11 @@ public interface CompileListener
    */
   public void startCompilation (int noOfJobs);
 
-  /**  The compiler stops.  */
+  /**  The compiler stops.  
+   *
+   * This is _always_ called when compilation has finished (no matter
+   * whether it was successful or not).
+   */
   public void stopCompilation ();
 
   /**

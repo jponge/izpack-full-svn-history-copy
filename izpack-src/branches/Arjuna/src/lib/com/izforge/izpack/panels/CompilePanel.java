@@ -61,6 +61,9 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
   /**  The start button. */
   protected JButton startButton;
 
+  /**  The browse button. */
+  protected JButton browseButton;
+
   /**  The tip label. */
   protected JLabel tipLabel;
 
@@ -78,9 +81,6 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
 
   /**  True if the compilation has been done. */
   private boolean validated = false;
-
-  /**  Remember when an error occured during compilation. */
-  private boolean errorOccured = false;
 
   /**  The compilation worker. Does all the work. */
   private CompileWorker worker;
@@ -109,6 +109,7 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
     JPanel subpanel = new JPanel ();
     JLabel compilerLabel = new JLabel();
     compilerComboBox = new JComboBox();
+    this.browseButton = ButtonFactory.createButton (parent.langpack.getString ("CompilePanel.browse"), idata.buttonsHColor);
     JLabel argumentsLabel = new JLabel();
     this.argumentsComboBox = new JComboBox();
     this.startButton = ButtonFactory.createButton (parent.langpack.getString ("CompilePanel.start"), idata.buttonsHColor);
@@ -168,6 +169,13 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
       compilerComboBox.addItem ((String)it.next());
     
     subpanel.add(compilerComboBox, gridBagConstraints);
+
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridy = row++;
+    gridBagConstraints.gridx = 1;
+    gridBagConstraints.anchor = GridBagConstraints.EAST;
+    browseButton.addActionListener (this);
+    subpanel.add(browseButton, gridBagConstraints);
 
     argumentsLabel.setHorizontalAlignment(SwingConstants.LEFT);
     argumentsLabel.setLabelFor(argumentsComboBox);
@@ -267,43 +275,94 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
   {
     if (e.getSource() == this.startButton)
     {
-      // disable all controls
-      this.startButton.setEnabled (false);
-
       this.worker.setCompiler ((String)this.compilerComboBox.getSelectedItem ());
-      this.compilerComboBox.setEnabled (false);
 
       this.worker.setCompilerArguments ((String)this.argumentsComboBox.getSelectedItem ());
-      this.argumentsComboBox.setEnabled (false);
 
-      parent.blockGUI();
-      worker.startThread ();
+      this.blockGUI ();
+      this.worker.startThread ();
     }
+    else if (e.getSource () == this.browseButton)
+    {
+      this.parent.blockGUI ();
+      JFileChooser chooser = new JFileChooser ();
+      chooser.setCurrentDirectory (new File ((String)this.compilerComboBox.getSelectedItem()).getParentFile ());
+      int result = chooser.showDialog (this.parent, this.parent.langpack.getString ("CompilePanel.browse.approve"));
+      if (result == JFileChooser.APPROVE_OPTION)
+      {
+        File file_chosen = chooser.getSelectedFile();
+
+        if (file_chosen.isFile ())
+        {
+          this.compilerComboBox.setSelectedItem (file_chosen.getAbsolutePath());
+        }
+
+      }
+
+      this.parent.releaseGUI();
+    }
+
+  }
+
+  /**
+   * Block the GUI - disalow input.
+   */
+  protected void blockGUI ()
+  {
+    // disable all controls
+    this.startButton.setEnabled (false);
+    this.browseButton.setEnabled (false);
+    this.compilerComboBox.setEnabled (false);
+    this.argumentsComboBox.setEnabled (false);
+
+    this.parent.blockGUI();
+  }
+
+  /**
+   * Release the GUI - allow input.
+   *
+   * @param allowconfig allow the user to enter new configuration
+   */
+  protected void releaseGUI (boolean allowconfig)
+  {
+    // disable all controls
+    if (allowconfig)
+    {
+      this.startButton.setEnabled (true);
+      this.browseButton.setEnabled (true);
+      this.compilerComboBox.setEnabled (true);
+      this.argumentsComboBox.setEnabled (true);
+    }
+
+    this.parent.releaseGUI();
   }
 
   /**
    *  An error was encountered.
    *
-   * @param  message  The error text.
+   * @param  error  The error information.
    * @see com.izforge.izpack.installer.CompileListener
    */
-  public boolean errorCompile (
-    String message, String[] cmdline, String stdout, String stderr)
+  public void handleError (CompileResult error)
   {
+    String message = error.getMessage ();
     opLabel.setText(message);
-    this.errorOccured = true;
-    /*JOptionPane.showMessageDialog(this, error.toString(),
-      parent.langpack.getString("CompilePanel.error"),
-      JOptionPane.ERROR_MESSAGE);
-    */
-    CompilerErrorDialog dialog = new CompilerErrorDialog (parent, message);
-    dialog.show (message, cmdline, stdout, stderr);
+    CompilerErrorDialog dialog = new CompilerErrorDialog (parent, message, idata.buttonsHColor);
+    dialog.show (error);
+
     if (dialog.getResult() == CompilerErrorDialog.RESULT_IGNORE)
     {
-      this.errorOccured = false;
-      return false;
+      error.setAction (CompileResult.ACTION_CONTINUE);
     }
-    return true;
+    else if (dialog.getResult() == CompilerErrorDialog.RESULT_RECONFIGURE)
+    {
+      error.setAction (CompileResult.ACTION_RECONFIGURE);
+    }
+    else // default case: abort
+    {
+      error.setAction (CompileResult.ACTION_ABORT);
+    }
+
   }
 
 
@@ -312,15 +371,18 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
   {
     this.noOfJobs = noOfJobs;
     overallProgressBar.setMaximum (noOfJobs);
+    parent.lockPrevButton();
   }
 
 
   /**  The compiler stops.  */
   public void stopCompilation ()
   {
-    parent.releaseGUI();
+    CompileResult result = this.worker.getResult ();
 
-    if (! this.errorOccured)
+    this.releaseGUI(result.isReconfigure());
+
+    if (result.isContinue())
     {
       parent.lockPrevButton();
 
@@ -337,12 +399,12 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
       opLabel.setEnabled(false);
 
       validated = true;
+      idata.installSuccess = true;
       if (idata.panels.indexOf(this) != (idata.panels.size() - 1))
         parent.unlockNextButton();
     }
     else
     {
-      this.errorOccured = false;
       idata.installSuccess = false;
     }
 
@@ -427,11 +489,17 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
     public static final int RESULT_IGNORE = 23;
     /** user pressed "Abort" button */
     public static final int RESULT_ABORT = 42;
+    /** user pressed "Reconfigure" button */
+    public static final int RESULT_RECONFIGURE = 47;
 
+    /** visual goodie: button hightlight color */
+    private java.awt.Color buttonHColor = null;
+    
     /** Creates new form compilerErrorDialog */
-    public CompilerErrorDialog(java.awt.Frame parent, String title) 
+    public CompilerErrorDialog(java.awt.Frame parent, String title, java.awt.Color buttonHColor)
     {
       super(parent, title, true);
+      this.buttonHColor = buttonHColor;
       initComponents();
     }
 
@@ -442,31 +510,44 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
      */
     private void initComponents() 
     {
+      JPanel errorMessagePane = new JPanel();
       errorMessageText = new JTextArea();
-      errorDisplayPane = new JTabbedPane();
-      commandScrollPane = new JScrollPane();
+      JTextArea seeBelowText = new JTextArea ();
+      JTabbedPane errorDisplayPane = new JTabbedPane();
+      JScrollPane commandScrollPane = new JScrollPane();
       commandText = new JTextArea();
-      stdOutScrollPane = new JScrollPane();
+      JScrollPane stdOutScrollPane = new JScrollPane();
       stdOutText = new JTextArea();
-      stdErrScrollPane = new JScrollPane();
+      JScrollPane stdErrScrollPane = new JScrollPane();
       stdErrText = new JTextArea();
-      buttonsPanel = new JPanel();
-      ignoreButton = new JButton();
-      abortButton = new JButton();
+      JPanel buttonsPanel = new JPanel();
+      reconfigButton = ButtonFactory.createButton (parent.langpack.getString ("CompilePanel.error.reconfigure"), this.buttonHColor);
+      ignoreButton = ButtonFactory.createButton (parent.langpack.getString ("CompilePanel.error.ignore"), this.buttonHColor);
+      abortButton = ButtonFactory.createButton (parent.langpack.getString ("CompilePanel.error.abort"), this.buttonHColor);
 
       addWindowListener(new java.awt.event.WindowAdapter() {
           public void windowClosing(java.awt.event.WindowEvent evt) {
             closeDialog(evt);
           }
-          });
+        });
 
+      errorMessagePane.setLayout (new BoxLayout (errorMessagePane, BoxLayout.Y_AXIS));
       errorMessageText.setBackground(super.getBackground());
       errorMessageText.setEditable(false);
       errorMessageText.setLineWrap(true);
       //errorMessageText.setText("The compiler does not seem to work. See below for the command we tried to execute and the results.");
       //errorMessageText.setToolTipText("null");
       errorMessageText.setWrapStyleWord(true);
-      getContentPane().add(errorMessageText, java.awt.BorderLayout.NORTH);
+      errorMessagePane.add(errorMessageText);
+
+      seeBelowText.setBackground(super.getBackground());
+      seeBelowText.setEditable(false);
+      seeBelowText.setLineWrap(true);
+      seeBelowText.setWrapStyleWord(true);
+      seeBelowText.setText (parent.langpack.getString ("CompilePanel.error.seebelow"));
+      errorMessagePane.add (seeBelowText);
+
+      getContentPane().add(errorMessagePane, java.awt.BorderLayout.NORTH);
 
       // use 12pt monospace font for compiler output etc.
       Font output_font = new Font ("Monospaced", Font.PLAIN, 12);
@@ -504,44 +585,34 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
 
       buttonsPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-      ignoreButton.setText("Continue anyway");
+      reconfigButton.addActionListener (this);
+      buttonsPanel.add(reconfigButton);
+
       ignoreButton.addActionListener (this);
       buttonsPanel.add(ignoreButton);
 
-      abortButton.setText("Abort compilation");
       abortButton.addActionListener (this);
       buttonsPanel.add(abortButton);
 
       getContentPane().add(buttonsPanel, java.awt.BorderLayout.SOUTH);
 
       pack();
-    }//GEN-END:initComponents
+    }
 
     /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) 
-    {//GEN-FIRST:event_closeDialog
+    {
       setVisible(false);
       dispose();
-    }//GEN-LAST:event_closeDialog
+    }
 
 
-    public void show (
-      String message, String[] cmdline, String stdout, String stderr)
+    public void show (CompileResult error)
     {
-      this.errorMessageText.setText (message);
-      {
-        StringBuffer cmdline_sb = new StringBuffer();
-        for (int i = 0; i < cmdline.length; ++i)
-        {
-          if (cmdline_sb.length() > 0)
-            cmdline_sb.append (' ');
-
-          cmdline_sb.append (cmdline[i]);
-        }
-        this.commandText.setText (cmdline_sb.toString());
-      }
-      this.stdOutText.setText (stdout);
-      this.stdErrText.setText (stderr);
+      this.errorMessageText.setText (error.getMessage ());
+      this.commandText.setText (error.getCmdline ());
+      this.stdOutText.setText (error.getStdout ());
+      this.stdErrText.setText (error.getStderr ());
       super.show();
     }
 
@@ -565,6 +636,11 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
         this.result = RESULT_ABORT;
         closenow = true;
       }
+      else if (e.getSource () == this.reconfigButton)
+      {
+        this.result = RESULT_RECONFIGURE;
+        closenow = true;
+      }
 
       if (closenow)
       {
@@ -576,16 +652,17 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JTextArea commandText;
-    private JScrollPane stdOutScrollPane;
+    //private JScrollPane stdOutScrollPane;
     private JTextArea stdErrText;
-    private JPanel buttonsPanel;
-    private JScrollPane commandScrollPane;
+    //private JPanel buttonsPanel;
+    //private JScrollPane commandScrollPane;
     private JTextArea errorMessageText;
-    private JScrollPane stdErrScrollPane;
+    //private JScrollPane stdErrScrollPane;
     private JButton ignoreButton;
     private JTextArea stdOutText;
     private JButton abortButton;
-    private JTabbedPane errorDisplayPane;
+    private JButton reconfigButton;
+    //private JTabbedPane errorDisplayPane;
     // End of variables declaration//GEN-END:variables
 
     private int result = RESULT_NONE;
