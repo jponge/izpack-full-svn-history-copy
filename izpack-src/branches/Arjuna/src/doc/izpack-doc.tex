@@ -6,18 +6,33 @@
 % <julien@izforge.com>
 % http://www.izforge.com/
 %
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+\pdffalse
+\else
+\pdfoutput=1
+\pdftrue
+\fi
 
 % Change this as needed :
 %   - a4paper to your paper format
 %   - the document class to your need (book, article, ...)
-\documentclass[a4paper, 12pt]{report}
+\ifpdf
+\documentclass[a4paper, 12pt, pdftex]{report}
+\else
+\documentclass[a4paper, 12pt, dvips]{report}
+\fi
 
 % The packages we need
 \usepackage{verbatim}
 \usepackage{moreverb}
 \usepackage{url}
 \usepackage{tabularx}
-\usepackage[final, dvips]{graphicx}
+\usepackage[final]{graphicx}
+\usepackage[hyperindex,breaklinks=true,pdfborder={0 0 0}]{hyperref}
+\ifpdf
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=red}
+\fi
 
 % Commands definition
 \newcommand{\Java}{Java\texttrademark\ }
