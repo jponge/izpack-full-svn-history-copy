@@ -134,11 +134,21 @@ public class FileExecutor
 
 
   /**
+   *  Constructs a new executor.
+   */
+  public FileExecutor ()
+  {
+    this.files = null;
+  }
+
+  /**
    *  Executed a system command and waits for completion.
    *
    * @param  params  system command as string array
-   * @param  output  Description of the Parameter
-   * @return         Description of the Return Value
+   * @param  output  contains output of the command 
+   *                 index 0 = standard output
+   *                 index 1 = standard error
+   * @return         exit status of process
    */
   public int executeCommand(String[] params, String[] output)
   {
