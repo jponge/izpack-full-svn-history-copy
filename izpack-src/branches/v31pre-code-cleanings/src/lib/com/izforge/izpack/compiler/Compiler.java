@@ -121,14 +121,14 @@ public class Compiler extends Thread
   }
 
 
-  /**  Compiles.  */
+  /**  Compiles. */
   public void compile()
   {
     start();
   }
 
 
-  /**  The run() method.  */
+  /**  The run() method. */
   public void run()
   {
     try
@@ -167,7 +167,6 @@ public class Compiler extends Thread
 
     // We add the info
     packager.setInfo(getInfo(data));
-    packager.setEnrollInfo(getEnrollInfo(data));
 
     // We add the GUIPrefs
     packager.setGUIPrefs(getGUIPrefs(data));
@@ -897,45 +896,6 @@ public class Compiler extends Thread
 
 
   /**
-   *  the enroll info is defined in a fragmention in install.xml like :
-   *  <enrollinfo url ="www.e-xmlmedia.fr/enroll/xmlizer"> <enrollitems> <item
-   *  name = "user" required = "yes"> <item name = "company" required = "yes">
-   *  <item name = "email" required = "yes"> </enrollitems> </enrollinfo>
-   *
-   * @param  data           Description of the Parameter
-   * @return                The enrollInfo value
-   * @exception  Exception  Description of the Exception
-   */
-  protected EnrollInfo getEnrollInfo(XMLElement data) throws Exception
-  {
-    EnrollInfo retVal = null;
-
-    // We get the varible list
-    XMLElement root = data.getFirstChildNamed("enrollinfo");
-    if (root == null)
-      return retVal;
-    retVal = new EnrollInfo();
-    retVal.url = root.getAttribute("url");
-
-    List items = root.getFirstChildNamed("enrollitems").getChildren();
-
-    int size = items.size();
-    Vector enrollItems = new Vector();
-    EnrollItem enrollItem = null;
-    for (int i = 0; i < size; i++)
-    {
-      XMLElement item = (XMLElement) items.get(i);
-      enrollItem = new EnrollItem();
-      enrollItem.name = item.getAttribute("name");
-      enrollItem.required = item.getAttribute("required").equalsIgnoreCase("yes");
-      enrollItems.add(enrollItem);
-    }
-    retVal.enrollItems = enrollItems;
-    return retVal;
-  }
-
-
-  /**
    *  Returns the XMLElement representing the installation XML file.
    *
    * @return                The XML tree.
@@ -1051,7 +1011,7 @@ public class Compiler extends Thread
     public ArrayList executables;
 
 
-    /**  The constructor.  */
+    /**  The constructor. */
     public Pack()
     {
       packFiles = new ArrayList();
@@ -1259,7 +1219,7 @@ public class Compiler extends Thread
     }
 
 
-    /**  Called when the packager starts.  */
+    /**  Called when the packager starts. */
     public void packagerStart()
     {
       System.out.println("[ Begin ]");
@@ -1267,7 +1227,7 @@ public class Compiler extends Thread
     }
 
 
-    /**  Called when the packager stops.  */
+    /**  Called when the packager stops. */
     public void packagerStop()
     {
       System.out.println("");

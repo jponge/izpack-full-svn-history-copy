@@ -146,16 +146,6 @@ public abstract class Packager
    */
   public abstract void setInfo(Info info) throws Exception;
 
-
-  /**
-   *  Sets the informations related to EnrollPanel.
-   *
-   * @param  info           The new enrollInfo value
-   * @exception  Exception  Description of the Exception
-   */
-  public abstract void setEnrollInfo(EnrollInfo info) throws Exception;
-
-
   /**
    *  Adds Variable Declaration.
    *

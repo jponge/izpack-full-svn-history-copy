@@ -241,17 +241,6 @@ public class Installer
       objIn.close();
     }
 
-    EnrollInfo enrollInfo = null;
-
-    // We load the EnrollPanel informations
-    if (null != in)
-    {
-      in = getClass().getResourceAsStream("/enroll");
-      objIn = new ObjectInputStream(in);
-      enrollInfo = (EnrollInfo) objIn.readObject();
-      objIn.close();
-    }
-
     // We load the Info data
     in = getClass().getResourceAsStream("/info");
     objIn = new ObjectInputStream(in);
@@ -295,9 +284,9 @@ public class Installer
       dir = "";
     else
       if (user.equals("root"))
-        dir = "/usr/local" + File.separator;
-      else
-        dir = System.getProperty("user.home") + File.separator;
+      dir = "/usr/local" + File.separator;
+    else
+      dir = System.getProperty("user.home") + File.separator;
 
     installPath = dir + inf.getAppName();
 

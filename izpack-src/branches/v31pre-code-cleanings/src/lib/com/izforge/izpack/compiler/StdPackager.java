@@ -186,23 +186,6 @@ public class StdPackager extends Packager
 
 
   /**
-   *  Sets the informations related to EnrollPanel.
-   *
-   * @param  enrollInfo     The new enrollInfo value
-   * @exception  Exception  Description of the Exception
-   */
-  public void setEnrollInfo(EnrollInfo enrollInfo) throws Exception
-  {
-    sendMsg("Setting  the EnrollInfo ...");
-    outJar.putNextEntry(new ZipEntry("enroll"));
-    ObjectOutputStream objOut = new ObjectOutputStream(outJar);
-    objOut.writeObject(enrollInfo);
-    objOut.flush();
-    outJar.closeEntry();
-  }
-
-
-  /**
    *  Adds Variable Declaration.
    *
    * @param  varDef         The variables definitions.
