@@ -1,0 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-04-06 19:06+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: failuredialog.cpp:30 launcher.cpp:27 launcher.cpp:78
+msgid "IzPack launcher"
+msgstr ""
+
+#: failuredialog.cpp:49
+msgid ""
+"The launcher could not find a Java[tm] runtime environment on this system."
+msgstr ""
+
+#: failuredialog.cpp:59
+msgid "manually specify a 'java' executable."
+msgstr ""
+
+#: failuredialog.cpp:60
+msgid ""
+"install the Java[tm] runtime environment provided by the software package."
+msgstr ""
+
+#: failuredialog.cpp:62
+msgid "download it from the Internet."
+msgstr ""
+
+#: failuredialog.cpp:64
+msgid "I want to ..."
+msgstr ""
+
+#: failuredialog.cpp:69
+msgid "Ok"
+msgstr ""
+
+#: launcher.cpp:72
+msgid "The configuration file is broken."
+msgstr ""
+
+#: launcher.cpp:164
+msgid "There is no installer to launch."
+msgstr ""
+
+#: launcher.cpp:170
+msgid "The installer launch failed."
+msgstr ""
+
+#: launcher.cpp:176
+msgid "Please choose a 'java' executable"
+msgstr ""
+
+#: launcher.cpp:193 launcher.cpp:198
+msgid "Could not launch the JRE installation process."
+msgstr ""
+
+#: launcher.cpp:249
+msgid "Could not find a web browser."
+msgstr ""
