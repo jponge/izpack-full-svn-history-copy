@@ -1608,16 +1608,25 @@ public class UserInputPanel extends IzPanel
 
     uiElements.add (new Object [] {null, SEARCH_FIELD, variable, eastconstraint1, combobox, forPacks});
 
+    JPanel buttonPanel = new JPanel ();
+    buttonPanel.setLayout (new com.izforge.izpack.gui.FlowLayout (com.izforge.izpack.gui.FlowLayout.LEADING));
+
     JButton autodetectButton = ButtonFactory.createButton (parent.langpack.getString ("UserInputPanel.search.autodetect"), idata.buttonsHColor);
 
     autodetectButton.setToolTipText (parent.langpack.getString ("UserInputPanel.search.autodetect.tooltip"));
 
+    buttonPanel.add (autodetectButton);
+
+    JButton browseButton = ButtonFactory.createButton (parent.langpack.getString ("UserInputPanel.search.browse"), idata.buttonsHColor);
+
+    buttonPanel.add (browseButton);
+
     TwoColumnConstraints eastonlyconstraint = new TwoColumnConstraints ();
     eastonlyconstraint.position  = TwoColumnConstraints.EASTONLY;
 
-    uiElements.add (new Object [] {null, SEARCH_BUTTON_FIELD, null, eastonlyconstraint, autodetectButton, forPacks});
+    uiElements.add (new Object [] {null, SEARCH_BUTTON_FIELD, null, eastonlyconstraint, buttonPanel, forPacks});
 
-    searchFields.add (new SearchField (filename, parent, combobox, autodetectButton, search_type, result_type));
+    searchFields.add (new SearchField (filename, parent, combobox, autodetectButton, browseButton, search_type, result_type));
   }
  /*--------------------------------------------------------------------------*/
  /**
@@ -2150,6 +2159,7 @@ private class SearchField implements ActionListener
 
   private String    filename = null;
   private JButton   autodetectButton = null;
+  private JButton   browseButton = null;
   private JComboBox pathComboBox = null;
   private int       searchType = TYPE_DIRECTORY;
   private int       resultType = RESULT_DIRECTORY;
@@ -2165,22 +2175,25 @@ private class SearchField implements ActionListener
    *                    searching directories)
    * @param combobox    the <code>JComboBox</code> holding the list of choices;
    *                    it should be editable and contain only Strings
-   * @param button      the autodetection button for triggering autodetection
+   * @param autobutton  the autodetection button for triggering autodetection
+   * @param browsebutton the browse button to look for the file
    * @param search_type what to search for - TYPE_FILE or TYPE_DIRECTORY
    * @param result_type what to return as the result - RESULT_FILE or 
    *                    RESULT_DIRECTORY or RESULT_PARENTDIR
    */
   /*---------------------------------------------------------------------------*/
-  public SearchField (String filename, InstallerFrame parent, JComboBox combobox, JButton button, int search_type, int result_type)
+  public SearchField (String filename, InstallerFrame parent, JComboBox combobox, JButton autobutton, JButton browsebutton, int search_type, int result_type)
   {
     this.filename = filename;
     this.parent = parent;
-    this.autodetectButton = button;
+    this.autodetectButton = autobutton;
+    this.browseButton = browsebutton;
     this.pathComboBox = combobox;
     this.searchType = search_type;
     this.resultType = result_type;
 
     this.autodetectButton.addActionListener (this);
+    this.browseButton.addActionListener (this);
 
     autodetect ();
   }
@@ -2252,21 +2265,51 @@ private class SearchField implements ActionListener
 
  /*--------------------------------------------------------------------------*/
  /**
-  * This is called if the autodetect button has bee pressed.
+  * This is called if one of the buttons has bee pressed.
   *
-  * We perform the autodetection and set the value of the combobox
-  * accordingly.
+  * It checks, which button caused the action and acts accordingly.
   */
  /*--------------------------------------------------------------------------*/
   public void actionPerformed (ActionEvent event)
   {
     //System.out.println ("autodetection button pressed.");
 
-    if (! autodetect ())
-      JOptionPane.showMessageDialog (parent,
-                                     parent.langpack.getString ("UserInputPanel.search.autodetect.failed.message"),
-                                     parent.langpack.getString ("UserInputPanel.search.autodetect.failed.caption"),
-                                     JOptionPane.WARNING_MESSAGE);
+    if (event.getSource () == this.autodetectButton)
+    {
+      if (! autodetect ())
+        JOptionPane.showMessageDialog (parent,
+                                       parent.langpack.getString ("UserInputPanel.search.autodetect.failed.message"),
+                                       parent.langpack.getString ("UserInputPanel.search.autodetect.failed.caption"),
+                                       JOptionPane.WARNING_MESSAGE);
+    }
+    else if (event.getSource () == this.browseButton)
+    {
+      JFileChooser chooser = new JFileChooser ();
+
+      if (this.searchType == TYPE_DIRECTORY)
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+      int result = chooser.showOpenDialog (this.parent);
+
+      if (result == JFileChooser.APPROVE_OPTION)
+      {
+        String file_chosen = chooser.getSelectedFile().getAbsolutePath ();
+
+        File f = new File (file_chosen);
+
+        // use any given directory directly
+        if (f.isDirectory ())
+        {
+          this.pathComboBox.setSelectedItem (file_chosen);
+        }
+        else
+        {
+          // the combo box only contains path names
+          this.pathComboBox.setSelectedItem (f.getParent ());
+        }
+      }
+
+    }
 
     // we don't care for anything more here - getResult() does the rest
   }
@@ -2283,7 +2326,17 @@ private class SearchField implements ActionListener
  /*--------------------------------------------------------------------------*/
   public String getResult ()
   {
-    String path = (String)this.pathComboBox.getSelectedItem ();
+    String item = (String)this.pathComboBox.getSelectedItem ();
+    String path = item;
+
+    {
+      File f = new File (item);
+
+      if (! f.isDirectory ())
+      {
+        path = f.getParent ();
+      }
+    }
 
     // path now contains the final content of the combo box
     if (this.resultType == RESULT_DIRECTORY)
