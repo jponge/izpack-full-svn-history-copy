@@ -46,6 +46,8 @@ private:
   wxString javaExecPath;
 
   std::map<wxString, wxString> params;
+  
+  wxLocale locale;
 
   void loadParams();
 

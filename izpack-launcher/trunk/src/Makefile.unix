@@ -3,6 +3,9 @@
 # 'all'     ---> builds the executable.
 # 'clean'   ---> removes the compilation-generated files.
 # 'install' ---> puts the executbale in 'dist'.
+# 'refmsg"  ---> Invokes xgettext to produce the reference .pot file.
+#                You can then use it to produce the translations or use
+#                msgmerge to update existing ones.
 
 FLAGS = -Wall -O -pipe
 CXX = `wx-config --cxx`
@@ -12,6 +15,7 @@ CXX_LIBS = `wx-config --libs`
 OS = `uname`
 EXEC = launcher
 OBJS = launcher.o failuredialog.o
+LANGS = fr
 
 all: launcher
 
@@ -27,6 +31,11 @@ failuredialog.o: failuredialog.h failuredialog.cpp
 install: all
 	cp ${EXEC} ../dist/${EXEC}-${OS}
 	strip ../dist/${EXEC}-${OS}
+	cp -R ${LANGS} ../dist/
+	find ../dist/ -name '*.po' | xargs rm -f
 
 clean:
 	rm -f ${EXEC} ${OBJS}
+
+refmsg:
+	xgettext -C -n -k_ -o launcher.pot *.cpp

@@ -59,7 +59,7 @@ void LauncherApp::loadParams()
 #endif
 
 #ifdef __APPLE__
-  wxString group = "/win32";
+  wxString group = "/mac";
 #endif
 
   cfg.SetPath(group);
@@ -82,6 +82,9 @@ void LauncherApp::error(const wxString &msg)
 
 bool LauncherApp::OnInit()
 {
+  locale.Init();
+  locale.AddCatalog("launcher");
+
   if (searchJRE())
   {
     runJRE();
@@ -139,19 +142,18 @@ bool LauncherApp::searchJRE()
     return true;
   }
 
-  // Let's try to launch just 'java'
-#ifdef __WINDOWS__
-  wxString javaTest = "javaw -version";
-  wxString javaExec = "javaw";
-#else
-  wxString javaTest = "java -version";
-  wxString javaExec = "java";
-#endif
-  if (wxExecute(javaTest, wxEXEC_SYNC) == 0)
+#ifndef __WINDOWS__
+  /* Let's try to launch just 'java'.
+   * We don't do that on Win32 because it will display an error
+   * message if it fails. Anyway if we get here, we must not have
+   * a well installed JRE ...
+   */
+  if (wxExecute("java -version", wxEXEC_SYNC) == 0)
   {
-    javaExecPath = javaExec;
+    javaExecPath = "java";
     return true;
   }
+#endif
 
   // Failure
   return false;
