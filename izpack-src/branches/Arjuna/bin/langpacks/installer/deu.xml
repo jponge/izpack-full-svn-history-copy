@@ -114,6 +114,7 @@
     <str id="CompilePanel.error.nofiles" txt="Beim Suchen der Dateien für die Kompilierung trat ein Fehler auf." />
     <str id="CompilePanel.error.invalidarguments" txt="Der Kompiler versteht die zusätzlichen Parameter nicht." />
     <str id="CompilePanel.error.noclassfile" txt="Der Kompiler hat keine Klassendatei erzeugt für die Quelldatei " />
+    <str id="CompilePanel.error.compilernotfound" txt="Der Kompiler konnte nicht gefunden werden." />
     <str id="CompilePanel.choose_compiler" txt="Zu verwendender Kompiler:" />
     <str id="CompilePanel.additional_arguments" txt="Zusätzliche Kompilerparameter:" />
 
