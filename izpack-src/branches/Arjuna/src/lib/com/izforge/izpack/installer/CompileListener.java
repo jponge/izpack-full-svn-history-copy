@@ -43,8 +43,12 @@ public interface CompileListener
    */
   public void errorCompile (String error);
 
-  /**  The compiler starts. */
-  public void startCompilation ();
+  /**  The compiler starts. 
+   *
+   * @param noOfJobs   The number of jobs to compile.
+   *
+   */
+  public void startCompilation (int noOfJobs);
 
   /**  The compiler stops.  */
   public void stopCompilation ();
@@ -63,8 +67,9 @@ public interface CompileListener
    * @param  min       The new mnimum progress.
    * @param  max       The new maximum progress.
    * @param  jobName   The job name.
+   * @param  jobNo     The job number.
    */
-  public void changeCompileJob (int min, int max, String jobName);
+  public void changeCompileJob (int min, int max, String jobName, int jobNo);
 
 }
 
