@@ -141,13 +141,12 @@ public class FinishPanel extends IzPanel implements ActionListener
     fc.setCurrentDirectory(new File(idata.getInstallPath()));
     fc.setMultiSelectionEnabled(false);
     fc.addChoosableFileFilter(fc.getAcceptAllFileFilter());
-    fc.setDialogType(JFileChooser.SAVE_DIALOG);
-    fc.setCurrentDirectory(new File("."));
+    //fc.setCurrentDirectory(new File("."));
 
     // Shows it
     try
     {
-      if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+      if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
       {
         // We handle the xml data writing
         File file = fc.getSelectedFile();
