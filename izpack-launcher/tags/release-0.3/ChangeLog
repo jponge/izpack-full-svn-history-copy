@@ -1,0 +1,63 @@
+[ ChangeLog file for the IzPack launcher project ]
+
+( Release 0.3 ) 2004.05.01 [release-0.3]
+
+2004.05.30 (Julien Ponge):
+* Refactored external processes running code. Bugs have been fixed in this area
+  as well.
+
+2004.05.28 (Julien Ponge):
+* New Brazilian translation by Alex Carlos Braga Antao.
+* Merged Dustin Sacks's Win98 fixes (with minor changes).
+
+2004.05.08 (Julien Ponge):
+* Clicking on the cancel button while manually selecting a JRE will return the
+  user to the dialog box instead of closing the launcher.
+* Downloading a JRE in case of a failure is now the default choice.
+
+( Release 0.2 ) 2004.05.01 [release-0.2]
+
+2004.04.29 (Julien Ponge):
+* Documentation fixes and enhancements.
+* The messages displayed to the users have been enhanced thanks to Elmar's
+  suggestions.
+
+2004.04.28 (Julien Ponge):
+* Documentation fixes and enhancements.
+
+2004.04.22 (Julien Ponge):
+* Initial documentation import.
+
+2004.04.21 (Julien Ponge):
+* The FreeBSD and Linux binaries are no longer distributed since there are
+  dll problems depending on the various system installations. People willing to
+  use the launcher on these platform are welcomed to compile it themselves to
+  suit their target users configurations.
+
+2004.04.10 (Julien Ponge):
+* New Danish translation by Frank Bille Jensen.
+
+2004.04.09 (Julien Ponge):
+* New German translation by Marcus Stursberg.
+
+( Release 0.1 ) 2004.04.07 [release-0.1]
+
+2004.04.07 (Julien Ponge):
+* i18n support, French is the first translation.
+* Win32: JRE detection enhancements.
+
+2004.04.06 (Julien Ponge):
+* Win32: enhanced the last-chance JRE detection test.
+* FailureDialog: typo fix.
+
+2004.04.05 (Julien Ponge):
+* The strings are now translatable.
+* A test is done to ensure that the installer Jar archive is existing before
+  trying to launch it.
+
+2004.04.03 (Julien Ponge):
+* Win32: the port is now operational.
+* FailureDialog: the checkboxes were laid out horizontally on Win32. Fixed.
+
+2004.04.02 (Julien Ponge):
+* Initial appearance to the public on the BerliOS IzPack SVN repository.

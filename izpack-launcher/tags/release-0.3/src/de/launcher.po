@@ -1,0 +1,93 @@
+# translation of launcher.po to german.
+# This file is distributed under the same license as the izpack-launcher package.
+# Copyright (C) 2004 Marcus Stursberg.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: launcher\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-04-29 10:35+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Marcus Stursberg <mstursberg@berlios.de>\n"
+"Language-Team: <izpack-devel@lists.berlios.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: failuredialog.cpp:30 launcher.cpp:27 launcher.cpp:78
+msgid "IzPack launcher"
+msgstr "IzPack launcher"
+
+#: failuredialog.cpp:49
+msgid ""
+"The software that you are trying to install requires a Java Runtime "
+"Environment.\n"
+"The Java Runtime Environment could not be detected on your computer but it "
+"can be installed for you."
+msgstr "Die zu installierende Software benötigt eine Java[tm] Runtime Environment.\n"
+"Auf Ihrem System konnte keine Java[tm] Runtime Environment gefunden werden.\n"
+"Das Setup kann diese für sie installieren."
+
+#: failuredialog.cpp:62
+msgid "manually locate an already installed Java Runtime Environment"
+msgstr "Eine Java[tm] Runtime Environment manuell auswählen."
+
+#: failuredialog.cpp:63
+#, fuzzy
+msgid ""
+"automatically install the Java Runtime Environment included with this "
+"software"
+msgstr "Mitgelieferte Java[tm] Runtime Environment installieren."
+
+#: failuredialog.cpp:65
+msgid ""
+"download the latest version of the Java Runtime Environment from the "
+"Internet."
+msgstr "Die neueste Java[tm] Runtime Environment über das Internet laden."
+
+#: failuredialog.cpp:69
+msgid "You have the following installation choices:"
+msgstr "Sie haben folgende Auswahlmöglichkeiten:"
+
+#: failuredialog.cpp:75
+msgid "Ok"
+msgstr "Ok"
+
+#: launcher.cpp:72
+msgid "The configuration file is broken."
+msgstr "Die Konfigurationsdatei ist fehlerhaft."
+
+#: launcher.cpp:166
+msgid "There is no installer to launch."
+msgstr "Es wurde keine ausführbare Installation gefunden."
+
+#: launcher.cpp:172
+msgid "The installer launch failed."
+msgstr "Das Ausführen der Installation schlug fehl."
+
+#: launcher.cpp:178
+msgid "Please choose a 'java' executable"
+msgstr "Bitte wählen sie eine Java.exe aus."
+
+#: launcher.cpp:195 launcher.cpp:200
+msgid "Could not launch the JRE installation process."
+msgstr "Die Java[tm] Installation konnte nicht ausgeführt werden."
+
+#: launcher.cpp:251
+msgid "Could not find a web browser."
+msgstr "Web-Browser nicht gefunden."
+
+#~ msgid ""
+#~ "The launcher could not find a Java[tm] runtime environment on this system."
+#~ msgstr ""
+#~ "Auf Ihrem System konnte keine Java[tm] Runtime Environment gefunden "
+#~ "werden."
+
+#~ msgid "manually specify a 'java' executable."
+#~ msgstr "Java[tm] Runtime Environment manuell angeben."
+
+#~ msgid "download it from the Internet."
+#~ msgstr "Java[tm] Runtime Environment über das Internet laden."
+
+#~ msgid "I want to ..."
+#~ msgstr "Ich möchte..."
