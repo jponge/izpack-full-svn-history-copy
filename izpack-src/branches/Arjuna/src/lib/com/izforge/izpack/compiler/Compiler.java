@@ -1101,6 +1101,10 @@ public class Compiler extends Thread
       {
         override = PackSource.OVERRIDE_ASK_FALSE;
       }
+      else if (override_val.equalsIgnoreCase("update"))
+      {
+        override = PackSource.OVERRIDE_UPDATE;
+      }
     }
 
     return override;
@@ -1224,6 +1228,7 @@ public class Compiler extends Thread
     public final static int OVERRIDE_FALSE = com.izforge.izpack.PackFile.OVERRIDE_FALSE;
     public final static int OVERRIDE_ASK_TRUE = com.izforge.izpack.PackFile.OVERRIDE_ASK_TRUE;
     public final static int OVERRIDE_ASK_FALSE = com.izforge.izpack.PackFile.OVERRIDE_ASK_FALSE;
+    public final static int OVERRIDE_UPDATE = com.izforge.izpack.PackFile.OVERRIDE_UPDATE;
 
     /**  Shall we override the file ? */
     public int override = OVERRIDE_TRUE;

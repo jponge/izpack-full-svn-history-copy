@@ -232,6 +232,15 @@ public class Unpacker extends Thread
                 {
                   overwritefile = true;
                 }
+                else if (pf.override == PackFile.OVERRIDE_UPDATE)
+                {
+                  // check mtime of involved files
+                  // (this is not 100% perfect, because the already existing file might
+                  // still be modified but the new installed is just a bit newer; we would
+                  // need the creation time of the existing file or record with which mtime
+                  // it was installed...) 
+                  overwritefile = (pathFile.lastModified() < pf.mtime);
+                }
                 else
                 {
                   int def_choice = -1;

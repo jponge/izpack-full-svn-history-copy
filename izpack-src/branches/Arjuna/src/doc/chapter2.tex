@@ -370,7 +370,11 @@ include into the pack. It takes the following attributes:
   \item \texttt{override}: if \texttt{true} then if the file is already
   installed, it will be overwritten. Alternative values: \texttt{asktrue} and
   \texttt{askfalse} -- ask the user what to do and supply default value for
-  non-interactive use. By default it is set to \texttt{true}.
+  non-interactive use. Another possible values is \texttt{update}. It means
+  that the new file is only installed if it's modification time is newer than
+  the modification time of the already existing file (note that this is not a
+  reliable mechanism for updates - you cannot detect whether a file was
+  altered after installation this way.) By default it is set to \texttt{true}.
 
 \end{itemize}
 

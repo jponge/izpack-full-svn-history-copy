@@ -52,6 +52,7 @@ public class PackFile implements Serializable
   public static final int OVERRIDE_TRUE = 1;
   public static final int OVERRIDE_ASK_FALSE = 2;
   public static final int OVERRIDE_ASK_TRUE = 3;
+  public static final int OVERRIDE_UPDATE = 4;
 
   /**  Whether or not this file is going to override any existing ones */
   public int override = OVERRIDE_FALSE;
