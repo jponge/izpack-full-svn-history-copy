@@ -21,6 +21,10 @@
 
 #include "failuredialog.h"
 
+#ifndef __WINDOWS__
+  #include "package.xpm"
+#endif
+
 FailureDialog::FailureDialog(const bool &enableJREInstall,
                              const bool &enableNetDownload)
   : wxDialog(0, -1, "IzPack launcher", wxDefaultPosition, wxDefaultSize,
@@ -31,6 +35,7 @@ FailureDialog::FailureDialog(const bool &enableJREInstall,
   canDownloadJRE = enableNetDownload;
 
   buildUI();
+  SetIcon(wxICON(package));
 }
 
 FailureDialog::~FailureDialog()
