@@ -31,6 +31,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.util.Iterator;
+import java.util.TreeMap;
+import java.util.Vector;
 
 import net.n3.nanoxml.*;
 
@@ -43,87 +45,119 @@ import net.n3.nanoxml.*;
  */
 public class AutomatedInstaller extends InstallerBase
 {
-	/**
-	 *  Constructing an instance triggers the install.
-	 *
-	 * @param inputFilename Name of the file containing the installation data.
-	 * @exception Exception Description of the Exception
-	 */
-	public AutomatedInstaller(String inputFilename) throws Exception
-	{
-		super();
-
-		File input = new File(inputFilename);
-
-		// Loads the installation data
-		AutomatedInstallData idata = new AutomatedInstallData();
-
-		// Loads the installation data
-		loadInstallData(idata);
-
-		// Loads the xml data
-		idata.xmlData = getXMLData(input);
-
-		// Loads the langpack
-		idata.localeISO3 = idata.xmlData.getAttribute("langpack");
-		InputStream in = getClass().getResourceAsStream("/langpacks/" +
-			idata.localeISO3 +
-			".xml");
-		LocaleDatabase langpack = new LocaleDatabase(in);
-
-		doInstall(langpack, idata);
-	}
+  // there are panels which can be instantiated multiple times
+  // we therefore need to select the right XML section for each
+  // instance
+  private TreeMap panelInstanceCount;
 
   /**
-	 * Runs the automated installation logic for each panel in turn.
-	 *
-	 * @param langpack currently unused, could support e.g. locale specific progress msgs.
-	 * @param installdata the installation data.
-	 * @throws Exception
-	 */
+   *  Constructing an instance triggers the install.
+   *
+   * @param inputFilename Name of the file containing the installation data.
+   * @exception Exception Description of the Exception
+   */
+  public AutomatedInstaller(String inputFilename) throws Exception
+  {
+    super();
+
+    File input = new File(inputFilename);
+
+    // Loads the installation data
+    AutomatedInstallData idata = new AutomatedInstallData();
+
+    // Loads the installation data
+    loadInstallData(idata);
+
+    // Loads the xml data
+    idata.xmlData = getXMLData(input);
+
+    // Loads the langpack
+    idata.localeISO3 = idata.xmlData.getAttribute("langpack");
+    InputStream in = getClass().getResourceAsStream("/langpacks/" +
+      idata.localeISO3 +
+      ".xml");
+    LocaleDatabase langpack = new LocaleDatabase(in);
+
+    this.panelInstanceCount = new TreeMap();
+
+    doInstall(langpack, idata);
+  }
+
+  /**
+   * Runs the automated installation logic for each panel in turn.
+   *
+   * @param langpack currently unused, could support e.g. locale specific progress msgs.
+   * @param installdata the installation data.
+   * @throws Exception
+   */
   private void doInstall(LocaleDatabase langpack, AutomatedInstallData installdata)
      throws Exception
   {
-		System.out.println("[ Starting automated installation ]");
+    System.out.println("[ Starting automated installation ]");
 
-		// walk the panels in order
-		Iterator panelsIterator = installdata.panelsOrder.iterator();
-		while(panelsIterator.hasNext())
+    // walk the panels in order
+    Iterator panelsIterator = installdata.panelsOrder.iterator();
+    while(panelsIterator.hasNext())
     {
-			String panelClassName = (String)panelsIterator.next();
-			String automationHelperClassName = "com.izforge.izpack.panels."+panelClassName+"AutomationHelper";
-			Class automationHelperClass = null;
-			// determine if the panel supports automated install
-			try {
-				automationHelperClass = Class.forName(automationHelperClassName);
-			} catch(ClassNotFoundException e) {
-				// this is OK - not all panels have/need automation support.
-			}
+      String panelClassName = (String)panelsIterator.next();
+      String automationHelperClassName = "com.izforge.izpack.panels."+panelClassName+"AutomationHelper";
+      Class automationHelperClass = null;
+      // determine if the panel supports automated install
+      try 
+      {
+        automationHelperClass = Class.forName(automationHelperClassName);
+      } 
+      catch(ClassNotFoundException e) 
+      {
+        // this is OK - not all panels have/need automation support.
+        continue;
+      }
 
-			// instantiate the automation logic for the panel
-			PanelAutomation automationHelperInstance = null;
-			if(automationHelperClass != null) {
-				try {
-				  automationHelperInstance = (PanelAutomation)automationHelperClass.newInstance();
-			  } catch(Exception e) {
-					System.err.println("ERROR: no default constructor for "+automationHelperClassName+", skipping...");
-				}
-			}
+      // instantiate the automation logic for the panel
+      PanelAutomation automationHelperInstance = null;
+      if(automationHelperClass != null) 
+      {
+        try 
+        {
+          automationHelperInstance = (PanelAutomation)automationHelperClass.newInstance();
+        } 
+        catch(Exception e) 
+        {
+          System.err.println("ERROR: no default constructor for "+automationHelperClassName+", skipping...");
+          continue;
+        }
+      }
 
-			// We add the XML data panel root
-			XMLElement panelRoot = new XMLElement(panelClassName);
-			installdata.xmlData.addChild(panelRoot);
-			// We get its root xml markup
-			panelRoot = installdata.xmlData.getFirstChildNamed(panelClassName);
+      // We get the panels root xml markup
+      Vector panelRoots = installdata.xmlData.getChildrenNamed (panelClassName);
+      int panelRootNo = 0;
 
-			// execute the installation logic for the current panel, if it has any:
-			if(automationHelperInstance != null) {
-				try {
-					automationHelperInstance.runAutomated(installdata, panelRoot);
-				} catch(Exception e) {
+      if (this.panelInstanceCount.containsKey (panelClassName))
+      {
+        // get number of panel instance to process
+        panelRootNo = ((Integer)this.panelInstanceCount.get (panelClassName)).intValue ();
+      }
 
-				}
-			}
+      XMLElement panelRoot = (XMLElement)panelRoots.elementAt (panelRootNo);
+      
+      this.panelInstanceCount.put (panelClassName, new Integer (panelRootNo+1));
+
+      // execute the installation logic for the current panel, if it has any:
+      if(automationHelperInstance != null) 
+      {
+        try 
+        {
+          automationHelperInstance.runAutomated(installdata, panelRoot);
+        } 
+        catch(Exception e) 
+        {
+          System.err.println ("ERROR: automated installation failed for panel " + panelClassName);
+          e.printStackTrace ();
+          continue;
+        }
+
+      }
+
     }
 
     System.out.println("[ Automated installation done ]");
@@ -132,7 +166,7 @@ public class AutomatedInstaller extends InstallerBase
     Housekeeper.getInstance().shutDown(0);
   }
 
-	/**
+  /**
    *  Loads the xml data for the automated mode.
    *
    * @param  input          The file containing the installation data.
