@@ -1,10 +1,10 @@
 /*
- * Created on Jun 26, 2004
+ * Created on Nov 18, 2004
  * 
- * $Id: ToggleLabel.java Feb 8, 2004 izpack-frontend
+ * $Id: VTextBox.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : ToggleLabel.java 
+ * File : VTextBox.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,26 +21,45 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view;
+package izpack.frontend.view.components.validating;
 
-
-import java.awt.Color;
-
-import javax.swing.BorderFactory;
-
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  * @author Andy Gombos
+ * 
+ * A validating textfield - checks to see if input exists
  */
-public class ToggleLabel extends ImageLabel
+public class VTextField extends VComponent
 {
-    public ToggleLabel(String name, String shortDesc, String imgFile)
+
+    public VTextField(String labelText)
     {
-        super("<html>" +
-        		"<b>" + name + "</b>" +
-        		"<p> <font color=#969696>" + shortDesc + "</font>", imgFile);       
+        label = new JLabel(labelText);
+        input = new JTextField();
         
-        setBorder(BorderFactory.createLineBorder(Color.decode("0xB8B8B8")));
-        setBackground(Color.WHITE);
+        super.add(label);
+        super.add(input);
     }
+    
+    public String getText()
+    {
+        return input.getText();
+    }
+    
+    public void setText(String text)
+    {
+        input.setText(text);
+    }
+    
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.components.validating.VComponent#isInputValid()
+     */
+    protected boolean isInputValid()
+    {
+        return !input.getText().equals("");         
+    }   
+    
+    JTextField input;
 }

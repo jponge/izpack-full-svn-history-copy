@@ -33,5 +33,6 @@
 		<page name="GeneralInfoPage" class="izpack.frontend.view.pages.GeneralInfoPage"/>
 		
 		<stage name="WelcomeStage" class="izpack.frontend.view.stages.Welcome"/>
+		<stage name="PanelSelectionStage" class="izpack.frontend.view.stages.PanelSelection"/>
 	</user-interface>
 </izpack-frontend>

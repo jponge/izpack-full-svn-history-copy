@@ -58,6 +58,7 @@ public class PageInfoManager
 			xml = (XMLElement)parser.parse();
 			
 			String name = xml.getAttribute("name");
+			System.out.println("Name: " + name);
 			
 			//Load panel descriptions			
 			String shortDesc = xml.getFirstChildNamed("panel-desc-short").getContent();

@@ -23,20 +23,32 @@
  */
 package izpack.frontend.view;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.UIManager;
 
 /**
  * @author Andy Gombos
  * 
  * Provide a component that displays an icon and text, but with consistent alignment
  */
-public class ImageLabel extends JPanel
-{
-    public ImageLabel(String text, String imgFile)
+public class ImageLabel extends JButton implements ActionListener
+{    
+    public ImageLabel(String name, String shortDesc, String imgFile)
+    {
+        configure("<html>" +
+                		"<b>&nbsp;" + name + "</b>" +
+                		"<p> <font color=#969696>&nbsp;" + shortDesc + "</font>", imgFile);
+    }
+    
+    public void configure(String text, String imgFile)
     {
         setLayout(new FlowLayout());
         ((FlowLayout) getLayout()).setAlignment(FlowLayout.LEFT);        
@@ -46,7 +58,28 @@ public class ImageLabel extends JPanel
                       
         add(icon);
         add(lText);
+        
+        addActionListener(this);
     }
     
     private JLabel icon, lText;
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    //TODO Update when new LAF comes out
+    public void actionPerformed(ActionEvent e)
+    {
+        if (isSelected())
+        {
+            setBackground(Color.WHITE);
+            setSelected(false);
+        }
+        else
+        {
+            setBackground(Color.decode("0xCCCCCC"));
+            setSelected(true);
+        }
+        
+    }
 }

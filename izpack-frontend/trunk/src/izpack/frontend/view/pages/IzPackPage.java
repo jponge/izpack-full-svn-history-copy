@@ -129,6 +129,12 @@ public abstract class IzPackPage extends JPanel implements Page {
 	{
 	    return true;
 	}
+	
+	public void setName(String name)
+	{
+		System.out.println("Setting name: " + name);
+		super.setName(name);
+	}
  } 
 
 

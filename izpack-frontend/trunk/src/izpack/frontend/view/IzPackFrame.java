@@ -191,12 +191,20 @@ public class IzPackFrame extends JFrame implements AppBase {
 		stage.initializeStage();
 		stage.setSize(500, 500);
 
+		//Hide the old stages
+		Component existingPanels[] = cp.getComponents();
+		for (int i = 0; i < existingPanels.length; i++) {
+			if (existingPanels[i] instanceof IzPackStage)
+				existingPanels[i].setVisible(false);
+		}
 		
-		// add the stage to the container
-		cp.add(stage);		
+		// add the stage to the container		
+		cp.add(stage, BorderLayout.CENTER);
 		
 		// display the stage
-		//layout.show(cp, stage.getName());	
+		//layout.show(cp, stage.getName());
+		pack();
+		show();
 	}
 
 	/**
@@ -260,8 +268,10 @@ public class IzPackFrame extends JFrame implements AppBase {
 	 * @param args Arguments
 	 */
 	public static void main(String[] args) {
-		IzPackFrame frame = IzPackFrame.getInstance();		
+		IzPackFrame frame = IzPackFrame.getInstance();
+		System.out.println(frame.getLayout());		
 		frame.pack();		
+		frame.setSize(500,500);
 		frame.setVisible(true);
 	}    
 }

@@ -24,12 +24,18 @@
 package izpack.frontend.view.pages;
 
 import izpack.frontend.view.LabelPanel;
+import izpack.frontend.view.PageSelectList;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -38,7 +44,7 @@ import com.jgoodies.forms.layout.FormLayout;
 /**
  * @author Andy Gombos
  */
-public class PanelSelectPage extends IzPackPage
+public class PanelSelectPage extends IzPackPage implements ActionListener, FocusListener
 {
     public PanelSelectPage()
     {
@@ -52,12 +58,15 @@ public class PanelSelectPage extends IzPackPage
         FormLayout layout = new FormLayout(
                 "pref:grow, 3dlu, pref, 3dlu, pref:grow",	//Columns
                 "100dlu, pref, 3dlu, pref, 20dlu, pref, 3dlu, pref, 100dlu"); //Rows
-        layout.setColumnGroups(new int[][] {{1,5}});
+        layout.setColumnGroups(new int[][] {{1,5}});              
         
         DefaultFormBuilder builder = new DefaultFormBuilder(this, layout);
         
-        LabelPanel srcPanel = new LabelPanel(false);
-        LabelPanel destPanel = new LabelPanel(true);        
+        srcList = new PageSelectList();
+        destList = new PageSelectList();        
+        srcList.initializeListWithPages();
+        srcList.addFocusListener(this);
+        destList.addFocusListener(this);
         
         CellConstraints cc = new CellConstraints();
         
@@ -66,9 +75,9 @@ public class PanelSelectPage extends IzPackPage
         builder.add(buttons[1], cc.xy(3, 4));
         builder.add(buttons[2], cc.xy(3, 6));
         builder.add(buttons[3], cc.xy(3, 8));
-        
-        builder.add(srcPanel.getPanel(), cc.xywh(1, 1, 1, 9));
-        builder.add(destPanel.getPanel(), cc.xywh(5, 1, 1, 9));              
+                
+        builder.add(srcList, cc.xywh(1, 1, 1, 9));
+        builder.add(destList, cc.xywh(5, 1, 1, 9));              
         
         setBackground(Color.WHITE);
     }   
@@ -84,10 +93,65 @@ public class PanelSelectPage extends IzPackPage
             //button.setBorder(null);
             button.setBackground(Color.decode("0xEDF0F9"));
             button.setPreferredSize(new Dimension(50, 22));
+            button.addActionListener(this);
+            button.setName(names[i]);
             
             buttons[i] = button;           
         }
         
         return buttons;
     }
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	public void actionPerformed(ActionEvent e)
+	{	
+	    String name = ((JButton) e.getSource()).getName();
+	    
+	    if (name.equals("left"))
+	    {        
+	        destList.removeElements(destList.getSelectedIndices());
+	        
+	    }
+	    else if (name.equals("right"))
+	    {
+	        Object selected[] = srcList.getSelectedValues();
+	        for (int i = 0; i < selected.length; i++)	            
+	            destList.addElement(selected[i]);
+	        
+	        srcList.setSelectedIndex(0);
+	    }
+	    else if (name.equals("up") && destListFocus)
+	    {	        
+	        destList.moveElement(destList.getSelectedIndex(), -1);
+	    }
+	    else if (name.equals("down") && destListFocus)
+	    {
+	        destList.moveElement(destList.getSelectedIndex(), 1);
+	    }
+	}
+	
+	/* (non-Javadoc)
+     * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+     */
+    public void focusGained(FocusEvent e)
+    {
+        if (e.getSource() == destList)
+        {         
+            destListFocus = true;
+        }
+        else if (e.getSource() == srcList)
+        {            
+            destListFocus = false;
+        }        
+    }
+
+    public void focusLost(FocusEvent e){}
+    	
+    //Keep track if destList has focus last between the lists
+	boolean destListFocus = false;
+	PageSelectList srcList;
+	PageSelectList destList;
+    JPanel destJPanel;
 }
