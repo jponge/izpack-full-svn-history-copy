@@ -47,22 +47,18 @@ public class PacksPanelAutomationHelper implements PanelAutomation
 	 */
 	public void makeXMLData(AutomatedInstallData idata, XMLElement panelRoot)
 	{
-		// Selected packs markup
-		XMLElement sel = new XMLElement("selected");
-
-		// We add each selected pack to sel
-		int size = idata.selectedPacks.size();
-		for (int i = 0; i < size; i++)
+		// We add each pack to the panelRoot element
+		for (int i = 0; i < idata.availablePacks.size(); i++)
 		{
+			Pack pack = (Pack) idata.availablePacks.get(i);
 			XMLElement el = new XMLElement("pack");
-			Pack pack = (Pack) idata.selectedPacks.get(i);
-			Integer integer = new Integer(idata.availablePacks.indexOf(pack));
-			el.setAttribute("index", integer.toString());
-			sel.addChild(el);
-		}
+			el.setAttribute ("index", new Integer(i).toString());
+      el.setAttribute ("name", pack.name);
+      Boolean selected = new Boolean (idata.selectedPacks.contains (pack));
+      el.setAttribute ("selected", selected.toString ());
 
-		// Joining
-		panelRoot.addChild(sel);
+			panelRoot.addChild(el);
+		}
 	}
 
 
@@ -74,21 +70,24 @@ public class PacksPanelAutomationHelper implements PanelAutomation
 	 */
 	public void runAutomated(AutomatedInstallData idata, XMLElement panelRoot)
 	{
-		// We get the selected markup
-		XMLElement sel = panelRoot.getFirstChildNamed("selected");
-
 		// We get the packs markups
-		Vector pm = sel.getChildrenNamed("pack");
+		Vector pm = panelRoot.getChildrenNamed("pack");
 
-		// We select each of them
+		// We figure out the selected ones
 		int size = pm.size();
 		idata.selectedPacks.clear();
 		for (int i = 0; i < size; i++)
 		{
 			XMLElement el = (XMLElement) pm.get(i);
-			Integer integer = new Integer(el.getAttribute("index"));
-			int index = integer.intValue();
-			idata.selectedPacks.add(idata.availablePacks.get(index));
+      Boolean selected = new Boolean (el.getAttribute ("selected"));
+
+      if (selected.booleanValue ())
+      {
+        Integer integer = new Integer(el.getAttribute("index"));
+        int index = integer.intValue();
+        idata.selectedPacks.add(idata.availablePacks.get(index));
+      }
+
 		}
 	}
 }
