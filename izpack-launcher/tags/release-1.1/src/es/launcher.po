@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# David Pérez <dperezcar@fcc.es>, 2004.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-05-30 11:37+0200\n"
+"PO-Revision-Date: 2004-30-07 9:00+2\n"
+"Last-Translator: David Pérez <dperezcar@fcc.es>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: failuredialog.cpp:30 launcher.cpp:48 launcher.cpp:99
+msgid "IzPack launcher"
+msgstr "Cargador IzPack"
+
+#: failuredialog.cpp:49
+msgid ""
+"The software that you are trying to install requires a Java Runtime "
+"Environment.\n"
+"The Java Runtime Environment could not be detected on your computer but it "
+"can be installed for you."
+msgstr "El software que está intentando instalar requiere un entorno de ejecución Java.\n"
+"Dicho entorno no ha sido encontrado en su sistema, pero se puede instalar automáticamente"
+
+#: failuredialog.cpp:62
+msgid "manually locate an already installed Java Runtime Environment"
+msgstr "localizar manualmente un entorno de ejecución Java ya instalado"
+
+#: failuredialog.cpp:63
+msgid ""
+"automatically install the Java Runtime Environment included with this "
+"software"
+msgstr "instalar automáticamente un entorno de ejecución Java incluido en este paquete"
+
+#: failuredialog.cpp:65
+msgid ""
+"download the latest version of the Java Runtime Environment from the "
+"Internet."
+msgstr "descargar la última versión del entorno de ejecución Java desde Internet"
+
+#: failuredialog.cpp:69
+msgid "You have the following installation choices:"
+msgstr "Escoja una de las siguientes opciones de instalación:"
+
+#: failuredialog.cpp:75
+msgid "Ok"
+msgstr "Aceptar"
+
+#: launcher.cpp:93
+msgid "The configuration file is broken."
+msgstr "El fichero de configuración es erróneo"
+
+#: launcher.cpp:190
+msgid "There is no installer to launch."
+msgstr "No hay instalador a ejecutar"
+
+#: launcher.cpp:196
+msgid "The installer launch failed."
+msgstr "Ha fallado el proceso de instalación."
+
+#: launcher.cpp:204
+msgid "Please choose a 'java' executable"
+msgstr "Por favor escoja un ejecutable´'java'"
+
+#: launcher.cpp:224
+msgid "Could not launch the JRE installation process."
+msgstr "No se pudó lanzar la instalación de Java."
+
+#: launcher.cpp:272
+msgid "Could not find a web browser."
+msgstr "No se ha podido encontrar un navegador Web."
