@@ -315,7 +315,9 @@ public class Compiler extends Thread
         FileInputStream in = new FileInputStream(f);
         long nbytes = f.length();
 
-        // p.targetdir will always end with separator
+        if(!p.targetdir.endsWith(File.separator)) {
+          p.targetdir = p.targetdir+File.separatorChar;
+        }
         String targetFilename = p.targetdir + f.getName();
 
         // pack paths in canonical (unix) form regardless of current host o/s:
