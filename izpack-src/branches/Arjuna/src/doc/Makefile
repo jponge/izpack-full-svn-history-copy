@@ -32,7 +32,7 @@ pdf: dvi
 # Makes the HTML version
 .PHONY: html
 html:
-	mkdir html
+	[ -d html ] || mkdir html
 	${HTML} -split 3 -noexternal_images -dir html -white -image_type png -local_icons ${MAIN}.tex
 
 .PHONY: subdirs
