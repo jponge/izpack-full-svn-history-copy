@@ -16,4 +16,5 @@ tags/     ---------> This is used to provide a reference for each
 
 The modules hosted in the repository are:
 - izpack-launcher: the IzPack native launcher project
-- izpack-frontend: the IzPack frontend project.
+- izpack-frontend: the IzPack frontend project
+- izpack4: the IzPack 4 experimental codebase.
