@@ -491,6 +491,8 @@ public class Compiler extends Thread
         {
           XMLElement p = (XMLElement) iter.next();
           String targetFile = p.getAttribute("targetfile");
+          if (targetFile == null)
+            throw new Exception ("targetfile attribute missing for <parsable>");
           pack.parsables.add
             (new ParsableFile(targetFile,
             p.getAttribute("type", "plain"),
@@ -1205,9 +1207,20 @@ public class Compiler extends Thread
        return this.targetdir + f.getName ();
     }
 
-    public void setTargetFile (String targetFile)
+    public void setTargetFile (String targetFile) throws Exception
     {
       this.targetdir = null;
+      if (targetFile == null)
+      {
+        if (this.src != null)
+        {
+          throw new Exception ("target for file " + src + " missing!");
+        }
+        else
+        {
+          throw new Exception ("target for file missing!");
+        }
+      }
       this.targetfile = targetFile;
     }
 
@@ -1216,8 +1229,20 @@ public class Compiler extends Thread
       return this.targetfile;
     }
 
-    public void setTargetDir (String targetDir)
+    public void setTargetDir (String targetDir) throws Exception
     {
+      if (targetDir == null)
+      {
+        if (this.src != null)
+        {
+          throw new Exception ("target for file " + src + " missing!");
+        }
+        else
+        {
+          throw new Exception ("target for file missing!");
+        }
+      }
+
       this.targetfile = null;
       this.targetdir = targetDir;
 
