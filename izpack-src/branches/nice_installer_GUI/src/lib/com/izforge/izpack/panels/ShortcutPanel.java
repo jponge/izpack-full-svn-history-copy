@@ -175,14 +175,14 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
    *  UI element to allow the user to revert to the default name of the program
    *  group
    */
-  private HighlightJButton defaultButton;
+  private JButton defaultButton;
   /**  UI element to start the process of creating shortcuts */
-  private HighlightJButton createButton;
+  private JButton createButton;
   /**
    *  UI element to allow the user to save a text file with the shortcut
    *  information
    */
-  private HighlightJButton saveButton;
+  private JButton saveButton;
   /**
    *  UI element to allow the user to decide if shortcuts should be placed on
    *  the desktop or not.
@@ -1002,7 +1002,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     // reset button that allows the user to revert to the
     // original suggestion for the program group
     // ----------------------------------------------------
-    defaultButton = new HighlightJButton(
+    defaultButton = ButtonFactory.createButton(
       parent.langpack.getString("ShortcutPanel.regular.default"),
       idata.buttonsHColor);
     defaultButton.addActionListener(this);
@@ -1037,7 +1037,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     // ----------------------------------------------------
     // button to initiate the creation of the shortcuts
     // ----------------------------------------------------
-    createButton = new HighlightJButton(
+    createButton = ButtonFactory.createButton(
       parent.langpack.getString("ShortcutPanel.regular.create"),
       idata.buttonsHColor);
     createButton.addActionListener(this);
@@ -1138,7 +1138,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener,
     // ----------------------------------------------------
     // button to save the text file
     // ----------------------------------------------------
-    saveButton = new HighlightJButton(
+    saveButton = ButtonFactory.createButton(
       parent.langpack.getString("ShortcutPanel.alternate.saveButton"),
       idata.buttonsHColor);
     saveButton.addActionListener(this);
