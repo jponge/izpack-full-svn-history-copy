@@ -143,12 +143,15 @@ bool LauncherApp::searchJRE()
     wxString version;
     if (bKey.QueryValue("CurrentVersion", version))
     {
-      wxRegKey vKey(baseKey + version);
-      wxString home;
-      if (vKey.QueryValue("JavaHome", home))
+      if (version != "1.1")
       {
-        javaExecPath = home + "\\bin\\javaw";
-        return isValidPath();
+        wxRegKey vKey(baseKey + version);
+        wxString home;
+        if (vKey.QueryValue("JavaHome", home))
+        {
+          javaExecPath = home + "\\bin\\javaw";
+          return isValidPath();
+        }
       }
     }
   }
