@@ -63,7 +63,7 @@ public class CompileWorker implements Runnable
 
   private AutomatedInstallData idata;
 
-  private CompileListener listener;
+  private CompileHandler handler;
 
   private ArrayList compilerList;
 
@@ -79,12 +79,12 @@ public class CompileWorker implements Runnable
    *  The constructor.
    *
    * @param  idata    The installation data.
-   * @param  listener The listener to notify of progress.
+   * @param  handler The handler to notify of progress.
    */
-  public CompileWorker(AutomatedInstallData idata, CompileListener listener) throws IOException
+  public CompileWorker(AutomatedInstallData idata, CompileHandler handler) throws IOException
   {
     this.idata = idata;
-    this.listener = listener;
+    this.handler = handler;
     this.vs = new VariableSubstitutor(idata.getVariableValueMap());
 
     this.compilationThread = null;
@@ -172,7 +172,7 @@ public class CompileWorker implements Runnable
       this.result = compileJobs ();
     }
 
-    this.listener.stopCompilation ();
+    this.handler.stopAction ();
   }
 
   private boolean readSpec ()
@@ -313,7 +313,7 @@ public class CompileWorker implements Runnable
 
     Iterator job_it = this.jobs.iterator();
 
-    this.listener.startCompilation (this.jobs.size());
+    this.handler.startAction ("Compilation", this.jobs.size());
 
     // check whether compiler is valid (but only if there are jobs)
     if (job_it.hasNext())
@@ -334,7 +334,7 @@ public class CompileWorker implements Runnable
     {
       CompilationJob job = (CompilationJob) job_it.next();
       
-      this.listener.changeCompileJob (0, job.getSize(), job.getName(), job_no++);
+      this.handler.nextStep (job.getName(), job.getSize(), job_no++);
 
       CompileResult result = job.perform (this.compilerToUse, args);
 
@@ -429,7 +429,7 @@ public class CompileWorker implements Runnable
     }
 
     if (files.size() > 0)
-      return new CompilationJob (this.listener, this.idata.langpack, (String)node.getAttribute ("name"), files, ourclasspath);
+      return new CompilationJob (this.handler, this.idata.langpack, (String)node.getAttribute ("name"), files, ourclasspath);
 
     return null;
   }
@@ -495,7 +495,7 @@ public class CompileWorker implements Runnable
   /** a compilation job */
   private class CompilationJob
   {
-    private CompileListener listener;
+    private CompileHandler listener;
     private String    name;
     private ArrayList files;
     private ArrayList classpath;
@@ -505,7 +505,7 @@ public class CompileWorker implements Runnable
     // XXX: figure that out (on runtime?)
     private static final int MAX_CMDLINE_SIZE = 4096;
 
-    public CompilationJob (CompileListener listener, LocaleDatabase langpack, ArrayList files, ArrayList classpath)
+    public CompilationJob (CompileHandler listener, LocaleDatabase langpack, ArrayList files, ArrayList classpath)
     {
       this.listener = listener;
       this.langpack = langpack;
@@ -514,7 +514,7 @@ public class CompileWorker implements Runnable
       this.classpath = classpath;
     }
 
-    public CompilationJob (CompileListener listener, LocaleDatabase langpack, String name, ArrayList files, ArrayList classpath)
+    public CompilationJob (CompileHandler listener, LocaleDatabase langpack, String name, ArrayList files, ArrayList classpath)
     {
       this.listener = listener;
       this.langpack = langpack;
@@ -618,7 +618,7 @@ public class CompileWorker implements Runnable
 
           // display useful progress bar (avoid showing 100% while still
           // compiling a lot)
-          this.listener.progressCompile (last_fileno, jobfiles);
+          this.listener.progress (last_fileno, jobfiles);
           last_fileno = fileno;
 
           String[] full_cmdline = (String[])args.toArray (output);
@@ -626,12 +626,12 @@ public class CompileWorker implements Runnable
           int retval = executor.executeCommand (full_cmdline, output);
 
           // update progress bar: compilation of fileno files done
-          this.listener.progressCompile (fileno, jobfiles);
+          this.listener.progress (fileno, jobfiles);
 
           if (retval != 0)
           {
             CompileResult result = new CompileResult (this.langpack.getString ("CompilePanel.error"), full_cmdline, output[0], output[1]);
-            this.listener.handleError (result);
+            this.listener.handleCompileError (result);
             if (! result.isContinue())
               return result;
           }
@@ -653,7 +653,7 @@ public class CompileWorker implements Runnable
               if (! class_file.exists ())
               {
                 CompileResult result = new CompileResult (this.langpack.getString ("CompilePanel.error.noclassfile")+java_file.getAbsolutePath(), full_cmdline, output[0], output[1]);
-                this.listener.handleError (result);
+                this.listener.handleCompileError (result);
                 if (! result.isContinue())
                   return result;
                 // don't continue any further
@@ -678,18 +678,18 @@ public class CompileWorker implements Runnable
 
       if (cmdline_len > common_args_len)
       {
-        this.listener.progressCompile (last_fileno, jobfiles);
+        this.listener.progress (last_fileno, jobfiles);
 
         String[] full_cmdline = (String[])args.toArray (output);
 
         int retval = executor.executeCommand (full_cmdline, output);
 
-        this.listener.progressCompile (fileno, jobfiles);
+        this.listener.progress (fileno, jobfiles);
 
         if (retval != 0)
         {
           CompileResult result = new CompileResult (this.langpack.getString ("CompilePanel.error"), full_cmdline, output[0], output[1]);
-          this.listener.handleError (result);
+          this.listener.handleCompileError (result);
           if (! result.isContinue())
             return result;
         }
@@ -710,7 +710,7 @@ public class CompileWorker implements Runnable
      * (not all compilers return an error here)</li>
      * </ol>
      *
-     * On failure, the method CompileListener#errorCompile is called with
+     * On failure, the method CompileHandler#errorCompile is called with
      * a descriptive error message.
      *
      * @param compiler the compiler to use
@@ -733,7 +733,7 @@ public class CompileWorker implements Runnable
         if (retval != 0)
         {
           CompileResult result = new CompileResult (this.langpack.getString ("CompilePanel.error.compilernotfound"), args, output[0], output[1]);
-          this.listener.handleError (result);
+          this.listener.handleCompileError (result);
           if (! result.isContinue ())
             return result;
         }
@@ -778,7 +778,7 @@ public class CompileWorker implements Runnable
       if (retval != 0)
       {
         CompileResult result = new CompileResult (this.langpack.getString ("CompilePanel.error.invalidarguments"), args_arr, output[0], output[1]);
-        this.listener.handleError (result);
+        this.listener.handleCompileError (result);
         if (! result.isContinue ())
           return result;
       }

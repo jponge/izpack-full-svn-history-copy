@@ -49,7 +49,7 @@ import net.n3.nanoxml.*;
  * @author     Julien Ponge
  * @created    May 2003
  */
-public class CompilePanel extends IzPanel implements ActionListener, CompileListener
+public class CompilePanel extends IzPanel implements ActionListener, CompileHandler
 {
   /**  The combobox for compiler selection. */
   protected JComboBox compilerComboBox;
@@ -340,9 +340,9 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
    *  An error was encountered.
    *
    * @param  error  The error information.
-   * @see com.izforge.izpack.installer.CompileListener
+   * @see com.izforge.izpack.installer.CompileHandler
    */
-  public void handleError (CompileResult error)
+  public void handleCompileError (CompileResult error)
   {
     String message = error.getMessage ();
     opLabel.setText(message);
@@ -366,7 +366,7 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
 
 
   /**  The compiler starts.  */
-  public void startCompilation (int noOfJobs)
+  public void startAction (String name, int noOfJobs)
   {
     this.noOfJobs = noOfJobs;
     overallProgressBar.setMaximum (noOfJobs);
@@ -375,7 +375,7 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
 
 
   /**  The compiler stops.  */
-  public void stopCompilation ()
+  public void stopAction ()
   {
     CompileResult result = this.worker.getResult ();
 
@@ -416,7 +416,7 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
    * @param  val  The progression value.
    * @param  msg  The progression message.
    */
-  public void progressCompile (int val, String msg)
+  public void progress (int val, String msg)
   {
     //Debug.trace ("progress: " + val + " " + msg);
     packProgressBar.setValue(val + 1);
@@ -432,10 +432,9 @@ public class CompilePanel extends IzPanel implements ActionListener, CompileList
    * @param  jobName   The job name.
    * @param  jobNo     The job number.
    */
-  public void changeCompileJob (int min, int max, String jobName, int jobNo)
+  public void nextStep (String jobName, int max, int jobNo)
   {
     packProgressBar.setValue(0);
-    packProgressBar.setMinimum(min);
     packProgressBar.setMaximum(max);
     packProgressBar.setString(jobName);
 

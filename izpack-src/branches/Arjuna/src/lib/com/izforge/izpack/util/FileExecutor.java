@@ -245,9 +245,12 @@ public class FileExecutor
   /**
    *  Executes files specified at construction time.
    *
-   * @return    Description of the Return Value
+   * @param   currentStage the stage of the installation
+   * @param   handler The AbstractUIHandler to notify on errors.
+   * 
+   * @return  0 on success, else the exit status of the last failed command
    */
-  public int executeFiles(int currentStage)
+  public int executeFiles(int currentStage, AbstractUIHandler handler)
   {
     int exitStatus = 0;
     String[] output = new String[2];
@@ -315,6 +318,7 @@ public class FileExecutor
             params[i] = (String) paramList.get(i);
 
           exitStatus = executeCommand(params, output);
+          
           // bring a dialog depending on return code and failure handling
           if (exitStatus != 0)
           {
@@ -324,26 +328,22 @@ public class FileExecutor
               message = new String("Failed to execute " + file.toString() + ".");
 
             if (efile.onFailure == ExecutableFile.ABORT)
-
-              javax.swing.JOptionPane.showMessageDialog(null, message,
-                  "Installation error",
-                  javax.swing.JOptionPane.ERROR_MESSAGE);
+            {
+              // CHECKME: let the user decide or abort anyway?
+              handler.emitError("file execution error", message);
+            }
             else if (efile.onFailure == ExecutableFile.WARN)
             {
-
-              javax.swing.JOptionPane.showMessageDialog(null, message,
-                  "Installation warning",
-                  javax.swing.JOptionPane.WARNING_MESSAGE);
+              // CHECKME: let the user decide or abort anyway?
+              handler.emitWarning ("file execution error", message);
               exitStatus = 0;
             }
             else
-              if (
-                  javax.swing.JOptionPane.showConfirmDialog(null,
-                    message + "Would you like to proceed?",
-                    "Installation Warning",
-                    javax.swing.JOptionPane.YES_NO_OPTION) ==
-                  javax.swing.JOptionPane.YES_OPTION)
+            {
+              if (handler.askQuestion (null, "Continue?", AbstractUIHandler.CHOICES_YES_NO) 
+                  == AbstractUIHandler.ANSWER_YES)
                 exitStatus = 0;
+            }
 
           }
 

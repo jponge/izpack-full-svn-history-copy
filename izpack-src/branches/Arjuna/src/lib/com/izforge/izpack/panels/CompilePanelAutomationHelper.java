@@ -35,11 +35,11 @@ import java.io.IOException;
  * @author Jonathan Halliday
  * @author Tino Schwarze
  */
-public class CompilePanelAutomationHelper implements PanelAutomation, CompileListener
+public class CompilePanelAutomationHelper extends PanelAutomationHelper 
+                                            implements PanelAutomation, CompileHandler
 {
   private CompileWorker worker = null;
 
-  private int job_min = 0;
   private int job_max = 0;
   private String job_name = null;
   private int last_line_len = 0;
@@ -107,9 +107,9 @@ public class CompilePanelAutomationHelper implements PanelAutomation, CompileLis
 	/**
 	 * Reports progress on System.out
 	 *
-	 * @see CompileListener#startCompile
+   * @see AbstractUIProgressHandler#startAction(String, int)
 	 */
-	public void startCompilation(int noOfJobs)
+	public void startAction (String name, int noOfJobs)
 	{
     System.out.println ("[ Starting compilation ]");
     this.job_name = "";
@@ -119,9 +119,9 @@ public class CompilePanelAutomationHelper implements PanelAutomation, CompileLis
 	 * Reports the error to System.err
 	 *
 	 * @param error the error
-	 * @see CompileListener#errorCompile
+	 * @see CompileHandler#handleCompileError(CompileResult)
 	 */
-	public void handleError (CompileResult error)
+	public void handleCompileError (CompileResult error)
 	{
     System.out.println ();
     System.out.println ("[ Compilation failed ]");
@@ -138,9 +138,9 @@ public class CompilePanelAutomationHelper implements PanelAutomation, CompileLis
 	/**
 	 * Sets state variable for thread sync.
 	 *
-	 * @see CompileListener#stopCompile
+	 * @see AbstractUIProgressHandler#stopAction()
 	 */
-	public void stopCompilation()
+	public void stopAction ()
 	{
     if ((this.job_name != null) && (this.last_line_len > 0))
     {
@@ -163,12 +163,11 @@ public class CompilePanelAutomationHelper implements PanelAutomation, CompileLis
 	 *
 	 * @param val
 	 * @param msg
-	 * @see CompileListener#progressCompile
+	 * @see AbstractUIProgressHandler#progress(int, String)
 	 */
-	public void progressCompile(int val, String msg)
+	public void progress(int val, String msg)
 	{
-    float range = (float)this.job_max - this.job_min;
-    float percentage = ((float)val - this.job_min)*100.0f/range;
+    float percentage = ((float)val)*100.0f/(float)this.job_max;
 
     String percent = (new Integer ((int)percentage)).toString()+'%';
     String line = this.job_name + ": " + percent;
@@ -185,13 +184,12 @@ public class CompilePanelAutomationHelper implements PanelAutomation, CompileLis
 	/**
 	 * Reports progress to System.out
 	 *
-	 * @param min unused
+   * @param jobName The next job's name.
 	 * @param max unused
-	 * @param jobName The next job's name.
-	 * @param jobName The next job's number.
-	 * @see CompileListener#changeCompile
+	 * @param jobNo The next job's number.
+   * @see AbstractUIProgressHandler#nextStep(String, int, int)
 	 */
-	public void changeCompileJob (int min, int max, String jobName, int jobNo)
+	public void nextStep (String jobName, int max, int jobNo)
 	{
     if ((this.job_name != null) && (this.last_line_len > 0))
     {
@@ -202,7 +200,6 @@ public class CompilePanelAutomationHelper implements PanelAutomation, CompileLis
       System.out.println ();
     }
 
-    this.job_min = min;
     this.job_max = max;
     this.job_name = jobName;
     this.last_line_len = 0;

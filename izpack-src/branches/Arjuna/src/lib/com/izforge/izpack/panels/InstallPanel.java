@@ -25,6 +25,7 @@
 package com.izforge.izpack.panels;
 
 import com.izforge.izpack.installer.*;
+import com.izforge.izpack.util.*;
 
 import java.awt.*;
 
@@ -36,7 +37,7 @@ import javax.swing.*;
  * @author     Julien Ponge
  * @created    November 1, 2002
  */
-public class InstallPanel extends IzPanel implements InstallListener
+public class InstallPanel extends IzPanel implements AbstractUIProgressHandler
 {
   /**  The layout. */
   private GridBagLayout layout;
@@ -148,9 +149,14 @@ public class InstallPanel extends IzPanel implements InstallListener
 
 
   /**  The unpacker starts.  */
-  public void startUnpack()
+  public void startAction (String name, int noOfJobs)
   {
     parent.blockGUI();
+    // figure out how many packs there are to install
+    this.noOfPacks = noOfJobs;
+    this.overallProgressBar.setMinimum (1);
+    this.overallProgressBar.setMaximum (this.noOfPacks);
+
     this.overallProgressBar.setString ("0 / " + Integer.toString (this.noOfPacks));
   }
 
@@ -171,7 +177,7 @@ public class InstallPanel extends IzPanel implements InstallListener
 
 
   /**  The unpacker stops.  */
-  public void stopUnpack()
+  public void stopAction()
   {
     parent.releaseGUI();
     parent.lockPrevButton();
@@ -196,7 +202,7 @@ public class InstallPanel extends IzPanel implements InstallListener
    * @param  val  The progression value.
    * @param  msg  The progression message.
    */
-  public void progressUnpack(int val, String msg)
+  public void progress(int val, String msg)
   {
     this.packProgressBar.setValue(val + 1);
     packOpLabel.setText(msg);
@@ -206,21 +212,19 @@ public class InstallPanel extends IzPanel implements InstallListener
   /**
    *  Pack changing.
    *
-   * @param  min       The new mnimum progress.
-   * @param  max       The new maximum progress.
    * @param  packName  The pack name.
+   * @param  stepno    The number of the pack.
+   * @param  max       The new maximum progress.
    */
-  public void changeUnpack(int min, int max, String packName)
+  public void nextStep(String packName, int stepno, int max)
   {
     this.packProgressBar.setValue(0);
-    this.packProgressBar.setMinimum(min);
+    this.packProgressBar.setMinimum(0);
     this.packProgressBar.setMaximum(max);
     this.packProgressBar.setString(packName);
 
-    int overall_progress = this.overallProgressBar.getValue ()+1;
-
-    this.overallProgressBar.setValue (overall_progress);
-    this.overallProgressBar.setString (Integer.toString (overall_progress) + " / " + Integer.toString (this.noOfPacks));
+    this.overallProgressBar.setValue (stepno);
+    this.overallProgressBar.setString (Integer.toString (stepno) + " / " + Integer.toString (this.noOfPacks));
   }
 
 
@@ -262,7 +266,38 @@ public class InstallPanel extends IzPanel implements InstallListener
     return result;
   }
 
-
+  /**
+   * Something went wrong - show a warning.
+   * 
+   * @param message
+   */
+  public void showWarning (String message)
+  {
+    javax.swing.JOptionPane.showMessageDialog(null, message,
+        "Installation warning",
+        javax.swing.JOptionPane.WARNING_MESSAGE);
+  }
+  
+  /**
+   * Ask user for confirmation.
+   * 
+   * @param message
+   * @return
+   */
+  public boolean askContinue (String message)
+  {
+    int result = javax.swing.JOptionPane.showConfirmDialog(null,
+      message + " Would you like to proceed?",
+      "Installation Warning",
+      javax.swing.JOptionPane.YES_NO_OPTION);
+    if (result != javax.swing.JOptionPane.YES_OPTION)
+    {
+      idata.installSuccess = false;
+      return false;    
+    }
+    return true;
+  }
+  
   /**  Called when the panel becomes active.  */
   public void panelActivate()
   {
@@ -274,11 +309,6 @@ public class InstallPanel extends IzPanel implements InstallListener
     setMaximumSize(dim);
     setPreferredSize(dim);
     parent.lockNextButton();
-
-    // figure out how many packs there are to install
-    this.noOfPacks = idata.selectedPacks.size();
-    this.overallProgressBar.setMinimum (0);
-    this.overallProgressBar.setMaximum (this.noOfPacks);
 
     parent.install(this);
   }

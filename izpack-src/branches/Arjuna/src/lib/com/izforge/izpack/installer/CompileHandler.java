@@ -1,12 +1,12 @@
 /*
  *  $Id$
  *  IzPack
- *  Copyright (C) 2001-2003 Julien Ponge, Tino Schwarze
+ *  Copyright (C) 2001-2003 Tino Schwarze, Julien Ponge
  *
- *  File :               CompilePanel.java
+ *  File :               CompileHandler.java
  *  Description :        A panel to compile files after installation
- *  Author's email :     julien@izforge.com
- *  Author's Website :   http://www.izforge.com
+ *  Author's email :     tino.schwarze@informatik.tu-chemnitz.de
+ *  Author's Website :   http://www.tisc.de
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -29,12 +29,13 @@ package com.izforge.izpack.installer;
  *
  * This is used by <code>CompilePanel</code>, <code>CompileWorker</code> and
  * <code>CompilePanelAutomationHelper</code> to display the progress of the
- * compilation.
+ * compilation. Most of the functionality, however, is inherited from interface
+ * com.izforge.izpack.util.AbstractUIProgressHandler
  *
- * @author     Tino Schwarze
- * @created    May 2003
+ * @author   Tino Schwarze
+ * @see com.izforge.izpack.util.AbstractUIProgressHandler
  */
-public interface CompileListener
+public interface CompileHandler extends com.izforge.izpack.util.AbstractUIProgressHandler
 {
   /**
    * An error was encountered.
@@ -48,39 +49,7 @@ public interface CompileListener
    *
    * @param error the error to handle
    */
-  public void handleError (CompileResult error);
-
-  /**  The compiler starts. 
-   *
-   * @param noOfJobs   The number of jobs to compile.
-   *
-   */
-  public void startCompilation (int noOfJobs);
-
-  /**  The compiler stops.  
-   *
-   * This is _always_ called when compilation has finished (no matter
-   * whether it was successful or not).
-   */
-  public void stopCompilation ();
-
-  /**
-   *  Normal progress indicator.
-   *
-   * @param  val  The progression value.
-   * @param  msg  The progression message.
-   */
-  public void progressCompile (int val, String msg);
-
-  /**
-   *  Job changing.
-   *
-   * @param  min       The new mnimum progress.
-   * @param  max       The new maximum progress.
-   * @param  jobName   The job name.
-   * @param  jobNo     The job number.
-   */
-  public void changeCompileJob (int min, int max, String jobName, int jobNo);
+  public void handleCompileError (CompileResult error);
 
 }
 

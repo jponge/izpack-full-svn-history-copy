@@ -26,17 +26,21 @@ package com.izforge.izpack.panels;
 
 import net.n3.nanoxml.XMLElement;
 import com.izforge.izpack.installer.*;
+import com.izforge.izpack.util.*;
 
 /**
  * Functions to support automated usage of the InstallPanel
  *
  * @author Jonathan Halliday
  */
-public class InstallPanelAutomationHelper implements PanelAutomation, InstallListener
+public class InstallPanelAutomationHelper extends PanelAutomationHelper 
+                                            implements PanelAutomation, AbstractUIProgressHandler
 {
 	// state var for thread sync.
 	private boolean done = false;
 
+  private int noOfPacks = 0;
+  
 	/**
 	 * Null op - this panel type has no state to serialize.
 	 *
@@ -67,22 +71,12 @@ public class InstallPanelAutomationHelper implements PanelAutomation, InstallLis
 	/**
 	 * Reports progress on System.out
 	 *
-	 * @see InstallListener#startUnpack
+	 * @see AbstractUIProgressHandler#startAction(String, int)
 	 */
-	public void startUnpack()
+	public void startAction (String name, int no_of_steps)
 	{
 		System.out.println("[ Starting to unpack ]");
-	}
-
-	/**
-	 * Reports the error to System.err
-	 *
-	 * @param error
-	 * @see InstallListener#errorUnpack
-	 */
-	public void errorUnpack(String error)
-	{
-		System.err.println("[ ERROR: " + error + " ]");
+    this.noOfPacks = no_of_steps;
 	}
 
 	/**
@@ -90,7 +84,7 @@ public class InstallPanelAutomationHelper implements PanelAutomation, InstallLis
 	 *
 	 * @see InstallListener#stopUnpack
 	 */
-	public void stopUnpack()
+	public void stopAction()
 	{
 		System.out.println("[ Unpacking finished. ]");
 		done = true;
@@ -101,33 +95,28 @@ public class InstallPanelAutomationHelper implements PanelAutomation, InstallLis
 	 *
 	 * @param val
 	 * @param msg
-	 * @see InstallListener#progressUnpack
+	 * @see AbstractUIProgressHandler#progress(int, String)
 	 */
-	public void progressUnpack(int val, String msg)
+	public void progress(int val, String msg)
 	{
-		// silent for now. sould log individual files here, if we had a verbose mode?
+		// silent for now. should log individual files here, if we had a verbose mode?
 	}
 
 	/**
 	 * Reports progress to System.out
 	 *
-	 * @param min unused
+   * @param packName The currently installing pack.
+	 * @param stepno The number of the pack
 	 * @param max unused
-	 * @param packName The currently installing pack.
 	 * @see InstallListener#changeUnpack
 	 */
-	public void changeUnpack(int min, int max, String packName)
+	public void nextStep (String packName, int stepno, int stepsize)
 	{
-		System.out.println("[ Processing package: " + packName + " ]");
+		System.out.print("[ Processing package: " + packName +" (");
+    System.out.print (stepno);
+    System.out.print ('/');
+    System.out.print (this.noOfPacks);
+    System.out.println (") ]");
 	}
 
-  /**
-   * Called when a file should not be overwritten by default.
-   *
-   * Just returns the default choice, since we cannot have user interaction.
-   */
-  public boolean askOverwrite (java.io.File file, boolean default_choice)
-  {
-    return default_choice;
-  }
 }
