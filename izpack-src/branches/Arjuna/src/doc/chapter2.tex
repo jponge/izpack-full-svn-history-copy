@@ -636,16 +636,30 @@ This panel allows you to compile just installed Java sourcecode. The details for
 The XML file has the following format:
 \begin{verbatim}
 <compilation>
- <classpath add="$INSTALL_PATH/src/classes/" />
- <job name="optional name">
-   <directory name="$INSTALL_PATH/src/classes/xyz" />
- </job>
- <job name="another job">
-   <packdepency name="some package name" />
-   <classpath sub="$INSTALL_PATH/" />
-   <directory name="$INSTALL_PATH/src/classes/abc" />
-   <file name="$INSTALL_PATH/some/file.java" />
- </job>
+  <global>
+    <compiler>
+      <choice value="$JAVA_HOME/bin/javac" />
+      <choice value="jikes" />
+    </compiler>
+    <arguments>
+      <choice value="-O -g:none" />
+      <choice value="-O" />
+      <choice value="-g" />
+      <choice value="" />
+    </arguments>
+  </global>
+  <jobs>
+    <classpath add="$INSTALL_PATH/src/classes/" />
+    <job name="optional name">
+      <directory name="$INSTALL_PATH/src/classes/xyz" />
+    </job>
+    <job name="another job">
+      <packdepency name="some package name" />
+      <classpath sub="$INSTALL_PATH/" />
+      <directory name="$INSTALL_PATH/src/classes/abc" />
+      <file name="$INSTALL_PATH/some/file.java" />
+    </job>
+  </jobs>
 </compilation>
 \end{verbatim}
 
@@ -654,8 +668,7 @@ the classpath within a job only affects this job and nested jobs. The classpath
 should be specified before any files or directories.
 
 The user can change the compiler to use and choose from some default
-compilation options before compilation is started. (In the future, the
-compilers and compilation options might be specified in the XML file too.)
+compilation options before compilation is started. 
 
 \includegraphics[width=\linewidth]{img/compilePanel}
 
