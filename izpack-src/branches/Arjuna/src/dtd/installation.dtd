@@ -58,9 +58,10 @@
 
 <!-- The packs section (indicates the packs to create) -->
 <!ELEMENT packs (pack+)>
-    <!ELEMENT pack (description, file*, fileset*, parsable*, executable*,)>
+    <!ELEMENT pack (description, file*, singlefile*, fileset*, parsable*, executable*,)>
         <!ATTLIST pack name CDATA #REQUIRED>
         <!ATTLIST pack required (yes|no) #REQUIRED>
+        <!ATTLIST pack preselected (yes|no)>
         <!ATTLIST pack os CDATA #IMPLIED>
         <!ELEMENT description (#PCDATA)>
         <!ELEMENT file EMPTY>
@@ -68,6 +69,11 @@
             <!ATTLIST file targetdir CDATA #REQUIRED>
             <!ATTLIST file os (unix|windows|mac) #IMPLIED>
 						<!ATTLIST file override (true|false) "true">
+        <!ELEMENT singlefile EMPTY>
+            <!ATTLIST singlefile src CDATA #REQUIRED>
+            <!ATTLIST singlefile target CDATA #REQUIRED>
+            <!ATTLIST singlefile os (unix|windows|mac) #IMPLIED>
+						<!ATTLIST singlefile override (true|false) "true">
 		<!ELEMENT fileset (include*, exclude*)>
 	        <!ATTLIST fileset dir CDATA #REQUIRED>
 	        <!ATTLIST fileset targetdir CDATA #REQUIRED>	
@@ -88,6 +94,7 @@
 					<!ATTLIST executable type (bin|jar) "bin">
 					<!ATTLIST executable stage (postinstall|never|uninstall) "never">
 					<!ATTLIST executable failure (abort|warn|ask) "ask">
+					<!ATTLIST executable keep (true|false) "false">
 					<!ELEMENT args (arg+)>
 							<!ELEMENT arg EMPTY>
 									<!ATTLIST arg value CDATA #REQUIRED>
