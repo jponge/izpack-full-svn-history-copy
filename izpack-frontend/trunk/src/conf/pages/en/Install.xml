@@ -3,8 +3,8 @@
 	$Id: izpack-frontend Feb 8, 2004 izpack-frontend
 	Copyright (C) 2001-2003 IzPack Development Group
 
-	File : license.xml 
-	Description : The configuration for the license panel
+	File : welcome.xml 
+	Description : The configuration for the welcome panel
 	Author's email : gumbo@users.berlios.de
 
 	This program is free software; you can redistribute it and/or modify it
@@ -22,12 +22,12 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="Selection Panel">
+<izpack-panel name="Install Panel">
 	<panel-version>1.0</panel-version>
-	<panel-desc-short>Select installer panels</panel-desc-short>
-	<panel-desc-long>Display a panel to users so they can select the panels and order for installation.</panel-desc-long>
+	<panel-desc-short>Perform the install</panel-desc-short>
+	<panel-desc-long>Perform the install process, and display progress information.</panel-desc-long>
 	
 	<authors>
-		<author name="Sample Developer2" email="example2@invalid.com" />
+		<author name="IzPack Team" email="izpack-devel@berlios.de" />
 	</authors>		
 </izpack-panel>

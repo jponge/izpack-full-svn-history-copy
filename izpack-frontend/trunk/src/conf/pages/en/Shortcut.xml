@@ -3,8 +3,8 @@
 	$Id: izpack-frontend Feb 8, 2004 izpack-frontend
 	Copyright (C) 2001-2003 IzPack Development Group
 
-	File : license.xml 
-	Description : The configuration for the license panel
+	File : welcome.xml 
+	Description : The configuration for the welcome panel
 	Author's email : gumbo@users.berlios.de
 
 	This program is free software; you can redistribute it and/or modify it
@@ -22,16 +22,19 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="License Panel">
+<izpack-panel name="Shortcut Panel">
 	<panel-version>1.0</panel-version>
-	<panel-desc-short>Display product license</panel-desc-short>
-	<panel-desc-long>Display a panel to users providing license information, as well as requiring them to accept the license to continue.</panel-desc-long>
+	<panel-desc-short>Configure shortcuts</panel-desc-short>
+	<panel-desc-long>Allow user to configure shortcuts (desktop, etc.) Currently Windows only.</panel-desc-long>
 	
 	<authors>
 		<author name="IzPack Team" email="izpack-devel@berlios.de" />
 	</authors>
-		
+	
 	<resources>
-		<res id="LicensePanel.license" required="true" type="txt" />
-	</resources>		
+		<res id="shortcutSpec.xml" type="xml" required="true" />
+		<native>
+			<library type="izpack" name="ShellLink.dll" />
+		</native>
+	</resources>	
 </izpack-panel>
