@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-29 10:35+0000\n"
+"POT-Creation-Date: 2004-05-30 11:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: failuredialog.cpp:30 launcher.cpp:27 launcher.cpp:78
+#: failuredialog.cpp:30 launcher.cpp:48 launcher.cpp:99
 msgid "IzPack launcher"
 msgstr ""
 
@@ -52,26 +52,26 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: launcher.cpp:72
+#: launcher.cpp:93
 msgid "The configuration file is broken."
 msgstr ""
 
-#: launcher.cpp:166
+#: launcher.cpp:190
 msgid "There is no installer to launch."
 msgstr ""
 
-#: launcher.cpp:172
+#: launcher.cpp:196
 msgid "The installer launch failed."
 msgstr ""
 
-#: launcher.cpp:178
+#: launcher.cpp:204
 msgid "Please choose a 'java' executable"
 msgstr ""
 
-#: launcher.cpp:195 launcher.cpp:200
+#: launcher.cpp:224
 msgid "Could not launch the JRE installation process."
 msgstr ""
 
-#: launcher.cpp:251
+#: launcher.cpp:272
 msgid "Could not find a web browser."
 msgstr ""
