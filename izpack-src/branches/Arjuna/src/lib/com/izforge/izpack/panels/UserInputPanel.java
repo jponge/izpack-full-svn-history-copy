@@ -271,10 +271,9 @@ public class UserInputPanel extends IzPanel
     // ----------------------------------------------------
     // get a locale database
     // ----------------------------------------------------
-    ResourceManager resources = super.getResourceManager();
     try
     {
-      langpack = new LocaleDatabase (resources.getInputStream (SPEC_FILE_NAME));
+      this.langpack = new LocaleDatabase (ResourceManager.getInstance().getInputStream (SPEC_FILE_NAME));
     }
     catch (Throwable exception)
     {}

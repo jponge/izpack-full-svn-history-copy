@@ -72,11 +72,14 @@ public class AutomatedInstaller extends InstallerBase
     idata.xmlData = getXMLData(input);
 
     // Loads the langpack
-    idata.localeISO3 = idata.xmlData.getAttribute("langpack");
+    idata.localeISO3 = idata.xmlData.getAttribute("langpack", "eng");
     InputStream in = getClass().getResourceAsStream("/langpacks/" +
       idata.localeISO3 +
       ".xml");
     LocaleDatabase langpack = new LocaleDatabase(in);
+
+    // create the resource manager singleton
+    ResourceManager.create (idata);
 
     this.panelInstanceCount = new TreeMap();
 

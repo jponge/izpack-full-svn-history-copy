@@ -110,7 +110,7 @@ public class HTMLInfoPanel extends IzPanel implements HyperlinkListener
     String resNamePrifix = "HTMLInfoPanel.info";
     try
     {
-      return super.getResourceManager().getURL(resNamePrifix);
+      return ResourceManager.getInstance().getURL(resNamePrifix);
     }
     catch (Exception ex)
     {

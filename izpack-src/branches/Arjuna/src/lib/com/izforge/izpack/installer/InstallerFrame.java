@@ -223,7 +223,7 @@ public class InstallerFrame extends JFrame
 
     NavigationHandler navHandler = new NavigationHandler();
 
-	JPanel navPanel = new JPanel();
+    JPanel navPanel = new JPanel();
     navPanel.setLayout(new BoxLayout(navPanel, BoxLayout.X_AXIS));
     navPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8,8,8,8), BorderFactory.createTitledBorder(new EtchedLineBorder(), langpack.getString("installer.madewith")+" ")));
     navPanel.add(Box.createHorizontalGlue());
@@ -252,25 +252,25 @@ public class InstallerFrame extends JFrame
     quitButton.addActionListener(navHandler);
     contentPane.add(navPanel,BorderLayout.SOUTH);
 
-	try
-	{
-		ResourceManager rm = new ResourceManager(installdata);
-		ImageIcon icon = rm.getImageIconResource("Installer.image");
-		if (icon != null)
-		{
-			JPanel imgPanel = new JPanel();
-			imgPanel.setLayout(new BorderLayout());
-			imgPanel.setBorder(BorderFactory.createEmptyBorder(10,10,0,0));
-			JLabel label = new JLabel(icon);
-			label.setBorder(BorderFactory.createLoweredBevelBorder());
-			imgPanel.add(label,BorderLayout.CENTER);
-			contentPane.add(imgPanel,BorderLayout.WEST);
-		}
-	}
-	catch (Exception e)
-	{
-		//ignore
-	}
+    try
+    {
+      ResourceManager rm = ResourceManager.getInstance();
+      ImageIcon icon = rm.getImageIconResource("Installer.image");
+      if (icon != null)
+      {
+        JPanel imgPanel = new JPanel();
+        imgPanel.setLayout(new BorderLayout());
+        imgPanel.setBorder(BorderFactory.createEmptyBorder(10,10,0,0));
+        JLabel label = new JLabel(icon);
+        label.setBorder(BorderFactory.createLoweredBevelBorder());
+        imgPanel.add(label,BorderLayout.CENTER);
+        contentPane.add(imgPanel,BorderLayout.WEST);
+      }
+    }
+    catch (Exception e)
+    {
+      //ignore
+    }
 
      getRootPane().setDefaultButton(nextButton);
   }
@@ -387,12 +387,19 @@ public class InstallerFrame extends JFrame
    *  Gets the stream to a resource.
    *
    * @param  res            The resource id.
-   * @return                The resource value
-   * @exception  Exception  Description of the Exception
+   * @return                The resource value, null if not found
    */
-  public InputStream getResource(String res) throws Exception
+  public InputStream getResource(String res)
   {
-    return getClass().getResourceAsStream("/res/" + res);
+    try
+    {
+      //System.out.println ("retrieving resource " + res);
+      return ResourceManager.getInstance().getInputStream (res);
+    }
+    catch (ResourceNotFoundException e)
+    {
+      return null;
+    }
   }
 
 

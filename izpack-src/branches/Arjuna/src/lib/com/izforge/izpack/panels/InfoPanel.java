@@ -104,7 +104,7 @@ public class InfoPanel extends IzPanel
     try
     {
       String resNamePrifix = "InfoPanel.info";
-      info = super.getResourceManager().getTextResource(resNamePrifix);
+      info = ResourceManager.getInstance().getTextResource(resNamePrifix);
     }
     catch (Exception err)
     {

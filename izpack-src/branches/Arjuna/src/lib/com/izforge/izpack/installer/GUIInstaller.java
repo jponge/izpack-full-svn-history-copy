@@ -64,7 +64,7 @@ public class GUIInstaller extends InstallerBase
   {
     super();
 
-		installdata = new InstallData();
+		this.installdata = new InstallData();
 
     // Loads the installation data
     loadInstallData(installdata);
@@ -81,6 +81,9 @@ public class GUIInstaller extends InstallerBase
     // Loads the suitable langpack
     loadLangPack();
 
+    // create the resource manager (after the language selection!)
+    ResourceManager.create (this.installdata);
+
     // We launch the installer GUI
     loadGUI();
   }
@@ -90,10 +93,11 @@ public class GUIInstaller extends InstallerBase
 	 *
 	 * @throws Exception
 	 */
-  public void loadGUIInstallData() throws Exception {
+  public void loadGUIInstallData() throws Exception 
+  {
 		InputStream in = getClass().getResourceAsStream("/GUIPrefs");
 		ObjectInputStream objIn = new ObjectInputStream(in);
-		installdata.guiPrefs = (GUIPrefs) objIn.readObject();
+		this.installdata.guiPrefs = (GUIPrefs) objIn.readObject();
 		objIn.close();
 	}
 
@@ -106,7 +110,7 @@ public class GUIInstaller extends InstallerBase
   private void checkJavaVersion() throws Exception
   {
     String version = System.getProperty("java.version");
-    String required = installdata.info.getJavaVersion();
+    String required = this.installdata.info.getJavaVersion();
     if (version.compareTo(required) < 0)
     {
       System.out.println("Can't install !");
@@ -149,10 +153,10 @@ public class GUIInstaller extends InstallerBase
       selectedPack = (String) availableLangPacks.get(0);
 
     // We add an xml data information
-    installdata.xmlData.setAttribute("langpack", selectedPack);
+    this.installdata.xmlData.setAttribute("langpack", selectedPack);
 
     // We load the langpack
-    installdata.localeISO3 = selectedPack;
+    this.installdata.localeISO3 = selectedPack;
     InputStream in = getClass().getResourceAsStream("/langpacks/" + selectedPack + ".xml");
     langpack = new LocaleDatabase(in);
   }
@@ -186,8 +190,8 @@ public class GUIInstaller extends InstallerBase
    */
   private void loadLookAndFeel() throws Exception
   {
-    if (installdata.kind.equalsIgnoreCase("standard") ||
-      installdata.kind.equalsIgnoreCase("web"))
+    if (this.installdata.kind.equalsIgnoreCase("standard") ||
+      this.installdata.kind.equalsIgnoreCase("web"))
     {
       if (getClass().getResourceAsStream("/res/useNativeLAF") != null)
       {
@@ -199,17 +203,17 @@ public class GUIInstaller extends InstallerBase
 		      // We simply put our nice theme
           MetalLookAndFeel.setCurrentTheme(new IzPackMetalTheme());
           ButtonFactory.useHighlightButtons();
-          installdata.buttonsHColor = new Color(182, 182, 204);
+          this.installdata.buttonsHColor = new Color(182, 182, 204);
       }
       lnf = "swing";
     }
     else
-      if (installdata.kind.equalsIgnoreCase("standard-kunststoff") ||
-      installdata.kind.equalsIgnoreCase("web-kunststoff"))
+      if (this.installdata.kind.equalsIgnoreCase("standard-kunststoff") ||
+      this.installdata.kind.equalsIgnoreCase("web-kunststoff"))
     {
     	ButtonFactory.useHighlightButtons();
       // We change the highlight color for the buttons
-      installdata.buttonsHColor = new Color(255, 255, 255);
+      this.installdata.buttonsHColor = new Color(255, 255, 255);
 
       // Some reflection ...
       Class laf = Class.forName("com.incors.plaf.kunststoff.KunststoffLookAndFeel");
@@ -242,8 +246,8 @@ public class GUIInstaller extends InstallerBase
     UIManager.put("OptionPane.noButtonText", langpack.getString("installer.no"));
     UIManager.put("OptionPane.cancelButtonText", langpack.getString("installer.cancel"));
 
-    String title = langpack.getString("installer.title") + installdata.info.getAppName();
-    InstallerFrame installerFrame = new InstallerFrame(title, langpack, installdata);
+    String title = langpack.getString("installer.title") + this.installdata.info.getAppName();
+    InstallerFrame installerFrame = new InstallerFrame(title, langpack, this.installdata);
   }
 
 

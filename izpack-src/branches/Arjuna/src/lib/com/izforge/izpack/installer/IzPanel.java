@@ -63,7 +63,7 @@ public class IzPanel extends JPanel
 
     this.idata = idata;
     this.parent = parent;
-    this.resourceManager = new ResourceManager(this.idata);
+    this.resourceManager = ResourceManager.getInstance ();
   }
 
 
@@ -112,15 +112,5 @@ public class IzPanel extends JPanel
   public void runNoGUI() { }
 
 
-  /**
-   *  Returns the current ResourceManager. with this ResourceManager you can
-   *  access IzPack resources easily
-   *
-   * @return    Value of property resourceManager.
-   */
-  public ResourceManager getResourceManager()
-  {
-    return resourceManager;
-  }
 }
 

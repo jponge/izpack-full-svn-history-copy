@@ -243,7 +243,7 @@ public class ImgPacksPanel extends IzPanel implements ActionListener, ListSelect
     for (int i = 0; i < size; i++)
       try
       {
-        URL url = super.getResourceManager().getURL("ImgPacksPanel.img." + i);
+        URL url = ResourceManager.getInstance().getURL("ImgPacksPanel.img." + i);
         ImageIcon img = new ImageIcon(url);
         images.add(img);
       }
