@@ -63,6 +63,13 @@ public interface Page extends Observer {
      */
     public String getName();
 
+    /**
+     * Validate this page.  Parameters for validation come from...
+     * somewhere. :)
+     * 
+     * @return true if this page is valid      
+     */
+    public boolean validatePage();
 }
 
 

@@ -49,6 +49,6 @@ public class DisplayPageAction implements ActionListener
 	/** Display the page with the name <code>this.pageName;</code>. */
 	public void actionPerformed(ActionEvent e)
 	{
-		IzPackFrame.getInstance().displayPage(pageName);
+		//IzPackFrame.getInstance().displayPage(pageName);
 	}
 }

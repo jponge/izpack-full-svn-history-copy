@@ -21,8 +21,11 @@
  */
 package izpack.frontend.controller;
 
+import izpack.frontend.model.RecentFileManager;
+
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 
 /**
  * FrameListener to shutdown the application.
@@ -47,6 +50,16 @@ public class FrameListener implements WindowListener {
 	 * Exits applications
 	 */
 	public void windowClosing(WindowEvent e) {
+	    try
+        {
+            RecentFileManager.getInstance().saveRecentFiles();
+        }
+        catch (IOException e1)
+        {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }	    	    
+	    
 		System.exit(0);
 	}
 

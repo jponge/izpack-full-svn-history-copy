@@ -36,6 +36,9 @@ public class GUIConstants {
 	
 	public final static String PAGE_GENERAL_INFO = "GeneralInfoPage";
 	
+	
+	public final static String STAGE_WELCOME = "WelcomeStage";
+	
 	/* Welcome Page buttons */
 	public final static String BUTTON_NEW = "NewButton";
 	public final static String BUTTON_COMPILE = "CompileButton";

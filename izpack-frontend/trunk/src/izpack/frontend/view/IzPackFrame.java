@@ -24,9 +24,12 @@ import izpack.frontend.controller.FrameListener;
 import izpack.frontend.controller.GUIController;
 import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.LangResources;
-import izpack.frontend.model.PageInfoManager;
-import izpack.frontend.view.pages.*;
+import izpack.frontend.view.pages.IzPackPage;
+import izpack.frontend.view.pages.Page;
+import izpack.frontend.view.stages.IzPackStage;
+import izpack.frontend.view.stages.Stage;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -63,7 +66,7 @@ public class IzPackFrame extends JFrame implements AppBase {
 		// init
 		this.initComponents();
 		// display welcome page
-		this.displayPage(GUIConstants.PAGE_GENERAL_INFO);
+		this.displayStage(GUIConstants.STAGE_WELCOME);		
 	}
 
 	/**
@@ -97,7 +100,8 @@ public class IzPackFrame extends JFrame implements AppBase {
 		    System.out.println("Locating " + name);
 			String pageClass =
 				GUIController.getInstance().appConfiguration().getClass4Page(
-					name);
+					name);		
+			
 			// create the page
 			Page page = null;
 			try {
@@ -123,22 +127,76 @@ public class IzPackFrame extends JFrame implements AppBase {
 			return null;
 		}
 	}
+	
+	public Stage getStage(String name, boolean createFlag)
+    {
+        Container cp = getContentPane();
+        Component[] stages = cp.getComponents();
+        for (int i = 0; i < stages.length; i++)
+        {
+            if (stages[i].getName().equalsIgnoreCase(name)) {
+            // we found the page with the given name
+            return (Stage) stages[i]; }
+        }
+        // we didnt find the page
+        if (createFlag)
+        {
+            System.out.println("Locating " + name);
+            String stageClass = GUIController.getInstance().appConfiguration()
+                    .getClass4Stage(name);
+            // create the page
+            Stage stage = null;
+            try
+            {
+                stage = (Stage) Class.forName(stageClass).newInstance();
+                stage.setName(name);
+            }
+            catch (InstantiationException e)
+            {
+                throw new RuntimeException("Error while creating Page '" + name
+                        + "'!", e);
+            }
+            catch (IllegalAccessException e)
+            {
+                throw new RuntimeException("Error while creating Page '" + name
+                        + "'!", e);
+            }
+            catch (ClassNotFoundException e)
+            {
+                throw new RuntimeException("Error while creating Page '" + name
+                        + "'!", e);
+            }
+            System.out.println("stage " + name + " created.");
+            return stage;
+        }
+        else
+        {
+            // we should not create the page, so return null
+            return null;
+        }
+    }   
 
 	/**
-	 * Display the page associated with the given name. If a page with the
-	 * given name does not exists it will by loaded automatically by <code>getPage(String name, boolean createFlag)</code>
+	 * Display the stage associated with the given name. If a stage with the
+	 * given name does not exists it will by loaded automatically by <code>getStage(String name, boolean createFlag)</code>
 	 * 
-	 * @param name The name of the page to display.
+	 * @param name The name of the stage to display.
 	 */
-	public void displayPage(String name) {
+	public void displayStage(String name) {
 		Container cp = getContentPane();
-		CardLayout layout = (CardLayout)cp.getLayout();
+		//CardLayout layout = (CardLayout)cp.getLayout();
+		//BorderLayout layout = (BorderLayout)cp.getLayout();
 
-		IzPackPage page = (IzPackPage)this.getPage(name, true);
-		// add the page to the container
-		cp.add(page, page.getName());
-		// display the page
-		layout.show(cp, page.getName());
+		IzPackStage stage = (IzPackStage)this.getStage(name, true);
+		stage.initializeStage();
+		stage.setSize(500, 500);
+
+		
+		// add the stage to the container
+		cp.add(stage);		
+		
+		// display the stage
+		//layout.show(cp, stage.getName());	
 	}
 
 	/**
@@ -158,8 +216,9 @@ public class IzPackFrame extends JFrame implements AppBase {
 	 * its easy to display the single pages. Also adds the <code>izpack.frontend.FrameListener</code>.
 	 */
 	public void initComponents() {
-		CardLayout layout = new CardLayout();
-		getContentPane().setLayout(layout);
+		//CardLayout layout = new CardLayout();
+	    //BorderLayout layout = new BorderLayout();
+		//getContentPane().setLayout(layout);
 		this.addWindowListener(new FrameListener());
 	}
 
@@ -201,8 +260,8 @@ public class IzPackFrame extends JFrame implements AppBase {
 	 * @param args Arguments
 	 */
 	public static void main(String[] args) {
-		IzPackFrame frame = IzPackFrame.getInstance();
-		frame.pack();
+		IzPackFrame frame = IzPackFrame.getInstance();		
+		frame.pack();		
 		frame.setVisible(true);
-	}
+	}    
 }

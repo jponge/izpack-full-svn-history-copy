@@ -25,6 +25,7 @@ package izpack.frontend.view;
 import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.LangResources;
 import izpack.frontend.view.pages.*;
+import izpack.frontend.view.stages.Stage;
 
 import java.util.Observer;
 
@@ -61,13 +62,26 @@ public interface AppBase extends Observer {
 	 *               not exist and the createFlag was false.
 	 */
 	public Page getPage(String name, boolean createFlag);
+	
+	/**
+	 * Get a stage by a name. The createFlag specifies whether or not to create
+	 * the stage if it does not exist already.
+	 * 
+	 * @param name The name of the stage.
+	 * @param createFlag The flag that specifies wheter or not to create the
+	 *                    stage if it does not exist.
+	 * @return The stage associated with the given name or null if the stage does
+	 *               not exist and the createFlag was false.
+	 */
+	public Stage getStage(String name, boolean createFlag);
 
+	
 	/**
 	 * Display the page with the given name.
 	 * 
 	 * @param name
 	 */
-	public void displayPage(String name);
+	public void displayStage(String name);
 
 	/**
 	 * Get the languge resource model to support i18n.

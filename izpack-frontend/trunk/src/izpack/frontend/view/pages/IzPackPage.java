@@ -124,6 +124,11 @@ public abstract class IzPackPage extends JPanel implements Page {
 	public AppConfiguration appConfiguration() {
 		return GUIController.getInstance().appConfiguration();
 	}
+	
+	public boolean validatePage()
+	{
+	    return true;
+	}
  } 
 
 

@@ -23,19 +23,15 @@
  */
 package izpack.frontend.view.pages;
 
-import izpack.frontend.view.*;
+import izpack.frontend.view.LabelPanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.debug.FormDebugPanel;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 

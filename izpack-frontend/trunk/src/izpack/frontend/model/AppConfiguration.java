@@ -44,6 +44,7 @@ public class AppConfiguration {
 	// Tags (names) used within the config file
 	public final static String T_I18N = "i18n";
 	public final static String T_PAGE = "page";
+	public final static String T_STAGE = "stage";
 	public final static String T_UI = "user-interface";
 	public final static String T_APP_VERSION = "app-version";
 	public final static String T_APP_NAME = "app-name";
@@ -166,5 +167,27 @@ public class AppConfiguration {
 		}
 
 	}
+
+    public String getClass4Stage(String name)
+    {
+        Vector v = xml.getChildrenNamed(T_UI);
+		XMLElement uiElem = (XMLElement)v.get(0);
+		Vector stageElems= uiElem.getChildrenNamed(T_STAGE);
+		Iterator it = stageElems.iterator();
+		XMLElement elem = null;
+		String className =null;
+		String stageName = null;
+		while (it.hasNext()) {
+			elem = (XMLElement)it.next();
+			stageName = elem.getAttribute(A_NAME);
+			className = elem.getAttribute(A_CLASS);
+			if (stageName.equalsIgnoreCase(name) && className != null) {
+				// found the className
+				return className;
+			}
+		}
+		// nothing found
+		return null;        
+    }
 
 }
