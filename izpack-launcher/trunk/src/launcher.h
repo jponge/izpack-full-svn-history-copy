@@ -57,8 +57,6 @@ private:
 
   bool searchJRE();
 
-  inline bool isValidPath();
-
   void runJRE();
 
   void manualLaunch();

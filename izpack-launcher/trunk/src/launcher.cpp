@@ -150,7 +150,7 @@ bool LauncherApp::searchJRE()
         if (vKey.QueryValue("JavaHome", home))
         {
           javaExecPath = home + "\\bin\\javaw";
-          return isValidPath();
+          return true;
         }
       }
     }
@@ -166,7 +166,7 @@ bool LauncherApp::searchJRE()
 #else
     javaExecPath = wxString(envRes) + "/bin/java";
 #endif
-    return isValidPath();
+    return true;
   }
 
 #ifndef __WINDOWS__
@@ -178,17 +178,12 @@ bool LauncherApp::searchJRE()
   if (wxExecute("java -version", wxEXEC_SYNC) == 0)
   {
     javaExecPath = "java";
-    return isValidPath();
+    return true;
   }
 #endif
 
   // Failure
   return false;
-}
-
-bool LauncherApp::isValidPath()
-{
-  return wxFile::Exists(javaExecPath);
 }
 
 void LauncherApp::runJRE()
