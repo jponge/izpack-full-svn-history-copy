@@ -32,10 +32,11 @@ install: all install_lang
 	strip ../dist/${EXEC}-${OS}
 
 install_lang:
-	mkdir -p ../dist/fr ../dist/de ../dist/da
+	mkdir -p ../dist/fr ../dist/de ../dist/da ../dist/pt-BR
 	cp fr/launcher.mo ../dist/fr
 	cp de/launcher.mo ../dist/de
 	cp da/launcher.mo ../dist/da
+	cp pt-BR/launcher.mo ../dist/pt-BR
 
 clean:
 	rm -f ${EXEC} ${OBJS}
