@@ -1,15 +1,17 @@
+# translation of da.po to Danish
 # translation of launcher.po to Danish
 # This file is distributed under the same license as the izpack-launcher package
 # Copyright (C) 2004 Julien Ponge.
+# Frank Bille Jesen <i18n@frank-bille.dk>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: launcher\n"
+"Project-Id-Version: da\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-04-29 10:35+0000\n"
-"PO-Revision-Date: 2004-04-09 23:30+0200\n"
-"Last-Translator: Frank Bille Jesen <izpack@frank-bille.dk>\n"
-"Language-Team: Danish <izpack-devel@lists.berlios.de>\n"
+"PO-Revision-Date: 2004-04-29 11:35+0200\n"
+"Last-Translator: Frank Bille Jesen <i18n@frank-bille.dk>\n"
+"Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,27 +28,28 @@ msgid ""
 "The Java Runtime Environment could not be detected on your computer but it "
 "can be installed for you."
 msgstr ""
+"Programmet, som du prøver på at installere, kræver et Java runtime miljø.\n"
+"Java runtime miljøet kunne ikke findes på din computer, men det kan installeres for dig."
 
 #: failuredialog.cpp:62
 msgid "manually locate an already installed Java Runtime Environment"
-msgstr ""
+msgstr "lokaliser selv et allerede installeret Java runtime miljø"
 
 #: failuredialog.cpp:63
-#, fuzzy
 msgid ""
 "automatically install the Java Runtime Environment included with this "
 "software"
-msgstr "Installer Java[tm] runtime miljøet der er vedlagt denne program pakke."
+msgstr "automatisk installer Java runtime miljøet der er vedlagt denne program pakke"
 
 #: failuredialog.cpp:65
 msgid ""
 "download the latest version of the Java Runtime Environment from the "
 "Internet."
-msgstr ""
+msgstr "nedlæs den seneste version af Java runtime miljøet fra internettet."
 
 #: failuredialog.cpp:69
 msgid "You have the following installation choices:"
-msgstr ""
+msgstr "Du har følgende installationsmuligheder:"
 
 #: failuredialog.cpp:75
 msgid "Ok"
@@ -76,15 +79,3 @@ msgstr "Kunne ikke starte JRE installations processen."
 msgid "Could not find a web browser."
 msgstr "Kunne ikke finde en web browser."
 
-#~ msgid ""
-#~ "The launcher could not find a Java[tm] runtime environment on this system."
-#~ msgstr "Starteren kunne ikke finde et Java[tm] runtime miljø på dit system."
-
-#~ msgid "manually specify a 'java' executable."
-#~ msgstr "Angiv manuelt en udførbar 'java' fil."
-
-#~ msgid "download it from the Internet."
-#~ msgstr "Hent den fra internettet."
-
-#~ msgid "I want to ..."
-#~ msgstr "Jeg vil ..."
