@@ -1,0 +1,24 @@
+<!--
+
+  DTD for an IzPack extension descriptor.
+
+-->
+
+
+<!-- The root element for an extension -->
+<!ELEMENT extension (header, provides+)>
+
+<!-- The extension header -->
+<!ELEMENT header (name, description, url, license, author+)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT author (#PCDATA)>
+<!ELEMENT license (#PCDATA)>
+
+<!-- Specifies what the extension provides -->
+<!ELEMENT provides (ident, what, class, jar+)>
+<!ELEMENT ident (#PCDATA)>
+<!ELEMENT what (#PCDATA)>
+<!ELEMENT class (#PCDATA)>
+<!ELEMENT jar (#PCDATA)>
