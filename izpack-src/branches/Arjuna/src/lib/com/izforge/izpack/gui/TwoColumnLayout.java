@@ -250,17 +250,19 @@ public class TwoColumnLayout implements LayoutManager2
     // ----------------------------------------------------
     else if (component.position == component.BOTH)
     {
-      if (components [LEFT].size () < components [RIGHT].size ())
+      // first make sure that both columns have the same number of entries
+      while (components [RIGHT].size () > components [LEFT].size ())
       {
-        components [RIGHT].insertElementAt (null, components [LEFT].size ());
+        components [LEFT].add (null);
       }
-
-      components [LEFT].add (component);
 
       while (components [LEFT].size () > components [RIGHT].size ())
       {
         components [RIGHT].add (null);
       }
+
+      components [LEFT].add (component);
+      components [RIGHT].add (null);
     }
 
     // ----------------------------------------------------
@@ -272,11 +274,43 @@ public class TwoColumnLayout implements LayoutManager2
     }
 
     // ----------------------------------------------------
+    // WESTONLY components are added to the left column
+    // the right column has to be kept free
+    // ----------------------------------------------------
+    else if (component.position == component.WESTONLY)
+    {
+      components [LEFT].add (component);
+
+      // fill right column to make sure nothing is placed there
+      while (components [RIGHT].size () < components [LEFT].size ())
+      {
+        components [RIGHT].add (null);
+      }
+
+    }
+
+    // ----------------------------------------------------
     // EAST components are added to the right column
     // ----------------------------------------------------
     else if (component.position == component.EAST)
     {
       components [RIGHT].add (component);
+    }
+
+    // ----------------------------------------------------
+    // EASTONLY components are added to the left column
+    // the right column has to be kept free
+    // ----------------------------------------------------
+    else if (component.position == component.EASTONLY)
+    {
+      components [RIGHT].add (component);
+
+      // fill left column to make sure nothing is placed there
+      while (components [LEFT].size () < components [RIGHT].size ())
+      {
+        components [LEFT].add (null);
+      }
+
     }
 
     // ----------------------------------------------------
