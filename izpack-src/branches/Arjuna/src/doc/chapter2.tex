@@ -124,6 +124,10 @@ following parse types are available:
   \item \texttt{xml} - use this type if the substitution happens in
         a XML file. Individual variables might be modified to function
         properly within the context of XML files.
+  \item \texttt{shell} - use this type if the substitution happens in
+        a shell script. Because shell scripts use \texttt{\$variable} 
+        themself, an alternative variable marker is used: 
+        \texttt{\%variable} or \texttt{\%\{variable\}}.
 \end{itemize}
 
 % The IzPack elements
