@@ -141,60 +141,80 @@ public class FileExecutor
    * @param  output  Description of the Parameter
    * @return         Description of the Return Value
    */
-  public int executeCommand(String[] params, String[] output)
-  {
-    Process process = null;
-    MonitorInputStream outMonitor = null;
-    MonitorInputStream errMonitor = null;
-    Thread t1 = null;
-    Thread t2 = null;
-    int exitStatus = 0;
+	public int executeCommand(String[] params, String[] output)
+	{
+		Process process = null;
+		MonitorInputStream outMonitor = null;
+		MonitorInputStream errMonitor = null;
+		Thread t1 = null;
+		Thread t2 = null;
+		int exitStatus = -1;
 
-    try
-    {
-      // execute command
-      process = Runtime.getRuntime().exec(params);
+		try
+		{
+			// execute command
+			process = Runtime.getRuntime().exec(params);
 
-      InputStreamReader or = new InputStreamReader(process.getInputStream());
-      InputStreamReader er = new InputStreamReader(process.getErrorStream());
-      StringWriter outWriter = new StringWriter();
-      StringWriter errWriter = new StringWriter();
-      outMonitor = new MonitorInputStream(or, outWriter);
-      errMonitor = new MonitorInputStream(er, errWriter);
-      t1 = new Thread(outMonitor);
-      t2 = new Thread(errMonitor);
-      t1.setDaemon(true);
-      t2.setDaemon(true);
-      t1.start();
-      t2.start();
+            boolean console = false;//TODO: impl from xml <execute in_console=true ...>, but works already if this flag is true
+            if (console)
+            {
+    			Console c = new Console(process);
+    			// save command output
+    			output[0] = c.getOutputData();
+    			output[1] = c.getErrorData();
+            }
+            else
+            {
+    			StringWriter outWriter = new StringWriter();
+    			StringWriter errWriter = new StringWriter();
 
-      // wait for command to comlete
-      exitStatus = process.waitFor();
-      if (t1 != null)
-        t1.join();
+    			InputStreamReader or =
+    				new InputStreamReader(process.getInputStream());
+    			InputStreamReader er =
+    				new InputStreamReader(process.getErrorStream());
+    			outMonitor = new MonitorInputStream(or, outWriter);
+    			errMonitor = new MonitorInputStream(er, errWriter);
+    			t1 = new Thread(outMonitor);
+    			t2 = new Thread(errMonitor);
+    			t1.setDaemon(true);
+    			t2.setDaemon(true);
+    			t1.start();
+    			t2.start();
 
-      if (t2 != null)
-        t2.join();
+    			// wait for command to comlete
+    			exitStatus = process.waitFor();
+    			if (t1 != null)
+    			{
+    				t1.join();
+    			}
+    			if (t2 != null)
+    			{
+    				t2.join();
+    			}
 
-      // save command output
-      output[0] = outWriter.toString();
-      output[1] = errWriter.toString();
-      exitStatus = process.exitValue();
-    }
-    catch (InterruptedException e)
-    {
-      e.printStackTrace(System.err);
-      stopThread(t1, outMonitor);
-      stopThread(t2, errMonitor);
-      process.destroy();
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace(System.err);
-    }
-    return exitStatus;
-  }
-
+    			// save command output
+    			output[0] = outWriter.toString();
+    			output[1] = errWriter.toString();
+            }
+			exitStatus = process.exitValue();
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace(System.err);
+			stopThread(t1, outMonitor);
+			stopThread(t2, errMonitor);
+			output[0] = "";
+			output[1] = e.getMessage() + "\n";
+			process.destroy();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace(System.err);
+			output[0] = "";
+			output[1] = e.getMessage() + "\n";
+		}
+		return exitStatus;
+	}
 
   /**
    *  Executes files specified at construction time.
@@ -213,6 +233,7 @@ public class FileExecutor
     Iterator efileIterator = files.iterator();
     while ((exitStatus == 0) && efileIterator.hasNext())
     {
+      boolean deleteAfterwards = true;
       ExecutableFile efile = (ExecutableFile) efileIterator.next();
       File file = new File(efile.path);
 
@@ -263,6 +284,7 @@ public class FileExecutor
             // bring a dialog depending on return code and failure handling
             if (exitStatus != 0)
             {
+              deleteAfterwards = false;
               String message = output[0] + "\n" + output[1];
               if (message.length() == 1)
                 message = new String("Failed to execute " + file.toString() + ".");
@@ -297,9 +319,12 @@ public class FileExecutor
           //@todo
         }
       }
-      // POSTINSTALL executables will be deleted
-      if (efile.executionStage == ExecutableFile.POSTINSTALL)
-        file.delete();
+
+		// POSTINSTALL executables will be deleted
+		if (efile.executionStage == ExecutableFile.POSTINSTALL && deleteAfterwards)
+		{
+			if (file.canWrite()) file.delete();
+		}
 
     }
     return exitStatus;
