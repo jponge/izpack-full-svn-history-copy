@@ -160,7 +160,7 @@ public class CompileWorker implements Runnable
 		{
       // FIXME: use infrastructure from installer to get the resource
 			//input = parent.getResource(SPEC_RESOURCE_NAME);
-			input = getClass().getResourceAsStream("/res/"+SPEC_RESOURCE_NAME);
+			input = ResourceManager.getInstance().getInputStream (SPEC_RESOURCE_NAME);
 		}
 		catch (Exception e)
 		{
@@ -294,13 +294,14 @@ public class CompileWorker implements Runnable
 
     Iterator job_it = this.jobs.iterator();
 
-    this.listener.startCompilation ();
+    this.listener.startCompilation (this.jobs.size());
+    int job_no = 0;
 
     while (job_it.hasNext())
     {
       CompilationJob job = (CompilationJob) job_it.next();
       
-      this.listener.changeCompileJob (0, job.getSize(), job.getName());
+      this.listener.changeCompileJob (0, job.getSize(), job.getName(), job_no++);
 
       if (! job.perform (this.compilerToUse, args))
         break;
