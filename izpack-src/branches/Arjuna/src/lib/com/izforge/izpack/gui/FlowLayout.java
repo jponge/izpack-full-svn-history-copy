@@ -63,6 +63,20 @@ import    java.awt.*;
  * <p>
  * A flow layout lets each component assume its natural (preferred) size.
  *
+ * This class is a bit different from java.awt.FlowLayout.
+ * <blockquote>
+ * java.awt.FlowLayout has a minor problem that was
+ * bugging me when I wrote the UserInputPanel. FlowLayout puts some amount of
+ * space in between each component that it lays out. In addition it adds that
+ * same amount of space to the left and to the right of the entire group.
+ * Therefore items such as the RuleInputfield that are laid out with a
+ * FlowLayout would never line up properly with the other components (it would
+ * appear to be slightly indented). Because there is no way to circumvent this
+ * behavior in FlowLayout (it's hard coded) I copied the source and modified it
+ * so that it does not add the space to the left and to the right. Now my stuff
+ * lines up properly. 
+ * (Elmar Grom)</blockquote>
+ * 
  * @version   1.39, 11/29/02
  * @author    Arthur van Hoff
  * @author    Sami Shaio
