@@ -1,10 +1,10 @@
 /*
  * Created on Nov 18, 2004
  * 
- * $Id: VComponent.java Feb 8, 2004 izpack-frontend
+ * $Id: VTextBox.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : VComponent.java 
+ * File : VTextBox.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -23,39 +23,49 @@
  */
 package izpack.frontend.view.components.validating;
 
-import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * @author Andy Gombos
+ * 
+ * A validating textfield - checks to see if input exists
  */
-public abstract class VComponent extends JPanel
+public class VTextInput extends VComponent
 {
-    /*
-     * Called by pages to validate all the input parts (text in a text box, files from a chooser, etc)
-     */
-    public boolean validateInput()    
+
+    public VTextInput(String labelText)
     {
-        boolean valid = isInputValid();
-        if (!valid)
-            label.setForeground(Color.RED);
+        super();
+        label = new JLabel(labelText);
+        input = new JTextField();
+     
+        //TODO make this look better - it's squished
+        input.setPreferredSize(new Dimension(250, label.getPreferredSize().height));
         
-        return valid;
+        super.add(label);
+        super.add(input);
     }
     
-    public void setInvalid()
+    public String getText()
     {
-        label.setForeground(Color.RED);
+        return input.getText();
     }
     
-    /*
-     * Called internally to determine if the input is actually valid
-     * 
-     * 
-     */
-    protected abstract boolean isInputValid();
+    public void setText(String text)
+    {
+        input.setText(text);
+    }
     
-    JLabel label;    
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.components.validating.VComponent#isInputValid()
+     */
+    protected boolean isInputValid()
+    {
+        return !input.getText().equals("");         
+    }   
+    
+    JTextField input;
 }

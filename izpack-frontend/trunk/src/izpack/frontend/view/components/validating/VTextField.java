@@ -23,7 +23,6 @@
  */
 package izpack.frontend.view.components.validating;
 
-import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 /**
@@ -34,13 +33,18 @@ import javax.swing.JTextField;
 public class VTextField extends VComponent
 {
 
-    public VTextField(String labelText)
-    {
-        label = new JLabel(labelText);
+    public VTextField()
+    {   
         input = new JTextField();
         
-        super.add(label);
-        super.add(input);
+        add(input);
+    }
+    
+    public VTextField(int columns)
+    {
+        input = new JTextField(columns);
+        
+        add(input);
     }
     
     public String getText()
