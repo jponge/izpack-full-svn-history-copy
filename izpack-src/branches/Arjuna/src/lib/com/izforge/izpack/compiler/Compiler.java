@@ -42,7 +42,14 @@ import com.izforge.izpack.*;
 import org.apache.tools.ant.DirectoryScanner;
 import com.izforge.izpack.installer.VariableValueMapImpl;
 import com.izforge.izpack.installer.VariableSubstitutor;
+import com.izforge.izpack.util.OsConstraint;
 
+/**
+ * @author tisc
+ *
+ * To change the template for this generated type comment go to
+ * Window>Preferences>Java>Code Generation>Code and Comments
+ */
 /**
  *  The IzPack compiler class.
  *
@@ -325,7 +332,7 @@ public class Compiler extends Thread
         }
 
         // Writing
-        objOut.writeObject(new PackFile(targetFilename, p.os, nbytes, mtime, p.override));
+        objOut.writeObject(new PackFile(targetFilename, p.osConstraints, nbytes, mtime, p.override));
         byte[] buffer = new byte[5120];
         long bytesWritten = 0;
         int bytesInBuffer;
@@ -494,11 +501,14 @@ public class Compiler extends Thread
           String targetFile = p.getAttribute("targetfile");
           if (targetFile == null)
             throw new Exception ("targetfile attribute missing for <parsable>");
+            
+          List osList = getOsList (p);
+          
           pack.parsables.add
             (new ParsableFile(targetFile,
                    p.getAttribute("type", "plain"),
                    p.getAttribute("encoding", null),
-                   p.getAttribute("os", null)));
+                   osList));
         }
       }
 
@@ -556,20 +566,8 @@ public class Compiler extends Thread
             }
           }
 
-          // get os info on this executable
-          ArrayList osList = new ArrayList();
-          Iterator osIterator = e.getChildrenNamed("os").iterator();
-          while (osIterator.hasNext())
-          {
-            XMLElement os = (XMLElement) osIterator.next();
-            osList.add (new com.izforge.izpack.util.OsConstraint (
-                os.getAttribute("family", null),
-                os.getAttribute("name", null),
-                os.getAttribute("version", null),
-                os.getAttribute("arch", null)
-                )
-              );
-          }
+          List osList = getOsList(e);
+          
           String targetFile = e.getAttribute("targetfile");
           pack.executables.add(new ExecutableFile(targetFile,
             executeType, executeClass,
@@ -587,9 +585,11 @@ public class Compiler extends Thread
 
         int override = getOverrideValue (f);
 
+        List osList = getOsList (f);
+        
         addFile(file,
           f.getAttribute("targetdir"),
-          f.getAttribute("os"),
+          osList,
           override,
           pack.packFiles);
       }
@@ -604,9 +604,11 @@ public class Compiler extends Thread
 
         int override = getOverrideValue (f);
 
+        List osList = getOsList (f);
+        
         addSingleFile(file,
           f.getAttribute("target"),
-          f.getAttribute("os"),
+          osList,
           override,
           pack.packFiles);
       }
@@ -648,9 +650,10 @@ public class Compiler extends Thread
         int override = getOverrideValue (f);
 
         String targetDir = f.getAttribute("targetdir");
+        List osList = getOsList (f);
         addFileSet(path, includes, excludes,
           targetDir,
-          f.getAttribute("os"),
+          osList,
           pack.packFiles,
           casesensitive,
           override);
@@ -664,6 +667,40 @@ public class Compiler extends Thread
     return packs;
   }
 
+  /**
+   * Extract a list of OS constraints from given element.
+   * 
+   * @param element parent XMLElement
+   * @return List of OsConstraint (or empty List if no constraints found)
+   */
+  protected List getOsList(XMLElement element)
+  {
+    // get os info on this executable
+    ArrayList osList = new ArrayList();
+    Iterator osIterator = element.getChildrenNamed("os").iterator();
+    while (osIterator.hasNext())
+    {
+      XMLElement os = (XMLElement) osIterator.next();
+      osList.add (new OsConstraint (
+          os.getAttribute("family", null),
+          os.getAttribute("name", null),
+          os.getAttribute("version", null),
+          os.getAttribute("arch", null)
+          )
+        );
+    }
+    
+    // backward compatibility: still support os attribute
+    String osattr = element.getAttribute ("os");
+    if ((osattr != null) && (osattr.length() > 0))
+    {
+      // add the "os" attribute as a family constraint
+      osList.add (new OsConstraint (osattr, null, null, null));
+    }
+    
+    return osList;
+  }
+
 
   /**
    *  Adds a Ant fileset.
@@ -672,14 +709,14 @@ public class Compiler extends Thread
    * @param  includes       The includes rules.
    * @param  excludes       The excludes rules.
    * @param  relPath        The relative path.
-   * @param  targetOs       The target os.
+   * @param  osListr        The target os constraints.
    * @param  list           The files list.
    * @param  casesensitive  Case-sensitive stuff.
    * @param  override       Behaviour if a file already exists during install
    * @exception  Exception  Description of the Exception
    */
   protected void addFileSet(String path, String[] includes, String[] excludes,
-                            String relPath, String targetOs, ArrayList list, 
+                            String relPath, List osList, ArrayList list, 
                             String casesensitive, int override)
      throws Exception
   {
@@ -734,7 +771,7 @@ public class Compiler extends Thread
           instPath = expPath.substring(0, pathLimit);
         else
           instPath = relPath;
-        addFile(file, instPath, targetOs, override, list);
+        addFile(file, instPath, osList, override, list);
       }
 
       // Empty directories are left by the previous code section, so we need to
@@ -748,7 +785,7 @@ public class Compiler extends Thread
           instPath = relPath + File.separator + dirs[i];
           pathLimit = instPath.indexOf(dir.getName());
           instPath = instPath.substring(0, pathLimit);
-          addFile(dir, instPath, targetOs, override, list);
+          addFile(dir, instPath, osList, override, list);
         }
       }
     }
@@ -762,12 +799,12 @@ public class Compiler extends Thread
    *
    * @param  file           The file to add.
    * @param  relPath        The relative path.
-   * @param  targetOs       The target OS.
+   * @param  osList         The target OS constraints.
    * @param  override       Overriding behaviour.
    * @param  list           The files list.
    * @exception  Exception  Description of the Exception
    */
-  protected void addFile(File file, String relPath, String targetOs,
+  protected void addFile(File file, String relPath, List osList,
                          int override, ArrayList list) throws Exception
   {
     // We check if 'file' is correct
@@ -788,14 +825,14 @@ public class Compiler extends Thread
       int size = files.length;
       String np = relPath + "/" + file.getName();
       for (int i = 0; i < size; i++)
-        addFile(files[i], np, targetOs, override, list);
+        addFile(files[i], np, osList, override, list);
     }
     else
     {
       PackSource nf = new PackSource();
       nf.src = file.getAbsolutePath();
       nf.setTargetDir (relPath);
-      nf.os = targetOs;
+      nf.osConstraints = osList;
       nf.override = override;
       list.add(nf);
     }
@@ -806,19 +843,19 @@ public class Compiler extends Thread
    *
    * @param  file           The file to add.
    * @param  targetFile     The target to add the file as.
-   * @param  targetOs       The target OS.
+   * @param  osList         The target OS constraints.
    * @param  override       Overriding behaviour.
    * @param  list           The files list.
    * @exception  Exception  Description of the Exception
    */
-  protected void addSingleFile(File file, String targetFile, String targetOs,
+  protected void addSingleFile(File file, String targetFile, List osList,
                          int override, ArrayList list) throws Exception
   {
     //System.out.println ("adding single file " + file.getName() + " as " + targetFile);
     PackSource nf = new PackSource();
     nf.src = file.getAbsolutePath();
     nf.setTargetFile (targetFile);
-    nf.os = targetOs;
+    nf.osConstraints = osList;
     nf.override = override;
     list.add(nf);
   }
@@ -1191,8 +1228,8 @@ public class Compiler extends Thread
     /**  Shall we override the file ? */
     public int override = OVERRIDE_TRUE;
 
-    /**  The target operation system of this file */
-    public String os;
+    /**  The target operating systems of this file */
+    public List osConstraints = null;
 
     /**  The target directory. */
     private String targetdir = null;

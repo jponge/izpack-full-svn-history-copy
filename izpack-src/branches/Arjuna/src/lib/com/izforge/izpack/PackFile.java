@@ -25,6 +25,7 @@
 package com.izforge.izpack;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *  Encloses information about a packed file. This class abstracts the way file
@@ -38,8 +39,8 @@ public class PackFile implements Serializable
   /**  The full path name of the target file */
   public String targetPath = null;
 
-  /**  The target operation system of this file */
-  public String os = null;
+  /**  The target operating system constraints of this file */
+  public List osConstraints = null;
 
   /**  The length of the file in bytes */
   public long length = 0;
@@ -77,17 +78,18 @@ public class PackFile implements Serializable
    *  Constructs and initializes a new instance.
    *
    * @param  targetPath  the path to install the file to
-   * @param  targetOs    OS parameter
+   * @param  osList      OS constraints
    * @param  length      the length of the file
    * @param  mtime       the last modification time of the file
    * @param  override    what to do when the file already exists
    */
-  public PackFile(String targetPath, String targetOs, 
+  public PackFile(String targetPath, List osList, 
                   long length, long mtime, int override)
   {
     this.targetPath = targetPath;
     this.length = length;
-    this.os = targetOs;
+    this.osConstraints = osList;
+    this.mtime = mtime;
     this.override = override;
   }
 }

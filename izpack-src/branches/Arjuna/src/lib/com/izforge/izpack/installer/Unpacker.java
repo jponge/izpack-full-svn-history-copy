@@ -29,6 +29,7 @@
 package com.izforge.izpack.installer;
 
 import com.izforge.izpack.util.FileExecutor;
+import com.izforge.izpack.util.OsConstraint;
 import com.izforge.izpack.*;
 import java.io.*;
 import java.net.*;
@@ -202,7 +203,8 @@ public class Unpacker extends Thread
         {
           // We read the header
           PackFile pf = (PackFile) objIn.readObject();
-          if (null == pf.os || matchOS(pf.os.toLowerCase()))
+          
+          if (OsConstraint.oneMatchesCurrentSystem(pf.osConstraints))
           {
             // We translate & build the path
             String path = translatePath(pf.targetPath);

@@ -100,7 +100,7 @@ public class ExecutableFile implements Serializable
    * @param  osList          list of operating systems to run on
    */
   public ExecutableFile(String path, int executionStage,
-                        int onFailure, java.util.ArrayList osList,
+                        int onFailure, java.util.List osList,
                         boolean keepFile)
   {
     this.path = path;
@@ -116,8 +116,8 @@ public class ExecutableFile implements Serializable
                         String mainClass,
                         int executionStage,
                         int onFailure,
-                        java.util.ArrayList argList,
-                        java.util.ArrayList osList,
+                        java.util.List argList,
+                        java.util.List osList,
                         boolean keepFile)
   {
     this.path = path;

@@ -275,87 +275,80 @@ public class FileExecutor
           exitStatus = executeCommand(params, output);
         }
       }
+
       // loop through all operating systems
       Iterator osIterator = efile.osList.iterator();
-      if (!osIterator.hasNext())
+      if (!efile.osList.iterator().hasNext())
       {
         Debug.trace("no os to install the file on!");
       }
-      while (osIterator.hasNext())
+
+      if (OsConstraint.oneMatchesCurrentSystem (efile.osList))
       {
-        OsConstraint os = (OsConstraint) osIterator.next();
-
-        Debug.trace("checking if os param on file "+os+" equals current os");
-        if (os.matchCurrentSystem())
+        // execute command in POSTINSTALL stage
+        if ((exitStatus == 0) &&
+            ((currentStage == ExecutableFile.POSTINSTALL && efile.executionStage == ExecutableFile.POSTINSTALL)
+             || (currentStage==ExecutableFile.UNINSTALL && efile.executionStage == ExecutableFile.UNINSTALL)))
         {
-          Debug.trace("match current os");
-          // execute command in POSTINSTALL stage
-          if ((exitStatus == 0) &&
-              ((currentStage == ExecutableFile.POSTINSTALL && efile.executionStage == ExecutableFile.POSTINSTALL)
-               || (currentStage==ExecutableFile.UNINSTALL && efile.executionStage == ExecutableFile.UNINSTALL)))
+          List paramList = new ArrayList();
+          if (ExecutableFile.BIN == efile.type)
+            paramList.add(file.toString());
+
+          else if (ExecutableFile.JAR == efile.type && null == efile.mainClass)
           {
-            List paramList = new ArrayList();
-            if (ExecutableFile.BIN == efile.type)
-              paramList.add(file.toString());
-
-            else if (ExecutableFile.JAR == efile.type && null == efile.mainClass)
-            {
-              paramList.add(System.getProperty("java.home") + "/bin/java");
-              paramList.add("-jar");
-              paramList.add(file.toString());
-            }
-            else if (ExecutableFile.JAR == efile.type && null != efile.mainClass)
-            {
-              paramList.add(System.getProperty("java.home") + "/bin/java");
-              paramList.add("-cp=" + file.toString());
-              paramList.add(efile.mainClass);
-            }
-
-            if (null != efile.argList && !efile.argList.isEmpty())
-              paramList.addAll(efile.argList);
-
-            String[] params = new String[paramList.size()];
-            for (int i = 0; i < paramList.size(); i++)
-              params[i] = (String) paramList.get(i);
-
-            exitStatus = executeCommand(params, output);
-            // bring a dialog depending on return code and failure handling
-            if (exitStatus != 0)
-            {
-              deleteAfterwards = false;
-              String message = output[0] + "\n" + output[1];
-              if (message.length() == 1)
-                message = new String("Failed to execute " + file.toString() + ".");
-
-              if (efile.onFailure == ExecutableFile.ABORT)
-
-                javax.swing.JOptionPane.showMessageDialog(null, message,
-                    "Installation error",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
-              else if (efile.onFailure == ExecutableFile.WARN)
-              {
-
-                javax.swing.JOptionPane.showMessageDialog(null, message,
-                    "Installation warning",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-                exitStatus = 0;
-              }
-              else
-                if (
-                    javax.swing.JOptionPane.showConfirmDialog(null,
-                      message + "Would you like to proceed?",
-                      "Installation Warning",
-                      javax.swing.JOptionPane.YES_NO_OPTION) ==
-                    javax.swing.JOptionPane.YES_OPTION)
-                  exitStatus = 0;
-
-            }
+            paramList.add(System.getProperty("java.home") + "/bin/java");
+            paramList.add("-jar");
+            paramList.add(file.toString());
           }
+          else if (ExecutableFile.JAR == efile.type && null != efile.mainClass)
+          {
+            paramList.add(System.getProperty("java.home") + "/bin/java");
+            paramList.add("-cp=" + file.toString());
+            paramList.add(efile.mainClass);
+          }
+
+          if (null != efile.argList && !efile.argList.isEmpty())
+            paramList.addAll(efile.argList);
+
+          String[] params = new String[paramList.size()];
+          for (int i = 0; i < paramList.size(); i++)
+            params[i] = (String) paramList.get(i);
+
+          exitStatus = executeCommand(params, output);
+          // bring a dialog depending on return code and failure handling
+          if (exitStatus != 0)
+          {
+            deleteAfterwards = false;
+            String message = output[0] + "\n" + output[1];
+            if (message.length() == 1)
+              message = new String("Failed to execute " + file.toString() + ".");
+
+            if (efile.onFailure == ExecutableFile.ABORT)
+
+              javax.swing.JOptionPane.showMessageDialog(null, message,
+                  "Installation error",
+                  javax.swing.JOptionPane.ERROR_MESSAGE);
+            else if (efile.onFailure == ExecutableFile.WARN)
+            {
+
+              javax.swing.JOptionPane.showMessageDialog(null, message,
+                  "Installation warning",
+                  javax.swing.JOptionPane.WARNING_MESSAGE);
+              exitStatus = 0;
+            }
+            else
+              if (
+                  javax.swing.JOptionPane.showConfirmDialog(null,
+                    message + "Would you like to proceed?",
+                    "Installation Warning",
+                    javax.swing.JOptionPane.YES_NO_OPTION) ==
+                  javax.swing.JOptionPane.YES_OPTION)
+                exitStatus = 0;
+
+          }
+
         }
-        else
-        {
-          Debug.trace("-no match with current os!");
-        }
+
       }
 
       // POSTINSTALL executables will be deleted

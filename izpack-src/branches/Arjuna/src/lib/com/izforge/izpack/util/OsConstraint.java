@@ -24,6 +24,8 @@
  */
 package com.izforge.izpack.util;
 
+import java.util.*;
+
 /**
  * Encapsulates OS constraints specified on creation time and allows
  * to check them against the current OS.
@@ -106,6 +108,46 @@ public class OsConstraint implements java.io.Serializable
       (name != null) ||
       (version != null) ||
       (arch != null));
+  }
+
+
+  /**
+   * Helper function: Scan a list of OsConstraints for a match.
+   *
+   * @param constraint_list List of OsConstraint to check
+   *
+   * @return true if one of the OsConstraints matched the current system or 
+   *       constraint_list is null (no constraints), false if none of the OsConstraints matched
+   */
+  public static boolean oneMatchesCurrentSystem (List constraint_list)
+  {
+    if (constraint_list == null)
+      return true;
+
+    Iterator constraint_it = constraint_list.iterator ();
+
+    // no constraints at all - matches!
+    if (! constraint_it.hasNext ())
+      return true;
+      
+    while (constraint_it.hasNext ())
+    {
+      OsConstraint osc = (OsConstraint)constraint_it.next();
+
+      Debug.trace ("checking if os constraints "+osc+" match current OS");
+
+      // check for match
+      if (osc.matchCurrentSystem ())
+      {
+        Debug.trace ("matched current OS.");
+        return true; // bail out on first match
+      }
+
+    }
+
+    Debug.trace ("no match with current OS!");
+    // no match found
+    return false;
   }
 
 
