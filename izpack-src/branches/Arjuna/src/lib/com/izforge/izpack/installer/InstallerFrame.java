@@ -335,6 +335,8 @@ public class InstallerFrame extends JFrame
       List files = udata.getFilesList();
       ZipOutputStream outJar = installdata.uninstallOutJar;
 
+      if (outJar == null) return;
+      
       // We write the files log
       outJar.putNextEntry(new ZipEntry("install.log"));
       BufferedWriter logWriter = new BufferedWriter(new OutputStreamWriter(outJar));
