@@ -9,42 +9,33 @@
 	</license>	
 
 	<license file="lgpl.txt">	
-	<name>GNU Lesser General Public License (GPL)</name>		
+	<name>GNU Lesser General Public License (LGPL)</name>		
 		<gpl_compatible>true</gpl_compatible>
-		<modifications>
-			<field></field>
-		</modifications>	
+		<modifications />
 	</license>	
 	
 	<license file="mpl.txt">	
 	<name>Mozilla Public License (MPL)</name>		
 		<gpl_compatible>false</gpl_compatible>
-		<modifications>
-			<field></field>
-		</modifications>	
+		<modifications />
 	</license>	
 	
 	<license file="mit.txt">	
 	<name>MIT License</name>		
 		<gpl_compatible>true</gpl_compatible>
-		<modifications>
-			<field></field>
-		</modifications>	
+		<modifications />	
 	</license>	
 	
 	<license file="bsd.txt">	
 	<name>Modified BSD License</name>		
 		<gpl_compatible>true</gpl_compatible>
-		<modifications>
-			<field></field>
-		</modifications>	
+		<modifications />
 	</license>	
 	
 	<license file="cpl.txt">
 	<name>Common Public License (CPL)</name>		
 		<gpl_compatible>false</gpl_compatible>
-		<modifications>
-		</modifications>	
+		<modifications />	
 	</license>	
 		
 </licenses>

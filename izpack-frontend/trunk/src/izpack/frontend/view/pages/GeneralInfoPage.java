@@ -50,7 +50,6 @@ import com.jgoodies.forms.layout.FormLayout;
  */
 public class GeneralInfoPage extends IzPackPage implements ActionListener
 {
-
     public void initComponents()
     {
         FormLayout layout = new FormLayout("pref, 3dlu, max(50dlu;pref), max(50dlu;pref), max(50dlu;pref), 3dlu, pref", 

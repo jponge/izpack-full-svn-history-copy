@@ -22,21 +22,35 @@
  */
 package izpack.frontend.model;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Vector;
 
-import net.n3.nanoxml.IXMLParser;
-import net.n3.nanoxml.IXMLReader;
-import net.n3.nanoxml.StdXMLReader;
-import net.n3.nanoxml.XMLElement;
-import net.n3.nanoxml.XMLException;
-import net.n3.nanoxml.XMLParserFactory;
-import net.n3.nanoxml.XMLWriter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import utils.XML;
 
 /**
  * @author Andy Gombos
@@ -46,23 +60,23 @@ import net.n3.nanoxml.XMLWriter;
 public class AuthorManager
 {
     public static ArrayList loadAuthors()
-    {        
+    {   
         try
         {
-            IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
-            IXMLReader reader = StdXMLReader.fileReader("conf/authors.xml");
-            parser.setReader(reader);
-            XMLElement xml = (XMLElement) parser.parse();
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			Document document = builder.parse(new File("conf/authors.xml"));		
+			XPath xpath = XPathFactory.newInstance().newXPath();		
 
             //Load the authors array            
-            Vector authorsElem = xml.getChildrenNamed("author");
+            NodeList authorElems = (NodeList) xpath.evaluate("//author", document, XPathConstants.NODESET);
             ArrayList authors = new ArrayList();
-            for (Iterator iter = authorsElem.iterator(); iter.hasNext();)
-            {
-                XMLElement element = (XMLElement) iter.next();
-                String aname = element.getAttribute("name");
-                String email = element.getAttribute("email");
+            
+            for (int i = 0; i < authorElems.getLength(); i++)
+            {                
+                String aname = xpath.evaluate("//author[" + (i + 1) + "]/@name", document);                
+                String email = xpath.evaluate("//author[" + (i + 1) + "]/@email", document);                   
                 Author author = new Author(aname, email);
+        
                 authors.add(author);
             }
 
@@ -70,45 +84,50 @@ public class AuthorManager
             
             return authors;
         }
-        catch (ClassNotFoundException e)
+   
+        catch (SAXException e)
         {
-            throw new RuntimeException(e);
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        catch (InstantiationException e)
+        catch (ParserConfigurationException e)
         {
-            throw new RuntimeException(e);
-        }
-        catch (IllegalAccessException e)
-        {
-            throw new RuntimeException(e);
-        }
-        catch (FileNotFoundException e)
-        {
-            throw new RuntimeException(e);
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         catch (IOException e)
         {
-            throw new RuntimeException(e);
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        catch (XMLException e)
+        catch (XPathExpressionException e)
         {
-            throw new RuntimeException(e);
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
+        
+        return null;
     }
     
     public static void writeAuthors(ArrayList authors) throws IOException
-    {
-        XMLWriter out = new XMLWriter(new FileOutputStream("conf/authors.xml"));
-        XMLElement head = new XMLElement("authors");
+    {   
+        Document document = XML.createDocument();
+        
+        //Create the root element (authors)
+        Element root = document.createElement("authors");
+        document.appendChild(root);
+        
         for (Iterator iter = authors.iterator(); iter.hasNext();)
         {
-            Author element = (Author) iter.next();
-            XMLElement xelement = new XMLElement("author");            
-            xelement.setAttribute("email", element.getEmail());
-            xelement.setAttribute("name", element.getName());
-            head.addChild(xelement);
+            Author auth = (Author) iter.next();
+            Element author = document.createElement("author");
+            root.appendChild(author);          
+            
+            author.setAttribute("name", auth.getName());
+            author.setAttribute("email", auth.getEmail());
         }
-        out.write(head);        
+        
+        XML.writeXML("conf/author3.xml", document);
     }
 }
 

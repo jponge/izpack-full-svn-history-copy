@@ -23,19 +23,21 @@
  */
 package izpack.frontend.model;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Vector;
 
-import net.n3.nanoxml.IXMLParser;
-import net.n3.nanoxml.IXMLReader;
-import net.n3.nanoxml.StdXMLReader;
-import net.n3.nanoxml.XMLElement;
-import net.n3.nanoxml.XMLException;
-import net.n3.nanoxml.XMLParserFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * @author Andy Gombos
@@ -49,80 +51,70 @@ public class LicenseLoader
         
 	    try
 	    {
-	        IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
-	        IXMLReader reader = StdXMLReader.fileReader("conf/licenses.xml");
-	        parser.setReader(reader);
-	        XMLElement xml = (XMLElement) parser.parse();
-	
-	        //Load the authors array            
-	        Vector licenceElem = xml.getChildrenNamed("license");	        
-	        for (Iterator iter = licenceElem.iterator(); iter.hasNext();)
-	        {
-	            XMLElement element = (XMLElement) iter.next();
-	            License lic = new License();
+	        //Try using the JAXP stuff with XPath
+	        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			Document document = builder.parse(new File("conf/licenses.xml"));		
+			XPath xpath = XPathFactory.newInstance().newXPath();			
+			
+	        //Get the number of licenses            
+	        NodeList nodeSet = (NodeList) xpath.evaluate("//license", document, XPathConstants.NODESET);
+	        
+	        for (int i = 0; i < nodeSet.getLength(); i++)
+	        {            
+	            License lic = new License();	            
 	            
-	            lic.filename = element.getAttribute("file");
-	            lic.name = element.getFirstChildNamed("name").getContent();
+	            //Use XPath to grab each value
+	            //I don't think this is very efficient, but it is only done once
 	            
-	            //Why does only 1.5 have parseBoolean()?
-	            //Why is NanoXML retarded?
-	            //Processing an element with PCDATA and children is completely different
-	            //from having PCDATA alone
-	            //Yay for more work, or something
+	            lic.filename = xpath.evaluate("//license[" + (i + 1) + "]/@file", document);            
+	            	            
+	            lic.name = xpath.evaluate("//license[" + (i + 1) + "]/name", document);
 	            
-	            XMLElement modElement = element.getFirstChildNamed("modifications");       	            
-	            	                
-	            //Assume that specifying fields mean modifications are required	            
-	            lic.modifications_required = modElement.hasChildren();
-	                
-	            if (lic.modifications_required)
-	            {
-	                int i = 0;
-	                Vector reqFields = modElement.getChildren();
-	                lic.modifiable_fields = new String[modElement.getChildrenCount()];
-	                
-		            for (Iterator iterator = reqFields.iterator(); iterator.hasNext(); i++)
+	            lic.gplCompatible = Boolean.parseBoolean(xpath.evaluate("//license[" + (i + 1) + "]/gpl_compatible", document) );
+	            	            
+	            //If modification elements exist, there are parts to change
+	            //Grab those parts            
+	            NodeList fields = (NodeList) xpath.evaluate("//license[" + (i + 1) + "]/modifications/field", document, XPathConstants.NODESET);
+	            if (fields.getLength() != 0)
+	            {	                                
+	                lic.modifications_required = true;
+
+	                String fieldNames[] = new String[fields.getLength()];
+	                for (int j = 0; j < fields.getLength(); j++)
 	                {
-	                    XMLElement field = (XMLElement) iterator.next();
-	                    lic.modifiable_fields[i] = field.getContent(); 
-	                }		            
-	            }	            	           
-	            
-	            lic.gplCompatible = Boolean.valueOf( element.getFirstChildNamed("gpl_compatible").getContent() ).booleanValue();
-	            if (lic.gplCompatible)
+	                    fieldNames[j] = fields.item(j).getTextContent();	                 
+	                }
+	            }
+	        
+	        	if (lic.gplCompatible)
 	                gplCompat.add(lic);
 	            else
 	                gplUnCompat.add(lic);
-	            
-	            System.out.println(lic);
-	            System.out.println("");
-	        }      
-	    
+	        }
+	        
 	        return new ArrayList[]{gplCompat, gplUnCompat};
-	    }
-	    catch (ClassNotFoundException e)
-	    {
-	        throw new RuntimeException(e);
-	    }
-	    catch (InstantiationException e)
-	    {
-	        throw new RuntimeException(e);
-	    }
-	    catch (IllegalAccessException e)
-	    {
-	        throw new RuntimeException(e);
-	    }
-	    catch (FileNotFoundException e)
-	    {
-	        throw new RuntimeException(e);
-	    }
-	    catch (IOException e)
-	    {
-	        throw new RuntimeException(e);
-	    }
-	    catch (XMLException e)
-	    {
-	        throw new RuntimeException(e);
-	    }
+	    }	
+        catch (ParserConfigurationException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (SAXException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (XPathExpressionException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return null;
     }
 }

@@ -23,7 +23,6 @@
 package izpack.frontend.model;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,7 +35,11 @@ import net.n3.nanoxml.StdXMLReader;
 import net.n3.nanoxml.XMLElement;
 import net.n3.nanoxml.XMLException;
 import net.n3.nanoxml.XMLParserFactory;
-import net.n3.nanoxml.XMLWriter;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import utils.XML;
 
 /**
  * @author Andy Gombos
@@ -110,16 +113,20 @@ public class RecentFileManager
     {
         int length = files.size() < 5 ? files.size() : 5;
         List choppedFiles = files.subList(0, length);
-        XMLWriter out = new XMLWriter(new FileOutputStream("conf/recent.xml"));
-        XMLElement head = new XMLElement("recent");
+        Document doc = XML.createDocument();        
+        Element root = doc.createElement("recent");
+        doc.appendChild(root);
+        
         for (Iterator iter = choppedFiles.iterator(); iter.hasNext();)
         {
             String element = (String) iter.next();
-            XMLElement xelement = new XMLElement("file");            
-            xelement.setAttribute("path", element);            
-            head.addChild(xelement);
+            Element elem = doc.createElement("recent");
+            doc.appendChild(elem);
+            
+            elem.setAttribute("path", element);
         }
-        out.write(head);
+        
+        XML.writeXML("conf/recent.xml", doc);
     }
     
     private static ArrayList files;
