@@ -182,6 +182,18 @@ public class UserInputPanel extends IzPanel
   private static final String PWD_INPUT                     = "pwd";
   private static final String PWD_SIZE                      = "size";
 
+  private static final String SEARCH_FIELD                  = "search";
+  // internal value for the button used to trigger autodetection
+  private static final String SEARCH_BUTTON_FIELD           = "autodetect";
+  private static final String SEARCH_CHOICE                 = "choice";
+  private static final String SEARCH_FILENAME               = "filename";
+  private static final String SEARCH_RESULT                 = "result";
+  private static final String SEARCH_VALUE                  = "value";
+  private static final String SEARCH_TYPE                   = "type";
+  private static final String SEARCH_FILE                   = "file";
+  private static final String SEARCH_DIRECTORY              = "directory";
+  private static final String SEARCH_PARENTDIR              = "parentdir";
+
   private static final String PACKS                         = "createForPack";
   private static final String NAME                          = "name";
 
@@ -224,6 +236,8 @@ public class UserInputPanel extends IzPanel
   /** used for temporary storage of references to password groups that
       have already been read in a given read cycle. */
   private Vector              passwordGroupsRead  = new Vector ();
+  /** Used to track search fields. Contains SearchField references. */
+  private Vector              searchFields = new Vector();
 
   /** Holds all user inputs for use in automated installation */
   private Vector              entries         = new Vector ();
@@ -350,6 +364,10 @@ public class UserInputPanel extends IzPanel
         else if (attribute.equals (TITLE_FIELD))
         {
           addTitle (field);
+        }
+        else if (attribute.equals (SEARCH_FIELD))
+        {
+          addSearch (field);
         }
       }
     }
@@ -538,6 +556,14 @@ public class UserInputPanel extends IzPanel
             return (false);
           }
         }
+        else if (fieldType.equals (SEARCH_FIELD))
+        {
+          success = readSearch (field);
+          if (!success)
+          {
+            return (false);
+          }
+        }
       }
     }
 
@@ -687,6 +713,14 @@ public class UserInputPanel extends IzPanel
       label     = new JLabel (getText (element));
       layout    = element.getAttribute (RULE_LAYOUT);
       set       = element.getAttribute (SET);
+
+      // retrieve value of variable if not specified
+      // (does not work here because of special format for set attribute)
+      //if (set == null)
+      //{
+      //  set = idata.getVariable (variable);
+      //}
+
       separator = element.getAttribute (RULE_SEPARATOR);
       format    = element.getAttribute (RULE_RESULT_FORMAT);
 
@@ -841,7 +875,11 @@ public class UserInputPanel extends IzPanel
       set   = element.getAttribute (SET);
       if (set == null)
       {
-        set = "";
+        set = idata.getVariable (variable);
+        if (set == null)
+        {
+          set = "";
+        }
       }
       try
       {
@@ -1449,6 +1487,195 @@ public class UserInputPanel extends IzPanel
   }
  /*--------------------------------------------------------------------------*/
  /**
+  * Adds a search field to the list of UI elements.<br>
+  * This is a complete example of a valid XML specification
+  * <pre>
+  * <field type="search" variable="testVariable">
+  *   <description text="Description for the search field" id="a key for translated text"/>
+  *   <spec text="label" id="key for the label" filename="the_file_to_search" result="directory" /> <!-- values for result: directory, file -->
+  *     <choice dir="directory1" set="true" /> <!-- default value -->
+  *     <choice dir="dir2" />
+  *   </spec>
+  * </field>
+  * </pre>
+  * @param     spec  a <code>XMLElement</code> containing the specification
+  *                  for the search field
+  */
+ /*--------------------------------------------------------------------------*/
+  private void addSearch (XMLElement spec)
+  {
+    Vector        forPacks    = spec.getChildrenNamed (PACKS);
+    XMLElement    element     = spec.getFirstChildNamed (SPEC);
+    String        variable    = spec.getAttribute (VARIABLE);
+    String        filename    = null;
+    int           search_type = 0;
+    int           result_type = 0;
+    TextValuePair listItem    = null;
+    JComboBox     combobox    = new JComboBox ();
+    JLabel        label       = null;
+
+    //System.out.println ("adding search combobox, variable "+variable);
+
+    // allow the user to enter something
+    combobox.setEditable (true);
+
+    // ----------------------------------------------------
+    // extract the specification details
+    // ----------------------------------------------------
+    if (element != null)
+    {
+      label = new JLabel (getText (element));
+
+      // search type is optional (default: file)
+      search_type = SearchField.TYPE_FILE;
+
+      String search_type_str = element.getAttribute (SEARCH_TYPE);
+
+      if (search_type_str != null)
+      {
+        if (search_type_str.equals (SEARCH_FILE))
+        {
+          search_type = SearchField.TYPE_FILE;
+        }
+        else if (search_type_str.equals (SEARCH_DIRECTORY))
+        {
+          search_type = SearchField.TYPE_DIRECTORY;
+        }
+      }
+
+      // result type is mandatory too
+      String result_type_str = element.getAttribute (SEARCH_RESULT);
+
+      if (result_type_str == null)
+      {
+        return;
+      }
+      else if (result_type_str.equals (SEARCH_FILE))
+      {
+        result_type = SearchField.RESULT_FILE;
+      }
+      else if (result_type_str.equals (SEARCH_DIRECTORY))
+      {
+        result_type = SearchField.RESULT_DIRECTORY;
+      }
+      else if (result_type_str.equals (SEARCH_PARENTDIR))
+      {
+        result_type = SearchField.RESULT_PARENTDIR;
+      }
+      else
+      {
+        return;
+      }
+
+      // might be missing - null is okay
+      filename = element.getAttribute (SEARCH_FILENAME);
+
+      Vector choices = element.getChildrenNamed (SEARCH_CHOICE);
+
+      if (choices == null)
+      {
+        return;
+      }
+
+      for (int i = 0; i < choices.size (); i++)
+      {
+        String value = ((XMLElement)choices.elementAt (i)).getAttribute (SEARCH_VALUE);
+
+        combobox.addItem (value);
+
+        String set    = ((XMLElement)choices.elementAt (i)).getAttribute (SET);
+        if (set != null)
+        {
+          if (set.equals (TRUE))
+          {
+            combobox.setSelectedIndex (i);
+          }
+        }
+      }
+    }
+    // ----------------------------------------------------
+    // if there is no specification element, return without
+    // doing anything.
+    // ----------------------------------------------------
+    else
+    {
+      return;
+    }
+
+    // ----------------------------------------------------
+    // get the description and add it to the list of UI
+    // elements if it exists.
+    // ----------------------------------------------------
+    element = spec.getFirstChildNamed (DESCRIPTION);
+    addDescription (element, forPacks);
+
+    TwoColumnConstraints westconstraint1 = new TwoColumnConstraints ();
+    westconstraint1.position  = TwoColumnConstraints.WEST;
+
+    uiElements.add (new Object [] {null, FIELD_LABEL, null, westconstraint1, label, forPacks});
+
+    TwoColumnConstraints eastconstraint1 = new TwoColumnConstraints ();
+    eastconstraint1.position  = TwoColumnConstraints.EAST;
+
+    uiElements.add (new Object [] {null, SEARCH_FIELD, variable, eastconstraint1, combobox, forPacks});
+
+    JButton autodetectButton = ButtonFactory.createButton (parent.langpack.getString ("UserInputPanel.search.autodetect"), idata.buttonsHColor);
+
+    TwoColumnConstraints eastonlyconstraint = new TwoColumnConstraints ();
+    eastonlyconstraint.position  = TwoColumnConstraints.EASTONLY;
+
+    uiElements.add (new Object [] {null, SEARCH_BUTTON_FIELD, null, eastonlyconstraint, autodetectButton, forPacks});
+
+    searchFields.add (new SearchField (filename, parent, combobox, autodetectButton, search_type, result_type));
+  }
+ /*--------------------------------------------------------------------------*/
+ /**
+  * Reads the content of the search field and substitutes the associated
+  * variable.
+  *
+  * @param     field  the object array that holds the details of the field.
+  *
+  * @return    <code>true</code> if there was no problem reading the data or
+  *            if there was an irrecovarable problem. If there was a problem
+  *            that can be corrected by the operator, an error dialog is
+  *            popped up and <code>false</code> is returned.
+  */
+ /*--------------------------------------------------------------------------*/
+  private boolean readSearch (Object [] field)
+  {
+    String variable = null;
+    String value    = null;
+    JComboBox comboBox = null;
+
+    try
+    {
+      variable  = (String)field [POS_VARIABLE];
+      comboBox  = (JComboBox)field [POS_FIELD];
+      for (int i = 0; i < this.searchFields.size(); ++i)
+      {
+        SearchField sf = (SearchField)this.searchFields.elementAt (i);
+        if (sf.belongsTo (comboBox))
+        {
+          value = sf.getResult ();
+          break;
+        }
+      }
+    }
+    catch (Throwable exception)
+    {
+      return (true);
+    }
+    if ((variable == null) || (value == null))
+    {
+      return (true);
+    }
+
+    idata.getVariableValueMap ().setVariable (variable, value);
+    entries.add (new TextValuePair (variable, value));
+    return (true);
+  }
+ /*--------------------------------------------------------------------------*/
+ /**
   * Adds text to the list of UI elements
   *
   * @param     spec  a <code>XMLElement</code> containing the specification
@@ -1906,5 +2133,194 @@ private class TextValuePair
 }
 
 
-}
+/*---------------------------------------------------------------------------*/
+/**
+ * This class encapsulates a lot of search field functionality.
+ *
+ * A search field supports searching directories and files on the target 
+ * system. This is a helper class to manage all data belonging to a
+ * search field.
+ */
+/*---------------------------------------------------------------------------*/
+
+private class SearchField implements ActionListener
+{
+  /** used in constructor - we search for a directory. */
+  public static final int       TYPE_DIRECTORY = 1;
+  /** used in constructor - we search for a file. */
+  public static final int       TYPE_FILE = 2;
+
+  /** used in constructor - result of search is the directory. */
+  public static final int       RESULT_DIRECTORY = 1;
+  /** used in constructor - result of search is the whole file name. */
+  public static final int       RESULT_FILE = 2;
+  /** used in constructor - result of search is the parent directory. */
+  public static final int       RESULT_PARENTDIR = 3;
+
+  private String    filename = null;
+  private JButton   autodetectButton = null;
+  private JComboBox pathComboBox = null;
+  private int       searchType = TYPE_DIRECTORY;
+  private int       resultType = RESULT_DIRECTORY;
+
+  private InstallerFrame  parent = null;
+
+  /*---------------------------------------------------------------------------*/
+  /**
+   * Constructor - initializes the object, adds it as action listener to
+   * the "autodetect" button.
+   *
+   * @param filename    the name of the file to search for (might be null for
+   *                    searching directories)
+   * @param combobox    the <code>JComboBox</code> holding the list of choices;
+   *                    it should be editable and contain only Strings
+   * @param button      the autodetection button for triggering autodetection
+   * @param search_type what to search for - TYPE_FILE or TYPE_DIRECTORY
+   * @param result_type what to return as the result - RESULT_FILE or 
+   *                    RESULT_DIRECTORY or RESULT_PARENTDIR
+   */
+  /*---------------------------------------------------------------------------*/
+  public SearchField (String filename, InstallerFrame parent, JComboBox combobox, JButton button, int search_type, int result_type)
+  {
+    this.filename = filename;
+    this.parent = parent;
+    this.autodetectButton = button;
+    this.pathComboBox = combobox;
+    this.searchType = search_type;
+    this.resultType = result_type;
+
+    this.autodetectButton.addActionListener (this);
+
+    autodetect ();
+  }
+
+  /** Check whether the given combobox belongs to this searchfield. 
+   * This is used when reading the results.
+   */
+  public boolean belongsTo (JComboBox combobox)
+  {
+    return (this.pathComboBox == combobox);
+  }
+
+  /** check whether the given path matches */
+  private boolean pathMatches (String path)
+  {
+    //System.out.println ("checking path " + path);
+
+    File file = null;
+    
+    if ((this.filename == null) && (this.searchType == TYPE_DIRECTORY))
+    {
+      file = new File (path);
+    }
+    else
+    {
+      file = new File (path, this.filename);
+    }
+
+    if (file.exists ())
+    {
+
+      if ((this.searchType == TYPE_DIRECTORY) && (file.isDirectory()))
+        return true;
+      
+      if ((this.searchType == TYPE_FILE) && (file.isFile ()))
+        return true;
+
+    }
+
+    //System.out.println (path + " did not match");
+    return false;
+  }
+
+  /** perform autodetection */
+  public boolean autodetect ()
+  {
+    String filename = this.filename;
+
+    // loop through all items
+    for (int i = 0; i < this.pathComboBox.getItemCount(); ++i)
+    {
+      String path = (String)this.pathComboBox.getItemAt (i);
+
+      if (this.pathMatches (path))
+      {
+        this.pathComboBox.setSelectedIndex (i);
+        return true;
+      }
+
+    }
+
+    // if the user entered something else, it's not listed as an item
+    if (this.pathMatches ((String)this.pathComboBox.getSelectedItem()))
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+ /*--------------------------------------------------------------------------*/
+ /**
+  * This is called if the autodetect button has bee pressed.
+  *
+  * We perform the autodetection and set the value of the combobox
+  * accordingly.
+  */
+ /*--------------------------------------------------------------------------*/
+  public void actionPerformed (ActionEvent event)
+  {
+    //System.out.println ("autodetection button pressed.");
+
+    if (! autodetect ())
+      JOptionPane.showMessageDialog (parent,
+                                     parent.langpack.getString ("UserInputPanel.search.autodetect.failed.message"),
+                                     parent.langpack.getString ("UserInputPanel.search.autodetect.failed.caption"),
+                                     JOptionPane.WARNING_MESSAGE);
+
+    // we don't care for anything more here - getResult() does the rest
+  }
+
+ /*--------------------------------------------------------------------------*/
+ /**
+  * Return the result of the search according to result type.
+  *
+  * Sometimes, the whole path of the file is wanted, sometimes only the
+  * directory where the file is in, sometimes the parent directory.
+  *
+  * @return null on error
+  */
+ /*--------------------------------------------------------------------------*/
+  public String getResult ()
+  {
+    String path = (String)this.pathComboBox.getSelectedItem ();
+
+    // path now contains the final content of the combo box
+    if (this.resultType == RESULT_DIRECTORY)
+    {
+      return path;
+    }
+    else if (this.resultType == RESULT_FILE)
+    {
+      if (this.filename != null)
+      {
+        return path + File.pathSeparatorChar + this.filename;
+      }
+      else
+      {
+        return path;
+      }
+    }
+    else if (this.resultType == RESULT_PARENTDIR)
+    {
+      File f = new File (path);
+      return f.getParent ();
+    }
+
+    return null;
+  }
+
+} // private class SearchFile
+
+} // public class UserInputPanel
 /*---------------------------------------------------------------------------*/
