@@ -46,8 +46,11 @@ FailureDialog::~FailureDialog()
 void FailureDialog::buildUI()
 {
   // Inits
-  wxString explanationMsg = _("The launcher could not find a Java[tm] runtime "
-                            "environment on this system.");
+  wxString explanationMsg = _("The software that you are trying to install "
+                              "requires a Java Runtime Environment.\n"
+                              "The Java Runtime Environment could not be "
+                              "detected on your computer but it can be "
+                              "installed for you.");
   sizer = new wxBoxSizer(wxVERTICAL);
 
   // Widgets
@@ -56,13 +59,16 @@ void FailureDialog::buildUI()
   sizer->Add(explanationText, 0, wxALIGN_LEFT | wxALL, 10);
 
   wxString rlabels[] = {
-    _("manually specify a 'java' executable."),
-    _("install the Java[tm] runtime environment provided by the software "
-    "package."),
-    _("download it from the Internet.")
+    _("manually locate an already installed Java Runtime Environment"),
+    _("automatically install the Java Runtime Environment included with this "
+      "software"),
+    _("download the latest version of the Java Runtime Environment from the "
+      "Internet.")
   };
-  optionsBox = new wxRadioBox(this, -1, _("I want to ..."), wxDefaultPosition,
-                              wxDefaultSize, 3, rlabels, 1, wxRA_SPECIFY_COLS);
+  optionsBox = new wxRadioBox(this, -1,
+                              _("You have the following installation choices:"),
+                              wxDefaultPosition, wxDefaultSize, 3, rlabels, 1,
+                              wxRA_SPECIFY_COLS);
   optionsBox->SetSelection(0);
   sizer->Add(optionsBox, 1, wxGROW | wxALL, 10);
 

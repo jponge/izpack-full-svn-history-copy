@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: launcher\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-06 19:06+0000\n"
+"POT-Creation-Date: 2004-04-29 10:35+0000\n"
 "PO-Revision-Date: 2004-04-09 23:30+0200\n"
 "Last-Translator: Frank Bille Jesen <izpack@frank-bille.dk>\n"
 "Language-Team: Danish <izpack-devel@lists.berlios.de>\n"
@@ -20,26 +20,35 @@ msgid "IzPack launcher"
 msgstr "IzPack starter"
 
 #: failuredialog.cpp:49
-msgid "The launcher could not find a Java[tm] runtime environment on this system."
-msgstr "Starteren kunne ikke finde et Java[tm] runtime miljø på dit system."
-
-#: failuredialog.cpp:59
-msgid "manually specify a 'java' executable."
-msgstr "Angiv manuelt en udførbar 'java' fil."
-
-#: failuredialog.cpp:60
-msgid "install the Java[tm] runtime environment provided by the software package."
-msgstr "Installer Java[tm] runtime miljøet der er vedlagt denne program pakke."
+msgid ""
+"The software that you are trying to install requires a Java Runtime "
+"Environment.\n"
+"The Java Runtime Environment could not be detected on your computer but it "
+"can be installed for you."
+msgstr ""
 
 #: failuredialog.cpp:62
-msgid "download it from the Internet."
-msgstr "Hent den fra internettet."
+msgid "manually locate an already installed Java Runtime Environment"
+msgstr ""
 
-#: failuredialog.cpp:64
-msgid "I want to ..."
-msgstr "Jeg vil ..."
+#: failuredialog.cpp:63
+#, fuzzy
+msgid ""
+"automatically install the Java Runtime Environment included with this "
+"software"
+msgstr "Installer Java[tm] runtime miljøet der er vedlagt denne program pakke."
+
+#: failuredialog.cpp:65
+msgid ""
+"download the latest version of the Java Runtime Environment from the "
+"Internet."
+msgstr ""
 
 #: failuredialog.cpp:69
+msgid "You have the following installation choices:"
+msgstr ""
+
+#: failuredialog.cpp:75
 msgid "Ok"
 msgstr "O.k."
 
@@ -47,23 +56,35 @@ msgstr "O.k."
 msgid "The configuration file is broken."
 msgstr "Konfigurationsfilen er i stykker."
 
-#: launcher.cpp:164
+#: launcher.cpp:166
 msgid "There is no installer to launch."
 msgstr "Der er ingen installer der kan startes."
 
-#: launcher.cpp:170
+#: launcher.cpp:172
 msgid "The installer launch failed."
 msgstr "Installeren kunne ikke starte."
 
-#: launcher.cpp:176
+#: launcher.cpp:178
 msgid "Please choose a 'java' executable"
 msgstr "Vælg venligst en 'java' udførbar"
 
-#: launcher.cpp:193 launcher.cpp:198
+#: launcher.cpp:195 launcher.cpp:200
 msgid "Could not launch the JRE installation process."
 msgstr "Kunne ikke starte JRE installations processen."
 
-#: launcher.cpp:249
+#: launcher.cpp:251
 msgid "Could not find a web browser."
 msgstr "Kunne ikke finde en web browser."
 
+#~ msgid ""
+#~ "The launcher could not find a Java[tm] runtime environment on this system."
+#~ msgstr "Starteren kunne ikke finde et Java[tm] runtime miljø på dit system."
+
+#~ msgid "manually specify a 'java' executable."
+#~ msgstr "Angiv manuelt en udførbar 'java' fil."
+
+#~ msgid "download it from the Internet."
+#~ msgstr "Hent den fra internettet."
+
+#~ msgid "I want to ..."
+#~ msgstr "Jeg vil ..."
