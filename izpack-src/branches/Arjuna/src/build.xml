@@ -78,9 +78,9 @@
         Fixed the UserInputPanel building process to include all the required
         files.
 
-		30.04.2003: (by Jonathan Halliday)
-				Change to panel compilation target, for panel automation
-				(silent install) support.
+    30.04.2003: (by Jonathan Halliday)
+        Change to panel compilation target, for panel automation
+        (silent install) support.
 
   Mini-HowTo:
 
@@ -194,8 +194,8 @@
             <attribute name="Implementation-Version" value="${ver}" />
             <attribute name="Implementation-Vendor" value="IzPack." />
         </section>
-      </manifest>
-    </target>
+    </manifest>
+  </target>
   <target name="build.compiler" depends="compile.compiler, compiler.manifest">
     <echo message="Build ${compiler.jar}"/>
     <delete file="${compiler.jar}" verbose="true" />
@@ -203,7 +203,7 @@
       <fileset dir="${build.dir}">
         <include name="com/izforge/izpack/*.class"/>
         <include name="com/izforge/izpack/compiler/*.class"/>
-            <include name="com/izforge/izpack/util/Os.class"/>
+            <include name="com/izforge/izpack/util/OsConstraint.class"/>
             <include name="com/izforge/izpack/ant/*.class"/>
             <include name="com/izforge/izpack/ant/langpacks/*.properties"/>
         <include name="com/izforge/izpack/installer/VariableValueMap.class"/>
@@ -502,9 +502,9 @@
   <target name="build.javadoc" depends="prepare">
     <mkdir dir="${build.dir}/javadoc"/>
     <javadoc destdir="${build.dir}/javadoc" access="private">
-      <fileset dir="${src.dir}">
-        <include name="**/*.java" />
-      </fileset>
+      <packageset dir="${src.dir}">
+        <exclude name="**/CVS" />
+      </packageset>
     </javadoc>
     <copy todir="${doc.dir}/izpack/javadoc">
       <fileset dir="${build.dir}/javadoc">
