@@ -15,7 +15,6 @@ CXX_LIBS = `wx-config --libs`
 OS = `uname`
 EXEC = launcher
 OBJS = launcher.o failuredialog.o
-LANGS = fr
 
 all: launcher
 
@@ -31,8 +30,9 @@ failuredialog.o: failuredialog.h failuredialog.cpp
 install: all
 	cp ${EXEC} ../dist/${EXEC}-${OS}
 	strip ../dist/${EXEC}-${OS}
-	cp -R ${LANGS} ../dist/
-	find ../dist/ -name '*.po' | xargs rm -f
+	mkdir -p ../dist/fr ../dist/de
+	cp fr/launcher.mo ../dist/fr
+	cp de/launcher.mo ../dist/de
 
 clean:
 	rm -f ${EXEC} ${OBJS}

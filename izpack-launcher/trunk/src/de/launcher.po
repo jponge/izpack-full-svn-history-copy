@@ -1,0 +1,67 @@
+# translation of launcher.po to german.
+# This file is distributed under the same license as the izpack-launcher package.
+# Copyright (C) 2004 Marcus Stursberg.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: launcher\n"
+"Report-Msgid-Bugs-To: <izpack-devel@lists.berlios.de>\n"
+"POT-Creation-Date: 2004-04-06 19:06+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Marcus Stursberg <mstursberg@berlios.de>\n"
+"Language-Team: <izpack-devel@lists.berlios.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: failuredialog.cpp:30 launcher.cpp:27 launcher.cpp:78
+msgid "IzPack launcher"
+msgstr "IzPack launcher"
+
+#: failuredialog.cpp:49
+msgid "The launcher could not find a Java[tm] runtime environment on this system."
+msgstr "Auf Ihrem System konnte keine Java[tm] Runtime Environment gefunden werden."
+
+#: failuredialog.cpp:59
+msgid "manually specify a 'java' executable."
+msgstr "Java[tm] Runtime Environment manuell angeben."
+
+#: failuredialog.cpp:60
+msgid "install the Java[tm] runtime environment provided by the software package."
+msgstr "Mitgelieferte Java[tm] Runtime Environment installieren."
+
+#: failuredialog.cpp:62
+msgid "download it from the Internet."
+msgstr "Java[tm] Runtime Environment über das Internet laden."
+
+#: failuredialog.cpp:64
+msgid "I want to ..."
+msgstr "Ich möchte..."
+
+#: failuredialog.cpp:69
+msgid "Ok"
+msgstr "Ok"
+
+#: launcher.cpp:72
+msgid "The configuration file is broken."
+msgstr "Die Konfigurationsdatei ist fehlerhaft."
+
+#: launcher.cpp:164
+msgid "There is no installer to launch."
+msgstr "Es wurde keine ausführbare Installation gefunden."
+
+#: launcher.cpp:170
+msgid "The installer launch failed."
+msgstr "Das Ausführen der Installation schlug fehl."
+
+#: launcher.cpp:176
+msgid "Please choose a 'java' executable"
+msgstr "Bitte wählen sie eine Java.exe aus."
+
+#: launcher.cpp:193 launcher.cpp:198
+msgid "Could not launch the JRE installation process."
+msgstr "Die Java[tm] Installation konnte nicht ausgeführt werden."
+
+#: launcher.cpp:249
+msgid "Could not find a web browser."
+msgstr "Web-Browser nicht gefunden."
