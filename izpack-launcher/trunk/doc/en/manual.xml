@@ -66,15 +66,11 @@
   installer file can be distributed to your Linux, FreeBSD, Win32 and Mac users.
   While this is already a big advantage over preparing an installer or a package
   for each platform, it still relies on the hypothesis that your users already
-  have a well installed Java Virtual Machine (JVM) on their systems.</para>
+  have a well installed Java Runtime Environment (JRE) on their systems.</para>
   
-  <para>While corporate users should be able to install a JVM by themselves,
-  this might not always be the case. Worse, the average home user might know
-  what a JVM is and he might not understand why your installer can't be launched.
-  </para>
-  
-  <para>The IzPack launcher is published under a MIT-style license agreement:
-  <screen>&launcher-license;</screen>
+  <para>While corporate users should be able to install a JRE by themselves,
+  this might not always be the case. Worse, the average home user might not know
+  what a JRE is and he might not understand why your installer can't be launched.
   </para>
   
 </sect1>
@@ -117,6 +113,10 @@
     <listitem><para>FreeBSD / wxGTK / GCC</para></listitem>
     <listitem><para>Win32 / MSW / MinGW</para></listitem>
   </itemizedlist></para>
+  
+  <para>The IzPack launcher is published under a MIT-style license agreement:
+  <screen>&launcher-license;</screen>
+  </para>
   
 </sect1>
 
