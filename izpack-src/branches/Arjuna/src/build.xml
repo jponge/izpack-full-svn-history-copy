@@ -78,6 +78,10 @@
         Fixed the UserInputPanel building process to include all the required
         files.
 
+		30.04.2003: (by Jonathan Halliday)
+				Change to panel compilation target, for panel automation
+				(silent install) support.
+
   Mini-HowTo:
 
   To compile and package the compiler.jar jar file, type:
@@ -369,7 +373,7 @@
            optimize="on"
            deprecation="on"
            debug="${debug}">
-      <include name="com/izforge/izpack/panels/${panel}.java"/>
+      <include name="com/izforge/izpack/panels/${panel}*.java"/>
     </javac>
     <echo message="Creates bin/panels/${panel-dir} directory"/>
     <mkdir dir="${bin.dir}/panels/${panel-dir}"/>
