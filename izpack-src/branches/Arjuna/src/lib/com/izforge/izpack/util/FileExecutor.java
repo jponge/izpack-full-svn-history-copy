@@ -140,90 +140,92 @@ public class FileExecutor
    * @param  output  Description of the Parameter
    * @return         Description of the Return Value
    */
-	public int executeCommand(String[] params, String[] output)
-	{
-		StringBuffer retval = new StringBuffer();
-	    retval.append("executeCommand\n");
-	    if (params != null)
-	    {
-	    	for (int i = 0; i < params.length; i++)
-			{
-			    retval.append("\tparams: "+params[i]);
-			    retval.append("\n");
-			}
-	    }
-		Process process = null;
-		MonitorInputStream outMonitor = null;
-		MonitorInputStream errMonitor = null;
-		Thread t1 = null;
-		Thread t2 = null;
-		int exitStatus = -1;
+  public int executeCommand(String[] params, String[] output)
+  {
+    StringBuffer retval = new StringBuffer();
+    retval.append("executeCommand\n");
+    if (params != null)
+    {
+      for (int i = 0; i < params.length; i++)
+      {
+        retval.append("\tparams: "+params[i]);
+        retval.append("\n");
+      }
+    }
+    Process process = null;
+    MonitorInputStream outMonitor = null;
+    MonitorInputStream errMonitor = null;
+    Thread t1 = null;
+    Thread t2 = null;
+    int exitStatus = -1;
 
-		try
-		{
-			// execute command
-			process = Runtime.getRuntime().exec(params);
+    Debug.trace(retval);
 
-            boolean console = false;//TODO: impl from xml <execute in_console=true ...>, but works already if this flag is true
-            if (console)
-            {
-    			Console c = new Console(process);
-    			// save command output
-    			output[0] = c.getOutputData();
-    			output[1] = c.getErrorData();
-            }
-            else
-            {
-    			StringWriter outWriter = new StringWriter();
-    			StringWriter errWriter = new StringWriter();
+    try
+    {
+      // execute command
+      process = Runtime.getRuntime().exec(params);
 
-    			InputStreamReader or =
-    				new InputStreamReader(process.getInputStream());
-    			InputStreamReader er =
-    				new InputStreamReader(process.getErrorStream());
-    			outMonitor = new MonitorInputStream(or, outWriter);
-    			errMonitor = new MonitorInputStream(er, errWriter);
-    			t1 = new Thread(outMonitor);
-    			t2 = new Thread(errMonitor);
-    			t1.setDaemon(true);
-    			t2.setDaemon(true);
-    			t1.start();
-    			t2.start();
+      boolean console = false;//TODO: impl from xml <execute in_console=true ...>, but works already if this flag is true
+      if (console)
+      {
+        Console c = new Console(process);
+        // save command output
+        output[0] = c.getOutputData();
+        output[1] = c.getErrorData();
+      }
+      else
+      {
+        StringWriter outWriter = new StringWriter();
+        StringWriter errWriter = new StringWriter();
 
-    			// wait for command to comlete
-    			exitStatus = process.waitFor();
-    			if (t1 != null)
-    			{
-    				t1.join();
-    			}
-    			if (t2 != null)
-    			{
-    				t2.join();
-    			}
+        InputStreamReader or =
+          new InputStreamReader(process.getInputStream());
+        InputStreamReader er =
+          new InputStreamReader(process.getErrorStream());
+        outMonitor = new MonitorInputStream(or, outWriter);
+        errMonitor = new MonitorInputStream(er, errWriter);
+        t1 = new Thread(outMonitor);
+        t2 = new Thread(errMonitor);
+        t1.setDaemon(true);
+        t2.setDaemon(true);
+        t1.start();
+        t2.start();
 
-    			// save command output
-    			output[0] = outWriter.toString();
-    			output[1] = errWriter.toString();
-            }
-			exitStatus = process.exitValue();
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace(System.err);
-			stopThread(t1, outMonitor);
-			stopThread(t2, errMonitor);
-			output[0] = "";
-			output[1] = e.getMessage() + "\n";
-			process.destroy();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace(System.err);
-			output[0] = "";
-			output[1] = e.getMessage() + "\n";
-		}
-		return exitStatus;
-	}
+        // wait for command to comlete
+        exitStatus = process.waitFor();
+        if (t1 != null)
+        {
+          t1.join();
+        }
+        if (t2 != null)
+        {
+          t2.join();
+        }
+
+        // save command output
+        output[0] = outWriter.toString();
+        output[1] = errWriter.toString();
+      }
+      exitStatus = process.exitValue();
+    }
+    catch (InterruptedException e)
+    {
+      e.printStackTrace(System.err);
+      stopThread(t1, outMonitor);
+      stopThread(t2, errMonitor);
+      output[0] = "";
+      output[1] = e.getMessage() + "\n";
+      process.destroy();
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace(System.err);
+      output[0] = "";
+      output[1] = e.getMessage() + "\n";
+    }
+    return exitStatus;
+  }
 
   /**
    *  Executes files specified at construction time.
@@ -242,8 +244,8 @@ public class FileExecutor
     Iterator efileIterator = files.iterator();
     while ((exitStatus == 0) && efileIterator.hasNext())
     {
-      boolean deleteAfterwards = true;
       ExecutableFile efile = (ExecutableFile) efileIterator.next();
+      boolean deleteAfterwards = ! efile.keepFile;
       File file = new File(efile.path);
       Debug.trace("handeling executable file "+efile);
 
@@ -251,7 +253,7 @@ public class FileExecutor
       {
         // fix executable permission for unix systems
         if (pathSep.equals(":") && (!osName.startsWith("mac") ||
-          osName.endsWith("x")))
+              osName.endsWith("x")))
         {
           Debug.trace("making file executable (setting executable flag)");
           String[] params = {"/bin/chmod", permissions, file.toString()};
@@ -262,20 +264,20 @@ public class FileExecutor
       Iterator osIterator = efile.osList.iterator();
       if (!osIterator.hasNext())
       {
-      	Debug.trace("no os to install the file on!");
+        Debug.trace("no os to install the file on!");
       }
       while (osIterator.hasNext())
       {
         Os os = (Os) osIterator.next();
 
-      	Debug.trace("checking if os param on file "+os+" equals current os");
+        Debug.trace("checking if os param on file "+os+" equals current os");
         if (os.matchCurrentSystem())
         {
-	      	Debug.trace("match current os");
+          Debug.trace("match current os");
           // execute command in POSTINSTALL stage
           if ((exitStatus == 0) &&
-            ((currentStage == ExecutableFile.POSTINSTALL && efile.executionStage == ExecutableFile.POSTINSTALL)
-            || (currentStage==ExecutableFile.UNINSTALL && efile.executionStage == ExecutableFile.UNINSTALL)))
+              ((currentStage == ExecutableFile.POSTINSTALL && efile.executionStage == ExecutableFile.POSTINSTALL)
+               || (currentStage==ExecutableFile.UNINSTALL && efile.executionStage == ExecutableFile.UNINSTALL)))
           {
             List paramList = new ArrayList();
             if (ExecutableFile.BIN == efile.type)
@@ -313,23 +315,23 @@ public class FileExecutor
               if (efile.onFailure == ExecutableFile.ABORT)
 
                 javax.swing.JOptionPane.showMessageDialog(null, message,
-                  "Installation error",
-                  javax.swing.JOptionPane.ERROR_MESSAGE);
+                    "Installation error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
               else if (efile.onFailure == ExecutableFile.WARN)
               {
 
                 javax.swing.JOptionPane.showMessageDialog(null, message,
-                  "Installation warning",
-                  javax.swing.JOptionPane.WARNING_MESSAGE);
+                    "Installation warning",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
                 exitStatus = 0;
               }
               else
                 if (
-                  javax.swing.JOptionPane.showConfirmDialog(null,
-                  message + "Would you like to proceed?",
-                  "Installation Warning",
-                  javax.swing.JOptionPane.YES_NO_OPTION) ==
-                  javax.swing.JOptionPane.YES_OPTION)
+                    javax.swing.JOptionPane.showConfirmDialog(null,
+                      message + "Would you like to proceed?",
+                      "Installation Warning",
+                      javax.swing.JOptionPane.YES_NO_OPTION) ==
+                    javax.swing.JOptionPane.YES_OPTION)
                   exitStatus = 0;
 
             }
@@ -337,15 +339,15 @@ public class FileExecutor
         }
         else
         {
-	      	Debug.trace("-no match with current os!");
+          Debug.trace("-no match with current os!");
         }
       }
 
-		// POSTINSTALL executables will be deleted
-		if (efile.executionStage == ExecutableFile.POSTINSTALL && deleteAfterwards)
-		{
-			if (file.canWrite()) file.delete();
-		}
+      // POSTINSTALL executables will be deleted
+      if (efile.executionStage == ExecutableFile.POSTINSTALL && deleteAfterwards)
+      {
+        if (file.canWrite()) file.delete();
+      }
 
     }
     return exitStatus;
