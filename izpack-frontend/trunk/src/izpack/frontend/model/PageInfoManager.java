@@ -24,19 +24,19 @@
 package izpack.frontend.model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Vector;
 
-import net.n3.nanoxml.IXMLParser;
-import net.n3.nanoxml.IXMLReader;
-import net.n3.nanoxml.StdXMLReader;
-import net.n3.nanoxml.XMLElement;
-import net.n3.nanoxml.XMLException;
-import net.n3.nanoxml.XMLParserFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import utils.XML;
 
 /**
  * @author Andy Gombos
@@ -50,40 +50,39 @@ import net.n3.nanoxml.XMLParserFactory;
 public class PageInfoManager
 {
     private static PageInfo loadPage(String filename)
-    {
-		try {
-			IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
-			IXMLReader reader = StdXMLReader.fileReader(filename);
-			parser.setReader(reader);
-			xml = (XMLElement)parser.parse();
+    {		
+        try
+        {
+			Document doc = XML.createDocument(filename);
+			XPath xpath = XPathFactory.newInstance().newXPath();
 			
-			String name = xml.getAttribute("name");
+			String name = ( (Element) xpath.evaluate("/", doc, XPathConstants.NODE) ).getAttribute("name");			
 			System.out.println("Name: " + name);
 			
 			//Load panel descriptions			
-			String shortDesc = xml.getFirstChildNamed("panel-desc-short").getContent();
-			String longDesc  = xml.getFirstChildNamed("panel-desc-long").getContent();
+			String shortDesc = xpath.evaluate("//panel-desc-short", doc);
+			String longDesc  = xpath.evaluate("//panel-desc-long", doc);
 			
 			//Load the authors array
-			Vector authorsElem = xml.getFirstChildNamed("authors").getChildrenNamed("author");
+			NodeList authorElems = (NodeList) xpath.evaluate("//authors/author", doc, XPathConstants.NODESET);
 			ArrayList authors = new ArrayList();
-			for (Iterator iter = authorsElem.iterator(); iter.hasNext();)
+			for (int i = 0; i < authorElems.getLength(); i++)
             {
-                XMLElement element = (XMLElement) iter.next();
+			    Element element = (Element) authorElems.item(i);
                 String aname = element.getAttribute("name");
                 String email = element.getAttribute("email");
                 Author author = new Author(aname, email);
                 authors.add(author);
             }
 			
-			XMLElement resourcesElem = xml.getFirstChildNamed("resources");			
+			Element resourcesElem = (Element) xpath.evaluate("//resources", doc, XPathConstants.NODE);			
 			ArrayList resources = new ArrayList();
 			if (resourcesElem != null)
 			{			
-			    Vector resourceElem = resourcesElem.getChildrenNamed("res");				
-				for (Iterator iter = resourceElem.iterator(); iter.hasNext();)
+			    NodeList resourceElem = (NodeList) xpath.evaluate("//resources/res", doc, XPathConstants.NODESET);				
+				for (int i = 0; i < resourceElem.getLength(); i++)
 	            {
-	                XMLElement element = (XMLElement) iter.next();
+	                Element element = (Element) resourceElem.item(i);
 	                String id = element.getAttribute("id");
 	                String req = element.getAttribute("required");
 	                String sType = element.getAttribute("type");
@@ -110,19 +109,11 @@ public class PageInfoManager
 			System.out.println("panel configuration loaded: " + filename);			
 			
 			return new PageInfo(name, shortDesc, longDesc, (Author[]) authors.toArray(new Author[0]), (PageInfo.Resource[]) resources.toArray(new PageInfo.Resource[0]));					
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		} catch (InstantiationException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} catch (XMLException e) {
-			throw new RuntimeException(e);
-		}
+        }
+        catch (XPathExpressionException e)
+        {
+           throw new RuntimeException(e);
+        }
     }    
     
     private static String[] getConfigFiles()
@@ -147,7 +138,6 @@ public class PageInfoManager
         return pages;
     }
     
-    private static final String CONFIG_PATH = "conf/pages/";    
-    private static XMLElement xml;
+    private static final String CONFIG_PATH = "conf/pages/";
     private static ArrayList pages = new ArrayList();
 }

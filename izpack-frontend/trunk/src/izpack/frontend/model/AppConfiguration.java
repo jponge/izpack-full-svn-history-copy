@@ -22,17 +22,16 @@
  */
 package izpack.frontend.model;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Vector;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
-import net.n3.nanoxml.IXMLParser;
-import net.n3.nanoxml.IXMLReader;
-import net.n3.nanoxml.StdXMLReader;
-import net.n3.nanoxml.XMLElement;
-import net.n3.nanoxml.XMLException;
-import net.n3.nanoxml.XMLParserFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import utils.XML;
 
 /**
  * Model to hold configuration for the application. Loads the configuration via
@@ -59,7 +58,10 @@ public class AppConfiguration {
 	private static final String CONFIG_FILE = "conf/app-config.xml";
 
 	/** The xml element. */
-	private XMLElement xml = null;
+	private Document document;
+	
+	/** XPath stuff */
+	XPath xpath = XPathFactory.newInstance().newXPath();
 
 	/**
 	 * Constructor calls <code>loadConfiguration()</code>.
@@ -74,9 +76,8 @@ public class AppConfiguration {
 	 * @return The version number.
 	 */
 	public float getVersion() {
-		Vector v = xml.getChildrenNamed(T_APP_VERSION);
-		XMLElement elem = (XMLElement)v.get(0);
-		return Float.parseFloat(elem.getContent());
+		Element elem = getElement(T_APP_VERSION);
+		return Float.parseFloat(elem.getTextContent());
 	}
 	
 	/**
@@ -84,8 +85,7 @@ public class AppConfiguration {
 	 * @return The location.
 	 */
 	public String getI18NBundleLocation() {
-		Vector v = xml.getChildrenNamed(T_I18N);
-		XMLElement elem = (XMLElement)v.get(0);
+		Element elem = getElement(T_I18N);		
 		return elem.getAttribute(A_BUNDLE_LOCATION);
 	}
 	
@@ -94,8 +94,7 @@ public class AppConfiguration {
 	 * @return String the lang-code or null if not specified.
 	 */
 	public String getI18NLangCode() {
-		Vector v = xml.getChildrenNamed(T_I18N);
-		XMLElement elem = (XMLElement)v.get(0);
+		Element elem = getElement(T_I18N);		
 		return elem.getAttribute(A_LANG_CODE);
 	}
 	
@@ -105,12 +104,11 @@ public class AppConfiguration {
 	 * @return The application name.
 	 */
 	public String getAppName(boolean includeVersion) {
-		Vector v = xml.getChildrenNamed(T_APP_NAME);
-		XMLElement elem = (XMLElement)v.get(0);
-		if (includeVersion) {
-			return elem.getContent()+" "+getVersion();
-		} else {
-			return elem.getContent();
+		Element elem = getElement(T_APP_NAME);		
+		if (includeVersion) {		    
+			return elem.getTextContent()+" "+getVersion();
+		} else {		    
+			return elem.getTextContent();
 		}
 	}
 	
@@ -120,24 +118,31 @@ public class AppConfiguration {
 	 * @param name
 	 * @return
 	 */
-	public String getClass4Page(String name) {
-		Vector v = xml.getChildrenNamed(T_UI);
-		XMLElement uiElem = (XMLElement)v.get(0);
-		Vector pageElems= uiElem.getChildrenNamed(T_PAGE);
-		Iterator it = pageElems.iterator();
-		XMLElement elem = null;
-		String className =null;
-		String pageName = null;
-		while (it.hasNext()) {
-			elem = (XMLElement)it.next();
-			pageName = elem.getAttribute(A_NAME);
-			className = elem.getAttribute(A_CLASS);
+	public String getClass4Page(String name)
+	{		
+	    NodeList pages = null;
+        try
+        {
+            pages = (NodeList) xpath.evaluate("//" + T_UI + "/" + T_PAGE, document, XPathConstants.NODESET);
+        }
+        catch (XPathExpressionException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        for (int i = 0; i < pages.getLength(); i++)
+		{
+			Element elem = (Element) pages.item(i);
+			
+			String pageName = elem.getAttribute(A_NAME);
+			String className = elem.getAttribute(A_CLASS);
 			if (pageName.equalsIgnoreCase(name) && className != null) {
-				// found the className
+				// found the className			    
 				return className;
 			}
 		}
-		// nothing found
+		// nothing found	    
 		return null;
 	}
 	
@@ -145,49 +150,52 @@ public class AppConfiguration {
 	 * Load the configuration.
 	 *@throws RuntimeException If error occours.
 	 */
-	private void loadConfiguration() {
-		try {
-			IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
-			IXMLReader reader = StdXMLReader.fileReader(CONFIG_FILE);
-			parser.setReader(reader);
-			xml = (XMLElement)parser.parse();
-			System.out.println("configuration loaded");
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		} catch (InstantiationException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} catch (XMLException e) {
-			throw new RuntimeException(e);
-		}
-
+	private void loadConfiguration()
+	{
+	    document = XML.createDocument(CONFIG_FILE);
+	    System.out.println("configuration loaded");
 	}
 
     public String getClass4Stage(String name)
     {
-        Vector v = xml.getChildrenNamed(T_UI);
-		XMLElement uiElem = (XMLElement)v.get(0);
-		Vector stageElems= uiElem.getChildrenNamed(T_STAGE);
-		Iterator it = stageElems.iterator();
-		XMLElement elem = null;
-		String className =null;
-		String stageName = null;
-		while (it.hasNext()) {
-			elem = (XMLElement)it.next();
-			stageName = elem.getAttribute(A_NAME);
-			className = elem.getAttribute(A_CLASS);
+        NodeList stages = null;
+        try
+        {
+            stages = (NodeList) xpath.evaluate("//" + T_UI + "/" + T_STAGE, document, XPathConstants.NODESET);
+        }
+        catch (XPathExpressionException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        for (int i = 0; i < stages.getLength(); i++)
+		{
+			Element elem = (Element) stages.item(i);
+			
+			String stageName = elem.getAttribute(A_NAME);
+			String className = elem.getAttribute(A_CLASS);
 			if (stageName.equalsIgnoreCase(name) && className != null) {
-				// found the className
+				// found the className			    
 				return className;
 			}
 		}
-		// nothing found
+		// nothing found	 
 		return null;        
     }
 
+    private Element getElement(String name)
+    {
+        try
+        {
+            return (Element) xpath.evaluate("//" + name, document, XPathConstants.NODE);
+        }
+        catch (XPathExpressionException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
 }

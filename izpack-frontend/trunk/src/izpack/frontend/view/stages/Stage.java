@@ -23,7 +23,7 @@
  */
 package izpack.frontend.view.stages;
 
-import net.n3.nanoxml.XMLElement;
+import org.w3c.dom.Document;
 
 /**
  * @author Andy Gombos
@@ -43,7 +43,7 @@ public interface Stage
      * 
      * @return An XML tree containing save data
      */
-    public XMLElement createXMLSaveData();
+    public Document createXMLSaveData();
     
     /**
      * Reinitialize the panel given the XML tree
@@ -51,7 +51,7 @@ public interface Stage
      * 
      * @param data The XML save data
      */
-    public void readXMLSaveData(XMLElement data);
+    public void readXMLSaveData(Document data);
     
     /**
      *  Create the IzPack XML file for the compiler, or
@@ -59,7 +59,7 @@ public interface Stage
      * 
      * @return The installer data, or null
      */
-    public XMLElement createInstallerData();
+    public Document createInstallerData();
     
     /**
      * Validate all <code>Page</code>s this <code>Stage</code>

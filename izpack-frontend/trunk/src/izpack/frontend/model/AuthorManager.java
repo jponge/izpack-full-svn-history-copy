@@ -61,44 +61,30 @@ public class AuthorManager
 {
     public static ArrayList loadAuthors()
     {   
+                    
+        Document document = XML.createDocument("conf/authors.xml");
+        XPath xpath = XPathFactory.newInstance().newXPath();
+
+        //Load the authors array
+        NodeList authorElems;
         try
         {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Document document = builder.parse(new File("conf/authors.xml"));		
-			XPath xpath = XPathFactory.newInstance().newXPath();		
+            authorElems = (NodeList) xpath.evaluate("//author", document, XPathConstants.NODESET);
 
-            //Load the authors array            
-            NodeList authorElems = (NodeList) xpath.evaluate("//author", document, XPathConstants.NODESET);
             ArrayList authors = new ArrayList();
-            
+
             for (int i = 0; i < authorElems.getLength(); i++)
-            {                
-                String aname = xpath.evaluate("//author[" + (i + 1) + "]/@name", document);                
-                String email = xpath.evaluate("//author[" + (i + 1) + "]/@email", document);                   
+            {
+                String aname = xpath.evaluate("//author[" + (i + 1) + "]/@name", document);
+                String email = xpath.evaluate("//author[" + (i + 1) + "]/@email", document);
                 Author author = new Author(aname, email);
-        
+
                 authors.add(author);
             }
 
             Collections.sort(authors);
-            
-            return authors;
-        }
-   
-        catch (SAXException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (ParserConfigurationException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
+            return authors;   
         }
         catch (XPathExpressionException e)
         {

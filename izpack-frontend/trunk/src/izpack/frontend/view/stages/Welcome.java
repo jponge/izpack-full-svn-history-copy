@@ -23,6 +23,7 @@
  */
 package izpack.frontend.view.stages;
 
+import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.RecentFileManager;
 import izpack.frontend.view.GUIConstants;
 import izpack.frontend.view.IzPackFrame;
@@ -35,6 +36,7 @@ import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -53,7 +55,9 @@ public class Welcome extends IzPackStage implements ActionListener
         FormLayout layout = new FormLayout("left:pref, 15dlu, left:pref", "center:pref, 25dlu, pref, 10dlu, pref, 10dlu, pref, 10dlu, pref");
 	    DefaultFormBuilder builder = new DefaultFormBuilder(this, layout);
 	    	    
-	    JLabel header = new JLabel("<html> <font size=\"+2\">What would you like to do?</font>");
+	    JLabel header = new JLabel("<html> <font size=\"+2\">" + 
+	                    langResources().getText("UI.WelcomePage.ELEMENT.HeaderText") + "</font>");
+	    
 	    header.setAlignmentY(CENTER_ALIGNMENT);
 	    builder.add(header, new CellConstraints().xyw(1, 1, 3));
 	    builder.nextRow();
@@ -99,6 +103,14 @@ public class Welcome extends IzPackStage implements ActionListener
         if (name.equals(GUIConstants.BUTTON_NEW))
         {
         	IzPackFrame.getInstance().displayStage("GeneralInfoStage");
+        }
+        if (name.equals(GUIConstants.BUTTON_OPEN))
+        {
+            JFileChooser jfc = new JFileChooser();            
+            if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+            {
+                RecentFileManager.getInstance().addUsedFile(jfc.getSelectedFile().getAbsolutePath());
+            }
         }
         if (name.equals(GUIConstants.BUTTON_RECENT))
         {            

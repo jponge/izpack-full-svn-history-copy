@@ -32,26 +32,26 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import net.n3.nanoxml.XMLElement;
+import org.w3c.dom.Document;
 
 /**
  * @author Andy Gombos
  */
 public abstract class IzPackStage extends JPanel implements Stage
 {
-    public XMLElement createXMLSaveData()
+    public Document createXMLSaveData()
     {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public void readXMLSaveData(XMLElement data)
+    public void readXMLSaveData(Document data)
     {
         // TODO Auto-generated method stub
 
     }
 
-    public XMLElement createInstallerData()
+    public Document createInstallerData()
     {
         // TODO Auto-generated method stub
         return null;

@@ -27,17 +27,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
-import net.n3.nanoxml.IXMLParser;
-import net.n3.nanoxml.IXMLReader;
-import net.n3.nanoxml.StdXMLReader;
-import net.n3.nanoxml.XMLElement;
-import net.n3.nanoxml.XMLException;
-import net.n3.nanoxml.XMLParserFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathException;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import utils.XML;
 
@@ -63,44 +61,23 @@ public class RecentFileManager
         
         try
         {
-            IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
-            IXMLReader reader = StdXMLReader.fileReader("conf/recent.xml");
-            parser.setReader(reader);
-            XMLElement xml = (XMLElement) parser.parse();
+            Document doc = XML.createDocument("conf/recent.xml");
+            XPath xpath = XPathFactory.newInstance().newXPath();
 
             //Load the authors array
-            Vector fileElems = xml.getChildrenNamed("file");            
-            for (Iterator iter = fileElems.iterator(); iter.hasNext();)
+            NodeList fileElems = (NodeList) xpath.evaluate("//file", doc, XPathConstants.NODESET);            
+            for (int i = 0; i < fileElems.getLength(); i++)
             {
-                XMLElement element = (XMLElement) iter.next();                
+                Element element = (Element) fileElems.item(i);                
                 files.add(element.getAttribute("path"));
+                
             }            
-
+            
             return files;
         }
-        catch (ClassNotFoundException e)
+        catch (XPathException xpe)
         {
-            throw new RuntimeException(e);
-        }
-        catch (InstantiationException e)
-        {
-            throw new RuntimeException(e);
-        }
-        catch (IllegalAccessException e)
-        {
-            throw new RuntimeException(e);
-        }
-        catch (FileNotFoundException e)
-        {
-            throw new RuntimeException(e);
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-        catch (XMLException e)
-        {
-            throw new RuntimeException(e);
+            throw new RuntimeException(xpe);
         }
     }
     
@@ -120,8 +97,8 @@ public class RecentFileManager
         for (Iterator iter = choppedFiles.iterator(); iter.hasNext();)
         {
             String element = (String) iter.next();
-            Element elem = doc.createElement("recent");
-            doc.appendChild(elem);
+            Element elem = doc.createElement("file");
+            root.appendChild(elem);
             
             elem.setAttribute("path", element);
         }
