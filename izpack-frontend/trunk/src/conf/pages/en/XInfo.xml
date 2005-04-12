@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="XInfo Panel">
+<izpack-panel name="XInfo Panel" classname="XInfoPanel">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Display adaptive text</panel-desc-short>
 	<panel-desc-long>Display adaptive text (e.g. by parsing variables)</panel-desc-long>

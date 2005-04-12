@@ -81,7 +81,7 @@ public abstract class AbstractListSelect extends IzPackPanel implements ActionLi
         builder.add(srcPane, cc.xywh(1, 1, 1, 9));
         builder.add(destPane, cc.xywh(5, 1, 1, 9));              
         
-        setBackground(Color.WHITE);
+        builder.getPanel().setBackground(Color.WHITE);
     }   
     
     public void initLists(SelectList src, SelectList dest)

@@ -59,6 +59,7 @@ public class PanelInfoManager
 			Document doc = XML.createDocument(filename);			
 			XPath xpath = XPathFactory.newInstance().newXPath();
 			
+			String classname = ( (Element) xpath.evaluate("/izpack-panel", doc, XPathConstants.NODE) ).getAttribute("classname");
 			String name = ( (Element) xpath.evaluate("/izpack-panel", doc, XPathConstants.NODE) ).getAttribute("name");			
 						
 			//Load panel descriptions			
@@ -108,7 +109,8 @@ public class PanelInfoManager
 	        	}
 			}			
 			
-			return new PanelInfo(name, shortDesc, longDesc, (Author[]) authors.toArray(new Author[0]), (PanelInfo.Resource[]) resources.toArray(new PanelInfo.Resource[0]));					
+			return new PanelInfo(classname, name, shortDesc, longDesc, (Author[]) authors.toArray(new Author[0]),
+			                (PanelInfo.Resource[]) resources.toArray(new PanelInfo.Resource[0]));					
         }
         catch (XPathExpressionException e)
         {

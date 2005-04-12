@@ -39,8 +39,9 @@ import javax.swing.JLabel;
  */
 public class ImageLabel extends JButton implements ActionListener
 {    
-    public ImageLabel(String name, String shortDesc, String imgFile)
+    public ImageLabel(String classname, String name, String shortDesc, String imgFile)
     {
+        this.classname = classname;
         configure("<html>" +
                 		"<b>&nbsp;" + name + "</b>" +
                 		"<p> <font color=#969696>&nbsp;" + shortDesc + "</font>", imgFile);
@@ -80,4 +81,11 @@ public class ImageLabel extends JButton implements ActionListener
         }
         
     }
+    
+    public String getClassname()
+    {
+        return classname;
+    }
+    
+    String classname;
 }

@@ -47,6 +47,8 @@ import javax.swing.JTextArea;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.jgoodies.validation.ValidationResult;
+
 import utils.UI;
 import utils.XML;
 
@@ -173,10 +175,10 @@ public class License extends JPanel implements ConfigurePanel
     /* (non-Javadoc)
      * @see izpack.frontend.view.pages.configure.ConfigurePage#validatePage()
      */
-    public boolean validatePage()
+    public ValidationResult validatePanel()
     {
         // TODO Auto-generated method stub
-        return false;
+        return null;
     }
 
     /**

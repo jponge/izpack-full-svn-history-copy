@@ -88,18 +88,18 @@ public class RecentFileManager
     public void saveRecentFiles() throws IOException
     {
         int length = files.size() < 5 ? files.size() : 5;
-        List choppedFiles = files.subList(0, length);
-        Document doc = XML.createDocument();        
-        Element root = doc.createElement("recent");
-        doc.appendChild(root);
+        List choppedFiles = files.subList(0, length);        
+                
+        Element root = XML.createRootElement("recent");
+        Document doc = root.getOwnerDocument();
         
         for (Iterator iter = choppedFiles.iterator(); iter.hasNext();)
         {
             String element = (String) iter.next();
-            Element elem = doc.createElement("file");
-            root.appendChild(elem);
+            Element fileElem = XML.createElement("file", doc);
+            root.appendChild(fileElem);
             
-            elem.setAttribute("path", element);
+            fileElem.setAttribute("path", element);
         }
         
         XML.writeXML("conf/recent.xml", doc);

@@ -23,6 +23,10 @@ package izpack.frontend.view.stages.panels;
 
 import java.util.Observer;
 
+import javax.swing.JPanel;
+
+import com.jgoodies.validation.ValidationResult;
+
 
 /**
  * Defines how pages have to look like.
@@ -69,7 +73,7 @@ public interface IzPanel extends Observer {
      * 
      * @return true if this page is valid      
      */
-    public boolean validatePage();
+    public ValidationResult validatePanel();
 }
 
 

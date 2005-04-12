@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="Install Panel">
+<izpack-panel name="Install Panel" classname="InstallPanel">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Perform the install</panel-desc-short>
 	<panel-desc-long>Perform the install process, and display progress information.</panel-desc-long>

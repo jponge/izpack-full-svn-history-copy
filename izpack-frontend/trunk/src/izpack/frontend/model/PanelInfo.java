@@ -27,13 +27,14 @@ package izpack.frontend.model;
  * @author Andy Gombos
  * 
  * This could be an anonymous class, but I think that could get unwieldly.
- * Countains all of the configuration data/attributes of a <code>Page</code>
+ * Countains all of the configuration data/attributes of a <code>Panel</code>
  */
 
 public class PanelInfo implements Comparable
 {
-    public PanelInfo(String name, String shortDesc, String longDesc, Author[] authors, Resource[] resources)
+    public PanelInfo(String classname, String name, String shortDesc, String longDesc, Author[] authors, Resource[] resources)
     {
+        this.classname = classname;
         this.name = name;
         this.authors = authors;
         this.shortDesc = shortDesc;
@@ -87,6 +88,14 @@ public class PanelInfo implements Comparable
     {
         return name;
     }
+    
+    public String getClassname()
+    {
+        return classname;
+    }
+    
+    /** Name of the IzPack class represented */
+    private String classname;
     
     /** Name of the panel */
     private String name;

@@ -23,10 +23,142 @@
  */
 package izpack.frontend.view.stages.packs;
 
+import izpack.frontend.view.components.AddRemovePanel;
+import izpack.frontend.view.components.table.PackCellEditor;
+import izpack.frontend.view.components.table.PackCellRenderer;
+import izpack.frontend.view.components.table.PackListHeader;
+import izpack.frontend.view.stages.IzPackStage;
+
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
+
+import org.w3c.dom.Document;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.validation.Severity;
+import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.message.PropertyValidationMessage;
+
+
 /**
  * @author Andy Gombos
  */
-public class Pack
+public class Pack extends IzPackStage
 {
 
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.IzPackStage#createInstallerData()
+     */
+    public Document createInstallerData()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.IzPackStage#validateStage()
+     */
+    public ValidationResult validateStage()
+    {
+        ValidationResult vr = new ValidationResult();
+        
+        if (packTable.getRowCount() == 0)
+        {
+            vr.add(new PropertyValidationMessage(
+                            Severity.ERROR,
+                            "must have at least pack created",
+                            packTable,
+                            "Packs",
+                            "table"
+                            ));      
+        }
+        
+        for (int row = 0; row < packTable.getRowCount(); row++)
+        {
+	        /*if (filesTable.getRowCount() == 0)
+	        {
+	            vr.add(new PropertyValidationMessage(
+	                            Severity.ERROR,
+	                            "must have at least pack created",
+	                            packTable,
+	                            "Packs",
+	                            "table"
+	                            ));      
+	        }*/
+        }
+        
+        return vr;
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.Stage#initializeStage()
+     */
+    public void initializeStage()
+    {
+        FormLayout layout = new FormLayout("pref, 3dlu, pref", "pref, 3dlu, pref, 10dlu, pref, 3dlu, pref");        
+        DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);        
+        
+        builder.setDefaultDialogBorder();
+        CellConstraints cc = new CellConstraints();
+        packs = new AddRemovePanel("Pack");
+        files = new AddRemovePanel("Files");
+        
+        packs.attachAddListener(new ActionListener()
+                        {
+
+                            public void actionPerformed(ActionEvent e)
+                            {   
+                                packTable.addElementWithEditor();
+                            }
+            
+                        });
+        
+        JPanel packPanel = createPackTable();
+        //JPanel filesPanel = createFilesTable();
+        //JPanel filesPanel = packPanel;
+        
+        builder.addSeparator("Packs", 				cc.xyw(1, 1, 3));        
+        builder.add(packPanel,	 					cc.xy(1, 3));
+        
+        builder.add(packs, 	cc.xy(3, 3));
+        
+        builder.addSeparator("Files in pack", 		cc.xyw(1, 5, 3));
+        //builder.add(filesPanel,		 				cc.xy(1, 7));
+        builder.add(files,	cc.xy(3, 7));
+    }
+    
+    private JPanel createPackTable()
+    {        
+       packTable = new ListTable(new PackCellRenderer(), new PackCellEditor(), new PackEditor());
+       return configureTable(packTable);
+    }
+    
+    private JPanel createFilesTable()
+    {
+        return null;
+    }
+    
+    private JPanel configureTable(ListTable table)
+    {   
+        table.setShowVerticalLines(false);
+        table.setBorder(new LineBorder(Color.BLACK));
+        
+        JPanel p = new JPanel();
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));       
+        
+        p.add(new PackListHeader());
+        p.add(table);
+        
+        return p;
+    }
+    
+    AddRemovePanel packs, files;
+    ListTable packTable, filesTable;
 }

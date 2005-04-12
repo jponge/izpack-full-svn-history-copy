@@ -26,6 +26,8 @@ package izpack.frontend.view.stages.panels;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.jgoodies.validation.ValidationResult;
+
 
 /**
  * @author Andy Gombos
@@ -53,5 +55,5 @@ public interface ConfigurePanel
      * 
      * @return true if the panel information is valid 
      */
-    public boolean validatePage();    
+    public ValidationResult validatePanel();    
 }

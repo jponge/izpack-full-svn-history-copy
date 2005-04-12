@@ -118,7 +118,7 @@ public class LangResources extends Observable {
 	 * @return the property value
 	 */
 	public String getText(String propertyName) {
-		String text = resourceBundle.getString(propertyName);
+		String text = resourceBundle.getString(propertyName);		
 		return text;
 	}
 }

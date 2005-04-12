@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="Welcome Panel">
+<izpack-panel name="Welcome Panel" classname="HelloPanel">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Welcome users to the installer</panel-desc-short>
 	<panel-desc-long>Display a welcome panel to users with general information about the application to be installed.</panel-desc-long>

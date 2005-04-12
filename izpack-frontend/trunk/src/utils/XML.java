@@ -24,7 +24,9 @@
 package utils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -44,7 +46,6 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -102,33 +103,56 @@ public class XML
     }
     
     public static void writeXML(String filename, Document document)
+    {       
+        writeXML(new StreamResult(filename), document);
+    }
+    
+    public static void printXML(Document document)
+    {
+        writeXML(new StreamResult(System.out), document);
+    }
+    
+    public static void writeXML(StreamResult stream, Document document)
     {
         try
-        {
+        {   
             // Prepare the DOM document for writing
             Source source = new DOMSource(document);
 
             // Prepare the output file            
-            Result result = new StreamResult(filename);
+            Result result = stream;
 
             // Write the DOM document to the file
             // Get Transformer
             //This won't properly indent - research indicates a 1.5 bug (so 1.3 JAXP?)
             TransformerFactory tFactory = TransformerFactory.newInstance();
             Transformer xformer = tFactory.newTransformer();
-            xformer.setOutputProperty(OutputKeys.INDENT, "yes");            
+            xformer.setOutputProperty(OutputKeys.INDENT, "yes");
             
             // Write to a file
             xformer.transform(source, result);
         }
-        catch (TransformerConfigurationException e)
+        catch (TransformerConfigurationException tce)
         {
-            System.out.println("TransformerConfigurationException: " + e);
+            System.out.println("TransformerConfigurationException: " + tce);
         }
-        catch (TransformerException e)
+        catch (TransformerException te)
         {
-            System.out.println("TransformerException: " + e);
+            System.out.println("TransformerException: " + te);
         }
+    }
+    
+    public static Document merge(Document doc1, Document doc2)
+    {
+        Element head1 = doc1.getDocumentElement();
+        Element head2 = doc2.getDocumentElement();
+        
+        Document both = XML.getNewDocument();
+        both.adoptNode(head1);
+        both.adoptNode(head2);
+        
+        
+        return both;
     }
     
     /**
@@ -196,10 +220,20 @@ public class XML
 	    return root;
     }
     
-    public static Element createElement(String name)
+    public static Element createRootElement(String name)
     {
-        return getDocument().createElement(name);
+        Document doc = getNewDocument();
+        Element elem = doc.createElement(name);
+        doc.appendChild(elem);
+        
+        return elem; 
     }
+    
+    public static Element createElement(String name, Document d)
+    {
+        return d.createElement(name);
+    }
+    
     
     public static Document getDocument()
     {
@@ -207,6 +241,11 @@ public class XML
             doc = createDocument();
         
         return doc;
+    }
+    
+    public static Document getNewDocument()
+    {
+        return createDocument();    
     }
     
     private static Document doc;

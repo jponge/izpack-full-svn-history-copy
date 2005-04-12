@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="HTML License Panel">
+<izpack-panel name="HTML License Panel" classname="HTMLLicencePanel">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Display product license, HTML style</panel-desc-short>
 	<panel-desc-long>Display a panel to users providing HTML license information, as well as requiring them to accept the license to continue.</panel-desc-long>

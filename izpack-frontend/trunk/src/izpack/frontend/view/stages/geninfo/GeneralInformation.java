@@ -30,6 +30,8 @@ import javax.swing.JTabbedPane;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.jgoodies.validation.ValidationResult;
+
 import utils.XML;
 
 /**
@@ -43,7 +45,7 @@ public class GeneralInformation extends IzPackStage
 		
 		uiConfig = new UIConfig();
 		languageSelect = new LanguageSelect();
-		generalInfoPage = new GeneralInfoPage();
+		generalInfoPage = new GeneralInfoPanel();
 		
 		tabs.addTab(langResources().getText("UI.GeneralInformation.TAB1.Text"), generalInfoPage);		
         tabs.addTab(langResources().getText("UI.GeneralInformation.TAB2.Text"), languageSelect);
@@ -51,60 +53,43 @@ public class GeneralInformation extends IzPackStage
 		
 		add(tabs);
 	}
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.IzPackStage#createXMLSaveData()
-     */
-    public Document createXMLSaveData()
-    {   
-        if (! (languageSelect.validatePage() && uiConfig.validatePage()))
-            return null;
-        
-        Document d = XML.getDocument();
-        Element root = XML.createElement("root");
-        Element e = languageSelect.createXML();
-        Element ee = uiConfig.createXML();
-        
-               
-        d.appendChild(root);
-        root.appendChild(e);
-        root.appendChild(ee);
-        Element eee = XML.createElement("blank");
-        ee.appendChild(eee);
-        root.appendChild(ee);
-        XML.writeXML("F:\\lang.xml", d);
-        
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.IzPackStage#readXMLSaveData(org.w3c.dom.Document)
-     */
-    public void readXMLSaveData(Document data)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
+    
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.IzPackStage#createInstallerData()
      */
     public Document createInstallerData()
-    {
-        // TODO Auto-generated method stub
-        return null;
+    {           
+        Element root = XML.createRootElement("installation");
+        Document rootDoc = root.getOwnerDocument();
+        
+        root.setAttribute("version", "1.0");        
+        
+        Element genInfoXML = generalInfoPage.createXML();
+        Element langXML = languageSelect.createXML();
+        Element uiXML = uiConfig.createXML();               
+        
+        root.appendChild(rootDoc.importNode(genInfoXML, true));
+        root.appendChild(rootDoc.importNode(langXML, true));
+        root.appendChild(rootDoc.importNode(uiXML, true));
+        
+        return rootDoc;
     }
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.IzPackStage#validateStage()
      */
-    public boolean validateStage()
+    public ValidationResult validateStage()
     {
-        // TODO Auto-generated method stub
-        return false;
+        ValidationResult vr = new ValidationResult();
+        
+        vr.addAllFrom(uiConfig.validatePanel());
+        vr.addAllFrom(languageSelect.validatePanel());
+        vr.addAllFrom(generalInfoPage.validatePanel());
+        
+        return vr;
     }
     
-    UIConfig uiConfig;
-    LanguageSelect languageSelect;
-    GeneralInfoPage generalInfoPage;
+    private UIConfig uiConfig;
+    private LanguageSelect languageSelect;
+    private GeneralInfoPanel generalInfoPage;
 }

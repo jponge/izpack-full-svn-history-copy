@@ -26,6 +26,11 @@ package izpack.frontend.view.stages.panelselect;
 import izpack.frontend.view.stages.IzPackStage;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import com.jgoodies.validation.ValidationResult;
+
+import utils.XML;
 
 /**
  * @author Andy Gombos
@@ -35,43 +40,33 @@ public class PanelSelection extends IzPackStage
 	
 	public void initializeStage() 
 	{	
-		add(new PanelSelect());
+	    panelSelect = new PanelSelect();
+	    
+		add(panelSelect);
 	}
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.IzPackStage#createXMLSaveData()
-     */
-    public Document createXMLSaveData()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.IzPackStage#readXMLSaveData(org.w3c.dom.Document)
-     */
-    public void readXMLSaveData(Document data)
-    {
-        // TODO Auto-generated method stub
-        
-    }
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.IzPackStage#createInstallerData()
      */
     public Document createInstallerData()
-    {
-        // TODO Auto-generated method stub
-        return null;
+    {   
+        Element root = XML.createRootElement("installation");
+        Document rootDoc = root.getOwnerDocument();
+        
+        root.setAttribute("version", "1.0");                
+        root.appendChild(rootDoc.importNode(panelSelect.createXML(), true));
+        
+        return rootDoc;
     }
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.IzPackStage#validateStage()
      */
-    public boolean validateStage()
+    public ValidationResult validateStage()
     {
         // TODO Auto-generated method stub
-        return false;
+        return null;
     }
-	
+    
+    PanelSelect panelSelect;
 }

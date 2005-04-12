@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="Process Panel">
+<izpack-panel name="Process Panel" classname="ProcessPanel">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Execute files post-install</panel-desc-short>
 	<panel-desc-long>Allow files to be executed after the installation has completed (e.g setting permissions)</panel-desc-long>

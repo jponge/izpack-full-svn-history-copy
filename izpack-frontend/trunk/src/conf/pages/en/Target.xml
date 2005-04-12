@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="Target Panel">
+<izpack-panel name="Target Panel" classname="TargetPanel">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Select installation directory</panel-desc-short>
 	<panel-desc-long>Allow users to select the installation directory</panel-desc-long>

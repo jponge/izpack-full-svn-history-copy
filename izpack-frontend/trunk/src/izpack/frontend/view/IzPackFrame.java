@@ -64,7 +64,7 @@ public class IzPackFrame extends JFrame implements AppBase {
 		// init
 		this.initComponents();
 		// display welcome page
-		this.displayStage(GUIConstants.STAGE_WELCOME);		
+		//this.displayStage(GUIConstants.STAGE_WELCOME);		
 	}
 
 	/**
@@ -233,7 +233,7 @@ public class IzPackFrame extends JFrame implements AppBase {
 	 * similar things...
 	 */
 	public void configureUI() {
-
+	    
 	}
 	
 	/**

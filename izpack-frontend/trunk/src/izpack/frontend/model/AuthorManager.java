@@ -99,7 +99,7 @@ public class AuthorManager
             author.setAttribute("email", auth.getEmail());
         }
         
-        XML.writeXML("conf/author3.xml", document);
+        XML.writeXML("conf/authors.xml", document);
     }
 }
 

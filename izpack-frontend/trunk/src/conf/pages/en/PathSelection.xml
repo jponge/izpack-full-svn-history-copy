@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="JDK Path Panel">
+<izpack-panel name="JDK Path Panel" classname="JDKPathPanel">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Allow users to select JDK path</panel-desc-short>
 	<panel-desc-long>Allow a user to select the location of the JDK, if your installer needs its features.</panel-desc-long>

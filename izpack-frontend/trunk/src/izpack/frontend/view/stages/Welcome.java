@@ -47,6 +47,7 @@ import org.w3c.dom.Document;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.validation.ValidationResult;
 
 /**
  * @author Andy Gombos
@@ -106,7 +107,7 @@ public class Welcome extends IzPackStage implements ActionListener
         if (name.equals(GUIConstants.BUTTON_NEW))
         {
         	//IzPackFrame.getInstance().displayStage("GeneralInfoStage");
-            WizardMode.wizardMode();
+            //WizardMode.wizardMode();
         }
         if (name.equals(GUIConstants.BUTTON_OPEN))
         {
@@ -177,9 +178,9 @@ public class Welcome extends IzPackStage implements ActionListener
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.IzPackStage#validateStage()
      */
-    public boolean validateStage()
+    public ValidationResult validateStage()
     {
         // TODO Auto-generated method stub
-        return true;
+        return null;
     }
 }

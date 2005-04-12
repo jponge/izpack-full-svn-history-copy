@@ -23,8 +23,6 @@
  */
 package izpack.frontend.view.stages.panels;
 
-import izpack.frontend.view.components.validating.VTextInput;
-
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,9 +34,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.jgoodies.validation.ValidationResult;
 
 import utils.IO;
 import utils.UI;
@@ -54,7 +55,7 @@ public class XInfo extends JPanel implements ConfigurePanel, ActionListener
     public XInfo()
     {
         xinfo = new JTextArea();
-        filebox = new VTextInput("Text file to be parsed: ");
+        filebox = new JTextField("Text file to be parsed: ");
 	    
 	    JScrollPane scrollPane = new JScrollPane();
 	    scrollPane.getViewport().add(xinfo);
@@ -74,7 +75,7 @@ public class XInfo extends JPanel implements ConfigurePanel, ActionListener
     }
     
     JTextArea xinfo;
-    VTextInput filebox;
+    JTextField filebox;
 
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -125,8 +126,8 @@ public class XInfo extends JPanel implements ConfigurePanel, ActionListener
     /* (non-Javadoc)
      * @see izpack.frontend.view.pages.configure.ConfigurePage#validatePage()
      */
-    public boolean validatePage()
+    public ValidationResult validatePanel()
     {
-        return filebox.validateInput();        
+        return null;        
     }
 }

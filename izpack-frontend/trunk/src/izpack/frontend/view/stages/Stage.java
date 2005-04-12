@@ -25,6 +25,8 @@ package izpack.frontend.view.stages;
 
 import org.w3c.dom.Document;
 
+import com.jgoodies.validation.ValidationResult;
+
 /**
  * @author Andy Gombos
  */
@@ -51,7 +53,7 @@ public interface Stage
      *  
      * @return true if the Stage is valid
      */
-    public boolean validateStage();    
+    public ValidationResult validateStage();    
     
     
     /**

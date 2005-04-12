@@ -32,8 +32,14 @@ import izpack.frontend.view.components.SelectList;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.ListModel;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.jgoodies.validation.ValidationResult;
+
+import utils.XML;
 
 /**
  * @author Andy Gombos
@@ -59,7 +65,7 @@ public class PanelSelect extends AbstractListSelect
         {
             PanelInfo page = (PanelInfo) iter.next();
             
-            src.addElement( new ImageLabel(page.getName(), page.getShortDesc(), "res/imgs/folder.png") );
+            src.addElement( new ImageLabel(page.getClassname(), page.getName(), page.getShortDesc(), "res/imgs/folder.png") );
         }
 	}
     
@@ -70,8 +76,23 @@ public class PanelSelect extends AbstractListSelect
      */
     public Element createXML()
     {
-        // TODO Auto-generated method stub
-        return null;
+        ListModel lm = dest.getModel();
+        
+        Element panels = XML.createRootElement("panels");
+        Document panelsDoc = panels.getOwnerDocument();
+        
+        for (int i = 0; i < lm.getSize(); i++)
+        {
+            ImageLabel il = (ImageLabel) lm.getElementAt(i);
+            String classname = il.getClassname();
+            
+            Element panel = XML.createElement("panel", panelsDoc);
+            panel.setAttribute("classname", classname);
+            
+            panels.appendChild(panel);
+        }
+        
+        return panels;
     }
 
     /* (non-Javadoc)
@@ -81,5 +102,14 @@ public class PanelSelect extends AbstractListSelect
     {
         // TODO Auto-generated method stub
         
-    }    
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.panels.ConfigurePanel#validatePanel()
+     */
+    public ValidationResult validatePanel()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

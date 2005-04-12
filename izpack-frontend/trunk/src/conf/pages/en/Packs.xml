@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="Packs Panel">
+<izpack-panel name="Packs Panel" classname="PacksPanel">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Choose packs to install</panel-desc-short>
 	<panel-desc-long>Allow users to choose the packs to install.</panel-desc-long>

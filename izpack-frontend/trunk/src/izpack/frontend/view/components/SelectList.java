@@ -69,6 +69,11 @@ public class SelectList extends JList
         model.set(startingIndex + delta, original);
         model.set(startingIndex, replaced);
     }
+    
+    public int getNumElements()
+    {
+        return model.size();
+    }
 
     DefaultListModel model;   
 }

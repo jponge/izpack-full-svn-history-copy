@@ -38,6 +38,10 @@ import javax.swing.SwingConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.jgoodies.validation.Severity;
+import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.message.PropertyValidationMessage;
+
 import utils.XML;
 
 /**
@@ -113,12 +117,14 @@ public class LanguageSelect extends AbstractListSelect
      */
     public Element createXML()
     {
-        Element root = XML.createElement("locale");
+        Element root = XML.createRootElement("locale");
+        Document rootDoc = root.getOwnerDocument();
+        
         ListModel model = dest.getModel();
         
         for (int i = 0; i < model.getSize(); i++)
         {
-            Element langElem = XML.createElement("langpack");
+            Element langElem = XML.createElement("langpack", rootDoc);
             LangLabel lLabel = (LangLabel) model.getElementAt(i);
             langElem.setAttribute("iso3", lLabel.getISO3Code());
             
@@ -135,5 +141,27 @@ public class LanguageSelect extends AbstractListSelect
     {
         // TODO Auto-generated method stub
         
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.panels.ConfigurePanel#validatePanel()
+     */
+    public ValidationResult validatePanel()
+    {
+        ValidationResult vr = new ValidationResult();
+        
+        if (dest.getNumElements() == 0)
+        {
+            vr.add(new PropertyValidationMessage(
+                            Severity.ERROR,
+                            "must have at least one language added",
+                            dest,
+                            "Locale",
+                            "langpacks"                            
+                            ));
+            
+        }
+        
+        return vr;
     }
 }

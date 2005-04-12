@@ -34,6 +34,8 @@ import javax.swing.JPanel;
 
 import org.w3c.dom.Document;
 
+import com.jgoodies.validation.ValidationResult;
+
 /**
  * @author Andy Gombos
  */
@@ -41,7 +43,7 @@ public abstract class IzPackStage extends JPanel implements Stage
 {        
     public abstract Document createInstallerData();
     
-    public abstract boolean validateStage();
+    public abstract ValidationResult validateStage();
     
     public void registerStage(Object stage)
     {        

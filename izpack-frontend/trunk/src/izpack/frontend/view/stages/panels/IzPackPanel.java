@@ -33,6 +33,9 @@ import java.util.Observable;
 
 import javax.swing.JPanel;
 
+import com.jgoodies.validation.ValidationCapable;
+import com.jgoodies.validation.ValidationResult;
+
 /**
  * Defines a basic implementation for swing applications.
  * 
@@ -56,9 +59,7 @@ public abstract class IzPackPanel extends JPanel implements IzPanel {
 		// set up the arraylist
 		elements = new ArrayList();
 		// init all components
-		initComponents();
-		// TODO: move to config file...
-		this.setPreferredSize(new Dimension(500,500));
+		initComponents();				
 	}
 	
 	/**
@@ -123,17 +124,6 @@ public abstract class IzPackPanel extends JPanel implements IzPanel {
 	 */
 	public AppConfiguration appConfiguration() {
 		return GUIController.getInstance().appConfiguration();
-	}
-	
-	public boolean validatePage()
-	{
-	    return true;
-	}
-	
-	public void setName(String name)
-	{
-		System.out.println("Setting name: " + name);
-		super.setName(name);
 	}
  } 
 
