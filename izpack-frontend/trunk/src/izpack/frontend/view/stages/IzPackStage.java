@@ -24,6 +24,8 @@
 package izpack.frontend.view.stages;
 
 import izpack.frontend.controller.GUIController;
+import izpack.frontend.controller.StageChangeEvent;
+import izpack.frontend.controller.StageChangeListener;
 import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.LangResources;
 
@@ -40,17 +42,36 @@ import com.jgoodies.validation.ValidationResult;
  * @author Andy Gombos
  */
 public abstract class IzPackStage extends JPanel implements Stage
-{        
+{   
+    public IzPackStage()
+    {
+        registerStage(this);        
+    }
+    
     public abstract Document createInstallerData();
     
     public abstract ValidationResult validateStage();
     
-    public void registerStage(Object stage)
+    /**
+     * Allow stages to communicate (call methods) easier.
+     * Sort of a getInstance() for non-Singletons. 
+     * 
+     * @param stage The instance to register
+     */
+    public static void registerStage(Stage stage)
     {        
         stageList.add(stage);
     }
 
-    public IzPackStage getStage(Class stage)
+    /**
+     * Return a stage instance given the type.
+     * 
+     * This could really use generics 
+     * 
+     * @param stage The stage type to find
+     * @return The stage object
+     */    
+    public static IzPackStage getStage(Class stage)
     {
         for (Iterator iter = stageList.iterator(); iter.hasNext();)
         {
@@ -80,5 +101,31 @@ public abstract class IzPackStage extends JPanel implements Stage
 		return GUIController.getInstance().appConfiguration();
 	}
 	
-	private ArrayList stageList = new ArrayList();
+	/*
+	 * 
+	 * StageChange stuff
+	 * 
+	 */
+	public void addStageChangeListener(StageChangeListener stl)
+	{	 
+	    changeListenerList.add(stl);
+	}
+	
+	public void removeStageChangeListener(StageChangeListener stl)
+	{
+	    changeListenerList.remove(stl);
+	}
+	
+	protected void fireStageChangeEvent(StageChangeEvent ste)
+	{   
+	    for (Iterator iter = changeListenerList.iterator(); iter.hasNext();)
+        {
+            StageChangeListener element = (StageChangeListener) iter.next();     
+            
+            element.changeStage(ste);
+        }
+	}
+	
+	private static ArrayList stageList = new ArrayList();
+	private static ArrayList changeListenerList = new ArrayList();
 }

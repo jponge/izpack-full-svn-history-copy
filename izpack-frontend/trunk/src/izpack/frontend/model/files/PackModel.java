@@ -1,10 +1,10 @@
 /*
- * Created on Apr 12, 2005
+ * Created on Apr 18, 2005
  * 
- * $Id: Parseable.java Feb 8, 2004 izpack-frontend
+ * $Id: PackModel.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : Parseable.java 
+ * File : PackModel.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -23,10 +23,29 @@
  */
 package izpack.frontend.model.files;
 
+import java.util.ArrayList;
+
+import org.w3c.dom.Document;
+
 /**
  * @author Andy Gombos
  */
-public class Parseable
+public class PackModel
 {
-
+    public Document writePack()
+    {
+        return null;
+    }
+    
+    public void addFiles(PackElement elem)
+    {
+        elements.add(elem);
+    }
+    
+    public void removeFile(PackElement elem)
+    {
+        elements.remove(elem);
+    }
+    
+    ArrayList elements = new ArrayList();
 }

@@ -25,11 +25,60 @@ package izpack.frontend.model.files;
 
 import java.util.ArrayList;
 
+import org.w3c.dom.Document;
+
 /**
  * @author Andy Gombos
  */
-public class FileSet
+public class FileSet extends PackFileModel
 {
-    
+    public boolean caseSensitive = true, defaultExcludes = true;
     private ArrayList files;
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.model.files.PackElement#writeXML()
+     */
+    public Document writeXML()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    public void addSet(String set, boolean include)
+    {
+        if (include)
+            files.add(new Include(set));
+        else
+            files.add(new Exclude(set));
+    }
+    
+    class Include
+    {
+        public Include(String set)
+        {
+            this.set = set;
+        }
+        
+        public String set;
+        
+        public Document writeXML()
+        {
+            return null;
+        }
+    }
+    
+    class Exclude
+    {
+        public Exclude(String set)
+        {
+            this.set = set;
+        }
+        
+        public String set;
+        
+        public Document writeXML()
+        {
+            return null;
+        }
+    }
 }

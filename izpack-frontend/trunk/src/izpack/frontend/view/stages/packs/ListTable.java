@@ -41,7 +41,7 @@ import javax.swing.table.TableCellRenderer;
 public class ListTable extends JTable implements MouseListener
 {
     public ListTable(IzTableCellRenderer renderer, TableCellEditor editor,
-                    TableEditor doubleClickEditor)
+                    EditorManager em)
     {
         model = new DefaultTableModel();
         setModel(model);
@@ -56,13 +56,23 @@ public class ListTable extends JTable implements MouseListener
         addMouseListener(this);
         
         this.renderer = renderer;
-        this.editor = editor;
-        this.doubleClickEditor = doubleClickEditor;
+        this.editor = editor;        
+        
+        this.em = em;
     }
     
     public void addElement(ElementModel em)
     {
-        model.addRow(new Object[]{em});     
+        for (int i = 0; i < model.getRowCount(); i++)
+        {
+            if (model.getValueAt(i, 0) == null)
+            {
+                replaceElement(em, i);
+                break;
+            }
+        }
+            
+        //model.addRow(new Object[]{em});        
     }
     
     public void replaceElement(ElementModel em, int row)
@@ -71,8 +81,10 @@ public class ListTable extends JTable implements MouseListener
         model.insertRow(row, new Object[]{em});
     }
     
-    public void addElementWithEditor()
+    public void addElementWithEditor(Class type)
     {
+        System.out.println(type);
+        doubleClickEditor = em.getEditor(type);
         doubleClickEditor.configureClean();
         doubleClickEditor.setVisible(true);
         
@@ -82,8 +94,9 @@ public class ListTable extends JTable implements MouseListener
         }
     }
     
-    private void insertElementWithEditor(int row)
+    private void insertElementWithEditor(int row, Class type)
     {
+        doubleClickEditor = em.getEditor(type);
         doubleClickEditor.configureClean();
         doubleClickEditor.setVisible(true);
         
@@ -107,13 +120,11 @@ public class ListTable extends JTable implements MouseListener
 
             int row = src.getSelectedRow(), col = src.getSelectedColumn();                       
             
-            //List element is null
-            if (model.getValueAt(row, col) == null)
-            {
-                insertElementWithEditor(row);
-            }
-            else
+            //Ignore list element is null
+            //Doesn't make sense for files panel
+            if (model.getValueAt(row, col) != null)            
             {            
+                doubleClickEditor = em.getEditor(model.getValueAt(row, col).getClass());
 	            doubleClickEditor.configure((ElementModel) src.getValueAt(row, col));
 	            doubleClickEditor.setVisible(true);
 	
@@ -147,6 +158,7 @@ public class ListTable extends JTable implements MouseListener
     private TableCellEditor editor;
     private TableCellRenderer renderer;
     private TableEditor doubleClickEditor;
+    private EditorManager em;
     
     private int emptyRowCount = 0;
 }

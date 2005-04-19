@@ -1,10 +1,10 @@
 /*
- * Created on Apr 7, 2005
+ * Created on Apr 19, 2005
  * 
- * $Id: OSComboBox.java Feb 8, 2004 izpack-frontend
+ * $Id: XMLFilter.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : OSComboBox.java 
+ * File : XMLFilter.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,42 +21,38 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.components;
+package izpack.frontend.controller.filters;
 
-import javax.swing.JComboBox;
+import izpack.frontend.view.IzPackFrame;
+
+import java.io.File;
+
+import javax.swing.filechooser.FileFilter;
 
 /**
  * @author Andy Gombos
  */
-public class OSComboBox extends JComboBox
+public class XMLFilter extends FileFilter
 {
-    public OSComboBox()
-    {       
-        super(osList);
-        
-        setEditable(false);        
-    }
-    
-    public String getOS()
+
+    /* (non-Javadoc)
+     * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
+     */
+    public boolean accept(File f)
     {
-        if (getSelectedIndex() == -1)
-            return "";
+        String name = f.getName().toLowerCase();        
         
-        return (String) getSelectedItem();
+        return f.isDirectory() || 
+        	name.endsWith("xml") ||
+        	name.endsWith("xsl");
     }
-    
-    public void setOS(String os)
+
+    /* (non-Javadoc)
+     * @see javax.swing.filechooser.FileFilter#getDescription()
+     */
+    public String getDescription()
     {
-        if (os == null || os.equals(""))
-            setSelectedIndex(-1);
-        
-        setSelectedItem(os);
+        return IzPackFrame.getInstance().langResources().getText("UI.FileFilters.XML.Desc");
     }
-    
-    //From the IzPack DTD
-    static final String[] osList = new String[]{
-                    "Windows",
-                    "Unix",
-                    "Mac",
-                    };
+
 }

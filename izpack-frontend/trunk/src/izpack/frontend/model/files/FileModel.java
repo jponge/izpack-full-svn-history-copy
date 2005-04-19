@@ -23,10 +23,20 @@
  */
 package izpack.frontend.model.files;
 
+import org.w3c.dom.Document;
+
 /**
  * @author Andy Gombos
  */
-public class FileModel
+public class FileModel extends PackFileModel
 {
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.model.files.PackElement#writeXML()
+     */
+    public Document writeXML()
+    {   
+        return null;
+    }
 
 }

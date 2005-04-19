@@ -23,6 +23,10 @@
  */
 package izpack.frontend.view.stages;
 
+import izpack.frontend.controller.StageChangeListener;
+
+import javax.swing.JPanel;
+
 import org.w3c.dom.Document;
 
 import com.jgoodies.validation.ValidationResult;
@@ -35,7 +39,7 @@ public interface Stage
     //Initialization functions
     
     /**
-     * Initialize the stage by creating any necessary components, pages, etc.
+     * Initialize the stage by creating any necessary components, panels, etc.
      */
     public void initializeStage(); 
           
@@ -53,28 +57,33 @@ public interface Stage
      *  
      * @return true if the Stage is valid
      */
-    public ValidationResult validateStage();    
-    
-    
-    /**
-     * Allow stages to communicate (call methods) easier.
-     * Sort of a getInstance() for non-Singletons. 
-     * 
-     * @param stage The instance to register
-     */
-    public void registerStage(Object stage);
+    public ValidationResult validateStage();
     
     /**
-     * Return a stage instance given the type.
+     * Set the name of the stage used when needing to display what the stage is (buttons, etc)
      * 
-     * This could really use generics 
-     * 
-     * @param stage The stage type to find
-     * @return The stage object
-     */
-    public IzPackStage getStage(Class stage);   
-    
+     * @param name The stage name
+     */   
     public void setName(String name);
     
+    /**
+     * Get the name of the stage used when needing to display what the stage is (buttons, etc)
+     * @return The stage name
+     */
     public String getName();
+    
+    public JPanel getLeftNavBar();
+    
+    public JPanel getTopNavBar();
+    
+    public JPanel getBottomInfoBar();
+    
+    /*
+     * 
+     * StageChange event stuff
+     * 
+     */
+    
+    public void addStageChangeListener(StageChangeListener stl);    
+    public void removeStageChangeListener(StageChangeListener stl);
 }

@@ -23,25 +23,24 @@
  */
 package izpack.frontend.view.mode;
 
+import izpack.frontend.controller.StageChangeEvent;
+import izpack.frontend.controller.StageChangeListener;
+import izpack.frontend.view.stages.IzPackStage;
+import izpack.frontend.view.stages.Stage;
 import izpack.frontend.view.stages.geninfo.GeneralInformation;
 import izpack.frontend.view.stages.panelselect.PanelSelection;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
 
-import javax.swing.JButton;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
-import utils.XML;
-import utils.XMLAggregator;
+import javax.swing.SwingConstants;
 
 /**
  * Show Panel Select and General Information stages
@@ -50,7 +49,7 @@ import utils.XMLAggregator;
  *
  * @author Andy Gombos
  */
-public class WizardMode extends JFrame implements ActionListener
+public class WizardMode extends JFrame implements StageChangeListener
 {
     public static void main(String[] args)
     {
@@ -58,75 +57,63 @@ public class WizardMode extends JFrame implements ActionListener
     }
     
     public WizardMode()
-    {
-        
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
+    {   
         setLayout(new BorderLayout());
         
-        JPanel jp = new JPanel();
-        jp.setLayout(new FlowLayout());
-        getContentPane().add(jp, BorderLayout.NORTH);
+        iconPanel = createIconPanel();
+        IzPackStage geninfo = new GeneralInformation();        
+        IzPackStage sel = new PanelSelection();
+        geninfo.initializeStage();
+        sel.initializeStage();
         
-        JButton b = new JButton("Next");
-        b.addActionListener(this);
-        jp.add(b);
+        geninfo.addStageChangeListener(this);
         
-        JButton bb = new JButton("Exit");
-        bb.addActionListener(new ActionListener(){
-
-            public void actionPerformed(ActionEvent e)
-            {   
-                Document d1 = genInfo.createInstallerData();
-                Document d2 = ps.createInstallerData();
-                
-                Document both = XML.getNewDocument();
-                
-                Node d1root = both.importNode(d1.getFirstChild(), true);
-                Node d2root = both.importNode(d2.getFirstChild(), true);
-                
-                Element topRoot = XML.createElement("toproot", both);
-                both.appendChild(topRoot);
-                
-                topRoot.appendChild(d1root);
-                topRoot.appendChild(d2root);
-                
-                XML.printXML(both);
-                System.out.println("---------------------");
-                topRoot = XMLAggregator.mergeElements(topRoot);
-                XML.printXML(both);
-                
-                dispose();
-            }});
-        jp.add(bb);
+        iconPanel.add(geninfo.getTopNavBar());
         
-        genInfo = new GeneralInformation();
-        genInfo.initializeStage();
-        ps = new PanelSelection();
-        ps.initializeStage();
-        
+        getContentPane().add(iconPanel, BorderLayout.NORTH);
         
         base.setLayout(layout);
-        base.add(genInfo, "A");
-        base.add(ps, "B");
         
-        getContentPane().add(base, BorderLayout.CENTER);
+        base.add(geninfo, geninfo.getClass().toString());
+        base.add(sel, sel.getClass().toString());        
         
-        pack();
+        getContentPane().add(base, BorderLayout.CENTER);        
+        
+        setPreferredSize(new Dimension(700, 700));
+        pack();        
         setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
     }
     
-    //static IzPackFrame iz = IzPackFrame.getInstance();
-    PanelSelection ps;
-    GeneralInformation genInfo;
-    JPanel base = new JPanel();
-    CardLayout layout = new CardLayout();
+    private JPanel createIconPanel()
+    {
+        JPanel navPanel = new JPanel();
+        navPanel.setLayout(new BoxLayout(navPanel, BoxLayout.X_AXIS));
+        
+        JLabel izPackIcon = new JLabel("<html><font size=+2>IzPack</font>", new ImageIcon("res/imgs/synaptic.png"), SwingConstants.LEFT);
+        navPanel.add(izPackIcon);
+        
+        navPanel.add(Box.createHorizontalGlue());
+        
+        return navPanel;
+    }
     
     /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see izpack.frontend.controller.StageChangeListener#changeStage(izpack.frontend.controller.StageChangeEvent)
      */
-    public void actionPerformed(ActionEvent e)
-    {        
-        layout.next(base);        
-    }
+    public void changeStage(StageChangeEvent e)
+    {
+        System.out.println("Next to: " + e.getStageClass());
+        
+        IzPackStage stage = IzPackStage.getStage(e.getStageClass());
+        iconPanel.remove(iconPanel.getComponentCount() - 1);
+        iconPanel.repaint();
+        System.out.println(stage.getTopNavBar());
+        iconPanel.add(stage.getTopNavBar());
+        layout.show(base, e.getStageClass().toString());
+        pack();        
+    }    
+    
+    JPanel base = new JPanel(), iconPanel;    
+    CardLayout layout = new CardLayout();    
 }

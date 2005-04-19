@@ -1,10 +1,10 @@
 /*
- * Created on Apr 7, 2005
+ * Created on Apr 13, 2005
  * 
- * $Id: OSComboBox.java Feb 8, 2004 izpack-frontend
+ * $Id: StageChangeListener.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : OSComboBox.java 
+ * File : StageChangeListener.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,42 +21,12 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.components;
-
-import javax.swing.JComboBox;
+package izpack.frontend.controller;
 
 /**
  * @author Andy Gombos
  */
-public class OSComboBox extends JComboBox
+public interface StageChangeListener
 {
-    public OSComboBox()
-    {       
-        super(osList);
-        
-        setEditable(false);        
-    }
-    
-    public String getOS()
-    {
-        if (getSelectedIndex() == -1)
-            return "";
-        
-        return (String) getSelectedItem();
-    }
-    
-    public void setOS(String os)
-    {
-        if (os == null || os.equals(""))
-            setSelectedIndex(-1);
-        
-        setSelectedItem(os);
-    }
-    
-    //From the IzPack DTD
-    static final String[] osList = new String[]{
-                    "Windows",
-                    "Unix",
-                    "Mac",
-                    };
+    public void changeStage(StageChangeEvent e);
 }

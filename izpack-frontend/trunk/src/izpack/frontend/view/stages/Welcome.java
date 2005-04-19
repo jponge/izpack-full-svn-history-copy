@@ -40,6 +40,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import org.w3c.dom.Document;
@@ -179,6 +180,33 @@ public class Welcome extends IzPackStage implements ActionListener
      * @see izpack.frontend.view.stages.IzPackStage#validateStage()
      */
     public ValidationResult validateStage()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.Stage#getLeftNavBar()
+     */
+    public JPanel getLeftNavBar()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.Stage#getTopNavBar()
+     */
+    public JPanel getTopNavBar()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.Stage#getBottomInfoBar()
+     */
+    public JPanel getBottomInfoBar()
     {
         // TODO Auto-generated method stub
         return null;

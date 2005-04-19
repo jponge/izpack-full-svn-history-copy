@@ -23,16 +23,24 @@
  */
 package izpack.frontend.view.stages.geninfo;
 
+import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.view.stages.IzPackStage;
+import izpack.frontend.view.stages.panelselect.PanelSelection;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.jgoodies.validation.ValidationResult;
-
+import utils.UI;
 import utils.XML;
+
+import com.jgoodies.validation.ValidationResult;
 
 /**
  * @author Andy Gombos
@@ -51,7 +59,7 @@ public class GeneralInformation extends IzPackStage
         tabs.addTab(langResources().getText("UI.GeneralInformation.TAB2.Text"), languageSelect);
 		tabs.addTab(langResources().getText("UI.GeneralInformation.TAB3.Text"), uiConfig);					
 		
-		add(tabs);
+		add(tabs);		
 	}
     
     /* (non-Javadoc)
@@ -92,4 +100,41 @@ public class GeneralInformation extends IzPackStage
     private UIConfig uiConfig;
     private LanguageSelect languageSelect;
     private GeneralInfoPanel generalInfoPage;
+
+    /**
+     * Return an empty panel to make the stage look correct in the frame
+     */
+    public JPanel getLeftNavBar()
+    { 
+        return new JPanel();
+    }
+
+    /**
+     * Return a button set. No "Back", "Forward" to select panels
+     */
+    public JPanel getTopNavBar()
+    {
+        JPanel panel = new JPanel();
+        JButton forward = UI.getNavButton(langResources().getText("UI.StageNames.PanelSelect"), UI.FORWARD);
+        
+        forward.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {               
+                fireStageChangeEvent(new StageChangeEvent(PanelSelection.class));
+            }
+        });
+        
+        panel.add(forward);
+        
+        return panel;
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.Stage#getBottomInfoBar()
+     */
+    public JPanel getBottomInfoBar()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

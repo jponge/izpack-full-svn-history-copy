@@ -1,10 +1,10 @@
 /*
- * Created on Apr 7, 2005
+ * Created on Apr 11, 2005
  * 
- * $Id: OSComboBox.java Feb 8, 2004 izpack-frontend
+ * $Id: PackListHeader.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : OSComboBox.java 
+ * File : PackListHeader.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,42 +21,29 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.components;
+package izpack.frontend.view.components.table;
 
-import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 
 /**
  * @author Andy Gombos
  */
-public class OSComboBox extends JComboBox
+public class FileListHeader extends JPanel
 {
-    public OSComboBox()
-    {       
-        super(osList);
-        
-        setEditable(false);        
+    public FileListHeader()
+    {	    
+	    FormLayout layout = new FormLayout("10dlu, 40dlu, 4dlu, 80dlu, 15dlu, max(80dlu;p), 10dlu", "15dlu");
+	    DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);
+	    
+	    CellConstraints cc = new CellConstraints();
+	    
+	    builder.add(new JLabel("Type"), cc.xy(2, 1));
+	    builder.add(new JLabel("Target"), cc.xy(4, 1));
+	    builder.add(new JLabel("Source/Format"), cc.xy(6, 1));
     }
-    
-    public String getOS()
-    {
-        if (getSelectedIndex() == -1)
-            return "";
-        
-        return (String) getSelectedItem();
-    }
-    
-    public void setOS(String os)
-    {
-        if (os == null || os.equals(""))
-            setSelectedIndex(-1);
-        
-        setSelectedItem(os);
-    }
-    
-    //From the IzPack DTD
-    static final String[] osList = new String[]{
-                    "Windows",
-                    "Unix",
-                    "Mac",
-                    };
 }

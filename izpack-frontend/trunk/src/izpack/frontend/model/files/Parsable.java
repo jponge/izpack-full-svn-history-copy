@@ -1,10 +1,10 @@
 /*
- * Created on Apr 7, 2005
+ * Created on Apr 12, 2005
  * 
- * $Id: OSComboBox.java Feb 8, 2004 izpack-frontend
+ * $Id: Parseable.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : OSComboBox.java 
+ * File : Parseable.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,42 +21,23 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.components;
+package izpack.frontend.model.files;
 
-import javax.swing.JComboBox;
+import org.w3c.dom.Document;
 
 /**
  * @author Andy Gombos
  */
-public class OSComboBox extends JComboBox
+public class Parsable implements PackElement
 {
-    public OSComboBox()
-    {       
-        super(osList);
-        
-        setEditable(false);        
-    }
-    
-    public String getOS()
+    public String targetfile, type, encoding, os;
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.model.files.PackElement#writeXML()
+     */
+    public Document writeXML()
     {
-        if (getSelectedIndex() == -1)
-            return "";
-        
-        return (String) getSelectedItem();
+        // TODO Auto-generated method stub
+        return null;
     }
-    
-    public void setOS(String os)
-    {
-        if (os == null || os.equals(""))
-            setSelectedIndex(-1);
-        
-        setSelectedItem(os);
-    }
-    
-    //From the IzPack DTD
-    static final String[] osList = new String[]{
-                    "Windows",
-                    "Unix",
-                    "Mac",
-                    };
 }

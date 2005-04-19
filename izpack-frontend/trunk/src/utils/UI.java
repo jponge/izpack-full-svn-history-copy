@@ -25,9 +25,12 @@ package utils;
 
 import java.io.File;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 /**
  * @author Andy Gombos
@@ -53,4 +56,21 @@ public class UI
     {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
     }
+
+    public static JButton getNavButton(String label, int direction)
+    {
+        JButton button;
+        if (direction == FORWARD)
+            button = new JButton(label, new ImageIcon("res/imgs/forward.png"));
+        else
+            button = new JButton(label, new ImageIcon("res/imgs/back.png"));
+        
+	    button.setVerticalTextPosition(SwingConstants.BOTTOM);
+	    button.setHorizontalTextPosition(SwingConstants.CENTER);
+	    
+	    return button;
+    }
+    
+    public static final int FORWARD = 1;
+    public static final int BACK = 2;
 }

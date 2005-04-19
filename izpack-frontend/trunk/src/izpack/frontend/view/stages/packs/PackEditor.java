@@ -31,6 +31,7 @@ import izpack.frontend.view.components.OSComboBox;
 import izpack.frontend.view.components.YesNoRadioPanel;
 import izpack.frontend.view.components.table.TableEditor;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -47,8 +48,10 @@ import com.jgoodies.forms.layout.FormLayout;
  */
 public class PackEditor extends TableEditor
 {
-    public PackEditor()
+    public PackEditor(Frame parent)
     {
+        super(parent);
+        
         FormLayout layout = new FormLayout("right:max(40dlu;p), 3dlu, 80dlu, 25dlu", "");
         DefaultFormBuilder builder = new DefaultFormBuilder(layout, new JPanel());
         builder.setDefaultDialogBorder();        
@@ -62,21 +65,10 @@ public class PackEditor extends TableEditor
         looseFilesPanel = new YesNoRadioPanel("no");        
         
         ok = new JButton(lr.getText("UI.Buttons.OK"));
-        ok.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-                setVisible(false);
-                cancelled = false;
-            }            
-        });
+        ok.addActionListener(this);
+        
         cancel = new JButton(lr.getText("UI.Buttons.Cancel"));
-        cancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-                setVisible(false);
-                cancelled = true;
-            }            
-        });
+        cancel.addActionListener(this);
         
         builder.append(lr.getText("UI.PackEditor.Name"), name);
         builder.nextLine();
@@ -91,9 +83,9 @@ public class PackEditor extends TableEditor
         builder.nextLine();
         builder.append(lr.getText("UI.PackEditor.Required"), requiredPanel);
         builder.nextLine();
-        builder.append(lr.getText("UI.PackEditor.PreSel"), preselectPanel);
+        builder.append("<html>" + lr.getText("UI.PackEditor.PreSel"), preselectPanel);
         builder.nextLine();
-        builder.append(lr.getText("UI.PackEditor.Loose"), looseFilesPanel);
+        builder.append("<html>" + lr.getText("UI.PackEditor.Loose"), looseFilesPanel);
         
         builder.appendUnrelatedComponentsGapRow();
         builder.nextLine();        
@@ -134,23 +126,14 @@ public class PackEditor extends TableEditor
         p.setLoose(looseFilesPanel.getBoolean());
         
         return p;
-    }
-    
-    public boolean wasOKPressed()
-    {        
-        return !cancelled;
-    }
+    }    
     
     JTextField name, desc, id;
     OSComboBox osBox;
     YesNoRadioPanel preselectPanel;
     YesNoRadioPanel looseFilesPanel;
-    YesNoRadioPanel requiredPanel; 
+    YesNoRadioPanel requiredPanel;    
     
-    JButton ok, cancel;
-    
-    boolean cancelled = false;    
-    LangResources lr = IzPackFrame.getInstance().langResources();
     /* (non-Javadoc)
      * @see izpack.frontend.view.components.table.TableEditor#configureClean()
      */
@@ -165,5 +148,13 @@ public class PackEditor extends TableEditor
         requiredPanel.setBoolean(true);
         preselectPanel.setBoolean(true);
         looseFilesPanel.setBoolean(false);
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.components.table.TableEditor#handles(java.lang.Class)
+     */
+    public boolean handles(Class type)
+    {
+        return type.equals(PackModel.class);
     }
 }

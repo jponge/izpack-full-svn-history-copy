@@ -39,8 +39,27 @@ public class OverwriteComboBox extends JComboBox
     
     public String getOverwriteOption()
     {
+        if (getSelectedIndex() == -1)
+            return "";
+        
         return xmlValues[getSelectedIndex()];
     }
+    
+    public void setOverwriteOption(String overwrite)
+    {
+        if (overwrite == null || overwrite.equals(""))
+            setSelectedIndex(-1);
+            
+        for (int i = 0; i < xmlValues.length; i++)
+        {
+            if (overwrite.equals(xmlValues[i]))
+            {
+                setSelectedIndex(i);
+                return;
+            }
+        }
+    }
+    
     
     /*      
      * User friendly choice names
