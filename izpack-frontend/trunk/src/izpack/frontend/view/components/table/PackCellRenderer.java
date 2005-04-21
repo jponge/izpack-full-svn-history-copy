@@ -69,13 +69,23 @@ public class PackCellRenderer implements TableCellRenderer, IzTableCellRenderer
         
         if (value == null)
         {
-            return null;
+            if (isSelected)            
+                blankPanel.setBorder(selected);
+            else
+                blankPanel.setBorder(null);
+            
+            return blankPanel;
         }
                 
         name.setText(pm.getName());
         desc.setText(pm.getDesc());
         required.setSelected(pm.isRequired());
 
+        if (isSelected)            
+            panel.setBorder(selected);
+        else
+            panel.setBorder(null);
+        
         return panel;    
     }
     
@@ -84,7 +94,7 @@ public class PackCellRenderer implements TableCellRenderer, IzTableCellRenderer
         return (int) panel.getPreferredSize().getHeight();
     }
     
-    JPanel panel;
+    JPanel panel, blankPanel = new JPanel();
     JLabel name = new JLabel(), desc = new JLabel();
     JCheckBox required = new JCheckBox();
 }

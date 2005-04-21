@@ -98,6 +98,13 @@ public class ParsableEditor extends TableEditor
         getRootPane().setDefaultButton(ok);
         setModal(true);
     }
+    
+    public void setVisible(boolean b)
+    {
+        targetFile.requestFocusInWindow();
+        
+        super.setVisible(b);
+    }
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.components.table.TableEditor#configure(izpack.frontend.model.ElementModel)
@@ -106,6 +113,7 @@ public class ParsableEditor extends TableEditor
     {
         Parsable pm = (Parsable) model;
         
+        targetFile.requestFocusInWindow();
         targetFile.setText(pm.targetfile);
         encoding.setText(pm.encoding);
         
@@ -118,6 +126,7 @@ public class ParsableEditor extends TableEditor
      */
     public void configureClean()
     {
+        targetFile.requestFocusInWindow();
         targetFile.setText("");
         encoding.setText("");
         

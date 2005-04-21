@@ -98,9 +98,16 @@ public class PackEditor extends TableEditor
         setModal(true);
     }    
     
+    public void setVisible(boolean b)
+    {
+        name.requestFocusInWindow();
+        
+        super.setVisible(b);
+    }
+    
     public void configure(ElementModel em)
     {
-        PackModel p = (PackModel) em;
+        PackModel p = (PackModel) em;        
         
         name.setText(p.getName());
         desc.setText(p.getDesc());
@@ -138,7 +145,7 @@ public class PackEditor extends TableEditor
      * @see izpack.frontend.view.components.table.TableEditor#configureClean()
      */
     public void configureClean()
-    {
+    {        
         name.setText("");
         desc.setText("");
         id.setText("");

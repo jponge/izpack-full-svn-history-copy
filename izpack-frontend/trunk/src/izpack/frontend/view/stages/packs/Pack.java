@@ -23,10 +23,13 @@
  */
 package izpack.frontend.view.stages.packs;
 
+import izpack.frontend.model.LangResources;
 import izpack.frontend.model.PackModel;
 import izpack.frontend.model.files.DirectoryModel;
+import izpack.frontend.model.files.Executable;
+import izpack.frontend.model.files.FileModel;
 import izpack.frontend.model.files.Parsable;
-import izpack.frontend.view.components.AddRemovePanel;
+import izpack.frontend.view.IzPackFrame;
 import izpack.frontend.view.components.table.FileCellEditor;
 import izpack.frontend.view.components.table.FileCellRenderer;
 import izpack.frontend.view.components.table.FileListHeader;
@@ -41,12 +44,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import org.w3c.dom.Document;
 
+import com.jgoodies.forms.builder.ButtonStackBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.validation.Severity;
@@ -57,7 +71,7 @@ import com.jgoodies.validation.message.PropertyValidationMessage;
 /**
  * @author Andy Gombos
  */
-public class Pack extends IzPackStage
+public class Pack extends IzPackStage implements ActionListener
 {
 
     /* (non-Javadoc)
@@ -65,7 +79,15 @@ public class Pack extends IzPackStage
      */
     public Document createInstallerData()
     {
-        // TODO Auto-generated method stub
+        for (int row = 0; row < packTable.getRowCount(); row++)
+        {
+            Object rowObj = packTable.getValueAt(row, 0);
+            
+            if (rowObj != null)
+            {
+                ( (PackModel) rowObj).printFiles();
+            }
+        }
         return null;
     }
 
@@ -74,13 +96,25 @@ public class Pack extends IzPackStage
      */
     public ValidationResult validateStage()
     {
-        ValidationResult vr = new ValidationResult();
+        ValidationResult vr = new ValidationResult();        
         
-        if (packTable.getRowCount() == 0)
+        int lastRow = 0;
+        
+        for (int i = 0; i < packTable.getRowCount(); i++)
+        {
+            if (packTable.getValueAt(i, 0) == null)
+            {
+                lastRow = --i;
+                break;
+            }
+        }
+        
+        
+        if (lastRow < 0)
         {
             vr.add(new PropertyValidationMessage(
                             Severity.ERROR,
-                            "must have at least pack created",
+                            "must have at least one pack created",
                             packTable,
                             "Packs",
                             "table"
@@ -89,16 +123,33 @@ public class Pack extends IzPackStage
         
         for (int row = 0; row < packTable.getRowCount(); row++)
         {
-	        /*if (filesTable.getRowCount() == 0)
+            Object rowObj = packTable.getValueAt(row, 0);
+            
+            if (rowObj == null)
+                continue;
+            
+            PackModel pm = (PackModel) rowObj;            
+          
+            
+            for (int i = 0; i < packTable.getRowCount(); i++)
+            {
+                if (pm.getFilesModel().getValueAt(i, 0) == null)
+                {
+                    lastRow = --i;
+                    break;
+                }
+            }
+            
+	        if (lastRow < 0)
 	        {
 	            vr.add(new PropertyValidationMessage(
 	                            Severity.ERROR,
-	                            "must have at least pack created",
-	                            packTable,
-	                            "Packs",
-	                            "table"
+	                            "must have at least one file added to a pack",
+	                            filesTable,
+	                            "Pack",
+	                            "files"
 	                            ));      
-	        }*/
+	        }
         }
         
         return vr;
@@ -113,38 +164,6 @@ public class Pack extends IzPackStage
         DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);        
         
         builder.setDefaultDialogBorder();
-        CellConstraints cc = new CellConstraints();
-        packs = new AddRemovePanel("Pack");
-        files = new AddRemovePanel("File");
-        
-        packs.attachAddListener(new ActionListener()
-                        {
-
-                            public void actionPerformed(ActionEvent e)
-                            {   
-                                packTable.addElementWithEditor(PackModel.class);
-                            }
-            
-                        });
-        files.attachAddListener(new ActionListener()
-                        {
-
-                            public void actionPerformed(ActionEvent e)
-                            {   
-                                filesTable.addElementWithEditor(Parsable.class);
-                            }
-            
-                        });
-        
-        files.attachRemoveListener(new ActionListener()
-                        {
-
-                            public void actionPerformed(ActionEvent e)
-                            {   
-                                filesTable.addElementWithEditor(DirectoryModel.class);
-                            }
-            
-                        });
         
         EditorManager em = EditorManager.getInstance();
         em.addEditor(new PackEditor( (Frame) this.getParent()));
@@ -155,32 +174,70 @@ public class Pack extends IzPackStage
         JPanel packPanel = createPackTable();
         JPanel filesPanel = createFilesTable();        
         
+        CellConstraints cc = new CellConstraints();
         builder.addSeparator("Packs", 				cc.xyw(1, 1, 3));        
         builder.add(packPanel,	 					cc.xy(1, 3));
         
-        builder.add(packs, 	cc.xy(3, 3));
+        builder.add(createPackButtons(), 	cc.xy(3, 3));
         
         builder.addSeparator("Files in pack", 		cc.xyw(1, 5, 3));
         builder.add(filesPanel,		 				cc.xy(1, 7));
-        builder.add(files,	cc.xy(3, 7));
+        builder.add(createFileButtons(),	cc.xy(3, 7));
     }
     
     private JPanel createPackTable()
     {        
        packTable = new ListTable(new PackCellRenderer(), new PackCellEditor(), EditorManager.getInstance());
+       packTable.setVisibleRows(5);
+       
+
+        //Register for notification of selection changes.
+        //Used to display the correct files model       
+        //Adapted from the Sun tutorials
+        ListSelectionModel lsm = packTable.getSelectionModel();
+        lsm.addListSelectionListener(new ListSelectionListener()
+        {
+            public void valueChanged(ListSelectionEvent e)
+            {
+                //Ignore extra messages
+                if (e.getValueIsAdjusting())    
+                    return;
+                
+
+                ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+                if (!lsm.isSelectionEmpty())
+                {
+                    int selectedRow = lsm.getMinSelectionIndex();
+                    
+                    Object row = packTable.getValueAt(selectedRow, 0);
+                    if (row != null && row instanceof PackModel)
+                    {
+                        PackModel pm = (PackModel) row;                        
+                        
+                        filesTable.setModel(pm.getFilesModel());                        
+                    }
+                }
+            }
+        });
+       
        return configureTable(packTable, new PackListHeader());
     }
     
     private JPanel createFilesTable()
     {
         filesTable = new ListTable(new FileCellRenderer(), new FileCellEditor(), EditorManager.getInstance());
+        filesTable.setVisibleRows(15);
+        
         return configureTable(filesTable, new FileListHeader());
     }
     
     private JPanel configureTable(ListTable table, JPanel header)
-    {   
-        table.setShowVerticalLines(false);
-        table.setBorder(new LineBorder(Color.BLACK));
+    {           
+        table.setShowGrid(false);                
+        table.setBorder(new LineBorder(Color.GRAY));
+        table.setBackground(getBackground());
+        
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));       
@@ -191,8 +248,69 @@ public class Pack extends IzPackStage
         return p;
     }
     
-    AddRemovePanel packs, files;
+    private JPanel createPackButtons()
+    {
+        ButtonStackBuilder builder = new ButtonStackBuilder();        
+        
+        packAdd = new JButton(lr.getText("UI.PackStage.Pack.Add"));
+        	packAdd.setName("packAdd");
+        	packAdd.addActionListener(this);
+        packRemove = new JButton(lr.getText("UI.PackStage.Pack.Remove"));
+        	packRemove.setName("packRemove");
+        	packRemove.addActionListener(this);
+        
+        builder.addGridded(packAdd);
+        builder.addUnrelatedGap();
+        builder.addUnrelatedGap();
+        builder.addUnrelatedGap();
+        builder.addGridded(packRemove);
+        
+        return builder.getPanel();
+    }
+    
+    private JPanel createFileButtons()
+    {
+        ButtonStackBuilder builder = new ButtonStackBuilder();
+        
+        fileAdd = new JButton(lr.getText("UI.Editors.File"));
+        	fileAdd.setName("file");
+        	fileAdd.addActionListener(this);
+        dirAdd = new JButton(lr.getText("UI.Editors.Dir"));
+        	dirAdd.setName("dir");
+        	dirAdd.addActionListener(this);
+        parseAdd = new JButton(lr.getText("UI.Editors.Parsable"));
+        	parseAdd.setName("parse");
+        	parseAdd.addActionListener(this);
+        execAdd = new JButton(lr.getText("UI.Editors.Exec"));
+        	execAdd.setName("exec");
+        	execAdd.addActionListener(this);        
+        fileRemove = new JButton(lr.getText("UI.PackStage.Files.Remove"));
+    		fileRemove.setName("removeFile");
+    		fileRemove.addActionListener(this);
+        
+        builder.addGridded(DefaultComponentFactory.getInstance().createSeparator(
+                        lr.getText("UI.PackStage.Files.Add"), SwingConstants.CENTER));
+        builder.addGridded(fileAdd);
+        builder.addRelatedGap();
+        builder.addGridded(dirAdd);
+        builder.addRelatedGap();
+        builder.addGridded(parseAdd);
+        builder.addRelatedGap();
+        builder.addGridded(execAdd);
+        builder.addUnrelatedGap();
+        builder.addUnrelatedGap();
+        builder.addUnrelatedGap();
+        builder.addGridded(fileRemove);
+        
+        return builder.getPanel();
+    }    
+    
     ListTable packTable, filesTable;
+    JButton packAdd, packRemove;
+    JButton fileAdd, dirAdd, parseAdd, execAdd, fileRemove;
+    
+    LangResources lr = IzPackFrame.getInstance().langResources();
+    
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.Stage#getLeftNavBar()
      */
@@ -218,5 +336,107 @@ public class Pack extends IzPackStage
     {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+        if (! (e.getSource() instanceof JButton) )
+            return;
+        
+        JButton src = (JButton) e.getSource();
+        Class type = null;
+        
+        //Pack table buttons
+        if (src.getName().equals("packAdd"))
+        {
+            packTable.addElementWithEditor(PackModel.class);      
+            
+            
+            //Change the model so that the first added pack gets its files
+            //set correctly
+            for (int row = 0; row < packTable.getRowCount(); row++)
+            {
+                Object rowObj = packTable.getValueAt(row, 0);
+                
+                if (rowObj == null)
+                {
+                    row--;
+                    PackModel pm = (PackModel) packTable.getValueAt(row, 0);
+                    filesTable.setModel(pm.getFilesModel());
+                    
+                    return;
+                }
+            }                
+        }
+        else if (src.getName().equals("packRemove"))
+        {
+            DefaultTableModel model = (DefaultTableModel) packTable.getModel();
+            
+            if (packTable.getEditingRow() != -1)
+            {
+                int row = packTable.getEditingRow();
+                
+                //Make the cell not editable, so we can delete it
+                //Otherwise, the row after is deleted. Makes sense, huh
+                packTable.getCellEditor().stopCellEditing();
+                
+                //Remove row, and keep the table length the same
+                model.removeRow(row);
+                model.addRow(new Object[]{});
+            }
+            else if (filesTable.getSelectedRow() != -1)
+            {
+                model.removeRow(packTable.getSelectedRow());
+                model.addRow(new Object[]{});
+            }
+        }
+        
+        //File table buttons
+        if (src.getName().equals("file"))
+        {
+            type = FileModel.class;
+        }
+        else if (src.getName().equals("dir"))
+        {
+            type = DirectoryModel.class;
+        }
+        else if (src.getName().equals("parse"))
+        {
+            type = Parsable.class;
+        }
+        else if (src.getName().equals("exec"))
+        {
+            type = Executable.class;
+        }
+        else if (src.getName().equals("removeFile"))
+        {   
+            DefaultTableModel model = (DefaultTableModel) filesTable.getModel();
+            
+            if (filesTable.getEditingRow() != -1)
+            {                
+                int row = filesTable.getEditingRow();
+                
+                //Make the cell not editable, so we can delete it
+                //Otherwise, the row after is deleted. Makes sense, huh
+                filesTable.getCellEditor().stopCellEditing();
+                
+                //Remove row, and keep the table length the same
+                model.removeRow(row);
+                model.addRow(new Object[]{});
+            }
+            else if (filesTable.getSelectedRow() != -1)
+            {                
+                model.removeRow(filesTable.getSelectedRow());
+                model.addRow(new Object[]{});
+            }
+        }
+        
+        if (type != null)
+        {
+            filesTable.addElementWithEditor(type);
+        }            
     }
 }

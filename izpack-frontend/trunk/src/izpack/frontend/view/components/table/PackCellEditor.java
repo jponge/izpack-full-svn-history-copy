@@ -77,6 +77,11 @@ public class PackCellEditor extends AbstractCellEditor implements TableCellEdito
      
         editingValue = pm;
         
+        if (isSelected)
+            panel.setBorder(selected);
+        else
+            panel.setBorder(null);
+        
         return panel;    
     }
     
@@ -96,4 +101,5 @@ public class PackCellEditor extends AbstractCellEditor implements TableCellEdito
     JTextField name = new JTextField(), desc = new JTextField();
     JCheckBox required = new JCheckBox();
     PackModel editingValue = null;
+    private Border selected = new SoftBevelBorder(SoftBevelBorder.RAISED);
 }

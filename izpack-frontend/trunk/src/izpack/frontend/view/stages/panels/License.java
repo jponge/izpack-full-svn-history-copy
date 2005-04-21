@@ -168,8 +168,6 @@ public class License extends JPanel implements ConfigurePanel
     public void initFromXML(Document xmlFile)
     {
         String src = XML.getResourceValue(xmlFile, "LicencePanel.licence");
-        
-        System.out.println(src);
     }
 
     /* (non-Javadoc)

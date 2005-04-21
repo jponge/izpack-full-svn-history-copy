@@ -23,7 +23,6 @@
 package izpack.frontend.view.stages.packs;
 
 import izpack.frontend.model.ElementModel;
-import izpack.frontend.model.PackModel;
 import izpack.frontend.view.components.table.IzTableCellRenderer;
 import izpack.frontend.view.components.table.TableEditor;
 
@@ -34,6 +33,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 
 /**
  * @author Andy Gombos
@@ -50,8 +50,7 @@ public class ListTable extends JTable implements MouseListener
 
         setDefaultRenderer(Object.class, renderer);
         setDefaultEditor(Object.class, editor);
-        setRowHeight(renderer.getHeight());
-        model.setRowCount(3);
+        setRowHeight(renderer.getHeight());        
 
         addMouseListener(this);
         
@@ -59,6 +58,23 @@ public class ListTable extends JTable implements MouseListener
         this.editor = editor;        
         
         this.em = em;
+    }
+    
+    
+    //Allow model changes
+    public void setModel(TableModel model)
+    {
+        super.setModel(model);
+        
+        this.model = (DefaultTableModel) model;
+    }
+    
+    
+    //Doesn't do much currently
+    //Marked for removal
+    public void setVisibleRows(int rowCount)
+    {
+        model.setRowCount(rowCount);
     }
     
     public void addElement(ElementModel em)
@@ -82,8 +98,7 @@ public class ListTable extends JTable implements MouseListener
     }
     
     public void addElementWithEditor(Class type)
-    {
-        System.out.println(type);
+    {        
         doubleClickEditor = em.getEditor(type);
         doubleClickEditor.configureClean();
         doubleClickEditor.setVisible(true);

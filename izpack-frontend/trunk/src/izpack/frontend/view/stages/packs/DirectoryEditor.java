@@ -106,6 +106,13 @@ public class DirectoryEditor extends TableEditor
         setModal(true);
     }
     
+    public void setVisible(boolean b)
+    {
+        source.requestFocusInWindow();
+        
+        super.setVisible(b);
+    }
+    
     /* (non-Javadoc)
      * @see izpack.frontend.view.components.table.TableEditor#configure(izpack.frontend.model.ElementModel)
      */
@@ -113,6 +120,7 @@ public class DirectoryEditor extends TableEditor
     {
         DirectoryModel fm = (DirectoryModel) model;
 
+        source.requestFocusInWindow();
         source.setText(fm.source);
         target.setText(fm.target);
         
@@ -125,6 +133,7 @@ public class DirectoryEditor extends TableEditor
      */
     public void configureClean()
     {
+        source.requestFocusInWindow();
         source.setText("");
         target.setText("$INSTALL_PATH");
 

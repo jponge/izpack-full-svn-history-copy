@@ -32,14 +32,17 @@ import izpack.frontend.model.files.Parsable;
 import izpack.frontend.view.IzPackFrame;
 import izpack.frontend.view.components.FormatComboBox;
 
+import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.border.LineBorder;
+
+import utils.UI;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.debug.FormDebugPanel;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -50,7 +53,7 @@ public class FileCellRenderer implements IzTableCellRenderer
 {
     public FileCellRenderer()
     {
-        fileDir = new JPanel();
+        fileDir = new JPanel();        	
         parsable = new JPanel();
         
         //Setup file/directory editor
@@ -77,20 +80,17 @@ public class FileCellRenderer implements IzTableCellRenderer
     public Component getTableCellRendererComponent(JTable table, Object value, 
                     boolean isSelected, boolean hasFocus, int row, int column)
     {
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel();        
         
         if (value instanceof PackFileModel)
             panel = getFileDirRenderer( (PackFileModel) value);
         else if (value instanceof Parsable)
             panel = getParsableRenderer( (Parsable) value);
         
-        Component c[] = panel.getComponents();
-        for (int i = 0; i < c.length; i++)
-        {
-            System.out.println(c[i]);
-            System.out.println("\t" + c[i].getName());
-            System.out.println("~~~~~~~");
-        }
+        if (isSelected)
+            panel.setBorder(selected);
+        else
+            panel.setBorder(null);
         
         return panel;    
     }    
@@ -109,8 +109,8 @@ public class FileCellRenderer implements IzTableCellRenderer
         fdBuilder.add(source, cc.xy(4, 1));
         fdBuilder.add(target, cc.xy(6, 1));
         
-        target.setText(value.target);
-        source.setText(value.source);
+        target.setText(UI.cutMiddleOfString(value.target));
+        source.setText(UI.cutMiddleOfString(value.source));
         
         return fileDir;
     }

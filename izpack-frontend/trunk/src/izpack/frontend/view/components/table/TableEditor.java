@@ -33,6 +33,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.border.Border;
+import javax.swing.border.SoftBevelBorder;
 
 /**
  * @author Andy Gombos
@@ -80,5 +82,5 @@ public abstract class TableEditor extends JDialog implements ActionListener
     
     protected boolean cancelled = false;
     protected JButton ok, cancel;
-    protected static LangResources lr = IzPackFrame.getInstance().langResources();
+    protected static LangResources lr = IzPackFrame.getInstance().langResources();    
 }

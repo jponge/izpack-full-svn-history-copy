@@ -41,6 +41,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.TableCellEditor;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -90,6 +92,11 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
             panel = getParsableEditor( (Parsable) value);
      
         editingValue = (PackElement) value;
+        
+        if (isSelected)
+            panel.setBorder(selected);
+        else
+            panel.setBorder(null);
         
         return panel;    
     }
@@ -162,4 +169,5 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
     PackElement editingValue = null;
     
     static LangResources lr = IzPackFrame.getInstance().langResources();
+    private Border selected = new SoftBevelBorder(SoftBevelBorder.RAISED);
 }

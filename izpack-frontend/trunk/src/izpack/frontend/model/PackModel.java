@@ -23,17 +23,28 @@
  */
 package izpack.frontend.model;
 
-import izpack.frontend.model.files.FileSet;
+import izpack.frontend.model.files.PackElement;
+import izpack.frontend.model.files.PackFileModel;
+import izpack.frontend.model.files.Parsable;
+
+import java.util.ArrayList;
+
+import javax.swing.table.DefaultTableModel;
+
+import org.w3c.dom.Document;
 
 /**
  * @author Andy Gombos
  */
 public class PackModel implements ElementModel
 {
+    public PackModel()
+    {
+        model = new DefaultTableModel(15, 1);
+    }
+    
     private String name = "", desc = "", id = "", os = "";
     private boolean required = true, preselected = true, loose = false;
-    
-    FileSet files;
     
     /**
      * @return Returns the desc.
@@ -133,4 +144,45 @@ public class PackModel implements ElementModel
     {
         this.required = required;
     }
+    
+    public Document writePack()
+    {
+        return null;
+    }
+    
+    public void addFiles(PackElement elem)
+    {
+        elements.add(elem);
+    }
+    
+    public void removeFile(PackElement elem)
+    {
+        elements.remove(elem);
+    }
+    
+    public DefaultTableModel getFilesModel()
+    {
+        return model;
+    }    
+    
+    public void printFiles()
+    {
+        System.out.println("Pack: " + name + " " + model.getRowCount());        
+        
+        for(int i = 0; i < model.getRowCount(); i++)
+        {
+            Object data = model.getValueAt(i, 0);
+            
+            if (data != null)
+            {
+                if (data instanceof PackFileModel)                
+                    System.out.println("\t" + ((PackFileModel) data ).source );
+                if (data instanceof Parsable)                
+                    System.out.println("\t" + ((Parsable) data ).targetfile );                
+            }
+        }
+    }
+    
+    DefaultTableModel model;
+    ArrayList elements = new ArrayList();
 }

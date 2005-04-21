@@ -71,6 +71,14 @@ public class UI
 	    return button;
     }
     
+    public static String cutMiddleOfString(String longStr)
+    {
+        if (longStr.length() > 20 && longStr.lastIndexOf(System.getProperty("file.separator")) != -1)
+            return longStr.substring(0, 4) + "..." + longStr.substring(longStr.lastIndexOf(System.getProperty("file.separator")));        
+        else
+            return longStr;
+    }
+    
     public static final int FORWARD = 1;
     public static final int BACK = 2;
 }

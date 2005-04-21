@@ -23,6 +23,8 @@
  */
 package izpack.frontend.view.components.table;
 
+import javax.swing.border.Border;
+import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.TableCellRenderer;
 
 /**
@@ -31,4 +33,6 @@ import javax.swing.table.TableCellRenderer;
 public interface IzTableCellRenderer extends TableCellRenderer
 {
     public abstract int getHeight();
+    
+    Border selected = new SoftBevelBorder(SoftBevelBorder.RAISED);
 }
