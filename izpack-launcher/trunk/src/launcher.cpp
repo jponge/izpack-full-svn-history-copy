@@ -56,7 +56,7 @@ LauncherApp::~LauncherApp()
 
 void LauncherApp::loadParams()
 {
-  wxFileInputStream in("launcher.ini");
+  wxFileInputStream in((wxString)"launcher.ini");
   wxFileConfig cfg(in);
 
   cfg.Read("jar", &params["jar"], wxEmptyString);
@@ -226,7 +226,7 @@ void LauncherApp::jreInstall()
   {
     error(_("Could not launch the JRE installation process."));
   }
-
+  searchJRE();
   runJRE();
   completed = true;
 }
