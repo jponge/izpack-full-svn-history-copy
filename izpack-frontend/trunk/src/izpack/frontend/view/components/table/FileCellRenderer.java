@@ -87,7 +87,7 @@ public class FileCellRenderer implements IzTableCellRenderer
         else if (value instanceof Parsable)
             panel = getParsableRenderer( (Parsable) value);
         
-        if (isSelected)
+        if (isSelected && value != null)
             panel.setBorder(selected);
         else
             panel.setBorder(null);

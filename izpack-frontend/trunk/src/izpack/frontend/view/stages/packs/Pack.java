@@ -46,15 +46,13 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import org.w3c.dom.Document;
 
@@ -233,19 +231,32 @@ public class Pack extends IzPackStage implements ActionListener
     
     private JPanel configureTable(ListTable table, JPanel header)
     {           
-        table.setShowGrid(false);                
-        table.setBorder(new LineBorder(Color.GRAY));
+        table.setShowGrid(false);
         table.setBackground(getBackground());
         
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
+        
+        table.setTableHeader(null);
         
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));       
         
         p.add(header);
-        p.add(table);
+        p.add(createScrollableTable(table));
         
         return p;
+    }
+    
+    private JScrollPane createScrollableTable(ListTable table)
+    {
+        JScrollPane scroll = new JScrollPane();
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        scroll.setViewportView(table);
+        
+        table.setPreferredScrollableViewportSize(table.getPreferredSize());
+        
+        return scroll;
     }
     
     private JPanel createPackButtons()

@@ -68,12 +68,7 @@ public class PackCellRenderer implements TableCellRenderer, IzTableCellRenderer
         PackModel pm = (PackModel) value;
         
         if (value == null)
-        {
-            if (isSelected)            
-                blankPanel.setBorder(selected);
-            else
-                blankPanel.setBorder(null);
-            
+        {               
             return blankPanel;
         }
                 

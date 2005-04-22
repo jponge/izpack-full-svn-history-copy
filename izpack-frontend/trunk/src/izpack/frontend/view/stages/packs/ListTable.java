@@ -79,16 +79,21 @@ public class ListTable extends JTable implements MouseListener
     
     public void addElement(ElementModel em)
     {
+        boolean elementAdded = false;
         for (int i = 0; i < model.getRowCount(); i++)
         {
             if (model.getValueAt(i, 0) == null)
             {
                 replaceElement(em, i);
+                elementAdded = true;
                 break;
             }
-        }
-            
-        //model.addRow(new Object[]{em});        
+        }    
+        
+        if (!elementAdded)
+            model.addRow(new Object[]{em});
+        
+        System.out.println(model.getRowCount());
     }
     
     public void replaceElement(ElementModel em, int row)
