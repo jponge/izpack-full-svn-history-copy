@@ -52,7 +52,7 @@ public class FileSet extends PackFileModel
             files.add(new Exclude(set));
     }
     
-    class Include
+    static class Include
     {
         public Include(String set)
         {
@@ -67,7 +67,7 @@ public class FileSet extends PackFileModel
         }
     }
     
-    class Exclude
+    static class Exclude
     {
         public Exclude(String set)
         {

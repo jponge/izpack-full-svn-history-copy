@@ -21,7 +21,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.stages.packs;
+package izpack.frontend.view.stages.packs.editors;
 
 import izpack.frontend.view.components.table.TableEditor;
 

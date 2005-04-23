@@ -22,9 +22,10 @@
  */
 package izpack.frontend.view.stages.packs;
 
-import izpack.frontend.model.ElementModel;
+import izpack.frontend.model.files.ElementModel;
 import izpack.frontend.view.components.table.IzTableCellRenderer;
 import izpack.frontend.view.components.table.TableEditor;
+import izpack.frontend.view.stages.packs.editors.EditorManager;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -96,10 +97,10 @@ public class ListTable extends JTable implements MouseListener
         System.out.println(model.getRowCount());
     }
     
-    public void replaceElement(ElementModel em, int row)
+    public void replaceElement(ElementModel eModel, int row)
     {
         model.removeRow(row);
-        model.insertRow(row, new Object[]{em});
+        model.insertRow(row, new Object[]{eModel});
     }
     
     public void addElementWithEditor(Class type)

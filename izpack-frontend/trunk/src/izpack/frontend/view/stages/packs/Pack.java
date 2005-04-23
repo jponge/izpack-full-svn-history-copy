@@ -37,8 +37,13 @@ import izpack.frontend.view.components.table.PackCellEditor;
 import izpack.frontend.view.components.table.PackCellRenderer;
 import izpack.frontend.view.components.table.PackListHeader;
 import izpack.frontend.view.stages.IzPackStage;
+import izpack.frontend.view.stages.packs.editors.DirectoryEditor;
+import izpack.frontend.view.stages.packs.editors.EditorManager;
+import izpack.frontend.view.stages.packs.editors.ExecutableEditor;
+import izpack.frontend.view.stages.packs.editors.FileEditor;
+import izpack.frontend.view.stages.packs.editors.PackEditor;
+import izpack.frontend.view.stages.packs.editors.ParsableEditor;
 
-import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,7 +54,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -168,6 +172,7 @@ public class Pack extends IzPackStage implements ActionListener
         em.addEditor(new FileEditor( (Frame) this.getParent()));
         em.addEditor(new DirectoryEditor( (Frame) this.getParent()));
         em.addEditor(new ParsableEditor( (Frame) this.getParent()));
+        em.addEditor(new ExecutableEditor( (Frame) this.getParent()));
         
         JPanel packPanel = createPackTable();
         JPanel filesPanel = createFilesTable();        

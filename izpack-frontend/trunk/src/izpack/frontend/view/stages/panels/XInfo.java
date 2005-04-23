@@ -39,11 +39,11 @@ import javax.swing.JTextField;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.jgoodies.validation.ValidationResult;
-
 import utils.IO;
 import utils.UI;
 import utils.XML;
+
+import com.jgoodies.validation.ValidationResult;
 
 /**
  * Panel to set text parsed by the variable substitutor. See XInfo documentation for more information.

@@ -1,10 +1,10 @@
 /*
- * Created on Apr 12, 2005
+ * Created on Apr 19, 2005
  * 
- * $Id: Executable.java Feb 8, 2004 izpack-frontend
+ * $Id: DirectoryFilter.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : Executable.java 
+ * File : DirectoryFilter.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,25 +21,41 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.model.files;
+package izpack.frontend.controller.filters;
 
-import org.w3c.dom.Document;
+import izpack.frontend.view.IzPackFrame;
 
+import java.io.File;
 
+import javax.swing.filechooser.FileFilter;
 
 /**
  * @author Andy Gombos
  */
-public class Executable implements PackElement
+public class ExecutableFilter extends FileFilter
 {
-    public String target, execClass, type, stage, failure, keep;
 
     /* (non-Javadoc)
-     * @see izpack.frontend.model.files.ElementModel#writeXML()
+     * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
      */
-    public Document writeXML()
+    public boolean accept(File f)
     {
-        // TODO Auto-generated method stub
-        return null;
+        String name = f.getName().toLowerCase();        
+        
+        return f.isDirectory() || 
+        	name.endsWith("exe") ||
+        	name.endsWith("bat") ||
+        	name.endsWith("sh") ||
+        	name.endsWith("csh");
+        	
     }
+
+    /* (non-Javadoc)
+     * @see javax.swing.filechooser.FileFilter#getDescription()
+     */
+    public String getDescription()
+    {        
+        return IzPackFrame.getInstance().langResources().getText("UI.FileFilters.Exec.Desc");
+    }
+
 }

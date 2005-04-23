@@ -23,6 +23,7 @@
  */
 package izpack.frontend.model;
 
+import izpack.frontend.model.files.ElementModel;
 import izpack.frontend.model.files.PackElement;
 import izpack.frontend.model.files.PackFileModel;
 import izpack.frontend.model.files.Parsable;
@@ -185,4 +186,13 @@ public class PackModel implements ElementModel
     
     DefaultTableModel model;
     ArrayList elements = new ArrayList();
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.model.files.ElementModel#writeXML()
+     */
+    public Document writeXML()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

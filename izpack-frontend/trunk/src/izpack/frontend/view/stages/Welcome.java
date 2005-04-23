@@ -27,7 +27,6 @@ import izpack.frontend.controller.GUIController;
 import izpack.frontend.model.LangResources;
 import izpack.frontend.model.RecentFileManager;
 import izpack.frontend.view.GUIConstants;
-import izpack.frontend.view.mode.WizardMode;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;

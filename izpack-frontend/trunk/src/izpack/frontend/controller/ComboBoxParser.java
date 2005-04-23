@@ -1,10 +1,10 @@
 /*
- * Created on Apr 18, 2005
+ * Created on Apr 23, 2005
  * 
- * $Id: PackElement.java Feb 8, 2004 izpack-frontend
+ * $Id: ComboBoxParser.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : PackElement.java 
+ * File : ComboBoxParser.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,15 +21,20 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.model.files;
-
-
-import org.w3c.dom.Document;
+package izpack.frontend.controller;
 
 /**
  * @author Andy Gombos
  */
-public interface PackElement extends ElementModel
+public class ComboBoxParser
 {
-    public Document writeXML();
+    /**
+     * Splits a string on ';'
+     * @param property The property to split
+     * @return Array of the tokens
+     */
+    public static String[] parseProperty(String property)
+    {
+        return property.split(";");
+    }
 }

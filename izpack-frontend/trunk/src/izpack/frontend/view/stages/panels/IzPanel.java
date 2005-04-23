@@ -23,8 +23,6 @@ package izpack.frontend.view.stages.panels;
 
 import java.util.Observer;
 
-import javax.swing.JPanel;
-
 import com.jgoodies.validation.ValidationResult;
 
 

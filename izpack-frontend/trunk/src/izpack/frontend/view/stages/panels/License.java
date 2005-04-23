@@ -47,10 +47,10 @@ import javax.swing.JTextArea;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.jgoodies.validation.ValidationResult;
-
 import utils.UI;
 import utils.XML;
+
+import com.jgoodies.validation.ValidationResult;
 
 /**
  * Configure the license displayed for a LicensePanel

@@ -1,10 +1,10 @@
 /*
- * Created on Apr 18, 2005
+ * Created on Apr 19, 2005
  * 
- * $Id: PackElement.java Feb 8, 2004 izpack-frontend
+ * $Id: DirectoryFilter.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : PackElement.java 
+ * File : DirectoryFilter.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,15 +21,37 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.model.files;
+package izpack.frontend.controller.filters;
 
+import izpack.frontend.view.IzPackFrame;
 
-import org.w3c.dom.Document;
+import java.io.File;
+
+import javax.swing.filechooser.FileFilter;
 
 /**
  * @author Andy Gombos
  */
-public interface PackElement extends ElementModel
+public class JARFilter extends FileFilter
 {
-    public Document writeXML();
+
+    /* (non-Javadoc)
+     * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
+     */
+    public boolean accept(File f)
+    {
+        String name = f.getName().toLowerCase();        
+        
+        return f.isDirectory() || 
+        	name.endsWith("jar");
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.filechooser.FileFilter#getDescription()
+     */
+    public String getDescription()
+    {        
+        return IzPackFrame.getInstance().langResources().getText("UI.FileFilters.Jar.Desc");
+    }
+
 }

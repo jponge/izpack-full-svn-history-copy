@@ -26,7 +26,6 @@ package izpack.frontend.view.mode;
 import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.controller.StageChangeListener;
 import izpack.frontend.view.stages.IzPackStage;
-import izpack.frontend.view.stages.Stage;
 import izpack.frontend.view.stages.geninfo.GeneralInformation;
 import izpack.frontend.view.stages.panelselect.PanelSelection;
 

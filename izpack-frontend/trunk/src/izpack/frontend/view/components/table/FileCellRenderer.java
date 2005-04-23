@@ -32,13 +32,11 @@ import izpack.frontend.model.files.Parsable;
 import izpack.frontend.view.IzPackFrame;
 import izpack.frontend.view.components.FormatComboBox;
 
-import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.border.LineBorder;
 
 import utils.UI;
 
@@ -55,6 +53,7 @@ public class FileCellRenderer implements IzTableCellRenderer
     {
         fileDir = new JPanel();        	
         parsable = new JPanel();
+        executable = new JPanel();
         
         //Setup file/directory editor
         FormLayout fdLayout = new FormLayout(
@@ -72,6 +71,11 @@ public class FileCellRenderer implements IzTableCellRenderer
                         "5dlu, 40dlu, 4dlu, 80dlu, 15dlu, center:80dlu, 5dlu",
                         "15dlu");
         pBuilder = new DefaultFormBuilder(pLayout, parsable);        
+        
+        FormLayout eLayout = new FormLayout(
+                        "5dlu, 40dlu, 4dlu, 80dlu, 15dlu, center:80dlu, 5dlu",
+                        "15dlu");
+        eBuilder = new DefaultFormBuilder(eLayout, executable);
     }
     
     /* (non-Javadoc)
@@ -86,6 +90,8 @@ public class FileCellRenderer implements IzTableCellRenderer
             panel = getFileDirRenderer( (PackFileModel) value);
         else if (value instanceof Parsable)
             panel = getParsableRenderer( (Parsable) value);
+        else if (value instanceof Executable)
+            panel = getExecutableRenderer( (Executable) value);
         
         if (isSelected && value != null)
             panel.setBorder(selected);
@@ -132,14 +138,24 @@ public class FileCellRenderer implements IzTableCellRenderer
     
     private JPanel getExecutableRenderer(Executable value)
     {
-        return null;
+        target.setText(value.target);
+        source.setText(value.execClass);  
+        
+        executable.removeAll();
+        
+        CellConstraints cc = new CellConstraints();
+        eBuilder.add(execType, cc.xy(2, 1));
+        eBuilder.add(target, cc.xy(4, 1));
+        eBuilder.add(source, cc.xy(6, 1));
+        
+        return executable;
     }
         
     JPanel fileDir, parsable, executable;
     JLabel fileType, dirType, parseType, execType;
     JLabel target = new JLabel(), source = new JLabel();
     FormatComboBox format = new FormatComboBox();
-    DefaultFormBuilder fdBuilder, pBuilder;
+    DefaultFormBuilder fdBuilder, pBuilder, eBuilder;
     
     static LangResources lr = IzPackFrame.getInstance().langResources();
 

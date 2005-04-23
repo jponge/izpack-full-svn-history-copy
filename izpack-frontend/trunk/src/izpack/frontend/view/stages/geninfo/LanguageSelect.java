@@ -38,11 +38,11 @@ import javax.swing.SwingConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import utils.XML;
+
 import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.message.PropertyValidationMessage;
-
-import utils.XML;
 
 /**
  * @author Andy Gombos

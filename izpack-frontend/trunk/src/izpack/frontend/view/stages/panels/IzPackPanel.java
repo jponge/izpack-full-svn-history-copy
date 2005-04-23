@@ -26,15 +26,11 @@ import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.LangResources;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Observable;
 
 import javax.swing.JPanel;
-
-import com.jgoodies.validation.ValidationCapable;
-import com.jgoodies.validation.ValidationResult;
 
 /**
  * Defines a basic implementation for swing applications.

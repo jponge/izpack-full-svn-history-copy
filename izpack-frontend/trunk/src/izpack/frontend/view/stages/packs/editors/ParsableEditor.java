@@ -1,10 +1,10 @@
 /*
  * Created on Apr 18, 2005
  * 
- * $Id: FileEditor.java Feb 8, 2004 izpack-frontend
+ * $Id: ParsableEditor.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : FileEditor.java 
+ * File : ParsableEditor.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,22 +21,17 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.stages.packs;
+package izpack.frontend.view.stages.packs.editors;
 
-import izpack.frontend.controller.filters.HTMLFilter;
-import izpack.frontend.controller.filters.ImageFilter;
-import izpack.frontend.controller.filters.TextFilter;
-import izpack.frontend.controller.filters.XMLFilter;
-import izpack.frontend.model.ElementModel;
-import izpack.frontend.model.files.FileModel;
+import izpack.frontend.model.files.ElementModel;
+import izpack.frontend.model.files.Parsable;
+import izpack.frontend.view.components.FormatComboBox;
 import izpack.frontend.view.components.OSComboBox;
-import izpack.frontend.view.components.OverwriteComboBox;
 import izpack.frontend.view.components.table.TableEditor;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -50,9 +45,9 @@ import com.jgoodies.forms.layout.FormLayout;
 /**
  * @author Andy Gombos
  */
-public class FileEditor extends TableEditor
+public class ParsableEditor extends TableEditor
 {
-    public FileEditor(Frame parent)
+    public ParsableEditor(Frame parent)
     {
         super(parent);
         
@@ -60,44 +55,36 @@ public class FileEditor extends TableEditor
         DefaultFormBuilder builder = new DefaultFormBuilder(layout, new JPanel());
         builder.setDefaultDialogBorder();
         
-        target = new JTextField();
-        source = new JTextField();
-        overwrite = new OverwriteComboBox();
-        os = new OSComboBox();        
-                
+        targetFile = new JTextField();
+        format = new FormatComboBox();
+        encoding = new JTextField();
+        os = new OSComboBox();
+        
+        ok = new JButton(lr.getText("UI.Buttons.OK"));
+        ok.addActionListener(this);
+        
+        cancel = new JButton(lr.getText("UI.Buttons.Cancel"));
+        cancel.addActionListener(this);
+        
         browse = new JButton(lr.getText("UI.Buttons.Browse"));
-        
-        browse.addActionListener(new ActionListener()
-        {
+        browse.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
-            {        
-                JFileChooser chooser = new JFileChooser();
-                chooser.addChoosableFileFilter(new ImageFilter());
-                chooser.addChoosableFileFilter(new TextFilter());
-                chooser.addChoosableFileFilter(new XMLFilter());
-                chooser.addChoosableFileFilter(new HTMLFilter());
-                chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);                
-                chooser.setDialogTitle(lr.getText("UI.FileEditor.Title"));
-                
-                if (source.getText().length() != 0)
-                {
-                    chooser.setSelectedFile(new File(source.getText()));
-                }
-                
+            {
+                JFileChooser chooser = new JFileChooser();                
                 int returnVal = chooser.showOpenDialog(browse.getParent());
-                if(returnVal == JFileChooser.APPROVE_OPTION) {                                          
-                       source.setText(chooser.getSelectedFile().getAbsolutePath());                   
+                if(returnVal == JFileChooser.APPROVE_OPTION) {
+                   targetFile.setText(chooser.getSelectedFile().getAbsolutePath());
                 }
-            }
-        });
-        
-        builder.append(lr.getText("UI.FileEditor.Source"), source, browse);
-        builder.nextLine();
-        builder.append(lr.getText("UI.FileEditor.Target"), target);
+            }            
+        });        
+               
+        builder.append(lr.getText("UI.ParsableEditor.TargetFile"), targetFile, browse);
         builder.nextLine();        
-        builder.append("<html>" + lr.getText("UI.FileEditor.Overwrite"), overwrite);
+        builder.append(lr.getText("UI.ParsableEditor.Format"), format);
         builder.nextLine();
-        builder.append(lr.getText("UI.FileEditor.OS"), os);
+        builder.append(lr.getText("UI.ParsableEditor.Encoding"), encoding);
+        builder.nextLine();
+        builder.append(lr.getText("UI.ParsableEditor.OS"), os);
         builder.nextLine();        
         
         builder.appendUnrelatedComponentsGapRow();
@@ -112,24 +99,24 @@ public class FileEditor extends TableEditor
     
     public void setVisible(boolean b)
     {
-        source.requestFocusInWindow();
+        targetFile.requestFocusInWindow();
         
         super.setVisible(b);
     }
-    
+
     /* (non-Javadoc)
      * @see izpack.frontend.view.components.table.TableEditor#configure(izpack.frontend.model.ElementModel)
      */
     public void configure(ElementModel model)
     {
-        FileModel fm = (FileModel) model;
-
-        source.requestFocusInWindow();
-        source.setText(fm.source);
-        target.setText(fm.target);
+        Parsable pm = (Parsable) model;
         
-        overwrite.setOverwriteOption(fm.override);
-        os.setOS(fm.os);
+        targetFile.requestFocusInWindow();
+        targetFile.setText(pm.targetfile);
+        encoding.setText(pm.encoding);
+        
+        format.setFormat(pm.type);
+        os.setOS(pm.os);
     }
 
     /* (non-Javadoc)
@@ -137,12 +124,12 @@ public class FileEditor extends TableEditor
      */
     public void configureClean()
     {
-        source.requestFocusInWindow();
-        source.setText("");
-        target.setText("$INSTALL_PATH");
-
-        overwrite.setSelectedIndex(-1);
-        os.setSelectedIndex(-1);
+        targetFile.requestFocusInWindow();
+        targetFile.setText("");
+        encoding.setText("");
+        
+        format.setSelectedIndex(-1);
+        os.setSelectedIndex(-1);        
     }
 
     /* (non-Javadoc)
@@ -150,26 +137,27 @@ public class FileEditor extends TableEditor
      */
     public ElementModel getModel()
     {
-        FileModel fm = new FileModel();
+        Parsable pm = new Parsable();
         
-        fm.source = source.getText();
-        fm.target = target.getText();
+        pm.targetfile = targetFile.getText();
+        pm.encoding = encoding.getText();
         
-        fm.os = os.getOS();
-        fm.override = overwrite.getOverwriteOption();
+        pm.type = format.getFormat();
+        pm.os = os.getOS();
         
-        return fm;
+        return pm;
     }
-
+    
     JButton browse;
-    JTextField target, source;    
+    JTextField targetFile;
+    FormatComboBox format;
+    JTextField encoding;
     OSComboBox os;
-    OverwriteComboBox overwrite;
     /* (non-Javadoc)
      * @see izpack.frontend.view.components.table.TableEditor#handles(java.lang.Class)
      */
     public boolean handles(Class type)
     {
-        return type.equals(FileModel.class);
-    }
+        return type.equals(Parsable.class);
+    }   
 }

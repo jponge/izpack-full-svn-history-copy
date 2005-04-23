@@ -28,7 +28,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.debug.FormDebugPanel;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -37,7 +36,7 @@ import com.jgoodies.forms.layout.FormLayout;
  */
 public class YesNoRadioPanel extends JPanel
 {
-    public YesNoRadioPanel(String def)
+    public YesNoRadioPanel(String defaultSelected)
     {
         yes = new JRadioButton("Yes");
         no = new JRadioButton("No");
@@ -53,7 +52,7 @@ public class YesNoRadioPanel extends JPanel
         builder.add(yes,	cc.xy(1, 1));
         builder.add(no,		cc.xy(3, 1));
         
-        setSelected(def);
+        setSelected(defaultSelected);
     }    
     
     public void setSelected(String def)

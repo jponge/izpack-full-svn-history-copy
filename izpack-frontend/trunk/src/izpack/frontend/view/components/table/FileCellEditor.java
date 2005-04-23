@@ -23,7 +23,6 @@
  */
 package izpack.frontend.view.components.table;
 
-import izpack.frontend.model.ElementModel;
 import izpack.frontend.model.LangResources;
 import izpack.frontend.model.files.DirectoryModel;
 import izpack.frontend.model.files.Executable;
@@ -64,6 +63,7 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
     {
         fileDir = new JPanel();
         parsable = new JPanel();
+        executable = new JPanel();
         
         //Setup file/directory editor
         FormLayout fdLayout = new FormLayout(
@@ -76,6 +76,11 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
                         "5dlu, 40dlu, 4dlu, 80dlu, 15dlu, center:80dlu, 5dlu",
                         "15dlu");
         pBuilder = new DefaultFormBuilder(pLayout, parsable);
+        
+        FormLayout eLayout = new FormLayout(
+                        "5dlu, 40dlu, 4dlu, 80dlu, 15dlu, center:80dlu, 5dlu",
+                        "15dlu");
+        eBuilder = new DefaultFormBuilder(eLayout, executable);
     }
     
     /* (non-Javadoc)
@@ -90,6 +95,8 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
             panel = getFileDirEditor( (PackFileModel) value);
         else if (value instanceof Parsable)
             panel = getParsableEditor( (Parsable) value);
+        else if (value instanceof Executable)
+            panel = getExecutableEditor( (Executable) value);
      
         editingValue = (PackElement) value;
         
@@ -157,14 +164,26 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
     
     private JPanel getExecutableEditor(Executable value)
     {
-        return null;
+        type.setText(lr.getText("UI.Editors.Exec"));
+        
+        target.setText(value.target);        
+        source.setText(value.execClass);
+        
+        executable.removeAll();
+        
+        CellConstraints cc = new CellConstraints();
+        eBuilder.add(type, cc.xy(2, 1));
+        eBuilder.add(target, cc.xy(4, 1));
+        eBuilder.add(source, cc.xy(6, 1));
+        
+        return executable;
     }
         
     JPanel fileDir, parsable, executable;
     JLabel type = new JLabel();
     JTextField target = new JTextField(), source = new JTextField();
     FormatComboBox format = new FormatComboBox();
-    DefaultFormBuilder pBuilder, fdBuilder;
+    DefaultFormBuilder pBuilder, fdBuilder, eBuilder;
     
     PackElement editingValue = null;
     

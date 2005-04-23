@@ -23,8 +23,8 @@
  */
 package izpack.frontend.view.components.table;
 
-import izpack.frontend.model.ElementModel;
 import izpack.frontend.model.LangResources;
+import izpack.frontend.model.files.ElementModel;
 import izpack.frontend.view.IzPackFrame;
 
 import java.awt.Frame;
@@ -33,8 +33,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.border.Border;
-import javax.swing.border.SoftBevelBorder;
 
 /**
  * @author Andy Gombos

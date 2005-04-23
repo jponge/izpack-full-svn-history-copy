@@ -42,8 +42,9 @@ public class FileListHeader extends JPanel
 	    
 	    CellConstraints cc = new CellConstraints();
 	    
+	    //TODO Externalize these
 	    builder.add(new JLabel("Type"), cc.xy(2, 1));
 	    builder.add(new JLabel("Target"), cc.xy(4, 1));
-	    builder.add(new JLabel("Source/Format"), cc.xy(6, 1));
+	    builder.add(new JLabel("Source/Format/Class"), cc.xy(6, 1));
     }
 }

@@ -21,12 +21,11 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.stages.packs;
+package izpack.frontend.view.stages.packs.editors;
 
 import izpack.frontend.controller.filters.DirectoryFilter;
-import izpack.frontend.model.ElementModel;
 import izpack.frontend.model.files.DirectoryModel;
-import izpack.frontend.model.files.FileModel;
+import izpack.frontend.model.files.ElementModel;
 import izpack.frontend.view.components.OSComboBox;
 import izpack.frontend.view.components.OverwriteComboBox;
 import izpack.frontend.view.components.table.TableEditor;

@@ -37,9 +37,9 @@ import javax.swing.ListModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.jgoodies.validation.ValidationResult;
-
 import utils.XML;
+
+import com.jgoodies.validation.ValidationResult;
 
 /**
  * @author Andy Gombos

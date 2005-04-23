@@ -1,5 +1,8 @@
 Before alpha
 ---------------------------------------
+*Addition buttons for files need to be disabled when a valid model isn't in the table
+*Combobox strings need to be externalized/internationalized
+
 
 Before beta
 ---------------------------------------
