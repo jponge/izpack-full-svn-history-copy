@@ -55,6 +55,7 @@ public class EditorManager
     
     public TableEditor getEditor(Class type)
     {
+        System.out.println("looking for " + type);
         for (Iterator iter = editors.iterator(); iter.hasNext();)
         {
             TableEditor editor = (TableEditor) iter.next();

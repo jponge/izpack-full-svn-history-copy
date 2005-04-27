@@ -14,3 +14,7 @@ Before first release
 	Selecting files/packs
 	
 *Implement validation for PackStage Editors
+
+Before sometime
+---------------------------------------
+*FileSetModel should be a list model linked to the JList

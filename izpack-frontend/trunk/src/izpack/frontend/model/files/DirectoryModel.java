@@ -25,6 +25,8 @@ package izpack.frontend.model.files;
 
 import org.w3c.dom.Document;
 
+import utils.XML;
+
 /**
  * @author Andy Gombos
  */
@@ -36,6 +38,7 @@ public class DirectoryModel extends PackFileModel
      */
     public Document writeXML()
     {   
+        Document doc = XML.getNewDocument();
         return null;
     }
 

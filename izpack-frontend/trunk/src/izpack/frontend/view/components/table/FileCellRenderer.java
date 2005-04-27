@@ -27,6 +27,7 @@ import izpack.frontend.model.LangResources;
 import izpack.frontend.model.files.DirectoryModel;
 import izpack.frontend.model.files.Executable;
 import izpack.frontend.model.files.FileModel;
+import izpack.frontend.model.files.FileSet;
 import izpack.frontend.model.files.PackFileModel;
 import izpack.frontend.model.files.Parsable;
 import izpack.frontend.view.IzPackFrame;
@@ -51,31 +52,32 @@ public class FileCellRenderer implements IzTableCellRenderer
 {
     public FileCellRenderer()
     {
-        fileDir = new JPanel();        	
+        fileDir = new JPanel(); 
+        fileSet = new JPanel();
         parsable = new JPanel();
         executable = new JPanel();
         
-        //Setup file/directory editor
-        FormLayout fdLayout = new FormLayout(
-                        "5dlu, 40dlu, 4dlu, 80dlu, 15dlu, center:80dlu, 5dlu",
-                        "15dlu");
-        fdBuilder = new DefaultFormBuilder(fdLayout, fileDir);
-
         fileType = new JLabel(lr.getText("UI.Editors.File"));
         dirType = new JLabel(lr.getText("UI.Editors.Dir"));
+        setType = new JLabel(lr.getText("UI.Editors.FileSet"));
         parseType = new JLabel(lr.getText("UI.Editors.Parsable"));
         execType = new JLabel(lr.getText("UI.Editors.Exec"));
         
-        //Setup parsable editor
-        FormLayout pLayout = new FormLayout(
+        FormLayout layout = new FormLayout(
                         "5dlu, 40dlu, 4dlu, 80dlu, 15dlu, center:80dlu, 5dlu",
                         "15dlu");
-        pBuilder = new DefaultFormBuilder(pLayout, parsable);        
         
-        FormLayout eLayout = new FormLayout(
-                        "5dlu, 40dlu, 4dlu, 80dlu, 15dlu, center:80dlu, 5dlu",
-                        "15dlu");
-        eBuilder = new DefaultFormBuilder(eLayout, executable);
+        //Setup file/directory editor
+        fdBuilder = new DefaultFormBuilder(layout, fileDir);        
+        
+        //Setup file set editor        
+        sBuilder = new DefaultFormBuilder(layout, fileSet);
+        
+        //Setup parsable editor        
+        pBuilder = new DefaultFormBuilder(layout, parsable);        
+        
+        //Setup executable editor
+        eBuilder = new DefaultFormBuilder(layout, executable);
     }
     
     /* (non-Javadoc)
@@ -84,14 +86,19 @@ public class FileCellRenderer implements IzTableCellRenderer
     public Component getTableCellRendererComponent(JTable table, Object value, 
                     boolean isSelected, boolean hasFocus, int row, int column)
     {
-        JPanel panel = new JPanel();        
+        JPanel panel = new JPanel();
         
-        if (value instanceof PackFileModel)
-            panel = getFileDirRenderer( (PackFileModel) value);
-        else if (value instanceof Parsable)
-            panel = getParsableRenderer( (Parsable) value);
-        else if (value instanceof Executable)
-            panel = getExecutableRenderer( (Executable) value);
+        if (value != null)
+        {
+	        if (value instanceof PackFileModel && !(value instanceof FileSet))
+	            panel = getFileDirRenderer( (PackFileModel) value);
+	        else if (value instanceof FileSet)
+	            panel = getFileSetRenderer((FileSet) value);
+	        else if (value instanceof Parsable)
+	            panel = getParsableRenderer( (Parsable) value);
+	        else if (value instanceof Executable)
+	            panel = getExecutableRenderer( (Executable) value);        
+        }
         
         if (isSelected && value != null)
             panel.setBorder(selected);
@@ -115,10 +122,25 @@ public class FileCellRenderer implements IzTableCellRenderer
         fdBuilder.add(source, cc.xy(4, 1));
         fdBuilder.add(target, cc.xy(6, 1));
         
-        target.setText(UI.cutMiddleOfString(value.target));
+        target.setText(value.target);
         source.setText(UI.cutMiddleOfString(value.source));
         
         return fileDir;
+    }
+    
+    private JPanel getFileSetRenderer(FileSet value)
+    {   
+        target.setText(value.target);
+        source.setText(UI.cutMiddleOfString(value.source));
+        
+        fileSet.removeAll();
+     
+        CellConstraints cc = new CellConstraints();
+        sBuilder.add(setType, cc.xy(2, 1));
+        sBuilder.add(source, cc.xy(4, 1));
+        sBuilder.add(target, cc.xy(6, 1));
+        
+        return fileSet;
     }
     
     private JPanel getParsableRenderer(Parsable value)
@@ -151,11 +173,11 @@ public class FileCellRenderer implements IzTableCellRenderer
         return executable;
     }
         
-    JPanel fileDir, parsable, executable;
-    JLabel fileType, dirType, parseType, execType;
+    JPanel fileDir, fileSet, parsable, executable;
+    JLabel fileType, dirType, setType, parseType, execType;
     JLabel target = new JLabel(), source = new JLabel();
     FormatComboBox format = new FormatComboBox();
-    DefaultFormBuilder fdBuilder, pBuilder, eBuilder;
+    DefaultFormBuilder fdBuilder, sBuilder, pBuilder, eBuilder;
     
     static LangResources lr = IzPackFrame.getInstance().langResources();
 

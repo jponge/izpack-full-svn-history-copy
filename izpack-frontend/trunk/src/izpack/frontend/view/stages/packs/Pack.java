@@ -28,6 +28,7 @@ import izpack.frontend.model.PackModel;
 import izpack.frontend.model.files.DirectoryModel;
 import izpack.frontend.model.files.Executable;
 import izpack.frontend.model.files.FileModel;
+import izpack.frontend.model.files.FileSet;
 import izpack.frontend.model.files.Parsable;
 import izpack.frontend.view.IzPackFrame;
 import izpack.frontend.view.components.table.FileCellEditor;
@@ -41,6 +42,7 @@ import izpack.frontend.view.stages.packs.editors.DirectoryEditor;
 import izpack.frontend.view.stages.packs.editors.EditorManager;
 import izpack.frontend.view.stages.packs.editors.ExecutableEditor;
 import izpack.frontend.view.stages.packs.editors.FileEditor;
+import izpack.frontend.view.stages.packs.editors.FileSetEditor;
 import izpack.frontend.view.stages.packs.editors.PackEditor;
 import izpack.frontend.view.stages.packs.editors.ParsableEditor;
 
@@ -75,7 +77,6 @@ import com.jgoodies.validation.message.PropertyValidationMessage;
  */
 public class Pack extends IzPackStage implements ActionListener
 {
-
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.IzPackStage#createInstallerData()
      */
@@ -170,6 +171,7 @@ public class Pack extends IzPackStage implements ActionListener
         EditorManager em = EditorManager.getInstance();
         em.addEditor(new PackEditor( (Frame) this.getParent()));
         em.addEditor(new FileEditor( (Frame) this.getParent()));
+        em.addEditor(new FileSetEditor( (Frame) this.getParent()));
         em.addEditor(new DirectoryEditor( (Frame) this.getParent()));
         em.addEditor(new ParsableEditor( (Frame) this.getParent()));
         em.addEditor(new ExecutableEditor( (Frame) this.getParent()));
@@ -294,6 +296,9 @@ public class Pack extends IzPackStage implements ActionListener
         dirAdd = new JButton(lr.getText("UI.Editors.Dir"));
         	dirAdd.setName("dir");
         	dirAdd.addActionListener(this);
+        setAdd = new JButton(lr.getText("UI.Editors.FileSet"));
+        	setAdd.setName("set");
+        	setAdd.addActionListener(this);	
         parseAdd = new JButton(lr.getText("UI.Editors.Parsable"));
         	parseAdd.setName("parse");
         	parseAdd.addActionListener(this);
@@ -310,6 +315,8 @@ public class Pack extends IzPackStage implements ActionListener
         builder.addRelatedGap();
         builder.addGridded(dirAdd);
         builder.addRelatedGap();
+        builder.addGridded(setAdd);
+        builder.addRelatedGap();
         builder.addGridded(parseAdd);
         builder.addRelatedGap();
         builder.addGridded(execAdd);
@@ -323,7 +330,7 @@ public class Pack extends IzPackStage implements ActionListener
     
     ListTable packTable, filesTable;
     JButton packAdd, packRemove;
-    JButton fileAdd, dirAdd, parseAdd, execAdd, fileRemove;
+    JButton fileAdd, dirAdd, setAdd, parseAdd, execAdd, fileRemove;
     
     LangResources lr = IzPackFrame.getInstance().langResources();
     
@@ -418,6 +425,11 @@ public class Pack extends IzPackStage implements ActionListener
         else if (src.getName().equals("dir"))
         {
             type = DirectoryModel.class;
+        }
+        else if (src.getName().equals("set"))
+        {
+            System.out.println("file set");
+            type = FileSet.class;
         }
         else if (src.getName().equals("parse"))
         {

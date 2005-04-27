@@ -47,7 +47,7 @@ public class LabelRenderer extends DefaultListCellRenderer
         else
             c.setBorder(unselected);
         
-        return (Component) c;        
+        return (Component) c;
     }
 
     Border unselected = new SoftBevelBorder(SoftBevelBorder.RAISED);

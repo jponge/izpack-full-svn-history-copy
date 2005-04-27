@@ -69,10 +69,13 @@ public abstract class AbstractListSelect extends IzPackPanel implements ActionLi
         CellConstraints cc = new CellConstraints();
         
         JButton buttons[] = createButtons();
-        builder.add(buttons[0], cc.xy(3, 2));        
-        builder.add(buttons[1], cc.xy(3, 4));
-        builder.add(buttons[2], cc.xy(3, 6));
-        builder.add(buttons[3], cc.xy(3, 8));
+        
+        if (buttonSet == ALL_BUTTONS || buttonSet == LEFT_RIGHT_BUTTONS)
+            builder.add(buttons[0], cc.xy(3, 2));        
+        	builder.add(buttons[1], cc.xy(3, 4));
+        if (buttonSet == ALL_BUTTONS || buttonSet == UP_DOWN_BUTTONS)	
+            builder.add(buttons[2], cc.xy(3, 6));
+        	builder.add(buttons[3], cc.xy(3, 8));
                 
         //Wrap lists in scrollpanes
         srcPane = new JScrollPane();        	
@@ -208,16 +211,31 @@ public abstract class AbstractListSelect extends IzPackPanel implements ActionLi
         else if (list.equals(destList))
             buttons[0].setEnabled(false);
     }
-        
+    
+    /**
+     *  Select the manipulator buttons to display
+     * 
+     * 	One of ALL_BUTTONS, LEFT_RIGHT_BUTTONS, UP_DOWN_BUTTONS
+     */
+    public void setButtonsToDisplay(int buttonSet)
+    {
+        this.buttonSet = buttonSet;
+    }
     
     //Unimplemented interface methods
     public void focusLost(FocusEvent e){}    
     	
     //Keep track if destList has focus last between the lists
-	boolean destListFocus = false;
+	boolean destListFocus = false;	
 	SelectList srcList,	destList;
 	JScrollPane srcPane, destPane;
 	
+	int buttonSet = ALL_BUTTONS;
+	
     JPanel destJPanel;
-    JButton buttons[];    
+    JButton buttons[];
+    
+    public static final int ALL_BUTTONS = 0;
+    public static final int LEFT_RIGHT_BUTTONS = 1;
+    public static final int UP_DOWN_BUTTONS = 2;
 }

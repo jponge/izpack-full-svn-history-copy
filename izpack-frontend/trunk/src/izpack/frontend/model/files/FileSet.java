@@ -24,16 +24,21 @@
 package izpack.frontend.model.files;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.swing.ListModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
 
 /**
  * @author Andy Gombos
  */
-public class FileSet extends PackFileModel
+public class FileSet extends PackFileModel implements ListModel
 {
     public boolean caseSensitive = true, defaultExcludes = true;
-    private ArrayList files;
+    private ArrayList files = new ArrayList();
 
     /* (non-Javadoc)
      * @see izpack.frontend.model.files.PackElement#writeXML()
@@ -44,22 +49,63 @@ public class FileSet extends PackFileModel
         return null;
     }
     
-    public void addSet(String set, boolean include)
+    public ArrayList getSetList()
     {
-        if (include)
-            files.add(new Include(set));
-        else
-            files.add(new Exclude(set));
+        return files;
     }
     
-    static class Include
+    public void setSetList(ArrayList setList)
     {
-        public Include(String set)
+        for (Iterator iter = setList.iterator(); iter.hasNext();)
+        {
+            Set element = (Set) iter.next();
+            addSet(element);
+        }
+    }
+    
+    public void addSet(Set set)
+    {
+        int index = files.size();
+        
+        System.out.println(index);
+        
+        files.add(index, set);
+        fireElementAddedEvent(index);
+    }
+    
+    public void removeSet(Set set)
+    {
+        if (set == null)
+            return;
+        
+        int index = files.indexOf(set);
+        files.remove(index);
+        fireElementRemovedEvent(index);
+    }
+    
+    public abstract static class Set
+    {
+        private Set(String set)
         {
             this.set = set;
         }
         
-        public String set;
+        public abstract String toString();
+        
+        protected String set;
+    }
+    
+    public static class Include extends Set
+    {   
+        public Include(String set)
+        {
+            super(set);
+        }
+        
+        public String toString()
+        {
+            return "Include:  " + set;
+        }
         
         public Document writeXML()
         {
@@ -67,18 +113,83 @@ public class FileSet extends PackFileModel
         }
     }
     
-    static class Exclude
+    public static class Exclude extends Set
     {
         public Exclude(String set)
         {
-            this.set = set;
+            super(set);
         }
         
-        public String set;
+        //So we don't have to write our own renderer
+        public String toString()
+        {
+            return "Exclude:  " + set;
+        }
         
         public Document writeXML()
         {
             return null;
         }
     }
+
+    /*    
+     * ListModel stuff
+     */
+    
+    
+    /* (non-Javadoc)
+     * @see javax.swing.ListModel#getSize()
+     */
+    public int getSize()
+    {       
+        return files.size();
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.ListModel#getElementAt(int)
+     */
+    public Object getElementAt(int index)
+    {        
+        return files.get(index);
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener)
+     */
+    public void addListDataListener(ListDataListener l)
+    {
+        dataListeners.add(l);
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener)
+     */
+    public void removeListDataListener(ListDataListener l)
+    {     
+        dataListeners.remove(l);
+    }
+    
+    private void fireElementAddedEvent(int index)
+    {
+        ListDataEvent lde = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, index, index);
+        
+        for (Iterator iter = dataListeners.iterator(); iter.hasNext();)
+        {
+            ListDataListener l = (ListDataListener) iter.next();
+            l.intervalAdded(lde);
+        }
+    }
+    
+    private void fireElementRemovedEvent(int index)
+    {
+        ListDataEvent lde = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, index, index);
+        
+        for (Iterator iter = dataListeners.iterator(); iter.hasNext();)
+        {
+            ListDataListener l = (ListDataListener) iter.next();
+            l.intervalRemoved(lde);
+        }
+    }
+    
+    private ArrayList dataListeners = new ArrayList();
 }

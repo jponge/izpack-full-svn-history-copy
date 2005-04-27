@@ -27,6 +27,7 @@ import izpack.frontend.model.LangResources;
 import izpack.frontend.model.files.DirectoryModel;
 import izpack.frontend.model.files.Executable;
 import izpack.frontend.model.files.FileModel;
+import izpack.frontend.model.files.FileSet;
 import izpack.frontend.model.files.PackElement;
 import izpack.frontend.model.files.PackFileModel;
 import izpack.frontend.model.files.Parsable;
@@ -62,6 +63,7 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
     public FileCellEditor()
     {
         fileDir = new JPanel();
+        fileSet = new JPanel();
         parsable = new JPanel();
         executable = new JPanel();
         
@@ -70,6 +72,12 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
                         "5dlu, 40dlu, 4dlu, 80dlu, 15dlu, center:80dlu, 5dlu",
                         "15dlu");
         fdBuilder = new DefaultFormBuilder(fdLayout, fileDir);
+        
+        //Setup file set editor
+        FormLayout sLayout = new FormLayout(
+                        "5dlu, 40dlu, 4dlu, 80dlu, 15dlu, center:80dlu, 5dlu",
+                        "15dlu");
+        sBuilder = new DefaultFormBuilder(sLayout, fileSet);
         
         //Setup parsable editor
         FormLayout pLayout = new FormLayout(
@@ -93,6 +101,8 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
         
         if (value instanceof PackFileModel)
             panel = getFileDirEditor( (PackFileModel) value);
+        if (value instanceof FileSet)
+            panel = getFileSetEditor( (FileSet) value);
         else if (value instanceof Parsable)
             panel = getParsableEditor( (Parsable) value);
         else if (value instanceof Executable)
@@ -146,6 +156,23 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
         return fileDir;
     }
     
+    private JPanel getFileSetEditor(FileSet value)
+    {        
+        type.setText(lr.getText("UI.Editors.FileSet"));
+        
+        target.setText(value.target);
+        source.setText(value.source);
+        
+        fileSet.removeAll();
+        CellConstraints cc = new CellConstraints();
+        sBuilder.add(type, cc.xy(2, 1));
+        sBuilder.add(source, cc.xy(4, 1));
+        sBuilder.add(target, cc.xy(6, 1));
+
+        
+        return fileSet;
+    }
+    
     private JPanel getParsableEditor(Parsable value)
     {
         type.setText(lr.getText("UI.Editors.Parsable"));
@@ -179,11 +206,11 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
         return executable;
     }
         
-    JPanel fileDir, parsable, executable;
+    JPanel fileDir, fileSet, parsable, executable;
     JLabel type = new JLabel();
     JTextField target = new JTextField(), source = new JTextField();
     FormatComboBox format = new FormatComboBox();
-    DefaultFormBuilder pBuilder, fdBuilder, eBuilder;
+    DefaultFormBuilder pBuilder, fdBuilder, sBuilder, eBuilder;
     
     PackElement editingValue = null;
     
