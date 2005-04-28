@@ -62,6 +62,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.w3c.dom.Document;
 
+import utils.XML;
+
 import com.jgoodies.forms.builder.ButtonStackBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
@@ -88,9 +90,13 @@ public class Pack extends IzPackStage implements ActionListener
             
             if (rowObj != null)
             {
-                ( (PackModel) rowObj).printFiles();
+                Document d = ( (PackModel) rowObj).writePack();
+                System.out.println("~~~~~");
+                XML.printXML(d);
+               	System.out.println("~~~~~~");
             }
         }
+        
         return null;
     }
 

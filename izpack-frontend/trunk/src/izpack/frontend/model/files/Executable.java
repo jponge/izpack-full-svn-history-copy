@@ -24,6 +24,9 @@
 package izpack.frontend.model.files;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import utils.XML;
 
 
 
@@ -32,14 +35,39 @@ import org.w3c.dom.Document;
  */
 public class Executable implements PackElement
 {
-    public String target, execClass, type, stage, failure, keep;
+    public String target = "", execClass = "", type = "", stage = "", failure = "", keep = "", args = "";
 
     /* (non-Javadoc)
      * @see izpack.frontend.model.files.ElementModel#writeXML()
      */
     public Document writeXML()
     {
-        // TODO Auto-generated method stub
-        return null;
+        Document doc = XML.getNewDocument();
+        
+        Element executable = XML.createElement("executable", doc);
+        
+        executable.setAttribute("targetfile", target);
+        
+        setOptionalAttribute(executable, "class", execClass);
+        setOptionalAttribute(executable, "type", type);
+        setOptionalAttribute(executable, "stage", stage);
+        setOptionalAttribute(executable, "failure", failure);
+        setOptionalAttribute(executable, "keep", keep);
+        
+        Element argsElem = XML.createElement("args", doc);
+        Element arg = XML.createElement("arg", doc);
+        arg.setAttribute("arg", args);
+        
+        argsElem.appendChild(arg);
+        executable.appendChild(argsElem);
+        
+        doc.appendChild(executable);
+        return doc;
+    }
+    
+    private void setOptionalAttribute(Element elem, String attrName, String value)
+    {
+        if ((value != null) && !value.equals(""))
+            elem.setAttribute(attrName, value);
     }
 }

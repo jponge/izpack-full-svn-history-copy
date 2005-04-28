@@ -29,10 +29,15 @@ import izpack.frontend.model.files.PackFileModel;
 import izpack.frontend.model.files.Parsable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.table.DefaultTableModel;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import utils.XML;
 
 /**
  * @author Andy Gombos
@@ -148,17 +153,44 @@ public class PackModel implements ElementModel
     
     public Document writePack()
     {
-        return null;
-    }
-    
-    public void addFiles(PackElement elem)
-    {
-        elements.add(elem);
-    }
-    
-    public void removeFile(PackElement elem)
-    {
-        elements.remove(elem);
+        Document doc = XML.getNewDocument();
+        
+        Element pack = XML.createElement("pack", doc);
+        pack.setAttribute("name", name);
+        pack.setAttribute("required", required ? "yes" : "no");
+        pack.setAttribute("preselected", preselected ? "yes" : "no");
+        pack.setAttribute("loose", loose ? "true" : "false");
+        
+        if (!os.equals(""))
+            pack.setAttribute("os", os);
+        
+        if (!id.equals(""))
+            pack.setAttribute("id", id);
+        
+        for(int i = 0; i < model.getRowCount(); i++)
+        {
+            Object data = model.getValueAt(i, 0);
+            
+            if (data != null)
+            {
+                PackElement pe = (PackElement) data;
+                
+                System.out.println(pe.getClass());
+                
+                Document elementDoc = pe.writeXML();
+                Node node = doc.importNode(elementDoc.getDocumentElement(), true);
+                   
+                pack.appendChild(node);                
+            }
+        }        
+        
+        Element descElem = XML.createElement("description", doc);
+        descElem.setTextContent(desc);
+        
+        pack.appendChild(descElem);
+        doc.appendChild(pack);
+        
+        return doc;
     }
     
     public DefaultTableModel getFilesModel()

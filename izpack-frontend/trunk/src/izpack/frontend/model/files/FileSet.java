@@ -31,6 +31,9 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import utils.XML;
 
 /**
  * @author Andy Gombos
@@ -45,8 +48,36 @@ public class FileSet extends PackFileModel implements ListModel
      */
     public Document writeXML()
     {
-        // TODO Auto-generated method stub
-        return null;
+        Document doc = XML.getNewDocument();        
+        
+        Element fset = XML.createElement("file", doc);
+        fset.setAttribute("src", source);
+        fset.setAttribute("targetdir", target);
+        
+        if (!os.equals(""))
+            fset.setAttribute("os", os);
+        
+        if (!override.equals(""))
+            fset.setAttribute("override", override);
+        
+        fset.setAttribute("casesensitive", yesNoBoolean(caseSensitive));
+        fset.setAttribute("defaultexcludes", yesNoBoolean(defaultExcludes));
+        
+        for (Iterator iter = files.iterator(); iter.hasNext();)
+        {
+            Set element = (Set) iter.next();            
+            
+            Element set = element.writeXML(doc);
+            fset.appendChild(set);
+        }        
+        
+        doc.appendChild(fset);
+        return doc;
+    }
+    
+    private String yesNoBoolean(boolean b)
+    {
+        return b ? "yes" : "no";
     }
     
     public ArrayList getSetList()
@@ -92,6 +123,8 @@ public class FileSet extends PackFileModel implements ListModel
         
         public abstract String toString();
         
+        public abstract Element writeXML(Document d);
+        
         protected String set;
     }
     
@@ -107,9 +140,12 @@ public class FileSet extends PackFileModel implements ListModel
             return "Include:  " + set;
         }
         
-        public Document writeXML()
+        public Element writeXML(Document d)
         {
-            return null;
+            Element include = XML.createElement("include", d);
+            include.setAttribute("name", set);
+            
+            return include;
         }
     }
     
@@ -126,9 +162,12 @@ public class FileSet extends PackFileModel implements ListModel
             return "Exclude:  " + set;
         }
         
-        public Document writeXML()
+        public Element writeXML(Document d)
         {
-            return null;
+            Element exclude = XML.createElement("exclude", d);
+            exclude.setAttribute("name", set);
+            
+            return exclude;
         }
     }
 

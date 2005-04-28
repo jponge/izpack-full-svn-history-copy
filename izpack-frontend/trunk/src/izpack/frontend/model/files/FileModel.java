@@ -24,6 +24,9 @@
 package izpack.frontend.model.files;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import utils.XML;
 
 /**
  * @author Andy Gombos
@@ -36,7 +39,20 @@ public class FileModel extends PackFileModel
      */
     public Document writeXML()
     {   
-        return null;
+        Document doc = XML.getNewDocument();        
+        
+        Element file = XML.createElement("singlefile", doc);
+        file.setAttribute("src", source);
+        file.setAttribute("target", target);
+        
+        if (!os.equals(""))
+            file.setAttribute("os", os);
+        
+        if (!override.equals(""))
+            file.setAttribute("override", override);
+        
+        doc.appendChild(file);
+        return doc;
     }
 
 }

@@ -24,6 +24,7 @@
 package izpack.frontend.model.files;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import utils.XML;
 
@@ -38,8 +39,20 @@ public class DirectoryModel extends PackFileModel
      */
     public Document writeXML()
     {   
-        Document doc = XML.getNewDocument();
-        return null;
+        Document doc = XML.getNewDocument();        
+        
+        Element dir = XML.createElement("file", doc);
+        dir.setAttribute("src", source);
+        dir.setAttribute("targetdir", target);
+        
+        if (!os.equals(""))
+            dir.setAttribute("os", os);
+        
+        if (!override.equals(""))
+            dir.setAttribute("override", override);
+        
+        doc.appendChild(dir);
+        return doc;
     }
 
 }

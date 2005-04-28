@@ -24,20 +24,35 @@
 package izpack.frontend.model.files;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import utils.XML;
 
 /**
  * @author Andy Gombos
  */
 public class Parsable implements PackElement
 {
-    public String targetfile, type, encoding, os;
+    public String targetfile, type = "plain", encoding, os;
 
     /* (non-Javadoc)
      * @see izpack.frontend.model.files.PackElement#writeXML()
      */
     public Document writeXML()
     {
-        // TODO Auto-generated method stub
-        return null;
+        Document doc = XML.getNewDocument();
+        
+        Element parsable = XML.createElement("parsable", doc);
+        parsable.setAttribute("targetfile", targetfile);
+        parsable.setAttribute("type", type);
+        
+        if (encoding != null || !encoding.equals(""))
+            parsable.setAttribute("encoding", encoding);
+        
+        if (os != null || !os.equals(""))
+            parsable.setAttribute("os", os);
+        
+        doc.appendChild(parsable);
+        return doc;
     }
 }

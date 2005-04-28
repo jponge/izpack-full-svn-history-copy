@@ -25,6 +25,8 @@ package izpack.frontend.view.stages.packs.editors;
 
 import izpack.frontend.model.PackModel;
 import izpack.frontend.model.files.ElementModel;
+import izpack.frontend.view.components.AbstractListSelect;
+import izpack.frontend.view.components.DependencyListSelect;
 import izpack.frontend.view.components.OSComboBox;
 import izpack.frontend.view.components.YesNoRadioPanel;
 import izpack.frontend.view.components.table.TableEditor;
@@ -82,11 +84,18 @@ public class PackEditor extends TableEditor
         builder.append("<html>" + lr.getText("UI.PackEditor.PreSel"), preselectPanel);
         builder.nextLine();
         builder.append("<html>" + lr.getText("UI.PackEditor.Loose"), looseFilesPanel);
+        builder.nextLine();
         
         builder.appendUnrelatedComponentsGapRow();
-        builder.nextLine();        
         builder.nextLine();
+        
+        //builder.append(createDependencyPanel());
+        
+        //builder.appendUnrelatedComponentsGapRow();
+        //builder.nextLine();
+        
         builder.append(ButtonBarFactory.buildOKCancelBar(ok, cancel), 3);
+        builder.nextLine();
         
         getContentPane().add(builder.getPanel());
         pack();
@@ -94,6 +103,21 @@ public class PackEditor extends TableEditor
         setModal(true);
     }    
     
+    /**
+     * @return
+     */
+    private JPanel createDependencyPanel()
+    {
+        JPanel p = new JPanel();        
+        
+        DependencyListSelect dls = new DependencyListSelect(null);
+        dls.setButtonsToDisplay(AbstractListSelect.LEFT_RIGHT_BUTTONS);
+        
+        p.add(dls);
+        
+        return p;
+    }
+
     public void setVisible(boolean b)
     {
         name.requestFocusInWindow();
