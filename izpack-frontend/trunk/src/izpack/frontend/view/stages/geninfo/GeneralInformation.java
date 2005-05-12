@@ -25,6 +25,7 @@ package izpack.frontend.view.stages.geninfo;
 
 import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.view.stages.IzPackStage;
+import izpack.frontend.view.stages.StageOrder.StageContainer;
 import izpack.frontend.view.stages.panelselect.PanelSelection;
 
 import java.awt.event.ActionEvent;
@@ -47,9 +48,11 @@ import com.jgoodies.validation.ValidationResult;
  */
 public class GeneralInformation extends IzPackStage
 {
-    public void initializeStage() 
-	{	
-		JTabbedPane tabs = new JTabbedPane();
+    public GeneralInformation()
+    {
+        super();
+        
+        JTabbedPane tabs = new JTabbedPane();
 		
 		uiConfig = new UIConfig();
 		languageSelect = new LanguageSelect();
@@ -60,6 +63,11 @@ public class GeneralInformation extends IzPackStage
 		tabs.addTab(langResources().getText("UI.GeneralInformation.TAB3.Text"), uiConfig);					
 		
 		add(tabs);		
+    }
+    
+    public void initializeStage() 
+	{	
+		super.initializeStage();
 	}
     
     /* (non-Javadoc)
@@ -107,27 +115,7 @@ public class GeneralInformation extends IzPackStage
     public JPanel getLeftNavBar()
     { 
         return new JPanel();
-    }
-
-    /**
-     * Return a button set. No "Back", "Forward" to select panels
-     */
-    public JPanel getTopNavBar()
-    {
-        JPanel panel = new JPanel();
-        JButton forward = UI.getNavButton(langResources().getText("UI.StageNames.PanelSelect"), UI.FORWARD);
-        
-        forward.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {               
-                fireStageChangeEvent(new StageChangeEvent(PanelSelection.class));
-            }
-        });
-        
-        panel.add(forward);
-        
-        return panel;
-    }
+    }    
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.Stage#getBottomInfoBar()
@@ -135,6 +123,6 @@ public class GeneralInformation extends IzPackStage
     public JPanel getBottomInfoBar()
     {
         // TODO Auto-generated method stub
-        return null;
+        return super.getBottomInfoBar();
     }
 }

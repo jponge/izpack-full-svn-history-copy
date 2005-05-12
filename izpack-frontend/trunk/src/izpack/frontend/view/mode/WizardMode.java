@@ -27,10 +27,12 @@ import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.controller.StageChangeListener;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.geninfo.GeneralInformation;
+import izpack.frontend.view.stages.packs.Pack;
 import izpack.frontend.view.stages.panelselect.PanelSelection;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.Box;
@@ -40,6 +42,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 /**
  * Show Panel Select and General Information stages
@@ -57,33 +60,70 @@ public class WizardMode extends JFrame implements StageChangeListener
     
     public WizardMode()
     {   
+        long start = System.currentTimeMillis();
+        
         setLayout(new BorderLayout());
         
-        iconPanel = createIconPanel();
-        IzPackStage geninfo = new GeneralInformation();        
-        IzPackStage sel = new PanelSelection();
-        geninfo.initializeStage();
-        sel.initializeStage();
+        base.setLayout(layout);        
+        getContentPane().add(base, BorderLayout.CENTER);
         
-        geninfo.addStageChangeListener(this);
+        iconPanel = createIconPanel();
+        
+        IzPackStage geninfo = 	createStage(GeneralInformation.class, base);        
+        IzPackStage sel 	= 	createStage(PanelSelection.class, base);
+        IzPackStage pack	= 	createStage(Pack.class, base);
         
         iconPanel.add(geninfo.getTopNavBar());
         
+        infoPanel.add(geninfo.getBottomInfoBar());
+        
         getContentPane().add(iconPanel, BorderLayout.NORTH);
-        
-        base.setLayout(layout);
-        
-        base.add(geninfo, geninfo.getClass().toString());
-        base.add(sel, sel.getClass().toString());        
-        
-        getContentPane().add(base, BorderLayout.CENTER);        
+        getContentPane().add(infoPanel, BorderLayout.SOUTH);
         
         setPreferredSize(new Dimension(700, 700));
-        pack();        
+        pack();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     
+        
+        long stop = System.currentTimeMillis();
+        
+        long startupTime = stop - start;
+        System.out.println(startupTime + "ms " + (startupTime / 1000) + "s " + (startupTime / 1000 / 60) + "min");
     }
     
+    /*
+     * Create a stage instance based on the class. Also initializes and registers the stage listener
+     */
+    private IzPackStage createStage(Class stageClass, JPanel base)
+    {
+        try
+        {
+            IzPackStage instance = (IzPackStage) stageClass.newInstance();
+            
+            instance.initializeStage();
+            instance.addStageChangeListener(this);   
+            
+            base.add(instance, stageClass.toString());
+            
+            return instance;
+        }
+        catch (InstantiationException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    
+    /*
+     * Create a panel with the 'IzPack' logo for the top left corner
+     */
     private JPanel createIconPanel()
     {
         JPanel navPanel = new JPanel();
@@ -99,20 +139,38 @@ public class WizardMode extends JFrame implements StageChangeListener
     
     /* (non-Javadoc)
      * @see izpack.frontend.controller.StageChangeListener#changeStage(izpack.frontend.controller.StageChangeEvent)
+     * 
+     * Change the stage that is visible
+     * The next visible stage is defined by the stage that created the event
+     * 
+     * This is because the stages create the navigation bar at the top. Perhaps not the best design
      */
     public void changeStage(StageChangeEvent e)
-    {
+    {        
+        if (e.isConsumed())
+            return;
+        
+        e.consume();
+        
         System.out.println("Next to: " + e.getStageClass());
         
         IzPackStage stage = IzPackStage.getStage(e.getStageClass());
+        
+        //Remove the navigation bar from the top
         iconPanel.remove(iconPanel.getComponentCount() - 1);
         iconPanel.repaint();
-        System.out.println(stage.getTopNavBar());
+        
+        //Add the new nav panel
         iconPanel.add(stage.getTopNavBar());
+        
+        infoPanel.removeAll();
+        infoPanel.add(stage.getBottomInfoBar());
+        
+        pack();
+        
         layout.show(base, e.getStageClass().toString());
-        pack();        
     }    
     
-    JPanel base = new JPanel(), iconPanel;    
+    JPanel base = new JPanel(), iconPanel, infoPanel = new JPanel();    
     CardLayout layout = new CardLayout();    
 }

@@ -27,8 +27,10 @@ import izpack.frontend.model.files.ElementModel;
 import izpack.frontend.model.files.PackElement;
 import izpack.frontend.model.files.PackFileModel;
 import izpack.frontend.model.files.Parsable;
+import izpack.frontend.model.files.FileOrderComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 import javax.swing.table.DefaultTableModel;
@@ -164,30 +166,39 @@ public class PackModel implements ElementModel
         if (!os.equals(""))
             pack.setAttribute("os", os);
         
-        if (!id.equals(""))
+        if (!id.equals(""))        
             pack.setAttribute("id", id);
-        
-        for(int i = 0; i < model.getRowCount(); i++)
-        {
-            Object data = model.getValueAt(i, 0);
-            
-            if (data != null)
-            {
-                PackElement pe = (PackElement) data;
-                
-                System.out.println(pe.getClass());
-                
-                Document elementDoc = pe.writeXML();
-                Node node = doc.importNode(elementDoc.getDocumentElement(), true);
-                   
-                pack.appendChild(node);                
-            }
-        }        
         
         Element descElem = XML.createElement("description", doc);
         descElem.setTextContent(desc);
         
         pack.appendChild(descElem);
+        
+        //Convert the model into a list so it can be sorted
+        ArrayList elements = new ArrayList();
+        for(int i = 0; i < model.getRowCount(); i++)
+        {
+            Object data = model.getValueAt(i, 0);
+            
+            if (data != null)
+                elements.add(data);
+        }
+        
+        Collections.sort(elements, new FileOrderComparator());
+        
+        for (Iterator iter = elements.iterator(); iter.hasNext();)
+        {
+            PackElement pe = (PackElement) iter.next();
+
+            System.out.println(pe.getClass());
+
+            Document elementDoc = pe.writeXML();
+            Node node = doc.importNode(elementDoc.getDocumentElement(), true);
+
+            pack.appendChild(node);
+
+        }
+        
         doc.appendChild(pack);
         
         return doc;

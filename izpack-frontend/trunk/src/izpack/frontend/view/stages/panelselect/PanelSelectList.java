@@ -44,9 +44,9 @@ import com.jgoodies.validation.ValidationResult;
 /**
  * @author Andy Gombos
  */
-public class PanelSelect extends AbstractListSelect
+public class PanelSelectList extends AbstractListSelect
 {
-    public PanelSelect()
+    public PanelSelectList()
     {
         super();
         

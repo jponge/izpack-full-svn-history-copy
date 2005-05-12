@@ -103,7 +103,7 @@ public class ListTable extends JTable implements MouseListener
         model.insertRow(row, new Object[]{eModel});
     }
     
-    public void addElementWithEditor(Class type)
+    public boolean addElementWithEditor(Class type)
     {        
         doubleClickEditor = em.getEditor(type);
         doubleClickEditor.configureClean();
@@ -112,7 +112,10 @@ public class ListTable extends JTable implements MouseListener
         if (doubleClickEditor.wasOKPressed())
         {
             addElement(doubleClickEditor.getModel());
+            return true;
         }
+        
+        return false;
     }
     
     private void insertElementWithEditor(int row, Class type)

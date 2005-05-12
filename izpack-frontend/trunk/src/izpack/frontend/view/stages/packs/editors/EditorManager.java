@@ -27,6 +27,7 @@ import izpack.frontend.view.components.table.TableEditor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 /**
  * @author Andy Gombos
@@ -47,6 +48,11 @@ public class EditorManager
         
         return instance;
     }
+    
+    public ListIterator getEditorIterator()
+    {
+        return editors.listIterator();
+    }    
     
     public void addEditor(TableEditor editor)
     {

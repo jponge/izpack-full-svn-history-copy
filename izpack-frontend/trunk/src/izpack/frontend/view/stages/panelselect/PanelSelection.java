@@ -25,7 +25,9 @@ package izpack.frontend.view.stages.panelselect;
 
 import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.view.stages.IzPackStage;
+import izpack.frontend.view.stages.StageOrder.StageContainer;
 import izpack.frontend.view.stages.geninfo.GeneralInformation;
+import izpack.frontend.view.stages.packs.Pack;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,19 +41,27 @@ import org.w3c.dom.Element;
 import utils.UI;
 import utils.XML;
 
+import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.message.PropertyValidationMessage;
 
 /**
  * @author Andy Gombos
  */
 public class PanelSelection extends IzPackStage
 {
+    public PanelSelection()
+    {
+        super();
+        
+        panelSelect = new PanelSelectList();
+	    
+		add(panelSelect);
+    }
 	
 	public void initializeStage() 
 	{	
-	    panelSelect = new PanelSelect();
-	    
-		add(panelSelect);
+	    super.initializeStage();
 	}
 
     /* (non-Javadoc)
@@ -73,52 +83,37 @@ public class PanelSelection extends IzPackStage
      */
     public ValidationResult validateStage()
     {
-        // TODO Auto-generated method stub
-        return null;
+        ValidationResult vr = new ValidationResult();
+        
+        if (panelSelect.dest.getNumElements() < 0)
+        {
+            vr.add(new PropertyValidationMessage(
+                            Severity.ERROR,
+                            "must have at least one panel selected to use",
+                            panelSelect.dest,
+                            "Panels",
+                            "selected"
+                            ));      
+        }
+        
+        return vr;
     }
     
-    PanelSelect panelSelect;
+    PanelSelectList panelSelect;
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.Stage#getLeftNavBar()
      */
     public JPanel getLeftNavBar()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.Stage#getTopNavBar()
-     */
-    public JPanel getTopNavBar()
-    {
-        JPanel base = new JPanel();
-        JButton previous = UI.getNavButton("General Information", UI.BACK);
-        JButton next = UI.getNavButton("Create Packs", UI.FORWARD);
-        
-        previous.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e)
-            {
-                fireStageChangeEvent(new StageChangeEvent(GeneralInformation.class));
-            }
-        });
-        
-        next.setPreferredSize(previous.getPreferredSize());
-        
-        base.add(previous);
-        base.add(next);
-        
-        return base;
-    }
+    {        
+        return new JPanel();
+    }    
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.Stage#getBottomInfoBar()
      */
     public JPanel getBottomInfoBar()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return super.getBottomInfoBar();
     }
 }

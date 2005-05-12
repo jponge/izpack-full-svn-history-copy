@@ -34,12 +34,15 @@ import java.util.TreeMap;
 import javax.swing.ImageIcon;
 import javax.swing.ListModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import utils.XML;
 
+import com.jgoodies.forms.builder.ButtonStackBuilder;
 import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.message.PropertyValidationMessage;
@@ -143,15 +146,18 @@ public class LanguageSelect extends AbstractListSelect
         
     }
 
-    /* (non-Javadoc)
+    /*
+     * TODO Currently broken
+     * 
+     *  (non-Javadoc)
      * @see izpack.frontend.view.stages.panels.ConfigurePanel#validatePanel()
      */
     public ValidationResult validatePanel()
-    {
-        ValidationResult vr = new ValidationResult();
+    {   
+        ValidationResult vr = new ValidationResult();        
         
         if (dest.getNumElements() == 0)
-        {
+        {            
             vr.add(new PropertyValidationMessage(
                             Severity.ERROR,
                             "must have at least one language added",

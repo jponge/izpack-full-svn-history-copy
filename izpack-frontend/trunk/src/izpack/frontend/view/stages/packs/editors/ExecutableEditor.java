@@ -206,7 +206,7 @@ public class ExecutableEditor extends TableEditor
         
         em.failure = (String) failure.getSelectedItem();
         
-        em.keep = keep.getYesNo();
+        em.keep = keep.getTrueFalse();
         
         return em;
     }

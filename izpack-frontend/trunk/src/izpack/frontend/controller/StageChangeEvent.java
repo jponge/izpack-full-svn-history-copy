@@ -39,4 +39,22 @@ public class StageChangeEvent
     }
     
     private Class stage;
+
+    /**
+     * @return If the event has already been processed
+     */
+    public boolean isConsumed()
+    {
+        return consumed;        
+    }    
+    
+    /**
+     *  Consume the event so it is not triggered multiple times
+     */
+    public void consume()
+    {
+        consumed = true;        
+    }
+    
+    private boolean consumed = false;    
 }

@@ -37,6 +37,7 @@ import izpack.frontend.view.components.table.FileListHeader;
 import izpack.frontend.view.components.table.PackCellEditor;
 import izpack.frontend.view.components.table.PackCellRenderer;
 import izpack.frontend.view.components.table.PackListHeader;
+import izpack.frontend.view.components.table.TableEditor;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.packs.editors.DirectoryEditor;
 import izpack.frontend.view.stages.packs.editors.EditorManager;
@@ -49,6 +50,8 @@ import izpack.frontend.view.stages.packs.editors.ParsableEditor;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -79,6 +82,41 @@ import com.jgoodies.validation.message.PropertyValidationMessage;
  */
 public class Pack extends IzPackStage implements ActionListener
 {
+    public Pack()
+    {
+        super();
+        addValidationListeners = false;
+        
+        FormLayout layout = new FormLayout("pref, 3dlu, pref", "pref, 3dlu, pref, 10dlu, pref, 3dlu, pref");        
+        DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);        
+        
+        builder.setDefaultDialogBorder();
+        
+        EditorManager em = EditorManager.getInstance();
+        
+        Frame parent = null;
+        
+        em.addEditor(new PackEditor(parent));
+        em.addEditor(new FileEditor(parent));
+        em.addEditor(new FileSetEditor(parent));
+        em.addEditor(new DirectoryEditor(parent));
+        em.addEditor(new ParsableEditor(parent));
+        em.addEditor(new ExecutableEditor(parent));
+        
+        JPanel packPanel = createPackTable();
+        JPanel filesPanel = createFilesTable();        
+        
+        CellConstraints cc = new CellConstraints();
+        builder.addSeparator("Packs", 				cc.xyw(1, 1, 3));        
+        builder.add(packPanel,	 					cc.xy(1, 3));
+        
+        builder.add(createPackButtons(), 	cc.xy(3, 3));
+        
+        builder.addSeparator("Files in pack", 		cc.xyw(1, 5, 3));
+        builder.add(filesPanel,		 				cc.xy(1, 7));
+        builder.add(createFileButtons(),	cc.xy(3, 7));
+    }
+    
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.IzPackStage#createInstallerData()
      */
@@ -168,32 +206,30 @@ public class Pack extends IzPackStage implements ActionListener
      * @see izpack.frontend.view.stages.Stage#initializeStage()
      */
     public void initializeStage()
-    {        
-        FormLayout layout = new FormLayout("pref, 3dlu, pref", "pref, 3dlu, pref, 10dlu, pref, 3dlu, pref");        
-        DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);        
+    {
+        super.initializeStage();
         
-        builder.setDefaultDialogBorder();
+        /*
+         * Finds the parent frame to base dialogs off of MUST have the stage
+         * added to the frame before calling initializeStage
+         */
+        Frame parent = (Frame) this.getParent();
+
+        while (parent != null)
+        {
+            System.out.println(parent);
+            parent = (Frame) parent.getParent();
+        }
+
+        System.out.println(parent);
         
-        EditorManager em = EditorManager.getInstance();
-        em.addEditor(new PackEditor( (Frame) this.getParent()));
-        em.addEditor(new FileEditor( (Frame) this.getParent()));
-        em.addEditor(new FileSetEditor( (Frame) this.getParent()));
-        em.addEditor(new DirectoryEditor( (Frame) this.getParent()));
-        em.addEditor(new ParsableEditor( (Frame) this.getParent()));
-        em.addEditor(new ExecutableEditor( (Frame) this.getParent()));
-        
-        JPanel packPanel = createPackTable();
-        JPanel filesPanel = createFilesTable();        
-        
-        CellConstraints cc = new CellConstraints();
-        builder.addSeparator("Packs", 				cc.xyw(1, 1, 3));        
-        builder.add(packPanel,	 					cc.xy(1, 3));
-        
-        builder.add(createPackButtons(), 	cc.xy(3, 3));
-        
-        builder.addSeparator("Files in pack", 		cc.xyw(1, 5, 3));
-        builder.add(filesPanel,		 				cc.xy(1, 7));
-        builder.add(createFileButtons(),	cc.xy(3, 7));
+        //Set the parent component
+        ListIterator li = EditorManager.getInstance().getEditorIterator();
+        for (Iterator iter = li; iter.hasNext();)
+        {
+            TableEditor element = (TableEditor) iter.next();
+            element.setLocationRelativeTo(parent);
+        }
     }
     
     private JPanel createPackTable()
@@ -237,7 +273,7 @@ public class Pack extends IzPackStage implements ActionListener
     private JPanel createFilesTable()
     {
         filesTable = new ListTable(new FileCellRenderer(), new FileCellEditor(), EditorManager.getInstance());
-        filesTable.setVisibleRows(15);
+        filesTable.setVisibleRows(10);
         
         return configureTable(filesTable, new FileListHeader());
     }
@@ -344,27 +380,16 @@ public class Pack extends IzPackStage implements ActionListener
      * @see izpack.frontend.view.stages.Stage#getLeftNavBar()
      */
     public JPanel getLeftNavBar()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.Stage#getTopNavBar()
-     */
-    public JPanel getTopNavBar()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    {        
+        return new JPanel();
+    }    
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.Stage#getBottomInfoBar()
      */
     public JPanel getBottomInfoBar()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return super.getBottomInfoBar();
     }
 
     /* (non-Javadoc)
@@ -372,6 +397,8 @@ public class Pack extends IzPackStage implements ActionListener
      */
     public void actionPerformed(ActionEvent e)
     {
+        System.out.println("Action performed");
+        
         if (! (e.getSource() instanceof JButton) )
             return;
         
@@ -381,24 +408,25 @@ public class Pack extends IzPackStage implements ActionListener
         //Pack table buttons
         if (src.getName().equals("packAdd"))
         {
-            packTable.addElementWithEditor(PackModel.class);      
-            
-            
-            //Change the model so that the first added pack gets its files
-            //set correctly
-            for (int row = 0; row < packTable.getRowCount(); row++)
+            //Make sure OK was pressed when adding a pack
+            if (packTable.addElementWithEditor(PackModel.class))
             {
-                Object rowObj = packTable.getValueAt(row, 0);
-                
-                if (rowObj == null)
-                {
-                    row--;
-                    PackModel pm = (PackModel) packTable.getValueAt(row, 0);
-                    filesTable.setModel(pm.getFilesModel());
-                    
-                    return;
-                }
-            }                
+	            //Change the model so that the first added pack gets its files
+	            //set correctly
+	            for (int row = 0; row < packTable.getRowCount(); row++)
+	            {
+	                Object rowObj = packTable.getValueAt(row, 0);
+	                
+	                if (rowObj == null)
+	                {
+	                    row--;
+	                    PackModel pm = (PackModel) packTable.getValueAt(row, 0);
+	                    filesTable.setModel(pm.getFilesModel());
+	                    
+	                    return;
+	                }
+	            }
+            }
         }
         else if (src.getName().equals("packRemove"))
         {
@@ -433,8 +461,7 @@ public class Pack extends IzPackStage implements ActionListener
             type = DirectoryModel.class;
         }
         else if (src.getName().equals("set"))
-        {
-            System.out.println("file set");
+        {         
             type = FileSet.class;
         }
         else if (src.getName().equals("parse"))

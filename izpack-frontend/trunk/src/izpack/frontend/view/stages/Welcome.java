@@ -192,16 +192,7 @@ public class Welcome extends IzPackStage implements ActionListener
         // TODO Auto-generated method stub
         return null;
     }
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.Stage#getTopNavBar()
-     */
-    public JPanel getTopNavBar()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
+   
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.Stage#getBottomInfoBar()
      */

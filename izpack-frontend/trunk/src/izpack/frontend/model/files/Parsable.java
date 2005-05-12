@@ -46,10 +46,10 @@ public class Parsable implements PackElement
         parsable.setAttribute("targetfile", targetfile);
         parsable.setAttribute("type", type);
         
-        if (encoding != null || !encoding.equals(""))
+        if (encoding != null && !encoding.equals(""))
             parsable.setAttribute("encoding", encoding);
         
-        if (os != null || !os.equals(""))
+        if (os != null && !os.equals(""))
             parsable.setAttribute("os", os);
         
         doc.appendChild(parsable);

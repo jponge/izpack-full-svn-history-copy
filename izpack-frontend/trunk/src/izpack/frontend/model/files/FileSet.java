@@ -50,8 +50,8 @@ public class FileSet extends PackFileModel implements ListModel
     {
         Document doc = XML.getNewDocument();        
         
-        Element fset = XML.createElement("file", doc);
-        fset.setAttribute("src", source);
+        Element fset = XML.createElement("fileset", doc);
+        fset.setAttribute("dir", source);
         fset.setAttribute("targetdir", target);
         
         if (!os.equals(""))

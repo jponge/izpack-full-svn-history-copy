@@ -56,7 +56,7 @@ public class Executable implements PackElement
         
         Element argsElem = XML.createElement("args", doc);
         Element arg = XML.createElement("arg", doc);
-        arg.setAttribute("arg", args);
+        arg.setAttribute("value", args);
         
         argsElem.appendChild(arg);
         executable.appendChild(argsElem);

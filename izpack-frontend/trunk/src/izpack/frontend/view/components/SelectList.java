@@ -53,7 +53,7 @@ public class SelectList extends JList
     
     public void addElement(Object element)
     {
-        model.addElement(element);        
+        model.addElement(element);
     }
     
     public void removeElements(int indicies[])
