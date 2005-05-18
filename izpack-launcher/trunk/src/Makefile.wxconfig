@@ -10,8 +10,8 @@
 
 FLAGS = -Wall -O -pipe
 CXX = `wx-config --cxx`
-CXX_FLAGS = `wx-config --cxxflags`
-CXX_LIBS = `wx-config --libs`
+CXX_FLAGS = `wx-config --cxxflags --debug=no`
+CXX_LIBS = `wx-config --libs --static=yes --debug=no`
 
 OS = `uname`
 EXEC = launcher

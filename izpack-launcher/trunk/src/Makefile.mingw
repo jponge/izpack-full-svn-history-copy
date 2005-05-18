@@ -1,4 +1,4 @@
-# Makefile for MinGW on Win32.
+# Makefile for MinGW on Win32 and wxWidgets 2.4.
 # Based on the samples from wxWidgets.
 
 WXDIR = ${WXWIN}
