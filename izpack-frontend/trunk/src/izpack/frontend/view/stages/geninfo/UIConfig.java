@@ -40,6 +40,10 @@ import org.w3c.dom.Element;
 
 import utils.XML;
 
+import com.jgoodies.binding.PresentationModel;
+import com.jgoodies.binding.adapter.BasicComponentFactory;
+import com.jgoodies.binding.adapter.Bindings;
+import com.jgoodies.binding.value.ConverterFactory;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -52,7 +56,7 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
 /**
  * @author Andy Gombos
  */
-public class UIConfig extends IzPackPanel implements ConfigurePanel, ActionListener, FocusListener
+public class UIConfig extends IzPackPanel implements ConfigurePanel
 {
 
     /* (non-Javadoc)
@@ -66,12 +70,17 @@ public class UIConfig extends IzPackPanel implements ConfigurePanel, ActionListe
         "pref, 3dlu, pref, 3dlu, pref");
         DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);
         
-        width = new JTextField(5);
-        width.addFocusListener(this);
-        height = new JTextField(5);
-        height.addFocusListener(this);
+        pm = GeneralInformation.getValidatingModel();
         
+        //TODO internationailze
         resizable = new YesNoCheckBox("Allow window resizes");
+        
+        width = BasicComponentFactory.createIntegerField(pm.getModel("width"));
+        width.setColumns(5);
+        height = BasicComponentFactory.createIntegerField(pm.getModel("height"));
+        height.setColumns(5);
+        Bindings.bind(resizable, pm.getModel("resizable"));
+        
         builder.add(resizable, new CellConstraints(1, 1, 4, 1));
         builder.nextRow(2);        
         builder.add(new JLabel("Width"));
@@ -112,13 +121,8 @@ public class UIConfig extends IzPackPanel implements ConfigurePanel, ActionListe
     {
         // TODO Auto-generated method stub
         
-    }
-    
-    public ValidationResult validatePanel()
-    {
-        return validateSizeFields();
-    }
-    
+    }    
+   
     private void configureValidation()
     {     
         ValidationComponentUtils.setMandatory(height, true);
@@ -130,59 +134,7 @@ public class UIConfig extends IzPackPanel implements ConfigurePanel, ActionListe
         ValidationComponentUtils.updateComponentTreeValidationBackground(this, ValidationResult.EMPTY);
     }
     
-    private ValidationResult validateSizeFields()
-    {   
-        ValidationResult vr = new ValidationResult();
-        
-        if (!ValidationUtils.isDigit(width.getText()))
-        {            
-            vr.add(new PropertyValidationMessage(
-                            Severity.ERROR,
-                            "must be an integer",
-                            width,
-                            "GUIPrefs",
-                            "width"                            
-                            ));            
-        }
-        
-        if (!ValidationUtils.isDigit(height.getText()))
-        {            
-            vr.add(new PropertyValidationMessage(
-                            Severity.ERROR,
-                            "must be an integer",
-                            height,
-                            "GUIPrefs",
-                            "height"                            
-                            ));
-            
-            ValidationComponentUtils.setErrorBackground(height);
-        }
-        
-        ValidationComponentUtils.updateComponentTreeValidationBackground(this, vr);
-        return vr;
-    }   
-    
-    public void focusGained(FocusEvent e){}
-
-    /*
-     *  Validate components upon losing focus
-     * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
-     */
-    public void focusLost(FocusEvent e)
-    {
-        if (e.getSource() instanceof JTextField)
-            validateSizeFields();
-    }
-    
-    /*
-     * Validate on enter pressed
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-        if (e.getSource() instanceof JTextField)
-            validateSizeFields();        
-    }
-    
+    PresentationModel pm;
     YesNoCheckBox resizable;
     JTextField width, height;
 }

@@ -42,7 +42,6 @@ import org.w3c.dom.Element;
 
 import utils.XML;
 
-import com.jgoodies.forms.builder.ButtonStackBuilder;
 import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.message.PropertyValidationMessage;
@@ -65,6 +64,42 @@ public class LanguageSelect extends AbstractListSelect
         initSrcList();
         
         initLists(src, dest);
+    }
+    
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.panels.ConfigurePanel#createXML()
+     * 
+     * Structure:
+     * <locale>
+     * 	<langpack iso3="eng" />
+     * </locale>
+     */
+    public Element createXML()
+    {
+        Element root = XML.createRootElement("locale");
+        Document rootDoc = root.getOwnerDocument();
+        
+        ListModel model = dest.getModel();
+        
+        for (int i = 0; i < model.getSize(); i++)
+        {
+            Element langElem = XML.createElement("langpack", rootDoc);
+            LangLabel lLabel = (LangLabel) model.getElementAt(i);
+            langElem.setAttribute("iso3", lLabel.getISO3Code());
+            
+            root.appendChild(langElem);
+        }
+        
+        return root;
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.panels.ConfigurePanel#initFromXML(org.w3c.dom.Document)
+     */
+    public void initFromXML(Document xmlFile)
+    {
+        // TODO Auto-generated method stub
+        
     }
     
     public void initSrcList()
@@ -106,68 +141,7 @@ public class LanguageSelect extends AbstractListSelect
         langMap.put("svk", "Slovakian");
         langMap.put("swe", "Swedish");                                                                                                                                                                                                                                                                                        langMap.put("ukr", "Ukrainian");
     }
-    
-    SelectList src, dest;
     TreeMap langMap;
     
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.panels.ConfigurePanel#createXML()
-     * 
-     * Structure:
-     * <locale>
-     * 	<langpack iso3="eng" />
-     * </locale>
-     */
-    public Element createXML()
-    {
-        Element root = XML.createRootElement("locale");
-        Document rootDoc = root.getOwnerDocument();
-        
-        ListModel model = dest.getModel();
-        
-        for (int i = 0; i < model.getSize(); i++)
-        {
-            Element langElem = XML.createElement("langpack", rootDoc);
-            LangLabel lLabel = (LangLabel) model.getElementAt(i);
-            langElem.setAttribute("iso3", lLabel.getISO3Code());
-            
-            root.appendChild(langElem);
-        }
-        
-        return root;
-    }
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.panels.ConfigurePanel#initFromXML(org.w3c.dom.Document)
-     */
-    public void initFromXML(Document xmlFile)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    /*
-     * TODO Currently broken
-     * 
-     *  (non-Javadoc)
-     * @see izpack.frontend.view.stages.panels.ConfigurePanel#validatePanel()
-     */
-    public ValidationResult validatePanel()
-    {   
-        ValidationResult vr = new ValidationResult();        
-        
-        if (dest.getNumElements() == 0)
-        {            
-            vr.add(new PropertyValidationMessage(
-                            Severity.ERROR,
-                            "must have at least one language added",
-                            dest,
-                            "Locale",
-                            "langpacks"                            
-                            ));
-            
-        }
-        
-        return vr;
-    }
+    SelectList src, dest;
 }

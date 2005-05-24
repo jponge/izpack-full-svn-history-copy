@@ -63,15 +63,7 @@ public interface IzPanel extends Observer {
      * Retrieve the name for this page.
      * @return The name of the page.
      */
-    public String getName();
-
-    /**
-     * Validate this page.  Parameters for validation come from...
-     * somewhere. :)
-     * 
-     * @return true if this page is valid      
-     */
-    public ValidationResult validatePanel();
+    public String getName();    
 }
 
 

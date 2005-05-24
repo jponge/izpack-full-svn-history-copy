@@ -61,7 +61,7 @@ import com.jgoodies.validation.view.ValidationResultViewFactory;
 /**
  * @author Andy Gombos
  */
-public abstract class IzPackStage extends JPanel implements Stage, ActionListener, CaretListener
+public abstract class IzPackStage extends JPanel implements Stage
 {   
     protected boolean addValidationListeners = true;
 
@@ -70,47 +70,8 @@ public abstract class IzPackStage extends JPanel implements Stage, ActionListene
         registerStage(this);       
         
         //TODO Make the center component a fixed size
-    }  
-    
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.Stage#initializeStage()
-     */
-    public void initializeStage()
-    {   
-        if (addValidationListeners)
-            createValidationListeners();
     }
-
-    /**
-     * 
-     */
-    private void createValidationListeners()
-    {
-        ArrayList components = getComponents(this);
         
-        
-        for (Iterator iterator = components.iterator(); iterator.hasNext();)
-        {
-            Component component = (Component) iterator.next();            
-
-            //Validate every time a button is pressed
-            if (component instanceof AbstractButton)
-            {
-                AbstractButton ab = (AbstractButton) component;
-
-                ab.addActionListener(this);
-            }
-            
-            //Validate every time the caret moves
-            if (component instanceof JTextComponent)
-            {
-                JTextComponent jtc = (JTextComponent) component;                
-            
-                jtc.addCaretListener(this);
-            }
-        }
-    }
-    
     private ArrayList getComponents(Container base)
     {
         ArrayList list = new ArrayList(base.getComponentCount());
@@ -188,10 +149,10 @@ public abstract class IzPackStage extends JPanel implements Stage, ActionListene
     public JPanel getBottomInfoBar()
     {
         JPanel bottom = new JPanel();
-     
-        vrm.setResult(validateStage());
-
-        bottom.add(ValidationResultViewFactory.createReportList(vrm));
+        
+        validationModel.setResult(validateStage());
+        
+        bottom.add(ValidationResultViewFactory.createReportList(validationModel));
 
         bottom.setPreferredSize(new Dimension(700, 100));
 
@@ -251,24 +212,6 @@ public abstract class IzPackStage extends JPanel implements Stage, ActionListene
 		return GUIController.getInstance().appConfiguration();
 	}
 	
-	
-	/*
-	 * Monitor for changes to components of the stage, and validate the stage
-	 * when things change
-	 * 
-	 * TODO This is a hack, and probably kills memory usage and performance
-	 */
-    public void actionPerformed(ActionEvent e)
-    {
-        System.out.println("validate action");
-        vrm.setResult(validateStage());
-    }
-
-    public void caretUpdate(CaretEvent e)
-    {
-        vrm.setResult(validateStage());
-    }   
-    
 	/*
 	 * 
 	 * StageChange stuff
@@ -300,5 +243,5 @@ public abstract class IzPackStage extends JPanel implements Stage, ActionListene
 	protected static LangResources lr = IzPackFrame.getInstance().langResources();
 	protected static StageOrder stageOrder = new StageOrder();
 	
-	protected ValidationResultModel vrm = new DefaultValidationResultModel();
+	public static ValidationResultModel validationModel = new DefaultValidationResultModel();
 }

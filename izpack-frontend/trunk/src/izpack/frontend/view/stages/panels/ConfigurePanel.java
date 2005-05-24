@@ -55,5 +55,5 @@ public interface ConfigurePanel
      * 
      * @return true if the panel information is valid 
      */
-    public ValidationResult validatePanel();    
+    //public ValidationResult validatePanel();    
 }

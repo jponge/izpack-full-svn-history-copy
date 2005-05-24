@@ -38,7 +38,7 @@ public class SelectList extends JList
         setCellRenderer(new LabelRenderer());
         model = new DefaultListModel();
         
-        setModel(model);      
+        setModel(model);        
     }    
         
     public Object getElementAt(int index)
@@ -48,12 +48,12 @@ public class SelectList extends JList
     
     public void addElementAt(int index, Object element)
     {
-        model.add(index, element);
+        model.add(index, element);        
     }
     
     public void addElement(Object element)
     {
-        model.addElement(element);
+        model.addElement(element);        
     }
     
     public void removeElements(int indicies[])
@@ -71,7 +71,7 @@ public class SelectList extends JList
     }
     
     public int getNumElements()
-    {
+    {   
         return model.size();
     }
 

@@ -23,24 +23,22 @@
  */
 package izpack.frontend.view.stages.geninfo;
 
-import izpack.frontend.controller.StageChangeEvent;
+import izpack.frontend.controller.validators.GeneralInfoValidator;
+import izpack.frontend.model.stages.GeneralInformationModel;
 import izpack.frontend.view.stages.IzPackStage;
-import izpack.frontend.view.stages.StageOrder.StageContainer;
-import izpack.frontend.view.stages.panelselect.PanelSelection;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import utils.UI;
 import utils.XML;
 
+import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.validation.ValidationResult;
 
 /**
@@ -66,8 +64,7 @@ public class GeneralInformation extends IzPackStage
     }
     
     public void initializeStage() 
-	{	
-		super.initializeStage();
+	{			
 	}
     
     /* (non-Javadoc)
@@ -96,13 +93,7 @@ public class GeneralInformation extends IzPackStage
      */
     public ValidationResult validateStage()
     {
-        ValidationResult vr = new ValidationResult();
-        
-        vr.addAllFrom(uiConfig.validatePanel());
-        vr.addAllFrom(languageSelect.validatePanel());
-        vr.addAllFrom(generalInfoPage.validatePanel());
-        
-        return vr;
+        return getValidator().validate();
     }
     
     private UIConfig uiConfig;
@@ -125,4 +116,44 @@ public class GeneralInformation extends IzPackStage
         // TODO Auto-generated method stub
         return super.getBottomInfoBar();
     }
+    
+    public static GeneralInformationModel getDataModel()
+    {
+        if (model == null)
+            model = new GeneralInformationModel();
+        
+        return model;
+    }
+    
+    public static PresentationModel getValidatingModel()
+    {
+        if (presModel == null)
+        {
+            presModel = new PresentationModel(getDataModel());
+            
+            presModel.addBeanPropertyChangeListener(new PropertyChangeListener()
+                            {
+
+                                public void propertyChange(PropertyChangeEvent evt)
+                                {
+                                    System.out.println("Validating");                                    
+                                    validationModel.setResult(getValidator().validate());
+                                }                
+                            });
+        }
+        
+        return presModel;
+    }    
+    
+    public static GeneralInfoValidator getValidator()
+    {
+        if (validator == null)
+            validator = new GeneralInfoValidator(getDataModel());
+        
+        return validator;
+    }
+    
+    private static GeneralInformationModel model = null;
+    private static PresentationModel presModel = null;
+    private static GeneralInfoValidator validator = null;
 }

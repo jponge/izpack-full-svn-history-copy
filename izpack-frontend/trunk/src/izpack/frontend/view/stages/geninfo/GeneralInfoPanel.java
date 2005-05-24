@@ -25,6 +25,7 @@ package izpack.frontend.view.stages.geninfo;
 
 import izpack.frontend.model.Author;
 import izpack.frontend.model.AuthorManager;
+import izpack.frontend.model.stages.GeneralInformationModel;
 import izpack.frontend.view.IzPackFrame;
 import izpack.frontend.view.stages.panels.ConfigurePanel;
 import izpack.frontend.view.stages.panels.IzPackPanel;
@@ -33,11 +34,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -52,6 +55,11 @@ import org.w3c.dom.Element;
 
 import utils.XML;
 
+import com.jgoodies.binding.PresentationModel;
+import com.jgoodies.binding.adapter.BasicComponentFactory;
+import com.jgoodies.binding.beans.BeanAdapter;
+import com.jgoodies.binding.beans.Model;
+import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -64,14 +72,16 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
 /**
  * @author Andy Gombos
  */
-public class GeneralInfoPanel extends IzPackPanel implements ActionListener, FocusListener, ConfigurePanel
+public class GeneralInfoPanel extends IzPackPanel implements ConfigurePanel, ActionListener
 {
     public void initComponents()
     {
         FormLayout layout = new FormLayout("pref, 3dlu, max(50dlu;pref), max(50dlu;pref), max(50dlu;pref), 3dlu, pref", 
                 "pref, 3dlu, pref, 3dlu, pref, 3dlu, pref, 3dlu, pref, 3dlu, pref, 40dlu");        
         DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);
-
+        
+        PresentationModel adapter = GeneralInformation.getValidatingModel();        
+                
         CellConstraints cc = new CellConstraints();
         builder.add(new JLabel(langResources().getText("UI.GeneralInfoPage.APPNAME.Text")));
         builder.nextRow(2);
@@ -84,21 +94,25 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener, Foc
         builder.setColumn(3);
         builder.setRow(1);
              
-        appName = new JTextField();
-        version = new JTextField();
-        homepage = new JTextField();
+        appName = BasicComponentFactory.createTextField(adapter.getModel("appName"), false);
+        version = BasicComponentFactory.createTextField(adapter.getModel("version"), false);
+        homepage = BasicComponentFactory.createTextField(adapter.getModel("homepage"), false);
         
         builder.add(appName, 	cc.xyw(3, 1, 2));        
         builder.add(version, 	cc.xyw(3, 3, 2));        
         builder.add(homepage,   cc.xyw(3, 5, 2));        
-                
-        authorModel = new DefaultListModel();
+        
+        
+        //Create the list from an ArrayList model
+        authorListModel = new ArrayList();
         for (Iterator iter = AuthorManager.loadAuthors().iterator(); iter.hasNext(); )
         {
-           authorModel.addElement(iter.next());            	
+           authorListModel.add(iter.next());
         }
         
-        authorList = new JList(authorModel);
+        authorModel = new SelectionInList(authorListModel);        
+                
+        authorList = BasicComponentFactory.createList(authorModel);
         authorList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         builder.add(authorList, cc.xywh(3, 7, 3, 6));
         
@@ -131,15 +145,15 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener, Foc
             if (source.equals(actions[0]))
             {                
                 Author author = displayAuthorDialog(null);
-                if (author.getName() != null)
-                    authorModel.addElement(author);
+                if (author.getName() != null)                
+                    authorListModel.add(author);
             }
             //Edit
             else if (source.equals(actions[1]))
             {
                 Author author = displayAuthorDialog((Author) authorList.getSelectedValue());
                 if (author.getName() != null)
-                    authorModel.set(authorList.getSelectedIndex(), author);
+                    authorListModel.set(authorList.getSelectedIndex(), author);
             }
             //Delete
             else if (source.equals(actions[2]))
@@ -147,16 +161,10 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener, Foc
                 //Make sure we have a selection
                 if (authorList.getSelectedIndex() != -1)
                 {
-                    authorModel.remove(authorList.getSelectedIndex());
+                    authorListModel.remove(authorList.getSelectedIndex());
                 }
             }
-        }
-        
-        //Validate on enter pressed
-        if (e.getSource() instanceof JTextComponent)
-        {
-            validateTextFields();
-        }
+        }        
     }
     
     public Author displayAuthorDialog(Author oldAuthor)
@@ -235,9 +243,9 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener, Foc
         appversion.setTextContent(version.getText());
         url.setTextContent(homepage.getText());
         
-        for (int i = 0; i < authorModel.getSize(); i++)
+        for (int i = 0; i < authorListModel.size(); i++)
         {
-            Author auth = (Author) authorModel.getElementAt(i);
+            Author auth = (Author) authorListModel.get(i);
             Element author = XML.createElement("author", doc);
             author.setAttribute("name", auth.getName());
             author.setAttribute("email", auth.getEmail());
@@ -270,86 +278,14 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener, Foc
         ValidationComponentUtils.setMessageKey(appName, "Info.application name");
         ValidationComponentUtils.setMessageKey(version, "Info.application version");
         ValidationComponentUtils.setMessageKey(homepage, "Info.homepage");
-        
-        appName.addFocusListener(this);
-        version.addFocusListener(this);
-        homepage.addFocusListener(this);
-        
-        appName.addActionListener(this);
-        version.addActionListener(this);
-        homepage.addActionListener(this);
     }
     
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.panels.ConfigurePanel#validatePanel()
-     */
-    public ValidationResult validatePanel()
-    {        
-        return validateTextFields();
-    }
+    ArrayList authorListModel;
     
-    private ValidationResult validateTextFields()
-    {
-        ValidationResult vr = new ValidationResult();
-        
-        if (ValidationComponentUtils.isMandatoryAndBlank(appName))
-        {
-            vr.add(new PropertyValidationMessage(
-                            Severity.ERROR,
-                            "is mandatory",
-                            appName,
-                            "Info",
-                            "application name"                            
-                            ));
-        }
-        if (ValidationComponentUtils.isMandatoryAndBlank(version))
-        {
-            vr.add(new PropertyValidationMessage(
-                            Severity.ERROR,
-                            "is mandatory",
-                            version,
-                            "Info",
-                            "application version"                            
-                            ));
-        }        
-        
-        //A simple way to check if a homepage URL is valid
-        try
-        {            
-            if (homepage.getText().length() != 0)
-                new URL(homepage.getText());
-        }
-        catch (MalformedURLException murle)
-        {
-            vr.add(new PropertyValidationMessage(
-                            Severity.ERROR,
-                            "is not a valid URL: " + murle.getLocalizedMessage(),
-                            appName,
-                            "Info",
-                            "homepage"
-                            ));
-        }
-        
-        ValidationComponentUtils.updateComponentTreeValidationBackground(this, vr);
-        return vr;
-    }   
+    SelectionInList authorModel;    
     
-    public void focusGained(FocusEvent e) {}
-    
-    /* Validate components upon losing focus
-     * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
-     */
-    public void focusLost(FocusEvent e)
-    {      
-        if (e.getSource() instanceof JTextField)
-        {            
-            validateTextFields();
-        }        
-    }
-    
-    DefaultListModel authorModel;
     JList authorList;
     JButton actions[];
     JTextField appName, version, homepage;
-
+    Model model;
 }

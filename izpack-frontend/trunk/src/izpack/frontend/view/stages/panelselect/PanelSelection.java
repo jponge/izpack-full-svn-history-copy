@@ -60,8 +60,7 @@ public class PanelSelection extends IzPackStage
     }
 	
 	public void initializeStage() 
-	{	
-	    super.initializeStage();
+	{		    
 	}
 
     /* (non-Javadoc)
@@ -93,7 +92,7 @@ public class PanelSelection extends IzPackStage
                             panelSelect.dest,
                             "Panels",
                             "selected"
-                            ));      
+                            ));
         }
         
         return vr;

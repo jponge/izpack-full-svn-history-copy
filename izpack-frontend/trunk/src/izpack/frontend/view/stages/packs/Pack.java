@@ -206,9 +206,7 @@ public class Pack extends IzPackStage implements ActionListener
      * @see izpack.frontend.view.stages.Stage#initializeStage()
      */
     public void initializeStage()
-    {
-        super.initializeStage();
-        
+    {   
         /*
          * Finds the parent frame to base dialogs off of MUST have the stage
          * added to the frame before calling initializeStage
