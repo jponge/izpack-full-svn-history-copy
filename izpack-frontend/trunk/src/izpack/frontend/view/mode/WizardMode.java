@@ -34,6 +34,8 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -44,6 +46,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import sun.awt.WindowClosingListener;
+
 /**
  * Show Panel Select and General Information stages
  * 
@@ -51,8 +55,10 @@ import javax.swing.border.LineBorder;
  *
  * @author Andy Gombos
  */
-public class WizardMode extends JFrame implements StageChangeListener
+public class WizardMode extends JFrame implements StageChangeListener, WindowListener
 {
+    private IzPackStage tmp;
+    
     public static void main(String[] args)
     {
         new WizardMode();
@@ -73,6 +79,9 @@ public class WizardMode extends JFrame implements StageChangeListener
         IzPackStage sel 	= 	createStage(PanelSelection.class, base);
         IzPackStage pack	= 	createStage(Pack.class, base);
         
+        tmp = pack;
+        addWindowListener(this);
+        
         iconPanel.add(geninfo.getTopNavBar());
         
         infoPanel.add(geninfo.getBottomInfoBar());
@@ -88,7 +97,7 @@ public class WizardMode extends JFrame implements StageChangeListener
         long stop = System.currentTimeMillis();
         
         long startupTime = stop - start;
-        System.out.println(startupTime + "ms " + (startupTime / 1000) + "s " + (startupTime / 1000 / 60) + "min");
+        System.out.println(startupTime + "ms " + (startupTime / 1000f) + "s " + (startupTime / 1000 / 60f) + "min");
     }
     
     /*
@@ -172,5 +181,66 @@ public class WizardMode extends JFrame implements StageChangeListener
     }    
     
     JPanel base = new JPanel(), iconPanel, infoPanel = new JPanel();    
-    CardLayout layout = new CardLayout();    
+    CardLayout layout = new CardLayout();
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
+     */
+    public void windowOpened(WindowEvent e)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
+     */
+    public void windowClosing(WindowEvent e)
+    {
+        tmp.createInstallerData();        
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
+     */
+    public void windowClosed(WindowEvent e)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
+     */
+    public void windowIconified(WindowEvent e)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
+     */
+    public void windowDeiconified(WindowEvent e)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
+     */
+    public void windowActivated(WindowEvent e)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
+     */
+    public void windowDeactivated(WindowEvent e)
+    {
+        // TODO Auto-generated method stub
+        
+    }    
 }

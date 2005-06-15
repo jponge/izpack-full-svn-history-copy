@@ -24,6 +24,7 @@
 package izpack.frontend.view.stages.panelselect;
 
 import izpack.frontend.controller.StageChangeEvent;
+import izpack.frontend.model.stages.StageDataModel;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.StageOrder.StageContainer;
 import izpack.frontend.view.stages.geninfo.GeneralInformation;
@@ -114,5 +115,14 @@ public class PanelSelection extends IzPackStage
     public JPanel getBottomInfoBar()
     {
         return super.getBottomInfoBar();
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.IzPackStage#getDataModel()
+     */
+    public StageDataModel getDataModel()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

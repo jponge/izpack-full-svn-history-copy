@@ -24,7 +24,9 @@
 package izpack.frontend.view.stages.geninfo;
 
 import izpack.frontend.controller.validators.GeneralInfoValidator;
+import izpack.frontend.controller.validators.StageValidator;
 import izpack.frontend.model.stages.GeneralInformationModel;
+import izpack.frontend.model.stages.StageDataModel;
 import izpack.frontend.view.stages.IzPackStage;
 
 import java.beans.PropertyChangeEvent;
@@ -32,6 +34,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -40,6 +44,7 @@ import utils.XML;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.view.ValidationComponentUtils;
 
 /**
  * @author Andy Gombos
@@ -52,9 +57,9 @@ public class GeneralInformation extends IzPackStage
         
         JTabbedPane tabs = new JTabbedPane();
 		
-		uiConfig = new UIConfig();
-		languageSelect = new LanguageSelect();
-		generalInfoPage = new GeneralInfoPanel();
+		uiConfig = new UIConfig(this);
+		languageSelect = new LanguageSelect(this);
+		generalInfoPage = new GeneralInfoPanel(this);
 		
 		tabs.addTab(langResources().getText("UI.GeneralInformation.TAB1.Text"), generalInfoPage);		
         tabs.addTab(langResources().getText("UI.GeneralInformation.TAB2.Text"), languageSelect);
@@ -93,12 +98,15 @@ public class GeneralInformation extends IzPackStage
      */
     public ValidationResult validateStage()
     {
-        return getValidator().validate();
+        ValidationResult vr = getValidator().validate();
+        validationModel.setResult(vr);
+        
+        return vr;
     }
     
-    private UIConfig uiConfig;
-    private LanguageSelect languageSelect;
-    private GeneralInfoPanel generalInfoPage;
+    private static UIConfig uiConfig;
+    private static LanguageSelect languageSelect;
+    private static GeneralInfoPanel generalInfoPage;
 
     /**
      * Return an empty panel to make the stage look correct in the frame
@@ -117,7 +125,7 @@ public class GeneralInformation extends IzPackStage
         return super.getBottomInfoBar();
     }
     
-    public static GeneralInformationModel getDataModel()
+    public StageDataModel getDataModel()
     {
         if (model == null)
             model = new GeneralInformationModel();
@@ -125,7 +133,7 @@ public class GeneralInformation extends IzPackStage
         return model;
     }
     
-    public static PresentationModel getValidatingModel()
+    public PresentationModel getValidatingModel()
     {
         if (presModel == null)
         {
@@ -133,22 +141,49 @@ public class GeneralInformation extends IzPackStage
             
             presModel.addBeanPropertyChangeListener(new PropertyChangeListener()
                             {
-
                                 public void propertyChange(PropertyChangeEvent evt)
+                                {
+                                    System.out.println("Validating");
+                                    ValidationResult result = getValidator().validate();
+                                    validationModel.setResult(result);
+                                    ValidationComponentUtils.updateComponentTreeValidationBackground(generalInfoPage, result);
+                                }                
+                            });
+
+            //Watch the language panel changes
+            //I don't know if there is a more binding-intensive way to do this
+            //But I already changed the model over to be bound, so it will stay that way :)
+            model.getLangCodes()
+                            .addListDataListener(new ListDataListener()
+                            {
+
+                                public void intervalAdded(ListDataEvent e)
                                 {
                                     System.out.println("Validating");                                    
                                     validationModel.setResult(getValidator().validate());
-                                }                
+                                }
+
+                                public void intervalRemoved(ListDataEvent e)
+                                {
+                                    System.out.println("Validating");                                    
+                                    validationModel.setResult(getValidator().validate());
+                                }
+
+                                public void contentsChanged(ListDataEvent e)
+                                {
+                                    System.out.println("Validating");                                    
+                                    validationModel.setResult(getValidator().validate());
+                                }
                             });
         }
         
         return presModel;
     }    
     
-    public static GeneralInfoValidator getValidator()
+    public StageValidator getValidator()
     {
         if (validator == null)
-            validator = new GeneralInfoValidator(getDataModel());
+            validator = new GeneralInfoValidator((GeneralInformationModel) getDataModel());
         
         return validator;
     }

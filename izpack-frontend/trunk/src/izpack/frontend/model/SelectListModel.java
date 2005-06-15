@@ -1,10 +1,10 @@
 /*
- * Created on Nov 18, 2004
+ * Created on May 25, 2005
  * 
- * $Id: PageSelectList.java Feb 8, 2004 izpack-frontend
+ * $Id: SelectListModel.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : PageSelectList.java 
+ * File : SelectListModel.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,28 +21,36 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.components;
-
-import izpack.frontend.model.SelectListModel;
+package izpack.frontend.model;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
 
 /**
  * @author Andy Gombos
  */
-public class SelectList extends JList
-{    
-    public SelectList()
+public class SelectListModel extends DefaultListModel
+{
+    public Object getElementAt(int index)
+    {        
+        return get(index);
+    }
+    
+    public void addElementAt(int index, Object element)
     {
-        super();
-        
-        setCellRenderer(new LabelRenderer());
-        setModel(new SelectListModel());
-    }    
-        
-    public int getNumElements()
-    {   
-        return getModel().getSize();
-    }   
+        add(index, element);        
+    }
+    
+    public void removeElements(int indicies[])
+    {
+        for (int i = 0; i < indicies.length; i++)
+            remove(indicies[i]);
+    }
+    
+    public void moveElement(int startingIndex, int delta)
+    {        
+        Object original = get(startingIndex);
+        Object replaced = get(startingIndex + delta);
+        set(startingIndex + delta, original);
+        set(startingIndex, replaced);
+    }
 }

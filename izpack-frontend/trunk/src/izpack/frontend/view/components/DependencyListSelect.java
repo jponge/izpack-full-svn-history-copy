@@ -24,6 +24,7 @@
 package izpack.frontend.view.components;
 
 import izpack.frontend.model.PackModel;
+import izpack.frontend.model.SelectListModel;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,7 +58,7 @@ public class DependencyListSelect extends AbstractListSelect
         for (Iterator iter = packs.iterator(); iter.hasNext();)
         {
             PackModel pm = (PackModel) iter.next();
-            src.addElement(pm.getName());
+            ( (SelectListModel) src.getModel() ).addElement(pm.getName());
         }
     }
     

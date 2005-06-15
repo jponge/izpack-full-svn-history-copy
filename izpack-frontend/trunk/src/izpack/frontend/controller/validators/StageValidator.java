@@ -1,10 +1,10 @@
 /*
- * Created on Nov 18, 2004
+ * Created on May 26, 2005
  * 
- * $Id: PageSelectList.java Feb 8, 2004 izpack-frontend
+ * $Id: StageValidator.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : PageSelectList.java 
+ * File : StageValidator.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,28 +21,14 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.components;
+package izpack.frontend.controller.validators;
 
-import izpack.frontend.model.SelectListModel;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
+import com.jgoodies.validation.ValidationCapable;
 
 /**
  * @author Andy Gombos
  */
-public class SelectList extends JList
-{    
-    public SelectList()
-    {
-        super();
-        
-        setCellRenderer(new LabelRenderer());
-        setModel(new SelectListModel());
-    }    
-        
-    public int getNumElements()
-    {   
-        return getModel().getSize();
-    }   
+public interface StageValidator extends ValidationCapable
+{
+
 }

@@ -24,6 +24,7 @@
 package izpack.frontend.view.stages;
 
 import izpack.frontend.controller.StageChangeListener;
+import izpack.frontend.controller.validators.StageValidator;
 
 import javax.swing.JPanel;
 
@@ -37,7 +38,6 @@ import com.jgoodies.validation.ValidationResult;
 public interface Stage
 {
     //Initialization functions
-    
     /**
      * Initialize the stage by creating any necessary components, panels, etc.
      */

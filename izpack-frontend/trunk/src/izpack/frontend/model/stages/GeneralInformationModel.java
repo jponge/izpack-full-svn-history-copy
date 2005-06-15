@@ -23,7 +23,11 @@
  */
 package izpack.frontend.model.stages;
 
+import izpack.frontend.model.SelectListModel;
+
 import java.util.ArrayList;
+
+import org.w3c.dom.Document;
 
 import com.jgoodies.binding.beans.Model;
 import com.jgoodies.binding.list.ArrayListModel;
@@ -31,14 +35,14 @@ import com.jgoodies.binding.list.ArrayListModel;
 /**
  * @author Andy Gombos
  */
-public class GeneralInformationModel extends Model
+public class GeneralInformationModel extends Model implements StageDataModel
 {
 
     public GeneralInformationModel()
     {
         super();
         authors = new ArrayListModel();
-        langCodes = new ArrayListModel();
+        langCodes = new SelectListModel();
     }
 
     public String getAppName()
@@ -60,7 +64,7 @@ public class GeneralInformationModel extends Model
         return homepage;
     }
 
-    public ArrayListModel getLangCodes()
+    public SelectListModel getLangCodes()
     {
         return langCodes;
     }
@@ -110,9 +114,9 @@ public class GeneralInformationModel extends Model
         firePropertyChange("homepage", oldHomepage, homepage);
     }
 
-    public void setLangCodes(ArrayListModel langCodes)
+    public void setLangCodes(SelectListModel langCodes)
     {
-        ArrayListModel oldLangCodes = this.langCodes;
+        SelectListModel oldLangCodes = this.langCodes;
         this.langCodes = langCodes;
         firePropertyChange("langCodes", oldLangCodes, langCodes);
     }
@@ -149,9 +153,26 @@ public class GeneralInformationModel extends Model
     ArrayListModel authors;
 
     //LanguageSelect
-    ArrayListModel langCodes;
+    SelectListModel langCodes;
 
     //GUI Prefs
     boolean resizable;
     int width, height;
+    /* (non-Javadoc)
+     * @see izpack.frontend.model.stages.StageDataModel#writeToXML()
+     */
+    public Document writeToXML()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.model.stages.StageDataModel#initFromXML(org.w3c.dom.Document)
+     */
+    public void initFromXML(Document doc)
+    {
+        // TODO Auto-generated method stub
+        
+    }
 }

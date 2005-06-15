@@ -26,33 +26,27 @@ package izpack.frontend.view.stages;
 import izpack.frontend.controller.GUIController;
 import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.controller.StageChangeListener;
+import izpack.frontend.controller.validators.StageValidator;
 import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.LangResources;
+import izpack.frontend.model.stages.StageDataModel;
 import izpack.frontend.view.IzPackFrame;
 import izpack.frontend.view.stages.StageOrder.StageContainer;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import javax.swing.text.JTextComponent;
 
 import org.w3c.dom.Document;
 
 import utils.UI;
 
+import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.util.DefaultValidationResultModel;
 import com.jgoodies.validation.util.ValidationResultModel;
@@ -65,31 +59,20 @@ public abstract class IzPackStage extends JPanel implements Stage
 {   
     protected boolean addValidationListeners = true;
 
-    public IzPackStage()
+    public ValidationResultModel getValidationModel()
+    {
+        return validationModel;
+    }
+    public void setValidationModel(ValidationResultModel validationModel)
+    {
+        this.validationModel = validationModel;
+    }
+    protected IzPackStage()
     {   
         registerStage(this);       
         
         //TODO Make the center component a fixed size
     }
-        
-    private ArrayList getComponents(Container base)
-    {
-        ArrayList list = new ArrayList(base.getComponentCount());
-        Component components[] = base.getComponents();        
-        
-        for (int i = 0; i < components.length; i++)
-        {   
-            Container c = (Container) components[i];
-            
-            if (c.getComponentCount() > 1)
-                list.addAll(getComponents(c));
-            else
-                list.add(components[i]);
-        }
-        
-        return list;
-    }
-
 
     /*
      * (non-Javadoc)
@@ -237,11 +220,26 @@ public abstract class IzPackStage extends JPanel implements Stage
         }
 	}
 	
+	/*
+	 * These need to be static, but abstract methods can't be...
+	 */
+	public PresentationModel getValidatingModel()
+	{
+        return null;
+    } 
+	
+	public StageValidator getValidator()
+	{
+	    return null;
+	}
+	
+	public abstract StageDataModel getDataModel();
+	
 	private static ArrayList stageList = new ArrayList();
 	private static ArrayList changeListenerList = new ArrayList();
 	
 	protected static LangResources lr = IzPackFrame.getInstance().langResources();
 	protected static StageOrder stageOrder = new StageOrder();
 	
-	public static ValidationResultModel validationModel = new DefaultValidationResultModel();
+	protected ValidationResultModel validationModel = new DefaultValidationResultModel();
 }

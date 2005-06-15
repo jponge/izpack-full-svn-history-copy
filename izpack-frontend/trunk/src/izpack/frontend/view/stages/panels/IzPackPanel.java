@@ -24,6 +24,7 @@ package izpack.frontend.view.stages.panels;
 import izpack.frontend.controller.GUIController;
 import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.LangResources;
+import izpack.frontend.view.stages.IzPackStage;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -43,18 +44,25 @@ import javax.swing.JPanel;
 public abstract class IzPackPanel extends JPanel implements IzPanel {
 	/** Collection contains components/element of this page. */
 	private ArrayList elements = null;
+    protected IzPackStage stage;
 	
+    public IzPackPanel()
+    {
+        this(null);
+    }
+    
 	/**
 	 * Constructor. Observers <code>LangResources</code>.
 	 *
 	 */
-	public IzPackPanel() {
-		super();
+	public IzPackPanel(IzPackStage parentStage) {
+		super();		
 		// i18n
 		langResources().addObserver(this);
 		// set up the arraylist
 		elements = new ArrayList();
 		// init all components
+	    stage = parentStage;
 		initComponents();				
 	}
 	

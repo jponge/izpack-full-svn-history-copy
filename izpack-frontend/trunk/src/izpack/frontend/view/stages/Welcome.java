@@ -26,6 +26,7 @@ package izpack.frontend.view.stages;
 import izpack.frontend.controller.GUIController;
 import izpack.frontend.model.LangResources;
 import izpack.frontend.model.RecentFileManager;
+import izpack.frontend.model.stages.StageDataModel;
 import izpack.frontend.view.GUIConstants;
 
 import java.awt.Dimension;
@@ -197,6 +198,15 @@ public class Welcome extends IzPackStage implements ActionListener
      * @see izpack.frontend.view.stages.Stage#getBottomInfoBar()
      */
     public JPanel getBottomInfoBar()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.IzPackStage#getDataModel()
+     */
+    public StageDataModel getDataModel()
     {
         // TODO Auto-generated method stub
         return null;

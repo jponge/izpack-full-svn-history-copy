@@ -24,13 +24,9 @@
 package izpack.frontend.view.stages.geninfo;
 
 import izpack.frontend.view.components.YesNoCheckBox;
+import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.panels.ConfigurePanel;
 import izpack.frontend.view.stages.panels.IzPackPanel;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -43,14 +39,10 @@ import utils.XML;
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.adapter.Bindings;
-import com.jgoodies.binding.value.ConverterFactory;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
-import com.jgoodies.validation.message.PropertyValidationMessage;
-import com.jgoodies.validation.util.ValidationUtils;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 
 /**
@@ -58,6 +50,13 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
  */
 public class UIConfig extends IzPackPanel implements ConfigurePanel
 {
+    /**
+     * @param information
+     */
+    public UIConfig(IzPackStage stage)
+    {        
+        super(stage);
+    }
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.pages.Page#initComponents()
@@ -66,11 +65,13 @@ public class UIConfig extends IzPackPanel implements ConfigurePanel
      */
     public void initComponents()
     {
+        System.out.println("init");
+        
         FormLayout layout = new FormLayout("pref, 3dlu, pref, 30dlu",
         "pref, 3dlu, pref, 3dlu, pref");
         DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);
         
-        pm = GeneralInformation.getValidatingModel();
+        pm = stage.getValidatingModel();
         
         //TODO internationailze
         resizable = new YesNoCheckBox("Allow window resizes");

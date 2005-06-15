@@ -43,7 +43,7 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
  * TODO Internationalize
  * @author Andy Gombos
  */
-public class GeneralInfoValidator implements ValidationCapable
+public class GeneralInfoValidator implements StageValidator
 {
     public GeneralInfoValidator(GeneralInformationModel model)
     {

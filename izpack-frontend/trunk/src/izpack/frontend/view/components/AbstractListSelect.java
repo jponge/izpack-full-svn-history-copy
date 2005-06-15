@@ -23,6 +23,7 @@
  */
 package izpack.frontend.view.components;
 
+import izpack.frontend.model.SelectListModel;
 import izpack.frontend.view.stages.panels.ConfigurePanel;
 import izpack.frontend.view.stages.panels.IzPackPanel;
 
@@ -41,6 +42,7 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -133,28 +135,41 @@ public abstract class AbstractListSelect extends IzPackPanel implements ActionLi
 	{	
 	    String name = ((JButton) e.getSource()).getName();
 	    
+	    SelectListModel model = null;
+	    
+	    if (destList.getModel() instanceof SelectListModel)
+	        model = (SelectListModel) destList.getModel();
+	    else if (destList.getModel() instanceof SelectionInList)
+	    {
+	        model = (SelectListModel) ( (SelectionInList) destList.getModel() ).getListModel();
+	    }
+	    else
+	    {
+	        System.out.println(destList.getModel().getClass());
+	    }
+	    
 	    if (name.equals("left"))
 	    {        
-	        destList.removeElements(destList.getSelectedIndices());	        
+	        model.removeElements(destList.getSelectedIndices());	        
 	    }
 	    else if (name.equals("right"))
 	    {
 	        Object selected[] = srcList.getSelectedValues();
 	        for (int i = 0; i < selected.length; i++)	            
-	            destList.addElement(selected[i]);
+	            model.addElement(selected[i]);
 	        
 	        srcList.clearSelection();
 	    }
 	    else if (name.equals("up") && destListFocus)
 	    {	        
 	        int curIndex = destList.getSelectedIndex();
-	        destList.moveElement(curIndex, -1);
+	        model.moveElement(curIndex, -1);
 	        destList.setSelectedIndex(curIndex - 1);
 	    }
 	    else if (name.equals("down") && destListFocus)
 	    {
 	        int curIndex = destList.getSelectedIndex();
-	        destList.moveElement(curIndex, 1);
+	        model.moveElement(curIndex, 1);
 	        destList.setSelectedIndex(curIndex + 1);
 	    }
 	}

@@ -23,9 +23,12 @@
  */
 package izpack.frontend.view.stages.geninfo;
 
+import izpack.frontend.model.SelectListModel;
+import izpack.frontend.model.stages.GeneralInformationModel;
 import izpack.frontend.view.components.AbstractListSelect;
 import izpack.frontend.view.components.LangLabel;
 import izpack.frontend.view.components.SelectList;
+import izpack.frontend.view.stages.IzPackStage;
 
 import java.net.URL;
 import java.util.Iterator;
@@ -34,30 +37,32 @@ import java.util.TreeMap;
 import javax.swing.ImageIcon;
 import javax.swing.ListModel;
 import javax.swing.SwingConstants;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import utils.XML;
 
-import com.jgoodies.validation.Severity;
-import com.jgoodies.validation.ValidationResult;
-import com.jgoodies.validation.message.PropertyValidationMessage;
+import com.jgoodies.binding.adapter.Bindings;
+import com.jgoodies.binding.list.SelectionInList;
 
 /**
  * @author Andy Gombos
  */
 public class LanguageSelect extends AbstractListSelect
 {
-    public LanguageSelect()
+    public LanguageSelect(IzPackStage parentStage)
     {
         super();
         
         src = new SelectList();
         dest = new SelectList();
         
+        //Bind the model to the list
+        SelectionInList sil = new SelectionInList((ListModel) 
+                        ((GeneralInformationModel) parentStage.getDataModel() ).getLangCodes());        
+        Bindings.bind(dest, sil);        
+                
         langMap = new TreeMap();
         initLangMap();
         
@@ -113,7 +118,7 @@ public class LanguageSelect extends AbstractListSelect
             LangLabel langLabel = new LangLabel((String) langMap.get(isoCode), new ImageIcon(location), SwingConstants.LEFT);            
             langLabel.setISO3Code(isoCode);
             
-            src.addElement(langLabel);
+            ( (SelectListModel) src.getModel() ).addElement(langLabel);
         }
 	}
     
@@ -141,6 +146,7 @@ public class LanguageSelect extends AbstractListSelect
         langMap.put("svk", "Slovakian");
         langMap.put("swe", "Swedish");                                                                                                                                                                                                                                                                                        langMap.put("ukr", "Ukrainian");
     }
+    
     TreeMap langMap;
     
     SelectList src, dest;

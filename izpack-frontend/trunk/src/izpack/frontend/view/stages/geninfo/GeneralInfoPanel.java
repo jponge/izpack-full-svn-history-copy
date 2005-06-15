@@ -27,17 +27,12 @@ import izpack.frontend.model.Author;
 import izpack.frontend.model.AuthorManager;
 import izpack.frontend.model.stages.GeneralInformationModel;
 import izpack.frontend.view.IzPackFrame;
+import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.panels.ConfigurePanel;
 import izpack.frontend.view.stages.panels.IzPackPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -47,8 +42,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.text.JTextComponent;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -57,30 +50,35 @@ import utils.XML;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
-import com.jgoodies.binding.beans.BeanAdapter;
 import com.jgoodies.binding.beans.Model;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
-import com.jgoodies.validation.message.PropertyValidationMessage;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 
 /**
  * @author Andy Gombos
  */
 public class GeneralInfoPanel extends IzPackPanel implements ConfigurePanel, ActionListener
-{
+{   
+    /**
+     * @param information
+     */
+    public GeneralInfoPanel(IzPackStage stage)
+    {
+        super(stage);
+    }
+
     public void initComponents()
     {
         FormLayout layout = new FormLayout("pref, 3dlu, max(50dlu;pref), max(50dlu;pref), max(50dlu;pref), 3dlu, pref", 
                 "pref, 3dlu, pref, 3dlu, pref, 3dlu, pref, 3dlu, pref, 3dlu, pref, 40dlu");        
         DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);
         
-        PresentationModel adapter = GeneralInformation.getValidatingModel();        
+        PresentationModel adapter = stage.getValidatingModel();
                 
         CellConstraints cc = new CellConstraints();
         builder.add(new JLabel(langResources().getText("UI.GeneralInfoPage.APPNAME.Text")));
@@ -104,16 +102,17 @@ public class GeneralInfoPanel extends IzPackPanel implements ConfigurePanel, Act
         
         
         //Create the list from an ArrayList model
-        authorListModel = new ArrayList();
+        authorListModel = ( (GeneralInformationModel) stage.getDataModel() ).getAuthors();
+        
         for (Iterator iter = AuthorManager.loadAuthors().iterator(); iter.hasNext(); )
         {
            authorListModel.add(iter.next());
         }
         
-        authorModel = new SelectionInList(authorListModel);        
+        authorModel = new SelectionInList(authorListModel);
                 
         authorList = BasicComponentFactory.createList(authorModel);
-        authorList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //authorList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         builder.add(authorList, cc.xywh(3, 7, 3, 6));
         
         builder.setColumn(7);
@@ -151,7 +150,7 @@ public class GeneralInfoPanel extends IzPackPanel implements ConfigurePanel, Act
             //Edit
             else if (source.equals(actions[1]))
             {
-                Author author = displayAuthorDialog((Author) authorList.getSelectedValue());
+                Author author = displayAuthorDialog((Author) authorModel.getSelection());
                 if (author.getName() != null)
                     authorListModel.set(authorList.getSelectedIndex(), author);
             }
@@ -159,9 +158,9 @@ public class GeneralInfoPanel extends IzPackPanel implements ConfigurePanel, Act
             else if (source.equals(actions[2]))
             {
                 //Make sure we have a selection
-                if (authorList.getSelectedIndex() != -1)
+                if (authorModel.hasSelection())
                 {
-                    authorListModel.remove(authorList.getSelectedIndex());
+                    authorListModel.remove(authorModel.getSelectionIndex());
                 }
             }
         }        

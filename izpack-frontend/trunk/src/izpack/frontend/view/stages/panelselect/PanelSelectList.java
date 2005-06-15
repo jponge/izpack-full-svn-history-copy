@@ -25,6 +25,7 @@ package izpack.frontend.view.stages.panelselect;
 
 import izpack.frontend.model.PanelInfo;
 import izpack.frontend.model.PanelInfoManager;
+import izpack.frontend.model.SelectListModel;
 import izpack.frontend.view.components.AbstractListSelect;
 import izpack.frontend.view.components.ImageLabel;
 import izpack.frontend.view.components.SelectList;
@@ -65,7 +66,7 @@ public class PanelSelectList extends AbstractListSelect
         {
             PanelInfo page = (PanelInfo) iter.next();
             
-            src.addElement( new ImageLabel(page.getClassname(), page.getName(), page.getShortDesc(), "res/imgs/folder.png") );
+            ( (SelectListModel) src.getModel() ).addElement( new ImageLabel(page.getClassname(), page.getName(), page.getShortDesc(), "res/imgs/folder.png") );
         }
 	}
     

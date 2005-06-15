@@ -23,6 +23,7 @@
  */
 package izpack.frontend.view.stages.packs;
 
+import izpack.frontend.controller.validators.PackStageValidator;
 import izpack.frontend.model.LangResources;
 import izpack.frontend.model.PackModel;
 import izpack.frontend.model.files.DirectoryModel;
@@ -30,6 +31,8 @@ import izpack.frontend.model.files.Executable;
 import izpack.frontend.model.files.FileModel;
 import izpack.frontend.model.files.FileSet;
 import izpack.frontend.model.files.Parsable;
+import izpack.frontend.model.stages.PackStageModel;
+import izpack.frontend.model.stages.StageDataModel;
 import izpack.frontend.view.IzPackFrame;
 import izpack.frontend.view.components.table.FileCellEditor;
 import izpack.frontend.view.components.table.FileCellRenderer;
@@ -72,20 +75,23 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
-import com.jgoodies.validation.message.PropertyValidationMessage;
 
 
 /**
  * @author Andy Gombos
  */
-public class Pack extends IzPackStage implements ActionListener
+public class Pack extends IzPackStage implements ActionListener, ListSelectionListener
 {
+    private PackStageModel model;
+
     public Pack()
     {
-        super();
-        addValidationListeners = false;
+        super(); 
+        
+        model = new PackStageModel();
+        model.addColumn("");
+        validator = new PackStageValidator(model);
         
         FormLayout layout = new FormLayout("pref, 3dlu, pref", "pref, 3dlu, pref, 10dlu, pref, 3dlu, pref");        
         DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);        
@@ -122,85 +128,8 @@ public class Pack extends IzPackStage implements ActionListener
      */
     public Document createInstallerData()
     {
-        for (int row = 0; row < packTable.getRowCount(); row++)
-        {
-            Object rowObj = packTable.getValueAt(row, 0);
-            
-            if (rowObj != null)
-            {
-                Document d = ( (PackModel) rowObj).writePack();
-                System.out.println("~~~~~");
-                XML.printXML(d);
-               	System.out.println("~~~~~~");
-            }
-        }
-        
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.IzPackStage#validateStage()
-     */
-    public ValidationResult validateStage()
-    {
-        ValidationResult vr = new ValidationResult();        
-        
-        int lastRow = 0;
-        
-        for (int i = 0; i < packTable.getRowCount(); i++)
-        {
-            if (packTable.getValueAt(i, 0) == null)
-            {
-                lastRow = --i;
-                break;
-            }
-        }
-        
-        
-        if (lastRow < 0)
-        {
-            vr.add(new PropertyValidationMessage(
-                            Severity.ERROR,
-                            "must have at least one pack created",
-                            packTable,
-                            "Packs",
-                            "table"
-                            ));      
-        }
-        
-        for (int row = 0; row < packTable.getRowCount(); row++)
-        {
-            Object rowObj = packTable.getValueAt(row, 0);
-            
-            if (rowObj == null)
-                continue;
-            
-            PackModel pm = (PackModel) rowObj;            
-          
-            
-            for (int i = 0; i < packTable.getRowCount(); i++)
-            {
-                if (pm.getFilesModel().getValueAt(i, 0) == null)
-                {
-                    lastRow = --i;
-                    break;
-                }
-            }
-            
-	        if (lastRow < 0)
-	        {
-	            vr.add(new PropertyValidationMessage(
-	                            Severity.ERROR,
-	                            "must have at least one file added to a pack",
-	                            filesTable,
-	                            "Pack",
-	                            "files"
-	                            ));      
-	        }
-        }
-        
-        return vr;
-    }
+        return model.writeToXML();
+    }    
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.Stage#initializeStage()
@@ -233,8 +162,8 @@ public class Pack extends IzPackStage implements ActionListener
     private JPanel createPackTable()
     {        
        packTable = new ListTable(new PackCellRenderer(), new PackCellEditor(), EditorManager.getInstance());
-       packTable.setVisibleRows(5);
-       
+       packTable.setModel(model);
+       packTable.setVisibleRows(5);       
 
         //Register for notification of selection changes.
         //Used to display the correct files model       
@@ -284,6 +213,8 @@ public class Pack extends IzPackStage implements ActionListener
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
         
         table.setTableHeader(null);
+        
+        table.getSelectionModel().addListSelectionListener(this);
         
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));       
@@ -394,9 +325,7 @@ public class Pack extends IzPackStage implements ActionListener
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e)
-    {
-        System.out.println("Action performed");
-        
+    {   
         if (! (e.getSource() instanceof JButton) )
             return;
         
@@ -498,4 +427,34 @@ public class Pack extends IzPackStage implements ActionListener
             filesTable.addElementWithEditor(type);
         }            
     }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.IzPackStage#getDataModel()
+     */
+    public StageDataModel getDataModel()
+    {
+        // TODO Auto-generated method stub
+        return model;
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     */
+    public void valueChanged(ListSelectionEvent e)
+    {
+        validateStage();        
+    }
+
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.IzPackStage#validateStage()
+     */
+    public ValidationResult validateStage()
+    {
+        ValidationResult vr = validator.validate();
+        validationModel.setResult(vr);
+        
+        return vr; 
+    }
+    
+    private static PackStageValidator validator;
 }
