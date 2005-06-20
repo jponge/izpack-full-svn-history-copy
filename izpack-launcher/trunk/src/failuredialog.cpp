@@ -26,8 +26,8 @@
 #endif
 
 FailureDialog::FailureDialog(const bool &enableJREInstall,
-                             const bool &enableNetDownload)
-  : wxDialog(0, -1, _("IzPack launcher"), wxDefaultPosition, wxDefaultSize,
+                             const bool &enableNetDownload, const wxString &wxStringHeadline )
+  : wxDialog(0, -1, _(wxStringHeadline), wxDefaultPosition, wxDefaultSize,
              wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
   userAction     = INTERNET;
@@ -59,9 +59,8 @@ void FailureDialog::buildUI()
   sizer->Add(explanationText, 0, wxALIGN_LEFT | wxALL, 10);
 
   wxString rlabels[] = {
+    _("install the Java Environment included with this software"),
     _("manually locate an already installed Java Runtime Environment"),
-    _("automatically install the Java Runtime Environment included with this "
-      "software"),
     _("download the latest version of the Java Runtime Environment from the "
       "Internet.")
   };
@@ -69,10 +68,10 @@ void FailureDialog::buildUI()
                               _("You have the following installation choices:"),
                               wxDefaultPosition, wxDefaultSize, 3, rlabels, 1,
                               wxRA_SPECIFY_COLS);
-  optionsBox->SetSelection(2);
+  optionsBox->SetSelection(0);
   sizer->Add(optionsBox, 1, wxGROW | wxALL, 10);
 
-  okButton = new wxButton(this, wxID_OK, _("Ok"));
+  okButton = new wxButton(this, wxID_OK, _("Continue"));
   okButton->SetFocus();
   sizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_CENTER_HORIZONTAL
                           | wxALL, 10);
@@ -89,8 +88,8 @@ bool FailureDialog::Validate()
 {
   switch (optionsBox->GetSelection())
   {
-  case 0: userAction = MANUAL;   break;
-  case 1: userAction = PROVIDED; break;
+  case 0: userAction = PROVIDED;   break;
+  case 1: userAction = MANUAL; break;
   case 2: userAction = INTERNET; break;
   default: break;
   }

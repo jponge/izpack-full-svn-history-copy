@@ -44,7 +44,7 @@ private:
 
 public:
 
-  FailureDialog(const bool &enableJREInstall, const bool &enableNetDownload);
+  FailureDialog(const bool &enableJREInstall, const bool &enableNetDownload, const wxString &wxStringHeadline );
 
   virtual ~FailureDialog();
 
