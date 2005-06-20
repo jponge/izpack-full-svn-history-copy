@@ -22,6 +22,13 @@
 
 #include "launcher.h"
 
+#ifdef __UNIX__
+  #include <stdlib.h>
+  #include <map>
+  #include <list>
+#endif
+
+
 /*
  * Helper function to run an external program. It takes care of the subtule
  * differences between the OS-specific implementations.
@@ -43,9 +50,10 @@ bool run_external(wxString cmd)
 LauncherApp::LauncherApp()
   : wxApp()
 {
+  APPLICATION_NAME = wxString("Izpack-Launcher"); 
   completed = false;
-
-  SetAppName(_("IzPack launcher"));
+  
+  SetAppName(_( APPLICATION_NAME ));
   loadParams();
 }
 
@@ -56,12 +64,14 @@ LauncherApp::~LauncherApp()
 
 void LauncherApp::loadParams()
 {
-  wxFileInputStream in((wxString)"launcher.ini");
-  wxFileConfig cfg(in);
+  cfgName = wxString( ".autorun.ini" );
+  
+  wxFileInputStream in( cfgName );
+  wxFileConfig cfg( in );
 
-  cfg.Read("jar", &params["jar"], wxEmptyString);
-  cfg.Read("jre", &params["jre"], wxEmptyString);
-  cfg.Read("download", &params["download"], wxEmptyString);
+  cfg.Read( "jar",      &paramsJar, wxEmptyString);
+  cfg.Read( "jre",      &paramsJre, wxEmptyString);
+  cfg.Read( "download", &paramsDownload, wxEmptyString);
 
 #ifdef __WIN32__
   wxString group = "/win32";
@@ -84,19 +94,19 @@ void LauncherApp::loadParams()
 #endif
 
   cfg.SetPath(group);
-  cfg.Read("jar", &params["jar"]);
-  cfg.Read("jre", &params["jre"]);
-  cfg.Read("download", &params["download"]);
+  cfg.Read("jar", &paramsJar);
+  cfg.Read("jre", &paramsJre);
+  cfg.Read("download", &paramsDownload);
 
-  if (params["jar"] == wxEmptyString)
+  if (paramsJar == wxEmptyString )
   {
-    error(_("The configuration file is broken."));
+    error(_("The configuration file '") + cfgName + _("' does not contain a jar file entry."));
   }
 }
 
 void LauncherApp::error(const wxString &msg)
 {
-  wxMessageDialog dlg(0, msg, _("IzPack launcher"), wxOK | wxICON_ERROR);
+  wxMessageDialog dlg(0, msg, _(APPLICATION_NAME), wxOK | wxICON_ERROR);
   dlg.ShowModal();
   exit(1);
 }
@@ -113,8 +123,8 @@ bool LauncherApp::OnInit()
   }
   else
   {
-    FailureDialog dlg(params["jre"] != wxEmptyString,
-                      params["download"] != wxEmptyString);
+    FailureDialog dlg(paramsJre != wxEmptyString,
+                      paramsDownload != wxEmptyString, APPLICATION_NAME );
     dlg.Centre();
     while (!completed)
     {
@@ -188,15 +198,15 @@ bool LauncherApp::searchJRE()
 
 void LauncherApp::runJRE()
 {
-  if (!wxFile::Exists(params["jar"]))
+  if (!wxFile::Exists(paramsJar))
   {
-    error(_("There is no installer to launch."));
+    error(_("The jar-file in the configuration file '" + cfgName + "' does exist."));
   }
 
-  wxString cmd = javaExecPath + wxString(" -jar ") + params["jar"];
+  wxString cmd = javaExecPath + wxString(" -jar ") + paramsJar;
   if (!run_external(cmd))
   {
-    error(_("The installer launch failed."));
+    error(_("The jar-file '" + paramsJar + "' could not be executed." ));
   }
 
   completed = true;
@@ -204,7 +214,8 @@ void LauncherApp::runJRE()
 
 void LauncherApp::manualLaunch()
 {
-  wxString java = wxFileSelector(_("Please choose a 'java' executable"));
+  wxString java = wxFileSelector(_("Please choose a 'java' executable."));
+
   if (java.empty())
   {
     return;
@@ -219,12 +230,12 @@ void LauncherApp::manualLaunch()
 void LauncherApp::jreInstall()
 {
 #ifdef __WINDOWS__
-  if (!run_external(params["jre"]))
+  if (!run_external(paramsJre))
 #else
-  if (!wxShell(params["jre"]))
+  if (!wxShell(paramsJre))
 #endif
   {
-    error(_("Could not launch the JRE installation process."));
+    error(_("The JRE could not be setup."));
   }
   searchJRE();
   runJRE();
@@ -267,7 +278,7 @@ void LauncherApp::netDownload()
   }
 #endif
 
-  if (run_external(browser + params["download"]))
+  if (run_external(browser + paramsDownload))
   {
     completed = true;
   }
