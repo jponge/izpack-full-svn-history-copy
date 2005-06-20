@@ -4,9 +4,13 @@
 # 'all'     ---> builds the executable.
 # 'clean'   ---> removes the compilation-generated files.
 # 'install' ---> puts the executbale in 'dist'.
-# 'refmsg"  ---> Invokes xgettext to produce the reference .pot file.
+# 'refmsg'  ---> Invokes xgettext to produce the reference .pot file.
 #                You can then use it to produce the translations or use
-#                msgmerge to update existing ones.
+#                gnu's 'msgmerge $lang/launcher.po (reference)launcher.pot' to update existing ones.
+#                where $lang is your language in which you translate i.e. fr for french 
+#                finally use gnu's 'msgfmt -o outputfile' to convert the translation
+#                into the expected binary file 'launcher.mo' in your lang-folder
+#                recognized by the i18n-system of wxWindows
 
 FLAGS = -Wall -O -pipe
 CXX = `wx-config --cxx`
@@ -14,19 +18,25 @@ CXX_FLAGS = `wx-config --cxxflags --debug=no`
 CXX_LIBS = `wx-config --libs --static=yes --debug=no`
 
 OS = `uname`
-EXEC = launcher
-OBJS = launcher.o failuredialog.o
+
+APP=launcher
+FD=failuredialog
+
+EXEC = ${APP}
+OBJS = ${APP}.o ${FD}.o
+
+
 
 all: launcher
 
 launcher: ${OBJS}
 	${CXX} ${FLAGS} ${CXX_FLAGS} -o ${EXEC} ${OBJS} ${CXX_LIBS}
 
-launcher.o: launcher.h launcher.cpp failuredialog.h
-	${CXX} ${FLAGS} ${CXX_FLAGS} -c launcher.cpp
+${APP}.o: ${APP}.h ${APP}.cpp ${FD}.h
+	${CXX} ${FLAGS} ${CXX_FLAGS} -c ${APP}.cpp
 
-failuredialog.o: failuredialog.h failuredialog.cpp
-	${CXX} ${FLAGS} ${CXX_FLAGS} -c failuredialog.cpp
+${FD}.o: ${FD}.h ${FD}.cpp
+	${CXX} ${FLAGS} ${CXX_FLAGS} -c ${FD}.cpp
 
 install: all install_lang
 	cp ${EXEC} ../dist/${EXEC}-${OS}
