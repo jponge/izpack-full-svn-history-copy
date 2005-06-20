@@ -47,6 +47,10 @@ bool run_external(wxString cmd)
 #endif
 }
 
+/* Main Application $Revision$
+ *
+ * $Id$
+ */
 LauncherApp::LauncherApp()
   : wxApp()
 {
@@ -64,7 +68,7 @@ LauncherApp::~LauncherApp()
 
 void LauncherApp::loadParams()
 {
-  cfgName = wxString( ".autorun.ini" );
+  cfgName = wxString( "launcher.ini" );
   
   wxFileInputStream in( cfgName );
   wxFileConfig cfg( in );
