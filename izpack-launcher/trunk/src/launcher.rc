@@ -1,2 +1,48 @@
 package ICON "package.ico"
 #include "wx/msw/wx.rc"
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION 1,3,0,1
+PRODUCTVERSION 1,3,0,1
+FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+FILEFLAGS 0x1L
+#else
+FILEFLAGS 0x0L
+#endif
+FILEOS 0x4L
+FILETYPE 0x1L
+FILESUBTYPE 0x0L
+BEGIN
+BLOCK "StringFileInfo"
+BEGIN
+BLOCK "040704b0"
+BEGIN
+VALUE "Comments", "Search for Java and runs it with a predefined executable jar\0"
+VALUE "CompanyName", "http://www.izforge.com/izpack\0"
+VALUE "FileDescription", "IzPack Launcher\0"
+VALUE "FileVersion", "1, 3, 0, 1\0"
+VALUE "InternalName", "IzPack Launcher\0"
+VALUE "LegalCopyright", "(C) 2005 by Julien Ponge and Contributors\0"
+VALUE "LegalTrademarks", "\0"
+VALUE "OriginalFilename", "launcher.EXE\0"
+VALUE "PrivateBuild", "\0"
+VALUE "ProductName", "IzPack Launcher\0"
+VALUE "ProductVersion", "1, 3, 0, 1\0"
+VALUE "SpecialBuild", "\0"
+END
+END
+BLOCK "VarFileInfo"
+BEGIN
+VALUE "Translation", 0x407, 1200
+END
+END
+
+#endif    // !_MAC
