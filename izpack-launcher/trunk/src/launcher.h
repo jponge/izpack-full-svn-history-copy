@@ -22,11 +22,6 @@
 #ifndef LAUNCHER_H
 #define LAUNCHER_H
 
-#include <stdlib.h>
-
-#include <map>
-#include <list>
-
 #include <wx/wx.h>
 #include <wx/config.h>
 #include <wx/confbase.h>
@@ -34,8 +29,14 @@
 #include <wx/wfstream.h>
 
 #ifdef __WINDOWS__
-  #include <wx/msw/registry.h>
+  #include <wx/msw/registry.h>  
+#else
+  #include <stdlib.h>
+  #include <map>
+  #include <list>
 #endif
+
+
 
 #include "failuredialog.h"
 
@@ -43,13 +44,18 @@ class LauncherApp : public wxApp
 {
 private:
 
+  wxString APPLICATION_NAME;
   wxString javaExecPath;
-
-  std::map<wxString, wxString> params;
-
+// std::map<wxString, wxString> params;
+  wxString paramsJar;
+  wxString paramsJre;
+  wxString paramsDownload;
+  
   wxLocale locale;
 
   bool completed;
+
+  wxString cfgName;
 
   void loadParams();
 
