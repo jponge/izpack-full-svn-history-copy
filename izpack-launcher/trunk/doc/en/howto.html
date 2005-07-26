@@ -1,0 +1,1272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+
+
+
+
+  
+  
+  
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+
+
+  
+  
+  
+  
+  <meta name="Generator" content="KWord HTML Export Filter Version 1.40.2.1 " />
+
+
+
+  
+  
+  
+  <meta name="Author" content="Marc Eppelmann" />
+
+
+
+  
+  
+  
+  
+  
+  
+  <title>howto.html</title>
+  <style type="text/css">
+/* KWORD_CSS_EXPORT = 1.15.2.6 */
+BODY
+{
+  background-color: #FFFFFF
+}
+.Standard
+{
+  text-indent:0pt; line-height:normal; text-shadow:none; font-family: helvetica; font-style: normal; font-weight: normal; font-size: 12pt; text-decoration: none; text-transform: none; font-variant:normal; 
+}
+.Document_Title
+{
+  text-align:center; text-indent:0pt; line-height:normal; text-shadow:none; font-family: helvetica; font-style: normal; font-weight: bold; font-size: 24pt; text-decoration: none; text-transform: none; font-variant:normal; 
+}
+.Head_1
+{
+  text-indent:0pt; line-height:normal; text-shadow:none; font-family: helvetica; font-style: normal; font-weight: bold; font-size: 20pt; text-decoration: none; text-transform: none; font-variant:normal; 
+}
+.Head_2
+{
+  text-indent:0pt; line-height:normal; text-shadow:none; font-family: helvetica; font-style: normal; font-weight: bold; font-size: 16pt; text-decoration: none; text-transform: none; font-variant:normal; 
+}
+.Head_3
+{
+  text-indent:0pt; line-height:normal; text-shadow:none; font-family: helvetica; font-style: normal; font-weight: bold; font-size: 12pt; text-decoration: none; text-transform: none; font-variant:normal; 
+}
+.Enumerated_List
+{
+  text-indent:0pt; line-height:normal; text-shadow:none; font-family: helvetica; font-style: normal; font-weight: normal; font-size: 12pt; text-decoration: none; text-transform: none; font-variant:normal; 
+}
+.Alphabetical_List
+{
+  text-indent:0pt; line-height:normal; text-shadow:none; font-family: helvetica; font-style: normal; font-weight: normal; font-size: 12pt; text-decoration: none; text-transform: none; font-variant:normal; 
+}
+.Bullet_List
+{
+  text-indent:0pt; line-height:normal; text-shadow:none; font-family: helvetica; font-style: normal; font-weight: normal; font-size: 12pt; text-decoration: none; text-transform: none; font-variant:normal; 
+}
+@page
+{
+  size: 21.0cm 29.7cm;
+  margin-top: 42pt;
+  margin-left: 28pt;
+  margin-bottom: 42pt;
+  margin-right: 28pt;
+}
+  </style>
+</head>
+
+
+<body>
+
+
+
+
+
+
+<h1>Izpack-Launcher&nbsp;</h1>
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;"></p>
+
+
+
+<h2><span class="Head_2">HowTo
+Compile an Executable for the Win32 Platform.</span></h2>
+
+
+
+<p class="Standard" style="text-align: left;">
+
+
+<br />
+
+
+
+
+
+
+
+This Document describes the compilation and first steps of the
+izpack-laucher. <br />
+
+
+
+
+
+<br />
+
+
+
+
+
+
+</p>
+
+
+
+<h3><span class="Head_3">Table of Content </span></h3>
+
+
+
+<p class="Standard" style="text-align: left;">
+
+
+<br />
+
+
+
+
+
+
+1. Introduction <br />
+
+
+
+
+
+
+2. Typographic conventions <br />
+
+
+
+
+
+
+3. Startup <br />
+
+
+
+
+
+
+4. Prerequisites <br />
+
+
+
+
+
+
+5. Getting Sources <br />
+
+
+
+
+
+
+6. Installation<br />
+
+
+
+
+
+
+7.&nbsp;Preparation<br />
+
+
+
+8. Perfom complete compilation of the Izpack-Launcher - Distribution<br />
+
+
+
+
+
+
+9. Test<span class="Head_3"><br />
+
+
+
+<span class="Standard">10. Customization</span></span><br />
+
+
+
+11. Shutdown <br />
+
+
+
+
+
+
+<br />
+
+
+
+
+
+
+<br />
+
+
+
+
+
+
+</p>
+
+
+
+<h3><span class="Head_3">1. Introduction</span></h3>
+
+
+
+<p class="Standard" style="text-align: left;"></p>
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">Izpack-launcher is a
+native Executable, that searches for, installs if not found and starts
+a Java Runtime Environment (JRE) together with a customers "IzPack Java
+- setup.jar".
+If Java is already&nbsp;installed in the matched version, the
+izpack-launcher (autorun) setup.exe just starts this Izpack Setup
+immediatelly, and
+it seems (in the scope of the customer or user) that the setup.exe
+performs the entire setup application. There can also be made a
+self-extracting Version,&nbsp;but this uses an another
+advanced technique and is not part of this document (It is described by
+Julien in a separate "<a href="http://www.izforge.com/izpack/7zip-sfx-tutorial/">screen-cam</a>" demonstration). Finally,
+IzPack-Launcher is really a very
+neat tool, that supports IzPack greatful, but even on Linux, you can
+also write
+a more or less large Shellscript, that covers the same tasks. And last
+Imho:
+Izpack-Launcher is not the name that describes this Executable exactly.
+JRE_FindAndStartWithAny(Gui)Jar.exe would be a more precise name. ;-)</p>
+
+
+
+
+
+
+
+<h3 class="Head_3">2. Typographic
+conventions</h3>
+
+
+
+
+
+
+
+<p class="Head_3" style="text-align: left;"><span class="Standard">In
+this document I use a typical typographic convention. This is the
+convention from the SuSE - Linux Adminguide. A Note on formatting: I have begin to write this document with <span style="font-style: italic;">kwrite</span> but then I have continued with <span style="font-style: italic;">Nvu</span>, that is, why the used stylesheets and the formatting are a little bit confusing...</span><span style="font-weight: bold;"></span></p>
+
+
+
+
+
+
+<h3><span class="Head_3">3.
+Startup</span>&nbsp;</h3>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">Izpack launcher is build
+and based on WxWindows/wxWidgets, a native and platform independend
+GUI-Development
+library similar to Qt and Gtk. But it is more free as Qt even for
+win32 binaries at the time of writing (until the Qt4 release). That is why you will need (additionally to a
+C++ Compiler) the WxWindow/wxWidgets distribution. I will describe how to
+get and
+prebuild this GUI-library in the Prerequisites and the Preparation Section.</p>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">To use Izpack-Launcher,
+you&nbsp;also need an executable "Izpack-Setup Jar-File". But you don't
+need an own setup of your software. To immediate start, you can also
+alternatively use IzPack's
+Setup-Jar. Just download it from <a href="http://www.izforge.com/izpack">http://www.izforge.com/izpack</a>, if needed.</p>
+<p class="Standard" style="text-align: left;">For more information, how to use, embedd and build a Izpack Setup with the IzPack-Launcher, read both, the manual, which comes with IzPack and the other, which comes with the IzPack Launcher. A <a href="http://www.izforge.com/izpack/izpack-tutorial.pdf">quickstart tutorial</a> as pdf is also provided and is recommended for beginners. There is another "howto compile" in the <a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">WIKI</a>, which describes the compile and build based on&nbsp;MSVC++6.0 and Open Watcom. Feel free, to decide your appropriate way to build.</p>
+
+
+
+
+
+
+
+
+
+<h3 class="Head_3">4.
+Prerequisites&nbsp;</h3>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">At first, you need a
+C++&nbsp;Compiler. The easiest way is to download and install <a href="http://www.bloodshed.net">DevCPP</a> from
+http://www.bloodshed.net.<br />
+
+
+
+
+
+
+
+
+
+This is a complete IDE but it comes with all tools needed to compile
+wxWindows/wxWidgets and izpack-launcher. The current release of DevCPP
+is 4.9.9.2. Unfortunatelly the&nbsp;make utility of this suite has a
+bug, so you have to edit/copy 3 Files manually. I will describe this at
+the preparation chapter. Note: if this bug was fixed in a future
+release, you don't need no longer do so.</p>
+
+<p class="Standard" style="text-align: left;">After installation, you have to add the <span style="font-family: monospace;">"bin</span>" - folder of DevCPP to your PATH-Environmentvariable. i.e. <span style="font-family: monospace;">set PATH=%PATH%;C:\devcpp\bin</span></p>
+
+
+
+
+
+
+
+
+
+<h3><span class="Head_3"> 5. Getting
+Sources</span>&nbsp;</h3>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">Next thing to build
+izpack-laucher, you have to do, is to checkout the sources from the
+svn-tree, if you don't have the sources already. As registered izpack&nbsp;developer, you can checkout using: <br />
+
+
+
+
+
+
+
+
+
+<tt>svn checkout&nbsp;svn+ssh://<i>developername</i>@svn.berlios.de/svnroot/repos/izpack/trunk</tt>
+<br />
+
+while as anonymous user you have to use:<br />
+
+
+
+
+
+
+
+
+
+<tt>svn checkout svn://svn.berlios.de/izpack/trunk</tt></p>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;"><tt><span class="Standard">Then, you have to download the wxWindows</span><span class="Standard">/</span></tt>wxWidgets<tt><span class="Standard"> sources for your target platform.</span><span class="Standard"> In this document,</span><span class="Standard"> I
+will describe the compilation on the windows platform, so you have to
+download&nbsp;<a href="http://prdownloads.sourceforge.net/wxwindows/wxMSW-2.4.2-setup.zip">wxMSW-2.4.2-setup.zip</a>
+from http://www.sourceforge.net . I use this old wxWidgets-release </span></tt>explicitly,
+because with the&nbsp;newer release, it does not work out of the box.
+(This is maybe a todo for us - at least we have to adapt the makefiles.)<tt><span class="Standard"></span></tt><br />
+
+
+
+
+
+
+
+
+
+</p>
+
+
+
+
+
+
+
+
+
+<h3 class="Head_3">6. Installation</h3>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">Once you have download
+all needed things, you are ready to install these. I have setup DevCPP
+with the default options and the defualt installpath: c:\dev-cpp.
+wxWindows was also installed typically, except I choosed another
+install path: c:\wxw242.</p>
+
+
+
+
+
+
+
+
+
+<h3 class="Head_3">7. Preparation&nbsp;</h3>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">You have to read the
+documentation, howto build the wxWindows library, but I have extracted
+the requiered steps to compile with DevCpp.</p>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">A) In order to compile
+the wxWindows/wxWidget Libraries, you have to set some environment
+variables. You can set these globally with Settings --&gt; Control
+panel -&gt; System -&gt;Advanced -&gt; Environment Variables or only in
+the current Console:</p>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">i) Adjust the environment
+variable WXWIN to your wxWindows/wxWidgets&nbsp;installation-
+&nbsp;base path: <br />
+
+
+
+
+
+
+
+
+
+</p>
+
+
+
+
+
+
+
+
+
+<pre class="Standard" style="font-family: monospace;">&nbsp;&nbsp;&gt;&nbsp;set WXWIN=C:\wxw242</pre>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">ii) Don't forget to add the "bin"
+subdirectory of DevCPP to your PATH environment variable:<br />
+
+
+
+
+
+
+
+
+
+</p>
+
+
+
+
+
+
+
+
+
+<pre style="font-family: monospace;">&nbsp;&nbsp;&nbsp;<span style="font-family: monospace;" class="Standard">&gt; set PATH=%PATH%;C:\dev-cpp\bin</span></pre>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;"></p>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">iii) Now open a new&nbsp;console (cmd.exe), change to the wxWindows&nbsp;basedir typing:<br />
+
+
+
+
+
+
+
+
+<br />
+
+
+
+<span style="font-family: monospace;">
+
+
+
+
+&gt; cd /d C:\wxw242\src\msw&nbsp;</span></p>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">iv) and enter:<br />
+
+
+
+
+
+
+
+
+<br />
+
+
+
+<span style="font-family: monospace;">
+
+
+
+
+&gt;&nbsp;&nbsp;</span><span style="font-weight: bold;"><span style="font-family: monospace;">make -f makefile.g95 clean</span><br />
+
+
+
+
+
+
+
+
+</span><br />
+
+
+
+
+
+
+
+
+&nbsp;to cleanup&nbsp;previous&nbsp;created binaries. This is not required, for the first time.<br />
+
+
+
+
+
+
+
+
+</p>
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">v) now enter:<br />
+
+
+
+
+
+
+
+
+<br />
+
+
+
+<span style="font-family: monospace;">
+
+
+
+
+&gt; </span><span style="font-weight: bold; font-family: monospace;">make -f</span><span style="font-family: monospace;"> </span><span style="font-weight: bold; font-family: monospace;">makefile.g95 FINAL=1</span></p>
+
+
+
+
+
+<p class="Standard" style="text-align: left;">according to the wx
+compile instruction fow mingw.&nbsp;</p>
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">NOTE: Unfortunatelly,
+there si a tiny bug in the make - Tool or in the called copy-tool. (The
+destination option is not recognized correctly),&nbsp;<br />
+
+
+
+
+
+
+
+
+So you will get a Errormesage such as:</p>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left; font-family: monospace;">mkdir ..\..\lib\msw<br />
+
+
+
+
+
+
+mkdir ..\..\lib\msw\wx<br />
+
+
+
+
+
+
+cp ../../include/wx/msw/setup.h ../../lib/msw/wx/setup.h<br />
+
+
+
+
+
+
+<span style="font-weight: bold;">process_begin: CreateProcess((null), cp ../../include/wx/msw/setup.h ../../lib/m</span><br style="font-weight: bold;" />
+
+
+
+
+
+
+<span style="font-weight: bold;">sw/wx/setup.h, ...) failed.</span><br />
+
+
+
+
+
+
+make (e=2): The system cannot find the file specified.<br />
+
+
+
+
+
+
+make: *** [../../lib/msw/wx/setup.h] Error 2</p>
+
+
+
+<p class="Standard" style="text-align: left;"><span class="Standard">or:</span><br />
+
+
+
+
+
+
+
+
+</p>
+
+
+
+<pre style="font-weight: bold; font-family: monospace;">cp ../common/dosyacc.c ../common/y_tab.c</pre>
+
+
+
+
+
+
+
+
+<pre style="font-family: monospace;">process_begin: CreateProcess((null), cp ../common/dosyacc.c ../common/y_tab.c, .</pre>
+
+
+
+
+
+
+
+
+<pre style="font-family: monospace;">..) failed.</pre>
+
+
+
+
+
+
+
+
+<pre style="font-family: monospace;">make (e=2): The system cannot find the file specified.</pre>
+
+
+
+
+
+
+
+
+<pre style="font-family: monospace;">make: *** [../../src/common/y_tab.c] Error 2</pre>
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;"><br />
+
+
+
+
+
+
+
+
+However there is a simple Workaround by doing the three following easy things ;-) :&nbsp;</p>
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">Just copy the file manually: Enter in the case above: <span style="font-style: italic;"><br />
+
+
+
+
+
+
+
+
+Note: Use backslash instead of slash.</span></p>
+
+
+
+
+
+
+
+
+<pre><pre style="font-family: monospace;">&gt; <span style="font-weight: bold;">copy ..\..\include\wx\msw\setup.h ..\..\lib\msw\wx\setup.h</span></pre><span class="Standard">comment out line 546: ( $(COPY) $(WXDIR)/include/wx/msw/setup.h $(subst $(BACKSLASH),/,$@) ) in the</span><span style="font-weight: bold;">&nbsp;</span><span class="Standard">makefile.g95</span> <span class="Standard">and continue the build, by reenter</span>  <span style="font-weight: bold;"></span></pre>
+
+
+
+<pre><span style="font-weight: bold;">&gt; make -f</span> <span style="font-weight: bold;">makefile.g95 FINAL=1</span><br /><br />&gt; <span style="font-weight: bold;">copy&nbsp;..</span>\<span style="font-weight: bold;">common</span>\<span style="font-weight: bold;">dosyacc.c ..</span>\<span style="font-weight: bold;">common</span>\<span style="font-weight: bold;">y_tab.c</span><br /><br /><span class="Standard">and continue the build, by enter </span> <span style="font-weight: bold;"><br /><br />&gt; make -f</span> <span style="font-weight: bold;">makefile.g95 FINAL=1</span><br /><span style="font-style: italic;"></span><br /><span style="font-weight: bold;">&gt; copy ..\common\doslex.c ..\common\lex_yy.c<br /><br /></span><span class="Standard">again and </span><span class="Standard" style="font-weight: bold;">finish</span><span class="Standard"> the wxWin-build, by (last) re-enter </span> <span style="font-weight: bold;"><br /></span><span style="font-weight: bold;"><br />&gt; make -f</span> <span style="font-weight: bold;">makefile.g95 FINAL=1</span><br /><br /></pre>
+
+
+
+<p class="Standard">The wxwindows libs and all other wxw stuff should now compiled successfully. </p>
+
+
+
+<p class="Standard">OK. You are now able to compile the&nbsp;Izpack-Launcher Exe.</p>
+
+
+
+<pre><span style="font-weight: bold;"></span></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+<h3 class="Head_3">8. Perfom complete compilation of the Izpack-Launcher - Distribution</h3>
+
+
+
+
+<p class="Standard" style="text-align: left;">( First ensure, that the WXWIN-Environmentvariable is set. Otherwise you get an error like:&nbsp;</p>
+
+
+
+
+<p class="Standard" style="text-align: left; font-family: monospace;">Makefile.mingw:10: /src/makeprog.g95: No such file or directory<br />
+
+
+
+
+make: *** No rule to make target `/src/makeprog.g95'.&nbsp; Stop.)</p>
+
+
+
+
+
+<p class="Standard" style="text-align: left;">If all is setup correctly, you can simply compile by Enter&nbsp;the following command:</p>
+
+
+
+<pre class="Standard">C:\izpacklauncher&gt;<span style="font-weight: bold; font-family: monospace;">make -f Makefile.mingw install</span></pre>
+
+
+
+
+<p class="Standard" style="text-align: left;">Another important Note: You have to move away an already existing "..\dist"
+- Folder, because mkdir on win32 is just stupid and does not test if a
+folder already exists: it returns just with an error and breaks the
+buildprocess. (I know: one can add some "if exist"-code to the makefile, feel free to do so ;-)</p>
+
+
+
+
+<p class="Standard" style="text-align: left;">Here is just the output:<br />
+
+
+
+
+<br />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+g++&nbsp; -Wl,--subsystem,windows -mwindows -LC:\wxw242/lib -LC:\wxw242/contrib/lib</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+&nbsp;-o launcher.exe launcher.o failuredialog.o launcher_resources.o&nbsp; C:\wxw242/lib/</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+libwxmsw.a -lregex -lpng -ljpeg -lzlib -ltiff -lstdc++ -lgcc -lodbc32 -lwsock32</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+-lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+mkdir&nbsp; ..\dist\fr ..\dist\de ..\dist\da ..\dist\pt-BR ..\dist\es ..\dist\it ..\d</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+ist\nl</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+copy fr\launcher.mo ..\dist\fr</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+copy es\launcher.mo ..\dist\es</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+copy de\launcher.mo ..\dist\de</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+copy da\launcher.mo ..\dist\da</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+copy pt-BR\launcher.mo ..\dist\pt-BR</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+copy it\launcher.mo ..\dist\it</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+copy nl\launcher.mo ..\dist\nl</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+copy launcher.exe ..\dist\launcher-Win32.exe</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+strip ../dist/launcher-Win32.exe</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+copy launcher.exe.manifest ..\dist\launcher-Win32.exe.manifest</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
+
+
+
+
+<br style="font-family: monospace;" class="Standard" />
+
+
+
+<span style="font-family: monospace;" class="Standard">
+C:\home\marc\izpack-launcher\trunk\src&gt;</span></p>
+
+
+
+
+
+<p class="Standard" style="text-align: left;">Congratulation! You have now a izpack&nbsp;launcher.exe in the current folder!</p>
+
+
+
+<h3><span class="Head_3">9. Test</span></h3>
+
+
+
+
+<p class="Standard" style="text-align: left;">You can test it by enter:<span style="font-family: monospace;"> "launcher"</span> to test the developer version.</p>
+
+
+
+
+<p class="Standard" style="text-align: left;">You will get one of the following screenshots depend on the content of the <span style="font-family: monospace;">launcher.ini</span> in the current folder.</p>
+
+
+
+
+<p class="Standard" style="text-align: left;">If the launcher ini contains a valid <span style="font-family: monospace;">"Jar = YourInstall.jar" </span>- line, you will get:<br />
+
+
+
+
+</p>
+
+
+
+
+<p class="Standard" style="text-align: left;"><img style="width: 511px; height: 219px;" alt="default" src="001.png" /></p>
+
+
+
+
+<p class="Standard" style="text-align: left;">Otherwise:&nbsp;</p>
+
+
+
+
+<p class="Standard" style="text-align: left;"><img style="width: 671px; height: 380px;" alt="wrong ini" src="002.png" /></p>
+
+
+
+
+<p class="Standard" style="text-align: left;">Alternatively you can enter <span style="font-family: monospace;">..\dist\launcher-Win32.exe</span> to test the distribution version.</p>
+
+
+
+
+<p class="Standard" style="text-align: left;">The result should be similar to the developer version:<br />
+
+
+
+
+<img style="width: 672px; height: 430px;" alt="dist" src="003.png" /></p>
+
+
+
+
+<p class="Standard" style="text-align: left;">But the file size of this executable is about 1MB smaller than the developers one. At least on my machine ;-)</p>
+
+
+
+
+
+<h3><span class="Head_3">10. Customization</span> <br />
+
+
+
+
+</h3>
+
+
+
+
+<p><span class="Standard" style="font-family: helvetica;">If you want to test the other languages you have to change your locale in the </span><span class="Standard">regional options dialog launched from the control panel. For example for&nbsp;german</span>:</p>
+
+
+
+
+<br />
+
+
+
+
+<img style="width: 1078px; height: 572px;" alt="change lang" src="004.png" /><br />
+
+
+
+
+<br />
+
+
+
+<h3 class="Head_3">10. Shutdown</h3>
+
+
+
+<br />
+
+
+
+<p class="Standard">Now, that's all folks.</p>
+
+
+
+
+<span style="font-family: helvetica;">
+<p class="Standard" style="text-align: left;">Thanks to Julien Ponge,
+all&nbsp;developers, members and even the users of IzPack. Thanks goes
+also still to VMware, which made this docu possible, since I work with
+Linux and run any Win32-OS only in a VMware-sandbox. ;-)</p>
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">This document was initially written at
+2005-05-19 by Marc Eppelmann / Oldenburg(Oldb) / Germany</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">This comes without any
+warranty. Suggestions and Feedback are always welcome. Send&nbsp;these to <a href="mailto:marc.eppelmann&amp;#064;gmx.de">marc.eppelmann_at_gmx.de</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;"><span class="Standard">&nbsp;</span><br class="Standard" />
+
+
+
+<span class="Standard">
+The License is the same as for the entire software. See LICENSE, which comes with the distribution.</span><br />
+
+
+
+
+
+
+
+
+
+</p>
+
+
+<p class="Standard" style="text-align: left;">$Id: howto.html,v 1.1 2005/07/25 19:53:58 marc Exp $<br />
+
+
+
+
+
+
+
+
+
+</p>
+
+
+
+
+
+
+
+
+
+</span>
+</body>
+</html>
