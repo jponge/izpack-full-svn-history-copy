@@ -68,7 +68,14 @@ void FailureDialog::buildUI()
                               _("You have the following installation choices:"),
                               wxDefaultPosition, wxDefaultSize, 3, rlabels, 1,
                               wxRA_SPECIFY_COLS);
-  optionsBox->SetSelection(0);
+  if( canInstallJRE ) 
+  {
+     optionsBox->SetSelection( 0 );
+  } 
+  else 
+  {
+     optionsBox->SetSelection( 1 );
+  }
   sizer->Add(optionsBox, 1, wxGROW | wxALL, 10);
 
   okButton = new wxButton(this, wxID_OK, _("Continue"));
@@ -76,7 +83,7 @@ void FailureDialog::buildUI()
   sizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_CENTER_HORIZONTAL
                           | wxALL, 10);
 
-  optionsBox->Enable(1, canInstallJRE);
+  optionsBox->Enable(0, canInstallJRE);
   optionsBox->Enable(2, canDownloadJRE);
 
   // Sizer
