@@ -50,7 +50,7 @@ import com.jgoodies.forms.layout.FormLayout;
 /**
  * @author Andy Gombos
  */
-public abstract class AbstractListSelect extends IzPackPanel implements ActionListener, FocusListener, ListSelectionListener, ConfigurePanel
+public abstract class AbstractListSelect extends IzPackPanel implements ActionListener, FocusListener, ListSelectionListener
 {
     public AbstractListSelect()
     {

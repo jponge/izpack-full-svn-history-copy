@@ -26,6 +26,7 @@ package izpack.frontend.view.stages.panelselect;
 import izpack.frontend.model.PanelInfo;
 import izpack.frontend.model.PanelInfoManager;
 import izpack.frontend.model.SelectListModel;
+import izpack.frontend.model.stages.PanelSelectionModel;
 import izpack.frontend.view.components.AbstractListSelect;
 import izpack.frontend.view.components.ImageLabel;
 import izpack.frontend.view.components.SelectList;
@@ -54,6 +55,9 @@ public class PanelSelectList extends AbstractListSelect
         src = new SelectList();
         dest = new SelectList();
         
+        panelSelectModel = new PanelSelectionModel();
+        
+        dest.setModel(panelSelectModel);        
         initSrcList();
         
         initLists(src, dest);
@@ -70,12 +74,19 @@ public class PanelSelectList extends AbstractListSelect
         }
 	}
     
+    public PanelSelectionModel getDestModel()
+    {
+        return panelSelectModel;
+    }
+    
     SelectList src, dest;
+    PanelSelectionModel panelSelectModel;
+    
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.panels.ConfigurePanel#createXML()
      */
-    public Element createXML()
+    /*public Element createXML()
     {
         ListModel lm = dest.getModel();
         
@@ -94,7 +105,7 @@ public class PanelSelectList extends AbstractListSelect
         }
         
         return panels;
-    }
+    }*/
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.panels.ConfigurePanel#initFromXML(org.w3c.dom.Document)

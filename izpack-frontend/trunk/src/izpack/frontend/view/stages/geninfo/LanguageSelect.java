@@ -69,43 +69,7 @@ public class LanguageSelect extends AbstractListSelect
         initSrcList();
         
         initLists(src, dest);
-    }
-    
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.panels.ConfigurePanel#createXML()
-     * 
-     * Structure:
-     * <locale>
-     * 	<langpack iso3="eng" />
-     * </locale>
-     */
-    public Element createXML()
-    {
-        Element root = XML.createRootElement("locale");
-        Document rootDoc = root.getOwnerDocument();
-        
-        ListModel model = dest.getModel();
-        
-        for (int i = 0; i < model.getSize(); i++)
-        {
-            Element langElem = XML.createElement("langpack", rootDoc);
-            LangLabel lLabel = (LangLabel) model.getElementAt(i);
-            langElem.setAttribute("iso3", lLabel.getISO3Code());
-            
-            root.appendChild(langElem);
-        }
-        
-        return root;
-    }
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.panels.ConfigurePanel#initFromXML(org.w3c.dom.Document)
-     */
-    public void initFromXML(Document xmlFile)
-    {
-        // TODO Auto-generated method stub
-        
-    }
+    }    
     
     public void initSrcList()
 	{

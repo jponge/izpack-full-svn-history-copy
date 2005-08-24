@@ -62,7 +62,7 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
 /**
  * @author Andy Gombos
  */
-public class GeneralInfoPanel extends IzPackPanel implements ConfigurePanel, ActionListener
+public class GeneralInfoPanel extends IzPackPanel implements ActionListener
 {   
     /**
      * @param information
@@ -223,41 +223,6 @@ public class GeneralInfoPanel extends IzPackPanel implements ConfigurePanel, Act
         dialog.setVisible(true);
         
         return returnValue;
-    }
-        
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.panels.ConfigurePanel#createXML()
-     */
-    public Element createXML()
-    {
-        Element info = XML.createRootElement("info");
-        Document doc = info.getOwnerDocument();
-        
-        Element appname = XML.createElement("appname", doc);
-        Element appversion = XML.createElement("appversion", doc);
-        Element url = XML.createElement("url", doc);
-        Element authors = XML.createElement("authors", doc);
-        
-        appname.setTextContent(appName.getText());
-        appversion.setTextContent(version.getText());
-        url.setTextContent(homepage.getText());
-        
-        for (int i = 0; i < authorListModel.size(); i++)
-        {
-            Author auth = (Author) authorListModel.get(i);
-            Element author = XML.createElement("author", doc);
-            author.setAttribute("name", auth.getName());
-            author.setAttribute("email", auth.getEmail());
-            
-            authors.appendChild(author);
-        }
-        
-        info.appendChild(appname);
-        info.appendChild(appversion);
-        info.appendChild(url);
-        info.appendChild(authors);
-        
-        return info;
     }
 
     /* (non-Javadoc)

@@ -26,13 +26,13 @@ package izpack.frontend.view.mode;
 import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.controller.StageChangeListener;
 import izpack.frontend.view.stages.IzPackStage;
+import izpack.frontend.view.stages.StageOrder;
 import izpack.frontend.view.stages.geninfo.GeneralInformation;
 import izpack.frontend.view.stages.packs.Pack;
 import izpack.frontend.view.stages.panelselect.PanelSelection;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -44,9 +44,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
 
-import sun.awt.WindowClosingListener;
+import utils.XML;
 
 /**
  * Show Panel Select and General Information stages

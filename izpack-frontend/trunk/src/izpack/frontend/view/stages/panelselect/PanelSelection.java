@@ -23,23 +23,16 @@
  */
 package izpack.frontend.view.stages.panelselect;
 
-import izpack.frontend.controller.StageChangeEvent;
+import izpack.frontend.controller.validators.PanelSelectionValidator;
+import izpack.frontend.model.stages.PanelSelectionModel;
 import izpack.frontend.model.stages.StageDataModel;
 import izpack.frontend.view.stages.IzPackStage;
-import izpack.frontend.view.stages.StageOrder.StageContainer;
-import izpack.frontend.view.stages.geninfo.GeneralInformation;
-import izpack.frontend.view.stages.packs.Pack;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import utils.UI;
 import utils.XML;
 
 import com.jgoodies.validation.Severity;
@@ -69,18 +62,20 @@ public class PanelSelection extends IzPackStage
      */
     public Document createInstallerData()
     {   
-        Element root = XML.createRootElement("installation");
+        /*Element root = XML.createRootElement("installation");
         Document rootDoc = root.getOwnerDocument();
         
         root.setAttribute("version", "1.0");                
         root.appendChild(rootDoc.importNode(panelSelect.createXML(), true));
         
-        return rootDoc;
+        return rootDoc;*/
+        return panelSelect.getDestModel().writeToXML();
     }
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.IzPackStage#validateStage()
      */
+    //TODO warnings for common forgotten panels
     public ValidationResult validateStage()
     {
         ValidationResult vr = new ValidationResult();
@@ -122,7 +117,9 @@ public class PanelSelection extends IzPackStage
      */
     public StageDataModel getDataModel()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return model;
     }
+    
+    private static PanelSelectionModel model;
+    private static PanelSelectionValidator validator;
 }

@@ -48,7 +48,7 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
 /**
  * @author Andy Gombos
  */
-public class UIConfig extends IzPackPanel implements ConfigurePanel
+public class UIConfig extends IzPackPanel
 {
     /**
      * @param information
@@ -95,35 +95,7 @@ public class UIConfig extends IzPackPanel implements ConfigurePanel
         
         configureValidation();
     }
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.pages.configure.ConfigurePage#createXML()
-     * 
-     * Structure
-     * <guiprefs resizable="no" width="800" height="600"/>
-     */
-    public Element createXML()
-    {
-        Document doc = XML.getDocument();
-        Element guiprefs = doc.createElement("guiprefs");
-                
-        guiprefs.setAttribute("resizable", resizable.getState());        
-        
-        guiprefs.setAttribute("width", width.getText());
-        guiprefs.setAttribute("height", height.getText());        
-        
-        return guiprefs;
-    }
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.pages.configure.ConfigurePage#initFromXML(org.w3c.dom.Document)
-     */
-    public void initFromXML(Document xmlFile)
-    {
-        // TODO Auto-generated method stub
-        
-    }    
-   
+    
     private void configureValidation()
     {     
         ValidationComponentUtils.setMandatory(height, true);

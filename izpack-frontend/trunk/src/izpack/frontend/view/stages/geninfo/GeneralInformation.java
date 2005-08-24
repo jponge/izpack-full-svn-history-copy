@@ -77,20 +77,7 @@ public class GeneralInformation extends IzPackStage
      */
     public Document createInstallerData()
     {           
-        Element root = XML.createRootElement("installation");
-        Document rootDoc = root.getOwnerDocument();
-        
-        root.setAttribute("version", "1.0");        
-        
-        Element genInfoXML = generalInfoPage.createXML();
-        Element langXML = languageSelect.createXML();
-        Element uiXML = uiConfig.createXML();               
-        
-        root.appendChild(rootDoc.importNode(genInfoXML, true));
-        root.appendChild(rootDoc.importNode(langXML, true));
-        root.appendChild(rootDoc.importNode(uiXML, true));
-        
-        return rootDoc;
+        return model.writeToXML();
     }
 
     /* (non-Javadoc)

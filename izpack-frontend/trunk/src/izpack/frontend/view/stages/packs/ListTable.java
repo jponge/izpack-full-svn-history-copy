@@ -51,7 +51,9 @@ public class ListTable extends JTable implements MouseListener
 
         setDefaultRenderer(Object.class, renderer);
         setDefaultEditor(Object.class, editor);
-        setRowHeight(renderer.getHeight());        
+        setRowHeight(renderer.getHeight());
+        
+        putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         addMouseListener(this);
         

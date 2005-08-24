@@ -23,11 +23,18 @@
  */
 package izpack.frontend.model.stages;
 
+import izpack.frontend.model.Author;
 import izpack.frontend.model.SelectListModel;
+import izpack.frontend.view.components.LangLabel;
 
 import java.util.ArrayList;
 
+import javax.swing.ListModel;
+
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import utils.XML;
 
 import com.jgoodies.binding.beans.Model;
 import com.jgoodies.binding.list.ArrayListModel;
@@ -163,8 +170,20 @@ public class GeneralInformationModel extends Model implements StageDataModel
      */
     public Document writeToXML()
     {
-        // TODO Auto-generated method stub
-        return null;
+        Element root = XML.createRootElement("installation");
+        Document rootDoc = root.getOwnerDocument();
+        
+        root.setAttribute("version", "1.0");        
+        
+        Element genInfoXML = createGeneralInfoPageXML();
+        Element langXML = createLanguageXML();
+        Element uiXML = createGUIXML();               
+        
+        root.appendChild(rootDoc.importNode(genInfoXML, true));
+        root.appendChild(rootDoc.importNode(langXML, true));
+        root.appendChild(rootDoc.importNode(uiXML, true));
+        
+        return rootDoc;
     }
 
     /* (non-Javadoc)
@@ -174,5 +193,81 @@ public class GeneralInformationModel extends Model implements StageDataModel
     {
         // TODO Auto-generated method stub
         
+    }
+    
+    private Element createGeneralInfoPageXML()
+    {
+        Element info = XML.createRootElement("info");
+        Document doc = info.getOwnerDocument();
+        
+        Element appname = XML.createElement("appname", doc);
+        Element appversion = XML.createElement("appversion", doc);
+        Element url = XML.createElement("url", doc);
+        Element authorsElem = XML.createElement("authors", doc);
+        
+        appname.setTextContent(appName);
+        appversion.setTextContent(version);
+        url.setTextContent(homepage);
+        
+        for (int i = 0; i < this.authors.size(); i++)
+        {
+            Author auth = (Author) authors.get(i);
+            Element author = XML.createElement("author", doc);
+            author.setAttribute("name", auth.getName());
+            author.setAttribute("email", auth.getEmail());
+            
+            authorsElem.appendChild(author);
+        }
+        
+        info.appendChild(appname);
+        info.appendChild(appversion);
+        info.appendChild(url);
+        info.appendChild(authorsElem);
+        
+        return info;
+    }
+    
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.panels.ConfigurePanel#createXML()
+     * 
+     * Structure:
+     * <locale>
+     * 	<langpack iso3="eng" />
+     * </locale>
+     */
+    private Element createLanguageXML()
+    {
+        Element root = XML.createRootElement("locale");
+        Document rootDoc = root.getOwnerDocument();
+        
+        ListModel model = langCodes;
+        
+        for (int i = 0; i < model.getSize(); i++)
+        {
+            Element langElem = XML.createElement("langpack", rootDoc);
+            LangLabel lLabel = (LangLabel) model.getElementAt(i);
+            langElem.setAttribute("iso3", lLabel.getISO3Code());
+            
+            root.appendChild(langElem);
+        }
+        
+        return root;
+    }
+    
+    /*  
+     * Structure
+     * <guiprefs resizable="no" width="800" height="600"/>
+     */
+    private Element createGUIXML()
+    {
+        Document doc = XML.getDocument();
+        Element guiprefs = doc.createElement("guiprefs");
+                
+        guiprefs.setAttribute("resizable", resizable ? "yes" : "no");        
+        
+        guiprefs.setAttribute("width", Integer.toString(width));
+        guiprefs.setAttribute("height", Integer.toString(height));        
+        
+        return guiprefs;
     }
 }
