@@ -15,12 +15,14 @@ install: all install_lang
 	strip ../dist/launcher-Win32.exe
 	copy launcher.exe.manifest ..\dist\launcher-Win32.exe.manifest
 
-dist: all install_lang
-	cp ${EXEC} ..\dist\${EXEC}-${OS}
-	strip ../dist/${EXEC}-${OS}
-
 install_lang:
-	mkdir  ..\dist\fr ..\dist\de ..\dist\da ..\dist\pt-BR ..\dist\es ..\dist\it ..\dist\nl
+	if not exist ..\dist\fr mkdir ..\dist\fr
+	if not exist ..\dist\de mkdir ..\dist\de
+	if not exist ..\dist\da mkdir ..\dist\da
+	if not exist ..\dist\pt-BR mkdir ..\dist\pt-BR
+	if not exist ..\dist\es mkdir ..\dist\es
+	if not exist ..\dist\it mkdir ..\dist\it
+	if not exist ..\dist\nl mkdir ..\dist\nl  
 	copy fr\launcher.mo ..\dist\fr
 	copy es\launcher.mo ..\dist\es
 	copy de\launcher.mo ..\dist\de
