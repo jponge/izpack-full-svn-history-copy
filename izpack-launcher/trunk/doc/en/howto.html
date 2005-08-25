@@ -6,6 +6,12 @@
 
 
 
+
+
+
+  
+  
+  
   
   
   
@@ -15,6 +21,12 @@
 
 
 
+
+
+
+  
+  
+  
   
   
   
@@ -23,6 +35,12 @@
 
 
 
+
+
+
+  
+  
+  
   
   
   
@@ -30,6 +48,15 @@
 
 
 
+
+
+
+  
+  
+  
+  
+  
+  
   
   
   
@@ -94,7 +121,13 @@ BODY
 
 
 
+
+
+
 <h1>Izpack-Launcher&nbsp;</h1>
+
+
+
 
 
 
@@ -105,30 +138,27 @@ BODY
 
 
 
+
+
+
 <h2><span class="Head_2">HowTo
 Compile an Executable for the Win32 Platform.</span></h2>
 
 
 
-<p class="Standard" style="text-align: left;">
-
-
-<br />
 
 
 
+<p class="Standard" style="text-align: left;">This document endeavors
+to describe how to compile a&nbsp;Windows executable version of the
+Izpack launcher using&nbsp;open source tools and Windows as a build
+environment.</p>
+
+
+<p class="Standard" style="text-align: left;"><br />
 
 
 
-
-This Document describes the compilation and first steps of the
-izpack-laucher. <br />
-
-
-
-
-
-<br />
 
 
 
@@ -139,7 +169,13 @@ izpack-laucher. <br />
 
 
 
+
+
+
 <h3><span class="Head_3">Table of Content </span></h3>
+
+
+
 
 
 
@@ -147,6 +183,9 @@ izpack-laucher. <br />
 
 
 <br />
+
+
+
 
 
 
@@ -156,65 +195,81 @@ izpack-laucher. <br />
 1. Introduction <br />
 
 
-
-
-
-
-2. Typographic conventions <br />
-
-
-
-
-
-
-3. Startup <br />
+2. Startup <br />
 
 
 
 
 
 
-4. Prerequisites <br />
+
+
+
+3. Prerequisites <br />
 
 
 
 
 
 
-5. Getting Sources <br />
+
+
+
+4. Getting Sources <br />
 
 
 
 
 
 
-6. Installation<br />
+
+
+
+5. Installation<br />
 
 
 
 
 
 
-7.&nbsp;Preparation<br />
 
 
 
-8. Perfom complete compilation of the Izpack-Launcher - Distribution<br />
+6.&nbsp;Preparation<br />
 
 
 
 
 
 
-9. Test<span class="Head_3"><br />
+7. Perform complete compilation of the Izpack-Launcher - Distribution<br />
 
 
 
-<span class="Standard">10. Customization</span></span><br />
 
 
 
-11. Shutdown <br />
+
+
+
+8. Test<span class="Head_3"><br />
+
+
+
+
+
+
+<span class="Standard">9. Customization</span></span><br />
+
+
+
+
+
+
+10. Shutdown <br />
+
+
+
 
 
 
@@ -228,7 +283,13 @@ izpack-laucher. <br />
 
 
 
+
+
+
 <br />
+
+
+
 
 
 
@@ -239,11 +300,17 @@ izpack-laucher. <br />
 
 
 
+
+
+
 <h3><span class="Head_3">1. Introduction</span></h3>
 
 
 
-<p class="Standard" style="text-align: left;"></p>
+
+
+
+
 
 
 
@@ -254,47 +321,42 @@ izpack-laucher. <br />
 native Executable, that searches for, installs if not found and starts
 a Java Runtime Environment (JRE) together with a customers "IzPack Java
 - setup.jar".
-If Java is already&nbsp;installed in the matched version, the
-izpack-launcher (autorun) setup.exe just starts this Izpack Setup
-immediatelly, and
-it seems (in the scope of the customer or user) that the setup.exe
-performs the entire setup application. There can also be made a
-self-extracting Version,&nbsp;but this uses an another
-advanced technique and is not part of this document (It is described by
-Julien in a separate "<a href="http://www.izforge.com/izpack/7zip-sfx-tutorial/">screen-cam</a>" demonstration). Finally,
-IzPack-Launcher is really a very
-neat tool, that supports IzPack greatful, but even on Linux, you can
-also write
-a more or less large Shellscript, that covers the same tasks. And last
-Imho:
-Izpack-Launcher is not the name that describes this Executable exactly.
+If Java is already&nbsp;installed then it&nbsp;just starts the setup.jar.&nbsp;</p>
+
+
+<p class="Standard" style="text-align: left;">IzPack-launcher can be
+compiled and run on a number of OSs. But it will be of most
+benefit&nbsp;to Windows users, who lack the ability of being able to
+effectively accomplish the above task using good old unix scripting
+tools.</p>
+
+
+<p class="Standard" style="text-align: left;">Building of a self-extracting version is also possible. This uses a technique which is nicely illustrated by
+Julien in a separate <a href="http://www.izforge.com/izpack/7zip-sfx-tutorial/demo.html">flash</a> "screen-cam" demonstration or alternatively a <a href="http://www.izforge.com/izpack/7zip-sfx-tutorial/izpack-win32-sfx-tutorial.pdf">pdf</a>.</p>
+
+
+<p class="Standard" style="text-align: left;">For more information on
+how
+to use, embed and build a IzPack Setup with the IzPack-Launcher,
+read&nbsp;the manuals which come with IzPack and&nbsp;IzPack Launcher.
+A <a href="http://www.izforge.com/izpack/izpack-tutorial.pdf">quickstart tutorial</a>&nbsp;pdf is also provided and is recommended for beginners. There is another "howto compile" in the <a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">WIKI</a>, which describes the compile and build based on&nbsp;MSVC++6.0 and Open Watcom.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p class="Standard" style="text-align: left;">Finally, Imho: IzPack-Launcher is not the name that describes this Executable exactly.
 JRE_FindAndStartWithAny(Gui)Jar.exe would be a more precise name. ;-)</p>
 
 
-
-
-
-
-
-<h3 class="Head_3">2. Typographic
-conventions</h3>
-
-
-
-
-
-
-
-<p class="Head_3" style="text-align: left;"><span class="Standard">In
-this document I use a typical typographic convention. This is the
-convention from the SuSE - Linux Adminguide. A Note on formatting: I have begin to write this document with <span style="font-style: italic;">kwrite</span> but then I have continued with <span style="font-style: italic;">Nvu</span>, that is, why the used stylesheets and the formatting are a little bit confusing...</span><span style="font-weight: bold;"></span></p>
-
-
-
-
-
-
-<h3><span class="Head_3">3.
+<h3><span class="Head_3">2.
 Startup</span>&nbsp;</h3>
 
 
@@ -305,11 +367,14 @@ Startup</span>&nbsp;</h3>
 
 
 
-<p class="Standard" style="text-align: left;">Izpack launcher is build
-and based on WxWindows/wxWidgets, a native and platform independend
+
+
+
+<p class="Standard" style="text-align: left;">IzPack&nbsp;launcher is build
+and based on WxWindows/wxWidgets, a native and platform independent
 GUI-Development
-library similar to Qt and Gtk. But it is more free as Qt even for
-win32 binaries at the time of writing (until the Qt4 release). That is why you will need (additionally to a
+library similar to Qt and Gtk. But it has more liberal licensing terms then Qt (even for
+win32 binaries as of the current Qt4 release). That is why you will need (in addition to a
 C++ Compiler) the WxWindow/wxWidgets distribution. I will describe how to
 get and
 prebuild this GUI-library in the Prerequisites and the Preparation Section.</p>
@@ -322,22 +387,16 @@ prebuild this GUI-library in the Prerequisites and the Preparation Section.</p>
 
 
 
-<p class="Standard" style="text-align: left;">To use Izpack-Launcher,
-you&nbsp;also need an executable "Izpack-Setup Jar-File". But you don't
-need an own setup of your software. To immediate start, you can also
-alternatively use IzPack's
-Setup-Jar. Just download it from <a href="http://www.izforge.com/izpack">http://www.izforge.com/izpack</a>, if needed.</p>
-<p class="Standard" style="text-align: left;">For more information, how to use, embedd and build a Izpack Setup with the IzPack-Launcher, read both, the manual, which comes with IzPack and the other, which comes with the IzPack Launcher. A <a href="http://www.izforge.com/izpack/izpack-tutorial.pdf">quickstart tutorial</a> as pdf is also provided and is recommended for beginners. There is another "howto compile" in the <a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">WIKI</a>, which describes the compile and build based on&nbsp;MSVC++6.0 and Open Watcom. Feel free, to decide your appropriate way to build.</p>
 
 
 
+<p class="Standard" style="text-align: left;">To use IzPack-Launcher,
+you&nbsp;will also need your application as an&nbsp;"IzPack-Setup
+Jar-File" executable jar. For the impatient you can use the IzPack's
+Setup-Jar&nbsp;from <a href="http://www.izforge.com/izpack">http://www.izforge.com/izpack</a>, for testing purposes.</p>
 
 
-
-
-
-
-<h3 class="Head_3">4.
+<h3 class="Head_3">3.
 Prerequisites&nbsp;</h3>
 
 
@@ -348,9 +407,25 @@ Prerequisites&nbsp;</h3>
 
 
 
-<p class="Standard" style="text-align: left;">At first, you need a
+
+
+
+<p class="Standard" style="text-align: left;">To start with, you need a
 C++&nbsp;Compiler. The easiest way is to download and install <a href="http://www.bloodshed.net">DevCPP</a> from
-http://www.bloodshed.net.<br />
+http://www.bloodshed.net. This is a complete IDE and comes with all tools needed to compile
+wxWindows/wxWidgets and IzPack-launcher.&nbsp;</p>
+
+
+<p class="Standard" style="text-align: left;">The current release of DevCPP
+is 4.9.9.2 (as of 19th August 2005). Unfortunately the&nbsp;make utility of this suite has a
+bug, so you have to do 3 very simple edit/copy steps manually. I will describe this in
+the preparation chapter. Note: if this bug gets fixed in a future
+release, you might be lucky and not have to fix it yourself!</p>
+
+
+
+
+<p class="Standard" style="text-align: left;">After installation, you have to add the <span style="font-family: monospace;">"bin</span>" - folder of DevCPP to your PATH-Environment variable. i.e. <span style="font-family: monospace;">set PATH=%PATH%;C:\devcpp\bin</span></p>
 
 
 
@@ -360,24 +435,10 @@ http://www.bloodshed.net.<br />
 
 
 
-This is a complete IDE but it comes with all tools needed to compile
-wxWindows/wxWidgets and izpack-launcher. The current release of DevCPP
-is 4.9.9.2. Unfortunatelly the&nbsp;make utility of this suite has a
-bug, so you have to edit/copy 3 Files manually. I will describe this at
-the preparation chapter. Note: if this bug was fixed in a future
-release, you don't need no longer do so.</p>
-
-<p class="Standard" style="text-align: left;">After installation, you have to add the <span style="font-family: monospace;">"bin</span>" - folder of DevCPP to your PATH-Environmentvariable. i.e. <span style="font-family: monospace;">set PATH=%PATH%;C:\devcpp\bin</span></p>
 
 
 
-
-
-
-
-
-
-<h3><span class="Head_3"> 5. Getting
+<h3><span class="Head_3"> 4. Getting
 Sources</span>&nbsp;</h3>
 
 
@@ -388,9 +449,14 @@ Sources</span>&nbsp;</h3>
 
 
 
-<p class="Standard" style="text-align: left;">Next thing to build
-izpack-laucher, you have to do, is to checkout the sources from the
-svn-tree, if you don't have the sources already. As registered izpack&nbsp;developer, you can checkout using: <br />
+
+
+
+<p class="Standard" style="text-align: left;">The next thing you have to do is build IzPack-launcher, so checkout the sources from the
+svn-tree, if you don't have the sources already.&nbsp;<br />
+
+
+As registered IzPack developer, you can checkout using: <br />
 
 
 
@@ -400,8 +466,14 @@ svn-tree, if you don't have the sources already. As registered izpack&nbsp;devel
 
 
 
-<tt>svn checkout&nbsp;svn+ssh://<i>developername</i>@svn.berlios.de/svnroot/repos/izpack/trunk</tt>
+
+
+
+<tt>svn checkout&nbsp;svn+ssh://<i>developername</i>@svn.berlios.de/svnroot/repos/izpack/izpack-launcher/trunk</tt>
 <br />
+
+
+
 
 while as anonymous user you have to use:<br />
 
@@ -413,7 +485,10 @@ while as anonymous user you have to use:<br />
 
 
 
-<tt>svn checkout svn://svn.berlios.de/izpack/trunk</tt></p>
+
+
+
+<tt>svn checkout svn://svn.berlios.de/izpack/izpack-launcher/trunk</tt></p>
 
 
 
@@ -423,12 +498,14 @@ while as anonymous user you have to use:<br />
 
 
 
-<p class="Standard" style="text-align: left;"><tt><span class="Standard">Then, you have to download the wxWindows</span><span class="Standard">/</span></tt>wxWidgets<tt><span class="Standard"> sources for your target platform.</span><span class="Standard"> In this document,</span><span class="Standard"> I
-will describe the compilation on the windows platform, so you have to
-download&nbsp;<a href="http://prdownloads.sourceforge.net/wxwindows/wxMSW-2.4.2-setup.zip">wxMSW-2.4.2-setup.zip</a>
-from http://www.sourceforge.net . I use this old wxWidgets-release </span></tt>explicitly,
-because with the&nbsp;newer release, it does not work out of the box.
-(This is maybe a todo for us - at least we have to adapt the makefiles.)<tt><span class="Standard"></span></tt><br />
+
+
+
+<p class="Standard" style="text-align: left;"><tt><span class="Standard">Then, you have to download the wxWindows</span><span class="Standard">/</span></tt>wxWidgets<tt><span class="Standard"> sources for your target platform.</span><span class="Standard"> As this is all about Windows - go</span><span class="Standard"> download the old version 2.4.2 (otherwise you will be faced with more build bugs) <a href="http://prdownloads.sourceforge.net/wxwindows/wxMSW-2.4.2-setup.zip">wxMSW-2.4.2-setup.zip</a>
+from http://www.sourceforge.net . </span></tt>Yes, this is maybe a todo for us - at least we have to adapt the makefiles.<br />
+
+
+
 
 
 
@@ -448,7 +525,10 @@ because with the&nbsp;newer release, it does not work out of the box.
 
 
 
-<h3 class="Head_3">6. Installation</h3>
+
+
+
+<h3 class="Head_3">5. Installation</h3>
 
 
 
@@ -458,9 +538,11 @@ because with the&nbsp;newer release, it does not work out of the box.
 
 
 
-<p class="Standard" style="text-align: left;">Once you have download
-all needed things, you are ready to install these. I have setup DevCPP
-with the default options and the defualt installpath: c:\dev-cpp.
+
+
+
+<p class="Standard" style="text-align: left;">Once you have done your downloading, you are ready to install. I have setup DevCPP
+with the default options and the default install path: c:\dev-cpp.
 wxWindows was also installed typically, except I choosed another
 install path: c:\wxw242.</p>
 
@@ -472,7 +554,10 @@ install path: c:\wxw242.</p>
 
 
 
-<h3 class="Head_3">7. Preparation&nbsp;</h3>
+
+
+
+<h3 class="Head_3">6. Preparation&nbsp;</h3>
 
 
 
@@ -482,9 +567,14 @@ install path: c:\wxw242.</p>
 
 
 
-<p class="Standard" style="text-align: left;">You have to read the
-documentation, howto build the wxWindows library, but I have extracted
-the requiered steps to compile with DevCpp.</p>
+
+
+
+<p class="Standard" style="text-align: left;">You can read the
+documentation on how to build the wxWindows library, or alternatively follow the required steps below to compile with DevCpp.</p>
+
+
+
 
 
 
@@ -508,9 +598,15 @@ the current Console:</p>
 
 
 
+
+
+
 <p class="Standard" style="text-align: left;">i) Adjust the environment
 variable WXWIN to your wxWindows/wxWidgets&nbsp;installation-
 &nbsp;base path: <br />
+
+
+
 
 
 
@@ -530,7 +626,13 @@ variable WXWIN to your wxWindows/wxWidgets&nbsp;installation-
 
 
 
+
+
+
 <pre class="Standard" style="font-family: monospace;">&nbsp;&nbsp;&gt;&nbsp;set WXWIN=C:\wxw242</pre>
+
+
+
 
 
 
@@ -551,7 +653,13 @@ subdirectory of DevCPP to your PATH environment variable:<br />
 
 
 
+
+
+
 </p>
+
+
+
 
 
 
@@ -571,7 +679,13 @@ subdirectory of DevCPP to your PATH environment variable:<br />
 
 
 
+
+
+
 <p class="Standard" style="text-align: left;"></p>
+
+
+
 
 
 
@@ -590,7 +704,13 @@ subdirectory of DevCPP to your PATH environment variable:<br />
 
 
 
+
+
+
 <br />
+
+
+
 
 
 
@@ -609,6 +729,9 @@ subdirectory of DevCPP to your PATH environment variable:<br />
 
 
 
+
+
+
 <p class="Standard" style="text-align: left;">iv) and enter:<br />
 
 
@@ -618,7 +741,13 @@ subdirectory of DevCPP to your PATH environment variable:<br />
 
 
 
+
+
+
 <br />
+
+
+
 
 
 
@@ -636,7 +765,13 @@ subdirectory of DevCPP to your PATH environment variable:<br />
 
 
 
+
+
+
 </span><br />
+
+
+
 
 
 
@@ -654,7 +789,13 @@ subdirectory of DevCPP to your PATH environment variable:<br />
 
 
 
+
+
+
 </p>
+
+
+
 
 
 
@@ -672,7 +813,13 @@ subdirectory of DevCPP to your PATH environment variable:<br />
 
 
 
+
+
+
 <br />
+
+
+
 
 
 
@@ -687,8 +834,6 @@ subdirectory of DevCPP to your PATH environment variable:<br />
 
 
 
-<p class="Standard" style="text-align: left;">according to the wx
-compile instruction fow mingw.&nbsp;</p>
 
 
 
@@ -697,8 +842,12 @@ compile instruction fow mingw.&nbsp;</p>
 
 
 
-<p class="Standard" style="text-align: left;">NOTE: Unfortunatelly,
-there si a tiny bug in the make - Tool or in the called copy-tool. (The
+
+
+
+
+<p class="Standard" style="text-align: left;">NOTE: Unfortunately,
+there is a tiny bug in the make tool or copy-tool (as I sayed above). (The
 destination option is not recognized correctly),&nbsp;<br />
 
 
@@ -708,7 +857,13 @@ destination option is not recognized correctly),&nbsp;<br />
 
 
 
-So you will get a Errormesage such as:</p>
+
+
+
+So you will get a Error message like:</p>
+
+
+
 
 
 
@@ -725,7 +880,13 @@ So you will get a Errormesage such as:</p>
 
 
 
+
+
+
 mkdir ..\..\lib\msw\wx<br />
+
+
+
 
 
 
@@ -739,7 +900,13 @@ cp ../../include/wx/msw/setup.h ../../lib/msw/wx/setup.h<br />
 
 
 
+
+
+
 <span style="font-weight: bold;">process_begin: CreateProcess((null), cp ../../include/wx/msw/setup.h ../../lib/m</span><br style="font-weight: bold;" />
+
+
+
 
 
 
@@ -753,6 +920,9 @@ cp ../../include/wx/msw/setup.h ../../lib/msw/wx/setup.h<br />
 
 
 
+
+
+
 make (e=2): The system cannot find the file specified.<br />
 
 
@@ -760,7 +930,13 @@ make (e=2): The system cannot find the file specified.<br />
 
 
 
+
+
+
 make: *** [../../lib/msw/wx/setup.h] Error 2</p>
+
+
+
 
 
 
@@ -773,11 +949,20 @@ make: *** [../../lib/msw/wx/setup.h] Error 2</p>
 
 
 
+
+
+
 </p>
 
 
 
+
+
+
 <pre style="font-weight: bold; font-family: monospace;">cp ../common/dosyacc.c ../common/y_tab.c</pre>
+
+
+
 
 
 
@@ -795,7 +980,13 @@ make: *** [../../lib/msw/wx/setup.h] Error 2</p>
 
 
 
+
+
+
 <pre style="font-family: monospace;">..) failed.</pre>
+
+
+
 
 
 
@@ -813,7 +1004,13 @@ make: *** [../../lib/msw/wx/setup.h] Error 2</p>
 
 
 
+
+
+
 <pre style="font-family: monospace;">make: *** [../../src/common/y_tab.c] Error 2</pre>
+
+
+
 
 
 
@@ -831,7 +1028,13 @@ make: *** [../../lib/msw/wx/setup.h] Error 2</p>
 
 
 
+
+
+
 However there is a simple Workaround by doing the three following easy things ;-) :&nbsp;</p>
+
+
+
 
 
 
@@ -849,7 +1052,13 @@ However there is a simple Workaround by doing the three following easy things ;-
 
 
 
+
+
+
 Note: Use backslash instead of slash.</span></p>
+
+
+
 
 
 
@@ -862,7 +1071,13 @@ Note: Use backslash instead of slash.</span></p>
 
 
 
+
+
+
 <pre><span style="font-weight: bold;">&gt; make -f</span> <span style="font-weight: bold;">makefile.g95 FINAL=1</span><br /><br />&gt; <span style="font-weight: bold;">copy&nbsp;..</span>\<span style="font-weight: bold;">common</span>\<span style="font-weight: bold;">dosyacc.c ..</span>\<span style="font-weight: bold;">common</span>\<span style="font-weight: bold;">y_tab.c</span><br /><br /><span class="Standard">and continue the build, by enter </span> <span style="font-weight: bold;"><br /><br />&gt; make -f</span> <span style="font-weight: bold;">makefile.g95 FINAL=1</span><br /><span style="font-style: italic;"></span><br /><span style="font-weight: bold;">&gt; copy ..\common\doslex.c ..\common\lex_yy.c<br /><br /></span><span class="Standard">again and </span><span class="Standard" style="font-weight: bold;">finish</span><span class="Standard"> the wxWin-build, by (last) re-enter </span> <span style="font-weight: bold;"><br /></span><span style="font-weight: bold;"><br />&gt; make -f</span> <span style="font-weight: bold;">makefile.g95 FINAL=1</span><br /><br /></pre>
+
+
+
 
 
 
@@ -870,7 +1085,13 @@ Note: Use backslash instead of slash.</span></p>
 
 
 
-<p class="Standard">OK. You are now able to compile the&nbsp;Izpack-Launcher Exe.</p>
+
+
+
+<p class="Standard">OK. You are now able to compile the IzPack-Launcher Exe.</p>
+
+
+
 
 
 
@@ -887,17 +1108,31 @@ Note: Use backslash instead of slash.</span></p>
 
 
 
-<h3 class="Head_3">8. Perfom complete compilation of the Izpack-Launcher - Distribution</h3>
+
+
+
+<h3 class="Head_3">7. Perform complete compilation of the IzPack-Launcher - Distribution</h3>
 
 
 
 
-<p class="Standard" style="text-align: left;">( First ensure, that the WXWIN-Environmentvariable is set. Otherwise you get an error like:&nbsp;</p>
+
+
+
+<p class="Standard" style="text-align: left;">( First ensure, that the
+WXWIN-Environment variable is set. Otherwise you get an error like if
+you calls the make&nbsp;tool direct in the console.: &nbsp;</p>
+
+
+
 
 
 
 
 <p class="Standard" style="text-align: left; font-family: monospace;">Makefile.mingw:10: /src/makeprog.g95: No such file or directory<br />
+
+
+
 
 
 
@@ -908,19 +1143,42 @@ make: *** No rule to make target `/src/makeprog.g95'.&nbsp; Stop.)</p>
 
 
 
-<p class="Standard" style="text-align: left;">If all is setup correctly, you can simply compile by Enter&nbsp;the following command:</p>
 
 
 
-<pre class="Standard">C:\izpacklauncher&gt;<span style="font-weight: bold; font-family: monospace;">make -f Makefile.mingw install</span></pre>
+<p class="Standard" style="text-align: left;">Otherwise if you use the new provided <span style="font-weight: bold;">compile.bat</span> (recommended) you gets an error&nbsp;message, that WXWIN is not defined yet.</p>
+<p class="Standard" style="text-align: left;">If all is set up correctly, you can simply compile by start&nbsp;compile.bat file.</p>
 
 
 
 
-<p class="Standard" style="text-align: left;">Another important Note: You have to move away an already existing "..\dist"
-- Folder, because mkdir on win32 is just stupid and does not test if a
-folder already exists: it returns just with an error and breaks the
-buildprocess. (I know: one can add some "if exist"-code to the makefile, feel free to do so ;-)</p>
+
+
+<pre class="Standard">C:\izpacklauncher&gt;<span style="font-weight: bold; font-family: monospace;">compile.bat<br /></span></pre>
+<p class="Standard" style="text-align: left;">Alternatively you can compile by hand using the following command:</p>
+
+
+
+
+
+
+C:\izpacklauncher&gt;<span style="font-weight: bold; font-family: monospace;">make -f Makefile.mingw install</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -930,157 +1188,67 @@ buildprocess. (I know: one can add some "if exist"-code to the makefile, feel fr
 
 
 
+
+
+
 <br />
 
 
 
-<span style="font-family: monospace;" class="Standard">
-g++&nbsp; -Wl,--subsystem,windows -mwindows -LC:\wxw242/lib -LC:\wxw242/contrib/lib</span><br style="font-family: monospace;" class="Standard" />
 
 
 
-<span style="font-family: monospace;" class="Standard">
-&nbsp;-o launcher.exe launcher.o failuredialog.o launcher_resources.o&nbsp; C:\wxw242/lib/</span><br style="font-family: monospace;" class="Standard" />
+<span style="font-family: monospace;" class="Standard">C:\home\marc\izpack-launcher\trunk\src&gt;compile.bat<br />
+g++&nbsp; -Wl,--subsystem,windows -mwindows -LC:\wxw242/lib -LC:\wxw242/contrib/lib<br />
+&nbsp;-o launcher.exe launcher.o failuredialog.o launcher_resources.o&nbsp; C:\wxw242/lib/<br />
+libwxmsw.a -lregex -lpng -ljpeg -lzlib -ltiff -lstdc++ -lgcc -lodbc32 -lwsock32<br />
+-lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -<br />
+lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid<br />
+if not exist ..\dist\fr mkdir ..\dist\fr<br />
+if not exist ..\dist\de mkdir ..\dist\de<br />
+if not exist ..\dist\da mkdir ..\dist\da<br />
+if not exist ..\dist\pt-BR mkdir ..\dist\pt-BR<br />
+if not exist ..\dist\es mkdir ..\dist\es<br />
+if not exist ..\dist\it mkdir ..\dist\it<br />
+if not exist ..\dist\nl mkdir ..\dist\nl<br />
+copy fr\launcher.mo ..\dist\fr<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.<br />
+copy es\launcher.mo ..\dist\es<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.<br />
+copy de\launcher.mo ..\dist\de<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.<br />
+copy da\launcher.mo ..\dist\da<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.<br />
+copy pt-BR\launcher.mo ..\dist\pt-BR<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.<br />
+copy it\launcher.mo ..\dist\it<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.<br />
+copy nl\launcher.mo ..\dist\nl<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.<br />
+copy launcher.exe ..\dist\launcher-Win32.exe<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.<br />
+strip ../dist/launcher-Win32.exe<br />
+copy launcher.exe.manifest ..\dist\launcher-Win32.exe.manifest<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><span style="font-family: monospace;" class="Standard"></span></p>
 
 
 
-<span style="font-family: monospace;" class="Standard">
-libwxmsw.a -lregex -lpng -ljpeg -lzlib -ltiff -lstdc++ -lgcc -lodbc32 -lwsock32</span><br style="font-family: monospace;" class="Standard" />
 
 
 
-<span style="font-family: monospace;" class="Standard">
--lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -</span><br style="font-family: monospace;" class="Standard" />
 
 
+<p class="Standard" style="text-align: left;">Congratulation! You have now a IzPack launcher.exe in the current folder!</p>
 
-<span style="font-family: monospace;" class="Standard">
-lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid</span><br style="font-family: monospace;" class="Standard" />
 
 
 
-<span style="font-family: monospace;" class="Standard">
-mkdir&nbsp; ..\dist\fr ..\dist\de ..\dist\da ..\dist\pt-BR ..\dist\es ..\dist\it ..\d</span><br style="font-family: monospace;" class="Standard" />
 
 
+<h3><span class="Head_3">8. Test</span></h3>
 
-<span style="font-family: monospace;" class="Standard">
-ist\nl</span><br style="font-family: monospace;" class="Standard" />
 
 
-
-<span style="font-family: monospace;" class="Standard">
-copy fr\launcher.mo ..\dist\fr</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-copy es\launcher.mo ..\dist\es</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-copy de\launcher.mo ..\dist\de</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-copy da\launcher.mo ..\dist\da</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-copy pt-BR\launcher.mo ..\dist\pt-BR</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-copy it\launcher.mo ..\dist\it</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-copy nl\launcher.mo ..\dist\nl</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-copy launcher.exe ..\dist\launcher-Win32.exe</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-strip ../dist/launcher-Win32.exe</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-copy launcher.exe.manifest ..\dist\launcher-Win32.exe.manifest</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 file(s) copied.</span><br style="font-family: monospace;" class="Standard" />
-
-
-
-
-<br style="font-family: monospace;" class="Standard" />
-
-
-
-<span style="font-family: monospace;" class="Standard">
-C:\home\marc\izpack-launcher\trunk\src&gt;</span></p>
-
-
-
-
-
-<p class="Standard" style="text-align: left;">Congratulation! You have now a izpack&nbsp;launcher.exe in the current folder!</p>
-
-
-
-<h3><span class="Head_3">9. Test</span></h3>
 
 
 
@@ -1090,12 +1258,21 @@ C:\home\marc\izpack-launcher\trunk\src&gt;</span></p>
 
 
 
-<p class="Standard" style="text-align: left;">You will get one of the following screenshots depend on the content of the <span style="font-family: monospace;">launcher.ini</span> in the current folder.</p>
+
+
+
+<p class="Standard" style="text-align: left;">You will get one of the following screen shots depend on the content of the <span style="font-family: monospace;">launcher.ini</span> in the current folder.</p>
 
 
 
 
-<p class="Standard" style="text-align: left;">If the launcher ini contains a valid <span style="font-family: monospace;">"Jar = YourInstall.jar" </span>- line, you will get:<br />
+
+
+
+<p class="Standard" style="text-align: left;">If the file&nbsp;launcher.ini contains a valid <span style="font-family: monospace;">"Jar = YourInstall.jar" </span>- line, you will get:<br />
+
+
+
 
 
 
@@ -1105,7 +1282,13 @@ C:\home\marc\izpack-launcher\trunk\src&gt;</span></p>
 
 
 
+
+
+
 <p class="Standard" style="text-align: left;"><img style="width: 511px; height: 219px;" alt="default" src="001.png" /></p>
+
+
+
 
 
 
@@ -1115,7 +1298,13 @@ C:\home\marc\izpack-launcher\trunk\src&gt;</span></p>
 
 
 
+
+
+
 <p class="Standard" style="text-align: left;"><img style="width: 671px; height: 380px;" alt="wrong ini" src="002.png" /></p>
+
+
+
 
 
 
@@ -1125,12 +1314,21 @@ C:\home\marc\izpack-launcher\trunk\src&gt;</span></p>
 
 
 
+
+
+
 <p class="Standard" style="text-align: left;">The result should be similar to the developer version:<br />
 
 
 
 
+
+
+
 <img style="width: 672px; height: 430px;" alt="dist" src="003.png" /></p>
+
+
+
 
 
 
@@ -1141,7 +1339,13 @@ C:\home\marc\izpack-launcher\trunk\src&gt;</span></p>
 
 
 
-<h3><span class="Head_3">10. Customization</span> <br />
+
+
+
+<h3><span class="Head_3">9. Customization</span> <br />
+
+
+
 
 
 
@@ -1151,12 +1355,21 @@ C:\home\marc\izpack-launcher\trunk\src&gt;</span></p>
 
 
 
+
+
+
 <p><span class="Standard" style="font-family: helvetica;">If you want to test the other languages you have to change your locale in the </span><span class="Standard">regional options dialog launched from the control panel. For example for&nbsp;german</span>:</p>
 
 
 
 
+
+
+
 <br />
+
+
+
 
 
 
@@ -1166,7 +1379,13 @@ C:\home\marc\izpack-launcher\trunk\src&gt;</span></p>
 
 
 
+
+
+
 <br />
+
+
+
 
 
 
@@ -1174,7 +1393,13 @@ C:\home\marc\izpack-launcher\trunk\src&gt;</span></p>
 
 
 
+
+
+
 <br />
+
+
+
 
 
 
@@ -1183,11 +1408,18 @@ C:\home\marc\izpack-launcher\trunk\src&gt;</span></p>
 
 
 
+
+
+
 <span style="font-family: helvetica;">
 <p class="Standard" style="text-align: left;">Thanks to Julien Ponge,
 all&nbsp;developers, members and even the users of IzPack. Thanks goes
-also still to VMware, which made this docu possible, since I work with
+also still to VMware, which made this doc possible, since I work with
 Linux and run any Win32-OS only in a VMware-sandbox. ;-)</p>
+<p class="Standard" style="text-align: left;">Not least thanks to Nick Cunnah for review this doc.</p>
+
+
+
 
 
 
@@ -1199,6 +1431,9 @@ Linux and run any Win32-OS only in a VMware-sandbox. ;-)</p>
 
 <p class="Standard" style="text-align: left;">This document was initially written at
 2005-05-19 by Marc Eppelmann / Oldenburg(Oldb) / Germany</p>
+
+
+
 
 
 
@@ -1229,7 +1464,13 @@ warranty. Suggestions and Feedback are always welcome. Send&nbsp;these to <a hre
 
 
 
+
+
+
 <p class="Standard" style="text-align: left;"><span class="Standard">&nbsp;</span><br class="Standard" />
+
+
+
 
 
 
@@ -1244,7 +1485,13 @@ The License is the same as for the entire software. See LICENSE, which comes wit
 
 
 
+
+
+
 </p>
+
+
+
 
 
 <p class="Standard" style="text-align: left;">$Id: howto.html,v 1.1 2005/07/25 19:53:58 marc Exp $<br />
@@ -1257,7 +1504,13 @@ The License is the same as for the entire software. See LICENSE, which comes wit
 
 
 
+
+
+
 </p>
+
+
+
 
 
 
