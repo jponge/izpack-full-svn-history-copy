@@ -20,6 +20,8 @@
  * IN THE SOFTWARE.
  */
 
+#include <wx/file.h>
+
 #include "launcher.h"
 
 #ifdef __UNIX__
@@ -127,7 +129,8 @@ bool LauncherApp::OnInit()
   }
   else
   {
-    FailureDialog dlg(paramsJre != wxEmptyString,
+  	bool jreAvailable = ( paramsJre != wxEmptyString ) && wxFile::Exists( paramsJre );
+    FailureDialog dlg( jreAvailable,
                       paramsDownload != wxEmptyString, APPLICATION_NAME );
     dlg.Centre();
     while (!completed)
