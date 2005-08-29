@@ -47,7 +47,7 @@
 	
 	<target name="execute" depends="compile">
 		<java
-			classname="test"
+			classname="izpack.frontend.view.mode.WizardMode"
 			fork="true">
 			<classpath refid="execute.classpath" />
 		</java>
