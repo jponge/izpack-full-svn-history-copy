@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="Shortcut Panel" classname="ShortcutPanel">
+<izpack-panel name="Shortcut Panel" classname="ShortcutPanel" editingClass="Shortcut">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Configure shortcuts</panel-desc-short>
 	<panel-desc-long>Allow user to configure shortcuts (desktop, etc.) Currently Windows only.</panel-desc-long>

@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="Information Panel" classname="InfoPanel">
+<izpack-panel name="Information Panel" classname="InfoPanel"	editingClass="Info">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Display a 'Readme' File</panel-desc-short>
 	<panel-desc-long>Display a 'Readme' file of any length - perhaps the Readme included in the install.</panel-desc-long>

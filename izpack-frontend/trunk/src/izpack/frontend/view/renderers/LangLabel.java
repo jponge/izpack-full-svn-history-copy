@@ -1,10 +1,10 @@
 /*
- * Created on Nov 18, 2004
+ * Created on Mar 31, 2005
  * 
- * $Id: LabelPanel.java Feb 8, 2004 izpack-frontend
+ * $Id: LangLabel.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : LabelPanel.java 
+ * File : LangLabel.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,15 +21,35 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.components;
+package izpack.frontend.view.renderers;
+
+import javax.swing.Icon;
+import javax.swing.JLabel;
 
 /**
  * @author Andy Gombos
  */
-public class LabelPanel
+public class LangLabel extends JLabel
 {
-    public LabelPanel()
+    /**
+     * @param text
+     * @param icon
+     * @param horizontalAlignment
+     */
+    public LangLabel(String text, Icon icon, int horizontalAlignment)
     {
-        
+        super(text, icon, horizontalAlignment);                
     }
+    
+    public void setISO3Code(String code)
+    {
+        iso3Code = code;
+    }
+    
+    public String getISO3Code()
+    {
+        return iso3Code;
+    }
+    
+    String iso3Code;
 }

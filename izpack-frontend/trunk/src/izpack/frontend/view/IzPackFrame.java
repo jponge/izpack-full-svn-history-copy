@@ -26,7 +26,7 @@ import izpack.frontend.model.AppConfiguration;
 import izpack.frontend.model.LangResources;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.Stage;
-import izpack.frontend.view.stages.panels.IzPanel;
+import izpack.frontend.view.stages.configure.panels.IzPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

@@ -28,8 +28,8 @@ import izpack.frontend.model.AuthorManager;
 import izpack.frontend.model.stages.GeneralInformationModel;
 import izpack.frontend.view.IzPackFrame;
 import izpack.frontend.view.stages.IzPackStage;
-import izpack.frontend.view.stages.panels.ConfigurePanel;
-import izpack.frontend.view.stages.panels.IzPackPanel;
+import izpack.frontend.view.stages.configure.panels.ConfigurePanel;
+import izpack.frontend.view.stages.configure.panels.IzPackPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

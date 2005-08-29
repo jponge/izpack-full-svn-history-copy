@@ -25,6 +25,7 @@ package izpack.frontend.view.stages;
 
 import izpack.frontend.model.LangResources;
 import izpack.frontend.view.IzPackFrame;
+import izpack.frontend.view.stages.configure.PanelConfigurator;
 import izpack.frontend.view.stages.geninfo.GeneralInformation;
 import izpack.frontend.view.stages.packs.Pack;
 import izpack.frontend.view.stages.panelselect.PanelSelection;
@@ -38,12 +39,12 @@ public class StageOrder
 {
     public StageOrder()
     {
-        stages = new ArrayList();        
+        stages = new ArrayList<StageContainer>();        
                 
         stages.add(new StageContainer(lr.getText("UI.StageNames.GenInfo"), GeneralInformation.class));
         stages.add(new StageContainer(lr.getText("UI.StageNames.PanelSelect"), PanelSelection.class));
         stages.add(new StageContainer(lr.getText("UI.StageNames.Packs"), Pack.class));
-        //stages.add(new StageContainer(lr.getText("UI.StageNames.Configure"), Configure.class));
+        stages.add(new StageContainer(lr.getText("UI.StageNames.Configure"), PanelConfigurator.class));
     }
     
     public StageContainer getPreviousStage(Class stage)
@@ -54,7 +55,7 @@ public class StageOrder
         stageIndex--;
         
         if (stageIndex >= 0)
-            return (StageContainer) stages.get(stageIndex);
+            return stages.get(stageIndex);
         else        
             return null;
     }
@@ -67,7 +68,7 @@ public class StageOrder
         stageIndex++;
         
         if (stageIndex < stages.size())
-            return (StageContainer) stages.get(stageIndex);
+            return stages.get(stageIndex);
         else        
             return null;
     }
@@ -100,6 +101,6 @@ public class StageOrder
         public Class stageClass = null;        
     }
     
-    private ArrayList stages;
+    private ArrayList<StageContainer> stages;
     private static LangResources lr = IzPackFrame.getInstance().langResources();
 }

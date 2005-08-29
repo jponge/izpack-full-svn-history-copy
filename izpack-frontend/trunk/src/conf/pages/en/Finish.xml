@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="Finish Panel" classname="FinishPanel">
+<izpack-panel name="Finish Panel" classname="FinishPanel" editingClass="NONE">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Finish install, with automation</panel-desc-short>
 	<panel-desc-long>Finish the installer, and provide automated installer options.</panel-desc-long>

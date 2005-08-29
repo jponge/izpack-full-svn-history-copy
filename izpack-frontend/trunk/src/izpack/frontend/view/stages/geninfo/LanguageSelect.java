@@ -26,8 +26,8 @@ package izpack.frontend.view.stages.geninfo;
 import izpack.frontend.model.SelectListModel;
 import izpack.frontend.model.stages.GeneralInformationModel;
 import izpack.frontend.view.components.AbstractListSelect;
-import izpack.frontend.view.components.LangLabel;
 import izpack.frontend.view.components.SelectList;
+import izpack.frontend.view.renderers.LangLabel;
 import izpack.frontend.view.stages.IzPackStage;
 
 import java.net.URL;

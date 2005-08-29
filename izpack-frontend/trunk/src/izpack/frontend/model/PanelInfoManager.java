@@ -24,6 +24,7 @@
 package izpack.frontend.model;
 
 import izpack.frontend.controller.GUIController;
+import izpack.frontend.view.stages.configure.panels.IzPanel;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -60,6 +61,10 @@ public class PanelInfoManager
 			XPath xpath = XPathFactory.newInstance().newXPath();
 			
 			String classname = ( (Element) xpath.evaluate("/izpack-panel", doc, XPathConstants.NODE) ).getAttribute("classname");
+            
+            String editingClass = editorPackage + 
+                    determineEditingClass(( (Element) xpath.evaluate("/izpack-panel", doc, XPathConstants.NODE) ).getAttribute("editingClass"));
+            
 			String name = ( (Element) xpath.evaluate("/izpack-panel", doc, XPathConstants.NODE) ).getAttribute("name");			
 						
 			//Load panel descriptions			
@@ -68,7 +73,7 @@ public class PanelInfoManager
 			
 			//Load the authors array
 			NodeList authorElems = (NodeList) xpath.evaluate("//authors/author", doc, XPathConstants.NODESET);
-			ArrayList authors = new ArrayList();
+			ArrayList<Author> authors = new ArrayList<Author>();
 			for (int i = 0; i < authorElems.getLength(); i++)
             {
 			    Element element = (Element) authorElems.item(i);
@@ -79,7 +84,7 @@ public class PanelInfoManager
             }
 			
 			Element resourcesElem = (Element) xpath.evaluate("//resources", doc, XPathConstants.NODE);			
-			ArrayList resources = new ArrayList();
+			ArrayList<PanelInfo.Resource> resources = new ArrayList<PanelInfo.Resource>();
 			if (resourcesElem != null)
 			{			
 			    NodeList resourceElem = (NodeList) xpath.evaluate("//resources/res", doc, XPathConstants.NODESET);				
@@ -109,7 +114,7 @@ public class PanelInfoManager
 	        	}
 			}			
 			
-			return new PanelInfo(classname, name, shortDesc, longDesc, (Author[]) authors.toArray(new Author[0]),
+			return new PanelInfo(classname, editingClass, name, shortDesc, longDesc, (Author[]) authors.toArray(new Author[0]),
 			                (PanelInfo.Resource[]) resources.toArray(new PanelInfo.Resource[0]));					
         }
         catch (XPathExpressionException e)
@@ -118,6 +123,17 @@ public class PanelInfoManager
         }
     }    
     
+    private static String determineEditingClass(String attribute)
+    {
+        if (attribute.equalsIgnoreCase("NONE"))
+            return "NoEditingNecessary";
+        else if (attribute.equalsIgnoreCase("PREVIOUSLY CONF"))
+            return "PreviouslyConfigured";
+        
+        
+        return attribute;
+    }
+
     private static String[] getConfigFiles()
     {        
         return new File(CONFIG_PATH).list(new FilenameFilter() 
@@ -129,22 +145,24 @@ public class PanelInfoManager
 	        });
     }
     
-    public static ArrayList getAvailablePages()
+    public static ArrayList<PanelInfo> getAvailablePages()
     {
         String[] confFiles = getConfigFiles();
         for (int i = 0; i < confFiles.length; i++)
         {                       
-            pages.add(loadPage(CONFIG_PATH + confFiles[i]));            
+            panels.add(loadPage(CONFIG_PATH + confFiles[i]));            
     	}        
                
-        Object[] sortedPages = pages.toArray();
+        PanelInfo[] sortedPages = panels.toArray(new PanelInfo[0]);
         Arrays.sort(sortedPages);
-        pages = new ArrayList(Arrays.asList(sortedPages));
+        
+        panels = new ArrayList<PanelInfo>(Arrays.asList(sortedPages));
 
-        return pages;
+        return panels;
     }
     
     //Determine the correct path by requesting the language code of the application
     private static String CONFIG_PATH = "conf/pages/" + GUIController.getInstance().appConfiguration().getI18NLangCode() + "/";
-    private static ArrayList pages = new ArrayList();
+    private static ArrayList<PanelInfo> panels = new ArrayList<PanelInfo>();
+    private static String editorPackage = IzPanel.class.getPackage().getName() + ".";
 }

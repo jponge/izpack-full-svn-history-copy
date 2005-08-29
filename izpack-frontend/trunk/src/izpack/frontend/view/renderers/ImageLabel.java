@@ -21,7 +21,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.view.components;
+package izpack.frontend.view.renderers;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -39,8 +39,9 @@ import javax.swing.JLabel;
  */
 public class ImageLabel extends JButton implements ActionListener
 {    
-    public ImageLabel(String classname, String name, String shortDesc, String imgFile)
+    public ImageLabel(int index, String classname, String name, String shortDesc, String imgFile)
     {
+        this.index = index;
         this.classname = classname;
         configure("<html>" +
                 		"<b>&nbsp;" + name + "</b>" +
@@ -87,5 +88,11 @@ public class ImageLabel extends JButton implements ActionListener
         return classname;
     }
     
+    public int getPanelArrayIndex()
+    {
+        return index;
+    }    
+    
     String classname;
+    private int index;
 }

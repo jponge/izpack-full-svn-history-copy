@@ -23,21 +23,42 @@
  */
 package izpack.frontend.controller.validators;
 
+import izpack.frontend.model.stages.PanelSelectionModel;
+
+import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.message.PropertyValidationMessage;
 
 /**
  * @author Andy Gombos
  */
 public class PanelSelectionValidator implements StageValidator
 {
-
+    public PanelSelectionValidator(PanelSelectionModel model)
+    {
+        this.model = model;
+    }
     /* (non-Javadoc)
      * @see com.jgoodies.validation.ValidationCapable#validate()
      */
     public ValidationResult validate()
     {
-        // TODO Auto-generated method stub
-        return null;
+        ValidationResult vr = new ValidationResult();
+        
+        //Check for no panels added
+        if (model.size() == 0)
+        {   
+            vr.add(new PropertyValidationMessage(
+                            Severity.ERROR,
+                            "must have at least one panel selected",
+                            model,
+                            "Panels",
+                            "dest"
+                            ));
+        }
+        
+        return vr;
     }
 
+    PanelSelectionModel model;
 }

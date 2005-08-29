@@ -25,7 +25,7 @@ package izpack.frontend.model.stages;
 
 import izpack.frontend.model.Author;
 import izpack.frontend.model.SelectListModel;
-import izpack.frontend.view.components.LangLabel;
+import izpack.frontend.view.renderers.LangLabel;
 
 import java.util.ArrayList;
 

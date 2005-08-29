@@ -28,8 +28,8 @@ import izpack.frontend.model.PanelInfoManager;
 import izpack.frontend.model.SelectListModel;
 import izpack.frontend.model.stages.PanelSelectionModel;
 import izpack.frontend.view.components.AbstractListSelect;
-import izpack.frontend.view.components.ImageLabel;
 import izpack.frontend.view.components.SelectList;
+import izpack.frontend.view.renderers.ImageLabel;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -65,12 +65,14 @@ public class PanelSelectList extends AbstractListSelect
     
     public void initSrcList()
 	{
+        int index = 0;
 	    ArrayList panels = PanelInfoManager.getAvailablePages();    	    
         for (Iterator iter = panels.iterator(); iter.hasNext();)
         {
             PanelInfo page = (PanelInfo) iter.next();
             
-            ( (SelectListModel) src.getModel() ).addElement( new ImageLabel(page.getClassname(), page.getName(), page.getShortDesc(), "res/imgs/folder.png") );
+            ( (SelectListModel) src.getModel() ).addElement( new ImageLabel(index, page.getClassname(), page.getName(), page.getShortDesc(), "res/imgs/folder.png") );
+            index++;            
         }
 	}
     

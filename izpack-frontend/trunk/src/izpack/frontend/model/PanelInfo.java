@@ -32,9 +32,11 @@ package izpack.frontend.model;
 
 public class PanelInfo implements Comparable
 {
-    public PanelInfo(String classname, String name, String shortDesc, String longDesc, Author[] authors, Resource[] resources)
+    public PanelInfo(String classname, String editorClassname, String name, String shortDesc, String longDesc,
+                    Author[] authors, Resource[] resources)
     {
         this.classname = classname;
+        this.editorClassname = editorClassname;
         this.name = name;
         this.authors = authors;
         this.shortDesc = shortDesc;
@@ -96,6 +98,9 @@ public class PanelInfo implements Comparable
     
     /** Name of the IzPack class represented */
     private String classname;
+    
+    /** Name of the class that will visually edit this panel */
+    private String editorClassname;
     
     /** Name of the panel */
     private String name;
@@ -162,5 +167,15 @@ public class PanelInfo implements Comparable
         {
             this.type = type;
         }
+    }
+
+    public String getEditorClassname()
+    {
+        return editorClassname;
+    }
+
+    public void setEditorClassname(String editorClassname)
+    {
+        this.editorClassname = editorClassname;
     }
 }

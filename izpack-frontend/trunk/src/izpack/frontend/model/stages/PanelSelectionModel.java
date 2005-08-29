@@ -31,7 +31,7 @@ import org.w3c.dom.Element;
 import utils.XML;
 
 import izpack.frontend.model.SelectListModel;
-import izpack.frontend.view.components.ImageLabel;
+import izpack.frontend.view.renderers.ImageLabel;
 
 /**
  * @author Andy Gombos

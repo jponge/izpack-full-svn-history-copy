@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="Image Packs Panel" classname="ImgPacksPanel">
+<izpack-panel name="Image Packs Panel" classname="ImgPacksPanel" editingClass="ImagePacks">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Choose packs to install, graphically</panel-desc-short>
 	<panel-desc-long>Allow users to choose the packs to install, and show an associated image with each.</panel-desc-long>

@@ -82,8 +82,15 @@ public abstract class IzPackStage extends JPanel implements Stage
     public final JPanel getTopNavBar()
     {
         JPanel base = new JPanel();
+        
+        System.out.println("Current class: " + this.getClass());
         final StageContainer previousCont = stageOrder.getPreviousStage(this.getClass());
         final StageContainer nextCont = stageOrder.getNextStage(this.getClass());
+        
+        if (previousCont != null)
+            System.out.println("Prev: " + previousCont.stageClass);
+        if (nextCont != null)
+            System.out.println("Next: " + nextCont.stageClass);
         
         JButton previous = null, next = null;
         

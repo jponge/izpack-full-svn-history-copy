@@ -22,7 +22,7 @@
 -->
 
 <!-- IzPack frontend panel config file. -->
-<izpack-panel name="Compile Panel" classname="CompilePanel">
+<izpack-panel name="Compile Panel" classname="CompilePanel" editingClass="Compile">
 	<panel-version>1.0</panel-version>
 	<panel-desc-short>Compile installed source</panel-desc-short>
 	<panel-desc-long>Compile Java source code that has just been installed.</panel-desc-long>

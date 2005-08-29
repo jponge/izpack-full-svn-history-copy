@@ -29,6 +29,8 @@ import izpack.frontend.model.stages.StageDataModel;
 import izpack.frontend.view.stages.IzPackStage;
 
 import javax.swing.JPanel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,13 +44,19 @@ import com.jgoodies.validation.message.PropertyValidationMessage;
 /**
  * @author Andy Gombos
  */
-public class PanelSelection extends IzPackStage
+public class PanelSelection extends IzPackStage implements ListDataListener
 {
     public PanelSelection()
     {
         super();
         
         panelSelect = new PanelSelectList();
+        
+        model = panelSelect.getDestModel();
+        
+        model.addListDataListener(this);
+        
+        validator = new PanelSelectionValidator(model);
 	    
 		add(panelSelect);
     }
@@ -61,39 +69,10 @@ public class PanelSelection extends IzPackStage
      * @see izpack.frontend.view.stages.IzPackStage#createInstallerData()
      */
     public Document createInstallerData()
-    {   
-        /*Element root = XML.createRootElement("installation");
-        Document rootDoc = root.getOwnerDocument();
+    {           
+        return model.writeToXML();
+    }    
         
-        root.setAttribute("version", "1.0");                
-        root.appendChild(rootDoc.importNode(panelSelect.createXML(), true));
-        
-        return rootDoc;*/
-        return panelSelect.getDestModel().writeToXML();
-    }
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.IzPackStage#validateStage()
-     */
-    //TODO warnings for common forgotten panels
-    public ValidationResult validateStage()
-    {
-        ValidationResult vr = new ValidationResult();
-        
-        if (panelSelect.dest.getNumElements() < 0)
-        {
-            vr.add(new PropertyValidationMessage(
-                            Severity.ERROR,
-                            "must have at least one panel selected to use",
-                            panelSelect.dest,
-                            "Panels",
-                            "selected"
-                            ));
-        }
-        
-        return vr;
-    }
-    
     PanelSelectList panelSelect;
 
     /* (non-Javadoc)
@@ -120,6 +99,39 @@ public class PanelSelection extends IzPackStage
         return model;
     }
     
+    /* (non-Javadoc)
+     * @see izpack.frontend.view.stages.IzPackStage#validateStage()
+     */
+    // TODO warnings for common forgotten panels
+    public ValidationResult validateStage()
+    {
+        ValidationResult vr = validator.validate();
+        validationModel.setResult(vr);
+        
+        return vr; 
+    }
+
+    
     private static PanelSelectionModel model;
     private static PanelSelectionValidator validator;
+
+    /*
+     * Validation stuff  
+     * Should probably be refactored into a nicer, more unified interface
+     */
+    
+    public void intervalAdded(ListDataEvent e)
+    {
+        validateStage();        
+    }
+
+    public void intervalRemoved(ListDataEvent e)
+    {
+        validateStage();
+    }
+
+    public void contentsChanged(ListDataEvent e)
+    {
+        validateStage();        
+    }
 }

@@ -27,6 +27,7 @@ import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.controller.StageChangeListener;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.StageOrder;
+import izpack.frontend.view.stages.configure.PanelConfigurator;
 import izpack.frontend.view.stages.geninfo.GeneralInformation;
 import izpack.frontend.view.stages.packs.Pack;
 import izpack.frontend.view.stages.panelselect.PanelSelection;
@@ -55,9 +56,7 @@ import utils.XML;
  * @author Andy Gombos
  */
 public class WizardMode extends JFrame implements StageChangeListener, WindowListener
-{
-    private IzPackStage tmp;
-    
+{   
     public static void main(String[] args)
     {
         new WizardMode();
@@ -74,11 +73,12 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
         
         iconPanel = createIconPanel();
         
-        IzPackStage geninfo = 	createStage(GeneralInformation.class, base);        
-        IzPackStage sel 	= 	createStage(PanelSelection.class, base);
-        IzPackStage pack	= 	createStage(Pack.class, base);
+        IzPackStage geninfo = 	createStage(GeneralInformation.class, base);
         
-        tmp = pack;
+        createStage(PanelSelection.class, base);
+        createStage(Pack.class, base);
+        createStage(PanelConfigurator.class, base);
+        
         addWindowListener(this);
         
         iconPanel.add(geninfo.getTopNavBar());
@@ -195,7 +195,7 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
      */
     public void windowClosing(WindowEvent e)
     {
-        tmp.createInstallerData();        
+                
     }
 
     /* (non-Javadoc)
