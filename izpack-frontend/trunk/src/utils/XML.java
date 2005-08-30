@@ -72,6 +72,7 @@ public class XML
         return builder.newDocument();
     }
     
+    //TODO Exception handling
     public static Document createDocument(String filename)
     {
         DocumentBuilder builder;        
@@ -84,22 +85,15 @@ public class XML
         }        
         catch (ParserConfigurationException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
         catch (SAXException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
         catch (FileNotFoundException fnfe)
-        {
-            System.out.println(fnfe.getLocalizedMessage());
+        {            
         }
         catch (IOException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
         
         return document;

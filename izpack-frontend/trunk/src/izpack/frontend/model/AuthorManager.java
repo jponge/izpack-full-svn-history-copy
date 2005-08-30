@@ -49,6 +49,13 @@ public class AuthorManager
     {   
                     
         Document document = XML.createDocument("conf/authors.xml");
+        
+        if (document == null)
+        {
+            System.out.println("Error loading authors.xml. Not processing");
+            return null;
+        }        
+        
         XPath xpath = XPathFactory.newInstance().newXPath();
 
         //Load the authors array

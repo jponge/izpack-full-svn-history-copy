@@ -104,10 +104,14 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener
         //Create the list from an ArrayList model
         authorListModel = ( (GeneralInformationModel) stage.getDataModel() ).getAuthors();
         
-        for (Iterator iter = AuthorManager.loadAuthors().iterator(); iter.hasNext(); )
+        ArrayList authorListData = AuthorManager.loadAuthors();
+        if (authorListData != null)
         {
-           authorListModel.add(iter.next());
-        }
+            for (Iterator iter = authorListData.iterator(); iter.hasNext(); )
+            {
+               authorListModel.add(iter.next());
+            }        
+        }       
         
         authorModel = new SelectionInList(authorListModel);
                 
