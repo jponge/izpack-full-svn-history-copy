@@ -163,7 +163,7 @@ public abstract class AbstractListSelect extends IzPackPanel implements ActionLi
 	    else if (name.equals("up") && destListFocus)
 	    {	        
 	        int curIndex = destList.getSelectedIndex();
-	        model.moveElement(curIndex, -1);
+	        model.moveElement(curIndex, -1);            
 	        destList.setSelectedIndex(curIndex - 1);
 	    }
 	    else if (name.equals("down") && destListFocus)

@@ -24,7 +24,7 @@
 		<mkdir dir="dist" />
 	</target>
 		
-	<target name="compile" depends ="init">
+	<target name="build" depends ="init">
 		<javac 
 			srcdir="."
 			destdir="build/classes"			
@@ -32,10 +32,12 @@
 			<classpath refid="build.classpath" />
 		</javac>
 		
+		<antcall target="required_file_copy"/>
+	
 		<echo>compilation complete</echo>
 	</target>
 	
-	<target name="archive" depends="compile">
+	<target name="archive" depends="build">
 		<jar destfile="dist/FrontEnd.jar"
 			basedir="build/classes" />
 	</target>
@@ -45,12 +47,27 @@
 		<delete dir="dist" />
 	</target>
 	
-	<target name="execute" depends="compile">
+	<target name="run" depends="build">
 		<java
 			classname="izpack.frontend.view.mode.WizardMode"
 			fork="true">
 			<classpath refid="execute.classpath" />
 		</java>
+	</target>
+	
+	<target name="required_file_copy" depends="init">
+		<copy todir="build/classes/conf">
+			<fileset dir="conf"/>
+		</copy>		
+		
+		<copy todir="build/classes/res">
+			<fileset dir="res"/>
+		</copy>		
+
+
+		<copy todir="build/classes/lib">
+			<fileset dir="lib"/>
+		</copy>		
 	</target>
 		
 </project>

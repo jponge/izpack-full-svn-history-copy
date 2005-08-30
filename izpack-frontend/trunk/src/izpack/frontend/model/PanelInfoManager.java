@@ -145,24 +145,39 @@ public class PanelInfoManager
 	        });
     }
     
+    /**
+     * Loads the available panels at the start of the application, and provides
+     * a static list throughout execution
+     * 
+     * @return ArrayList of the available panels
+     */
     public static ArrayList<PanelInfo> getAvailablePages()
     {
-        String[] confFiles = getConfigFiles();
-        for (int i = 0; i < confFiles.length; i++)
-        {                       
-            panels.add(loadPage(CONFIG_PATH + confFiles[i]));            
-    	}        
-               
-        PanelInfo[] sortedPages = panels.toArray(new PanelInfo[0]);
-        Arrays.sort(sortedPages);
-        
-        panels = new ArrayList<PanelInfo>(Arrays.asList(sortedPages));
-
-        return panels;
+        if (panels == null)
+        {
+            String[] confFiles = getConfigFiles();
+            panels = new ArrayList<PanelInfo>(confFiles.length);            
+            
+            for (int i = 0; i < confFiles.length; i++)
+            {                       
+                panels.add(loadPage(CONFIG_PATH + confFiles[i]));            
+        	}        
+                   
+            PanelInfo[] sortedPages = panels.toArray(new PanelInfo[0]);
+            Arrays.sort(sortedPages);
+            
+            panels = new ArrayList<PanelInfo>(Arrays.asList(sortedPages));
+    
+            return panels;
+        }
+        else
+        {
+            return panels;
+        }
     }
     
     //Determine the correct path by requesting the language code of the application
     private static String CONFIG_PATH = "conf/pages/" + GUIController.getInstance().appConfiguration().getI18NLangCode() + "/";
-    private static ArrayList<PanelInfo> panels = new ArrayList<PanelInfo>();
+    private static ArrayList<PanelInfo> panels = null;
     private static String editorPackage = IzPanel.class.getPackage().getName() + ".";
 }

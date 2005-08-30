@@ -40,7 +40,8 @@ public class ConfigurationStageModel extends Model implements StageDataModel, Li
     public ConfigurationStageModel()
     {
         super();
-        // TODO Auto-generated constructor stub
+       
+        panels = new ArrayList<PanelModel>();
     }
 
     public Document writeToXML()
@@ -63,7 +64,13 @@ public class ConfigurationStageModel extends Model implements StageDataModel, Li
         
         public PanelInfo configData;
         
-        public boolean valid;        
+        public boolean valid;
+        
+        @Override
+        public String toString()
+        {
+            return configData.getName();
+        }
     }
     
     ArrayList<PanelModel> panels;

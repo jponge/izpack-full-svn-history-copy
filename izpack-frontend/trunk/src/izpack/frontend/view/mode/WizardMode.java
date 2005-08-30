@@ -77,7 +77,7 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
         
         createStage(PanelSelection.class, base);
         createStage(Pack.class, base);
-        createStage(PanelConfigurator.class, base);
+        createStage(PanelConfigurator.class, base);        
         
         addWindowListener(this);
         
@@ -159,8 +159,6 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
             return;
         
         e.consume();
-        
-        System.out.println("Next to: " + e.getStageClass());
         
         IzPackStage stage = IzPackStage.getStage(e.getStageClass());
         

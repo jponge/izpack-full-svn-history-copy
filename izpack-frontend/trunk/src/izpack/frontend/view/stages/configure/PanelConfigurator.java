@@ -23,22 +23,58 @@
  */
 package izpack.frontend.view.stages.configure;
 
+import izpack.frontend.model.PanelInfo;
+import izpack.frontend.model.PanelInfoManager;
+import izpack.frontend.model.stages.ConfigurationStageModel;
+import izpack.frontend.model.stages.PanelSelectionModel;
+import izpack.frontend.model.stages.StageDataModel;
+import izpack.frontend.model.stages.ConfigurationStageModel.PanelModel;
+import izpack.frontend.view.renderers.ImageLabel;
+import izpack.frontend.view.stages.IzPackStage;
+import izpack.frontend.view.stages.panelselect.PanelSelection;
+
+import java.util.ArrayList;
+
 import javax.swing.JPanel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
 
 import com.jgoodies.validation.ValidationResult;
 
-import izpack.frontend.model.stages.StageDataModel;
-import izpack.frontend.view.stages.IzPackStage;
-
-public class PanelConfigurator extends IzPackStage
+public class PanelConfigurator extends IzPackStage implements ListDataListener
 {
 
     public PanelConfigurator()
     {
         super();
-        // TODO Auto-generated constructor stub
+        
+        PanelSelection panelSelectionInstance = (PanelSelection) getStage(PanelSelection.class);
+        
+        if (panelSelectionInstance != null)
+        {
+            PanelSelectionModel panelSelectionModel = (PanelSelectionModel) panelSelectionInstance.getDataModel();
+            
+            if (panelSelectionModel != null)
+            {
+                panelSelectionModel.addListDataListener(this);
+            }
+            else
+            {
+                System.err.println("Panel selection stage did not initialize properly. Exiting");
+                System.exit(1);
+            }
+        }
+        else
+        {
+            System.err.println("Application did not initialize properly. Exiting");
+            System.exit(1);
+        }
+        
+        availablePanels = PanelInfoManager.getAvailablePages();
+        
+        model = new ConfigurationStageModel();
     }
 
     @Override
@@ -73,4 +109,54 @@ public class PanelConfigurator extends IzPackStage
         return null;
     }
 
+    public void intervalAdded(ListDataEvent e)
+    {        
+        PanelSelectionModel psm = (PanelSelectionModel) e.getSource();
+        ImageLabel renderer = (ImageLabel) psm.get(e.getIndex0());
+        
+        PanelInfo addedObject = availablePanels.get(renderer.getPanelArrayIndex());
+        
+        PanelModel newAddedObject = model.new PanelModel();
+        newAddedObject.configData = addedObject;
+        newAddedObject.valid = false;
+        
+        model.getPanels().add(e.getIndex0(), newAddedObject);
+    }
+
+    public void intervalRemoved(ListDataEvent e)
+    {   
+        model.getPanels().remove(e.getIndex0());        
+    }
+
+    public void contentsChanged(ListDataEvent e)
+    {
+        if (!secondContentsChangedEvent)
+        {
+            index = e.getIndex0();
+            secondContentsChangedEvent = true;
+        }        
+        else
+        {   
+            int delta = index - e.getIndex0();
+            
+            //Swap elements. This is different than the normal swap elements
+            //because i calculated the delta and index differently (off a different element)
+            PanelModel original = model.getPanels().get(index - delta);
+            PanelModel replaced = model.getPanels().get(index);
+            model.getPanels().set(index, original);
+            model.getPanels().set(index - delta, replaced);
+            
+            secondContentsChangedEvent = false;
+        }            
+    }
+    
+    private ArrayList<PanelInfo> availablePanels;
+    private static ConfigurationStageModel model;
+    
+    /**
+     *  Flag to see if we've recieved two contents changed events
+     *  Occurs when moving elements up or down
+     */
+    private boolean secondContentsChangedEvent = false;
+    private int index = -1;
 }
