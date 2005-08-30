@@ -24,6 +24,7 @@
 package utils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -80,7 +81,7 @@ public class XML
         {
             builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             document = builder.parse(new File(filename));
-        }
+        }        
         catch (ParserConfigurationException e)
         {
             // TODO Auto-generated catch block
@@ -90,6 +91,10 @@ public class XML
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+        catch (FileNotFoundException fnfe)
+        {
+            System.out.println(fnfe.getLocalizedMessage());
         }
         catch (IOException e)
         {
