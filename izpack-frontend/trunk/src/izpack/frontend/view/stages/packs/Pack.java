@@ -136,10 +136,13 @@ public class Pack extends IzPackStage implements ActionListener, ListSelectionLi
      */
     public void initializeStage()
     {   
-        /*
+        //TODO broken
+         
+         /*
          * Finds the parent frame to base dialogs off of MUST have the stage
          * added to the frame before calling initializeStage
          */
+        /*
         Frame parent = (Frame) this.getParent();
 
         while (parent != null)
@@ -156,7 +159,7 @@ public class Pack extends IzPackStage implements ActionListener, ListSelectionLi
         {
             TableEditor element = (TableEditor) iter.next();
             element.setLocationRelativeTo(parent);
-        }
+        }*/
     }
     
     private JPanel createPackTable()

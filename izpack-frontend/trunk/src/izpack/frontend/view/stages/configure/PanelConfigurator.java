@@ -29,18 +29,25 @@ import izpack.frontend.model.stages.ConfigurationStageModel;
 import izpack.frontend.model.stages.PanelSelectionModel;
 import izpack.frontend.model.stages.StageDataModel;
 import izpack.frontend.model.stages.ConfigurationStageModel.PanelModel;
+import izpack.frontend.view.components.ItemProgressPanel;
 import izpack.frontend.view.renderers.ImageLabel;
 import izpack.frontend.view.stages.IzPackStage;
+import izpack.frontend.view.stages.configure.panels.ConfigurePanel;
+import izpack.frontend.view.stages.configure.panels.NoEditingNecessary;
+import izpack.frontend.view.stages.configure.panels.NoEditorCreated;
 import izpack.frontend.view.stages.panelselect.PanelSelection;
 
+import java.awt.CardLayout;
 import java.util.ArrayList;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
 
+import com.jgoodies.binding.beans.PropertyConnector;
 import com.jgoodies.validation.ValidationResult;
 
 public class PanelConfigurator extends IzPackStage implements ListDataListener
@@ -72,9 +79,15 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
             System.exit(1);
         }
         
+        setLayout(layout);
+        
         availablePanels = PanelInfoManager.getAvailablePages();
         
         model = new ConfigurationStageModel();
+        
+        progressPanel = new ItemProgressPanel(model);
+        
+        new PropertyConnector(progressPanel.getSelectionHolder(), "value",  this, "panelOnDisplay").updateProperty2();
     }
 
     @Override
@@ -93,20 +106,43 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
     @Override
     public StageDataModel getDataModel()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return model;
     }
-
+    
     public void initializeStage()
-    {
-        // TODO Auto-generated method stub
-
+    {    
+        ArrayList<PanelModel> panels = model.getPanels();
+        editors = new ArrayList<ConfigurePanel>(panels.size());
+        
+        for (PanelModel panelModel : panels)
+        {
+            try
+            {
+                Class editorClass = Class.forName(panelModel.configData.getEditorClassname());
+                //editors.add((ConfigurePanel) editorClass.newInstance());                
+                
+                this.add( (JComponent) editorClass.newInstance(), panelModel.configData.getEditorClassname());
+            }
+            catch (ClassNotFoundException e)
+            {
+                this.add( new NoEditorCreated(), panelModel.configData.getEditorClassname());
+            }
+            catch (InstantiationException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch (IllegalAccessException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 
     public JPanel getLeftNavBar()
-    {
-        // TODO Auto-generated method stub
-        return null;
+    {        
+        return progressPanel;
     }
 
     public void intervalAdded(ListDataEvent e)
@@ -150,8 +186,37 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
         }            
     }
     
+    /*
+     * 
+     * Editor changing stuff - binding interface
+     */
+    
+    public Object getPanelOnDisplay()
+    {
+        return panelOnDisplay;
+    }
+
+    public void setPanelOnDisplay(Object panelOnDisplay)
+    {
+        System.out.println("Changing panel on display");
+        
+        if (panelOnDisplay == null)
+            return;
+        
+        if (panelOnDisplay instanceof PanelModel)
+            this.panelOnDisplay = (PanelModel) panelOnDisplay;
+        
+        layout.show(this, this.panelOnDisplay.configData.getEditorClassname());
+    }
+    
     private ArrayList<PanelInfo> availablePanels;
+    private ArrayList<ConfigurePanel> editors;
     private static ConfigurationStageModel model;
+    private static ItemProgressPanel progressPanel;
+    
+    private PanelModel panelOnDisplay;
+    
+    private CardLayout layout = new CardLayout();
     
     /**
      *  Flag to see if we've recieved two contents changed events

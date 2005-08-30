@@ -40,6 +40,9 @@ public interface Stage
     //Initialization functions
     /**
      * Initialize the stage by creating any necessary components, panels, etc.
+     * not created at construction time
+     * 
+     * Executed just before display, so it should run relatively quickly
      */
     public void initializeStage(); 
           

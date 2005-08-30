@@ -23,6 +23,7 @@
  */
 package izpack.frontend.view.stages.configure.panels;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.w3c.dom.Document;
@@ -30,7 +31,11 @@ import org.w3c.dom.Element;
 
 public class PreviouslyConfigured extends JPanel implements ConfigurePanel
 {
-
+    public PreviouslyConfigured()
+    {
+        add(new JLabel("This panel was previously configured. Make any changes there."));
+    }
+    
     public Element createXML()
     {
         // TODO Auto-generated method stub

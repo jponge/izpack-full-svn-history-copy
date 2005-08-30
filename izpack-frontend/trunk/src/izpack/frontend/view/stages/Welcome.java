@@ -55,26 +55,26 @@ import com.jgoodies.validation.ValidationResult;
  */
 public class Welcome extends IzPackStage implements ActionListener
 {
-    public void initializeStage()
+    public Welcome()
     {
         FormLayout layout = new FormLayout("left:pref, 15dlu, left:pref", "center:pref, 25dlu, pref, 10dlu, pref, 10dlu, pref, 10dlu, pref");
-	    DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);
-	    	    
-	    JLabel header = new JLabel("<html> <font size=\"+2\">" + 
-	                    langResources.getText("UI.WelcomePage.ELEMENT.HeaderText") + "</font>");
-	    
-	    header.setAlignmentY(CENTER_ALIGNMENT);
-	    builder.add(header, new CellConstraints().xyw(1, 1, 3));
-	    builder.nextRow();
-	    builder.nextRow();
-	    
-	    //Columns first, off the prototype image
-		String buttonNames[] = new String[]{GUIConstants.BUTTON_NEW, GUIConstants.BUTTON_COMPILE, GUIConstants.BUTTON_WEBSITE,
-		        GUIConstants.BUTTON_RECENT, GUIConstants.BUTTON_OPEN, GUIConstants.BUTTON_HELP, GUIConstants.BUTTON_MAILLIST};
-		JButton buttons[] = new JButton[7];
-		
-		//Create the buttons, and add them to the layout
-		for (int i = 0; i < buttonNames.length; i++)
+        DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);
+                
+        JLabel header = new JLabel("<html> <font size=\"+2\">" + 
+                        langResources.getText("UI.WelcomePage.ELEMENT.HeaderText") + "</font>");
+        
+        header.setAlignmentY(CENTER_ALIGNMENT);
+        builder.add(header, new CellConstraints().xyw(1, 1, 3));
+        builder.nextRow();
+        builder.nextRow();
+        
+        //Columns first, off the prototype image
+        String buttonNames[] = new String[]{GUIConstants.BUTTON_NEW, GUIConstants.BUTTON_COMPILE, GUIConstants.BUTTON_WEBSITE,
+                GUIConstants.BUTTON_RECENT, GUIConstants.BUTTON_OPEN, GUIConstants.BUTTON_HELP, GUIConstants.BUTTON_MAILLIST};
+        JButton buttons[] = new JButton[7];
+        
+        //Create the buttons, and add them to the layout
+        for (int i = 0; i < buttonNames.length; i++)
         {
             buttons[i] = new JButton(langResources.getText("UI.WelcomePage.ELEMENT." + buttonNames[i]),
                     new ImageIcon("res/imgs/" + buttonNames[i] + ".png"));
@@ -92,7 +92,11 @@ public class Welcome extends IzPackStage implements ActionListener
                 builder.setRow(3);
                 builder.setColumn(3);
             }
-        }		
+        }       
+    }
+    
+    public void initializeStage()
+    {        
     }
 
     public void actionPerformed(ActionEvent e)

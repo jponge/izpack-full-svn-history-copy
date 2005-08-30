@@ -25,6 +25,8 @@ package izpack.frontend.view.stages.configure;
 
 import izpack.frontend.model.stages.ConfigurationStageModel.PanelModel;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -32,8 +34,18 @@ public class PanelConfigurationDisplayer extends JPanel
 {    
     public PanelConfigurationDisplayer()
     {
-        label = new JLabel();
-        add(label);
+        label = new JLabel("Text goes here");
+        add(label);   
+        
+        setLayout(new BorderLayout());
+        add(label, BorderLayout.SOUTH);
+        
+        setSize(400, 400);
+    }
+    
+    public void initializeForDisplay()
+    {
+        
     }
     
     public Object getPanelOnDisplay()
@@ -43,6 +55,8 @@ public class PanelConfigurationDisplayer extends JPanel
 
     public void setPanelOnDisplay(Object panelOnDisplay)
     {
+        System.out.println("Changing panel on display");
+        
         if (panelOnDisplay == null)
             return;
         
@@ -51,14 +65,34 @@ public class PanelConfigurationDisplayer extends JPanel
         
         try
         {
+            //TODO very retarded implementation
             Class c = Class.forName(this.panelOnDisplay.configData.getEditorClassname());
-            label.setText(c.getName());
+            JPanel editor = (JPanel) c.newInstance();
+            
+            removeAll();
+            add(editor, BorderLayout.CENTER);            
+            
+            label.setText(c.getSimpleName());
+            add(label, BorderLayout.SOUTH);
+            
+            repaint();
         }
         catch (ClassNotFoundException e)
         {
             label.setText("No editing necessary");
+            add(label);
         }
         //label.setText(this.panelOnDisplay.representingClassName);
+        catch (InstantiationException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     } 
     
     private PanelModel panelOnDisplay;

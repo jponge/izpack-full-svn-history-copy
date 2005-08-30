@@ -29,11 +29,11 @@ import javax.swing.JPanel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class NoEditingNecessary extends JPanel implements ConfigurePanel
+public class NoEditorCreated extends JPanel implements ConfigurePanel
 {
-    public NoEditingNecessary()
+    public NoEditorCreated()
     {
-        add(new JLabel("No configuration is necessary for this panel"));
+        add(new JLabel("No editor has been created for this panel"));
     }
     
     public Element createXML()

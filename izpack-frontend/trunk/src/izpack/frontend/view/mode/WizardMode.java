@@ -85,8 +85,11 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
         
         infoPanel.add(geninfo.getBottomInfoBar());
         
+        leftNavBar.add(geninfo.getLeftNavBar());
+        
         getContentPane().add(iconPanel, BorderLayout.NORTH);
         getContentPane().add(infoPanel, BorderLayout.SOUTH);
+        getContentPane().add(leftNavBar, BorderLayout.WEST);
         
         setPreferredSize(new Dimension(700, 700));
         pack();
@@ -106,9 +109,8 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
     {
         try
         {
-            IzPackStage instance = (IzPackStage) stageClass.newInstance();
-            
-            instance.initializeStage();
+            IzPackStage instance = (IzPackStage) stageClass.newInstance();            
+
             instance.addStageChangeListener(this);   
             
             base.add(instance, stageClass.toString());
@@ -162,6 +164,8 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
         
         IzPackStage stage = IzPackStage.getStage(e.getStageClass());
         
+        stage.initializeStage();
+        
         //Remove the navigation bar from the top
         iconPanel.remove(iconPanel.getComponentCount() - 1);
         iconPanel.repaint();
@@ -172,12 +176,15 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
         infoPanel.removeAll();
         infoPanel.add(stage.getBottomInfoBar());
         
+        leftNavBar.removeAll();
+        leftNavBar.add(stage.getLeftNavBar());
+        
         pack();
         
         layout.show(base, e.getStageClass().toString());
     }    
     
-    JPanel base = new JPanel(), iconPanel, infoPanel = new JPanel();    
+    JPanel base = new JPanel(), iconPanel, infoPanel = new JPanel(), leftNavBar = new JPanel();    
     CardLayout layout = new CardLayout();
     /* (non-Javadoc)
      * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)

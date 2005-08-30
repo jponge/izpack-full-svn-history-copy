@@ -66,7 +66,6 @@ public class ItemProgressPanel extends JPanel
     {
         return panelListBinding.getSelectionHolder();
     }
-
     
     JList panelList;    
     SelectionInList panelListBinding;
