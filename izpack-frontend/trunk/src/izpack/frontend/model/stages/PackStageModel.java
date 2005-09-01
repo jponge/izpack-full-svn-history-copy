@@ -44,8 +44,13 @@ public class PackStageModel extends DefaultTableModel implements StageDataModel
      */
     public Document writeToXML()
     {
-        Element root = XML.createRootElement("packs");
-        Document doc = root.getOwnerDocument();
+        Element root = XML.createRootElement("installation");
+        Document rootDoc = root.getOwnerDocument();
+        
+        root.setAttribute("version", "1.0");
+        
+        //Create the interesting XML data
+        Element packs = XML.createElement("packs", rootDoc);        
         
         for (int row = 0; row < getRowCount(); row++)
         {
@@ -54,15 +59,15 @@ public class PackStageModel extends DefaultTableModel implements StageDataModel
             //If we have a valid pack, write it's XML representation out
             if (rowObj != null)
             {
-                Document packDoc = ( (PackModel) rowObj).writePack();
+                Element pack = ( (PackModel) rowObj).writePack(rootDoc);
                 
-                //For some reason, adoptNode didn't work somewhere. So we have this
-                Node packNode = doc.importNode(packDoc.getDocumentElement(), true);
-                root.appendChild(packNode);
+                packs.appendChild(pack);
             }
         }
         
-        return doc;
+        root.appendChild(packs);
+        
+        return rootDoc;
     }
 
     /* (non-Javadoc)

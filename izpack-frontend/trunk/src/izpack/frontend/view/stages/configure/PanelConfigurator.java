@@ -93,8 +93,8 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
     @Override
     public Document createInstallerData()
     {
-        // TODO Auto-generated method stub
-        return null;
+        System.out.println("panel config xml");
+        return model.writeToXML();
     }
 
     @Override
@@ -119,9 +119,11 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
             try
             {
                 Class editorClass = Class.forName(panelModel.configData.getEditorClassname());
-                //editors.add((ConfigurePanel) editorClass.newInstance());                
+                Object editorInstance = editorClass.newInstance();
                 
-                this.add( (JComponent) editorClass.newInstance(), panelModel.configData.getEditorClassname());
+                editors.add((ConfigurePanel) editorInstance);
+                
+                this.add( (JComponent) editorInstance, panelModel.configData.getEditorClassname());
             }
             catch (ClassNotFoundException e)
             {
@@ -138,6 +140,8 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
                 e.printStackTrace();
             }
         }
+        
+        model.setEditors(editors);
     }
 
     public JPanel getLeftNavBar()

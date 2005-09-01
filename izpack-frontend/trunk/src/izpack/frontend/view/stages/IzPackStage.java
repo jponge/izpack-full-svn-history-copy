@@ -159,7 +159,7 @@ public abstract class IzPackStage extends JPanel implements Stage
      * 
      * @param stage The instance to register
      */
-    public static void registerStage(Stage stage)
+    public static void registerStage(IzPackStage stage)
     {        
         stageList.add(stage);
     }
@@ -174,9 +174,8 @@ public abstract class IzPackStage extends JPanel implements Stage
      */    
     public static IzPackStage getStage(Class stage)
     {
-        for (Iterator iter = stageList.iterator(); iter.hasNext();)
-        {
-            IzPackStage element = (IzPackStage) iter.next();
+        for (IzPackStage element : stageList)
+        {            
             if (element.getClass().equals(stage))
             {
                 return element;
@@ -184,6 +183,11 @@ public abstract class IzPackStage extends JPanel implements Stage
         }
         
         return null;
+    }
+    
+    public static ArrayList<IzPackStage> getAllStages()
+    {
+        return stageList;
     }
 
     /**
@@ -219,11 +223,9 @@ public abstract class IzPackStage extends JPanel implements Stage
 	
 	protected void fireStageChangeEvent(StageChangeEvent ste)
 	{   
-	    for (Iterator iter = changeListenerList.iterator(); iter.hasNext();)
+        for (StageChangeListener listener : changeListenerList)
         {
-            StageChangeListener element = (StageChangeListener) iter.next();     
-            
-            element.changeStage(ste);
+            listener.changeStage(ste);
         }
 	}
 	
@@ -242,8 +244,8 @@ public abstract class IzPackStage extends JPanel implements Stage
 	
 	public abstract StageDataModel getDataModel();
 	
-	private static ArrayList stageList = new ArrayList();
-	private static ArrayList changeListenerList = new ArrayList();
+	private static ArrayList<IzPackStage> stageList = new ArrayList<IzPackStage>();
+	private static ArrayList<StageChangeListener> changeListenerList = new ArrayList<StageChangeListener>();
 	
 	protected static LangResources lr = IzPackFrame.getInstance().langResources();
 	protected static StageOrder stageOrder = new StageOrder();

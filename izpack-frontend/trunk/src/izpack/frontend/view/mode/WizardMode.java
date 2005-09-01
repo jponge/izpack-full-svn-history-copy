@@ -25,8 +25,8 @@ package izpack.frontend.view.mode;
 
 import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.controller.StageChangeListener;
+import izpack.frontend.controller.XMLCreator;
 import izpack.frontend.view.stages.IzPackStage;
-import izpack.frontend.view.stages.StageOrder;
 import izpack.frontend.view.stages.configure.PanelConfigurator;
 import izpack.frontend.view.stages.geninfo.GeneralInformation;
 import izpack.frontend.view.stages.packs.Pack;
@@ -45,8 +45,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
-import utils.XML;
 
 /**
  * Show Panel Select and General Information stages
@@ -200,7 +198,7 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
      */
     public void windowClosing(WindowEvent e)
     {
-                
+        new XMLCreator(IzPackStage.getAllStages()).createInstallXML();
     }
 
     /* (non-Javadoc)

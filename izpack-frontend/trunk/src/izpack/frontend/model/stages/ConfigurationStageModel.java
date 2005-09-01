@@ -24,6 +24,7 @@
 package izpack.frontend.model.stages;
 
 import izpack.frontend.model.PanelInfo;
+import izpack.frontend.view.stages.configure.panels.ConfigurePanel;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,10 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import utils.XML;
 
 import com.jgoodies.binding.beans.Model;
 
@@ -44,16 +49,41 @@ public class ConfigurationStageModel extends Model implements StageDataModel, Li
         panels = new ArrayList<PanelModel>();
     }
 
+    //TODO fix this so the elements are inserted properly
     public Document writeToXML()
     {
-        // TODO Auto-generated method stub
-        return null;
+        Element root = XML.createRootElement("installation");
+        Document rootDoc = root.getOwnerDocument();
+        
+        root.setAttribute("version", "1.0");
+        
+        //TODO Create the interesting XML data
+        Element blah = XML.createElement("PanelConfiguration", rootDoc);
+        root.appendChild(blah);
+        
+        for (ConfigurePanel editor : editors)
+        {
+            Element xml = editor.createXML();
+            
+            if (xml != null)
+            {   
+                Node editorXML = rootDoc.importNode(xml, true);
+                blah.appendChild(editorXML);
+            }
+        }        
+        
+        return rootDoc;
     }
 
     public void initFromXML(Document doc)
     {
         // TODO Auto-generated method stub
 
+    }
+    
+    public void setEditors(ArrayList<ConfigurePanel> editors)
+    {
+        this.editors = editors;
     }
 
     public class PanelModel
@@ -74,6 +104,7 @@ public class ConfigurationStageModel extends Model implements StageDataModel, Li
     }
     
     ArrayList<PanelModel> panels;
+    ArrayList<ConfigurePanel> editors;
     int currentlyActivePanel;
     
     public int getCurrentlyActivePanel()

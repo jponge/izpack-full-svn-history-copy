@@ -153,11 +153,10 @@ public class PackModel implements ElementModel
         this.required = required;
     }
     
-    public Document writePack()
+    public Element writePack(Document doc)
     {
-        Document doc = XML.getNewDocument();
+        Element pack = XML.createElement("pack", doc);        
         
-        Element pack = XML.createElement("pack", doc);
         pack.setAttribute("name", name);
         pack.setAttribute("required", required ? "yes" : "no");
         pack.setAttribute("preselected", preselected ? "yes" : "no");
@@ -199,9 +198,7 @@ public class PackModel implements ElementModel
 
         }
         
-        doc.appendChild(pack);
-        
-        return doc;
+        return pack;
     }
     
     public DefaultTableModel getFilesModel()

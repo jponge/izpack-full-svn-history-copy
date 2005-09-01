@@ -62,6 +62,7 @@ public class AuthorManager
         NodeList authorElems;
         try
         {
+            
             authorElems = (NodeList) xpath.evaluate("//author", document, XPathConstants.NODESET);
 
             ArrayList authors = new ArrayList();
