@@ -1,0 +1,26 @@
+Before alpha
+---------------------------------------
+*Addition buttons for files need to be disabled when a valid model isn't in the table
+*Combobox strings need to be externalized/internationalized
+*Implement Executable args
+*Finish pack writing stuff
+*General UI testing/XML conformance checking
+*Pack descriptions
+
+*Fix mandatory markers
+
+Before beta
+---------------------------------------
+*Fix the LangSelect validation
+
+Before first release
+---------------------------------------
+*Allow multiple selections in Pack Stage
+	Selecting files in JFileChooser
+	Selecting files/packs
+	
+*Implement validation for PackStage Editors
+
+Before sometime
+---------------------------------------
+*FileSetModel should be a list model linked to the JList

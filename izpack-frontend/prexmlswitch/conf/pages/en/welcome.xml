@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<!--
+	$Id: izpack-frontend Feb 8, 2004 izpack-frontend
+	Copyright (C) 2001-2003 IzPack Development Group
+
+	File : welcome.xml 
+	Description : The configuration for the welcome panel
+	Author's email : gumbo@users.berlios.de
+
+	This program is free software; you can redistribute it and/or modify it
+	under the terms of the GNU General Public License as published by the Free
+	Software Foundation; either version 2 of the License, or any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT
+	ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+    more details.
+	
+	You should have received a copy of the GNU General Public License along with
+	this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+	Place - Suite 330, Boston, MA 02111-1307, USA.
+-->
+
+<!-- IzPack frontend panel config file. -->
+<izpack-panel name="Welcome Panel" classname="HelloPanel" editingClass="NONE">
+	<panel-version>1.0</panel-version>
+	<panel-desc-short>Welcome users to the installer</panel-desc-short>
+	<panel-desc-long>Display a welcome panel to users with general information about the application to be installed.</panel-desc-long>
+	
+	<authors>
+		<author name="IzPack Team" email="izpack-devel@berlios.de" />
+	</authors>	
+</izpack-panel>

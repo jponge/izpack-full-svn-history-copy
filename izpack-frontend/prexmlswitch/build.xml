@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- Build file for IzPack Frontend -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<project name="IzFrontend" default="compile" basedir=".">
+	
+	<!-- Define our library paths -->
+	<path id="build.classpath">
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+		
+	<path id="execute.classpath">
+		<path refid="build.classpath" />
+		<pathelement location="build/classes" />
+	</path>
+			
+	
+	<target name="init">
+		<mkdir dir="build/classes" />
+		<mkdir dir="dist" />
+	</target>
+		
+	<target name="build" depends ="init">
+		<javac 
+			srcdir="."
+			destdir="build/classes"			
+			deprecation="on">
+			<classpath refid="build.classpath" />
+		</javac>
+		
+		<antcall target="required_file_copy"/>
+	
+		<echo>compilation complete</echo>
+	</target>
+	
+	<target name="archive" depends="build">
+		<jar destfile="dist/FrontEnd.jar"
+			basedir="build/classes" />
+	</target>
+	
+	<target name="clean" depends="init">
+		<delete dir="build" />
+		<delete dir="dist" />
+	</target>
+	
+	<target name="run" depends="build">
+		<java
+			classname="izpack.frontend.view.mode.WizardMode"
+			fork="true">
+			<classpath refid="execute.classpath" />
+		</java>
+	</target>
+	
+	<target name="required_file_copy" depends="init">
+		<copy todir="build/classes/conf">
+			<fileset dir="conf"/>
+		</copy>		
+		
+		<copy todir="build/classes/res">
+			<fileset dir="res"/>
+		</copy>		
+
+
+		<copy todir="build/classes/lib">
+			<fileset dir="lib"/>
+		</copy>		
+	</target>
+		
+</project>
