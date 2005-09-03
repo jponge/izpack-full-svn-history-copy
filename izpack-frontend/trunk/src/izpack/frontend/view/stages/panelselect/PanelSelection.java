@@ -35,11 +35,7 @@ import javax.swing.event.ListDataListener;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import utils.XML;
-
-import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
-import com.jgoodies.validation.message.PropertyValidationMessage;
 
 /**
  * @author Andy Gombos
@@ -68,9 +64,9 @@ public class PanelSelection extends IzPackStage implements ListDataListener
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.IzPackStage#createInstallerData()
      */
-    public Document createInstallerData()
+    public Element[] createInstallerData(Document doc)
     {           
-        return model.writeToXML();
+        return model.writeToXML(doc);
     }    
         
     PanelSelectList panelSelect;

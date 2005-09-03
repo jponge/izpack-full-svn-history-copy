@@ -23,15 +23,13 @@
  */
 package izpack.frontend.model.stages;
 
-import javax.swing.ListModel;
+import izpack.frontend.model.SelectListModel;
+import izpack.frontend.view.renderers.ImageLabel;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import utils.XML;
-
-import izpack.frontend.model.SelectListModel;
-import izpack.frontend.view.renderers.ImageLabel;
 
 /**
  * @author Andy Gombos
@@ -42,31 +40,23 @@ public class PanelSelectionModel extends SelectListModel implements StageDataMod
     /* (non-Javadoc)
      * @see izpack.frontend.model.stages.StageDataModel#writeToXML()
      */
-    public Document writeToXML()
-    {
-        Element root = XML.createRootElement("installation");
-        Document rootDoc = root.getOwnerDocument();
-        
-        root.setAttribute("version", "1.0");
-        
+    public Element[] writeToXML(Document doc)
+    {   
         //Create the interesting XML data
-        Element panels = XML.createRootElement("panels");
-        Document panelsDoc = panels.getOwnerDocument();
+        Element panels = XML.createElement("panels", doc);        
         
         for (int i = 0; i < getSize(); i++)
         {
             ImageLabel il = (ImageLabel) getElementAt(i);
             String classname = il.getClassname();
             
-            Element panel = XML.createElement("panel", panelsDoc);
+            Element panel = XML.createElement("panel", doc);
             panel.setAttribute("classname", classname);
             
             panels.appendChild(panel);
         }
         
-        root.appendChild(rootDoc.importNode(panels, true));
-        
-        return rootDoc;
+        return new Element[]{panels};
     }
 
     /* (non-Javadoc)

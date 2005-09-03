@@ -26,9 +26,6 @@ package izpack.frontend.view.components;
 import izpack.frontend.model.stages.ConfigurationStageModel;
 import izpack.frontend.view.renderers.ItemProgressRenderer;
 
-import java.text.DecimalFormat;
-
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 

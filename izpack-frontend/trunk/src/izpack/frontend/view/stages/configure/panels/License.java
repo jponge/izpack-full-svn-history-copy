@@ -155,11 +155,11 @@ public class License extends JPanel implements ConfigurePanel
     /* (non-Javadoc)
      * @see izpack.frontend.view.pages.configure.ConfigurePage#createXML()
      */
-    public Element createXML()
+    public Element createXML(Document doc)
     {
         LicenseModel lic = (LicenseModel) licenseList.getSelectedItem();       
         
-        return XML.createResourceTree("LicencePanel.licence", lic.filename);        
+        return XML.createResourceTree("LicencePanel.licence", lic.filename, doc);        
     }
 
     /* (non-Javadoc)

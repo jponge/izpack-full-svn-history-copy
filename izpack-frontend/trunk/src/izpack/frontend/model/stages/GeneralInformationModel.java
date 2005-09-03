@@ -168,22 +168,13 @@ public class GeneralInformationModel extends Model implements StageDataModel
     /* (non-Javadoc)
      * @see izpack.frontend.model.stages.StageDataModel#writeToXML()
      */
-    public Document writeToXML()
-    {
-        Element root = XML.createRootElement("installation");
-        Document rootDoc = root.getOwnerDocument();
+    public Element[] writeToXML(Document doc)
+    {   
+        Element genInfoXML = createGeneralInfoPageXML(doc);
+        Element langXML = createLanguageXML(doc);
+        Element uiXML = createGUIXML(doc);
         
-        root.setAttribute("version", "1.0");        
-        
-        Element genInfoXML = createGeneralInfoPageXML();
-        Element langXML = createLanguageXML();
-        Element uiXML = createGUIXML();               
-        
-        root.appendChild(rootDoc.importNode(genInfoXML, true));
-        root.appendChild(rootDoc.importNode(langXML, true));
-        root.appendChild(rootDoc.importNode(uiXML, true));
-        
-        return rootDoc;
+        return new Element[]{genInfoXML, langXML, uiXML};
     }
 
     /* (non-Javadoc)
@@ -195,10 +186,9 @@ public class GeneralInformationModel extends Model implements StageDataModel
         
     }
     
-    private Element createGeneralInfoPageXML()
+    private Element createGeneralInfoPageXML(Document doc)
     {
-        Element info = XML.createRootElement("info");
-        Document doc = info.getOwnerDocument();
+        Element info = XML.createElement("info", doc);        
         
         Element appname = XML.createElement("appname", doc);
         Element appversion = XML.createElement("appversion", doc);
@@ -235,16 +225,15 @@ public class GeneralInformationModel extends Model implements StageDataModel
      * 	<langpack iso3="eng" />
      * </locale>
      */
-    private Element createLanguageXML()
+    private Element createLanguageXML(Document doc)
     {
-        Element root = XML.createRootElement("locale");
-        Document rootDoc = root.getOwnerDocument();
+        Element root = XML.createElement("locale", doc);        
         
         ListModel model = langCodes;
         
         for (int i = 0; i < model.getSize(); i++)
         {
-            Element langElem = XML.createElement("langpack", rootDoc);
+            Element langElem = XML.createElement("langpack", doc);
             LangLabel lLabel = (LangLabel) model.getElementAt(i);
             langElem.setAttribute("iso3", lLabel.getISO3Code());
             
@@ -258,10 +247,9 @@ public class GeneralInformationModel extends Model implements StageDataModel
      * Structure
      * <guiprefs resizable="no" width="800" height="600"/>
      */
-    private Element createGUIXML()
-    {
-        Document doc = XML.getDocument();
-        Element guiprefs = doc.createElement("guiprefs");
+    private Element createGUIXML(Document doc)
+    {        
+        Element guiprefs = XML.createElement("guiprefs", doc);
                 
         guiprefs.setAttribute("resizable", resizable ? "yes" : "no");        
         

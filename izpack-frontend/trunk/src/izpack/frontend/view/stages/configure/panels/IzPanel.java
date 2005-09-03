@@ -23,8 +23,6 @@ package izpack.frontend.view.stages.configure.panels;
 
 import java.util.Observer;
 
-import com.jgoodies.validation.ValidationResult;
-
 
 /**
  * Defines how pages have to look like.

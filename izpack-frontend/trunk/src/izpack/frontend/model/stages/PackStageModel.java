@@ -29,7 +29,6 @@ import javax.swing.table.DefaultTableModel;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import utils.XML;
 
@@ -42,15 +41,10 @@ public class PackStageModel extends DefaultTableModel implements StageDataModel
     /* (non-Javadoc)
      * @see izpack.frontend.model.stages.StageDataModel#writeToXML()
      */
-    public Document writeToXML()
-    {
-        Element root = XML.createRootElement("installation");
-        Document rootDoc = root.getOwnerDocument();
-        
-        root.setAttribute("version", "1.0");
-        
+    public Element[] writeToXML(Document doc)
+    {                
         //Create the interesting XML data
-        Element packs = XML.createElement("packs", rootDoc);        
+        Element packs = XML.createElement("packs", doc);        
         
         for (int row = 0; row < getRowCount(); row++)
         {
@@ -59,15 +53,13 @@ public class PackStageModel extends DefaultTableModel implements StageDataModel
             //If we have a valid pack, write it's XML representation out
             if (rowObj != null)
             {
-                Element pack = ( (PackModel) rowObj).writePack(rootDoc);
+                Element pack = ( (PackModel) rowObj).writePack(doc);
                 
                 packs.appendChild(pack);
             }
         }
         
-        root.appendChild(packs);
-        
-        return rootDoc;
+        return new Element[]{packs};
     }
 
     /* (non-Javadoc)

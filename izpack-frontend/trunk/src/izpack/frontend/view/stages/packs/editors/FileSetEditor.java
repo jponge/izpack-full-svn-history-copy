@@ -28,7 +28,6 @@ import izpack.frontend.controller.filters.ImageFilter;
 import izpack.frontend.controller.filters.TextFilter;
 import izpack.frontend.controller.filters.XMLFilter;
 import izpack.frontend.model.files.ElementModel;
-import izpack.frontend.model.files.FileModel;
 import izpack.frontend.model.files.FileSet;
 import izpack.frontend.view.components.OSComboBox;
 import izpack.frontend.view.components.OverwriteComboBox;
@@ -51,7 +50,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.debug.FormDebugPanel;
 import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.forms.layout.FormLayout;
 

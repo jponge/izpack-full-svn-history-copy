@@ -45,6 +45,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -61,15 +62,19 @@ public class XML
         
         try
         {
-            builder = factory.newDocumentBuilder();
+            builder = factory.newDocumentBuilder();            
         }
         catch (ParserConfigurationException e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
+        }        
         
-        return builder.newDocument();
+        doc = builder.newDocument();
+        DocumentType doctype = builder.getDOMImplementation().createDocumentType("installation", "", "dtd/installation.dtd");              
+        doc.insertBefore(doctype, doc.getFirstChild());
+        
+        return doc;
     }
     
     //TODO Exception handling
@@ -123,7 +128,12 @@ public class XML
             // Get Transformer
             //This won't properly indent - research indicates a 1.5 bug (so 1.3 JAXP?)
             TransformerFactory tFactory = TransformerFactory.newInstance();
-            Transformer xformer = tFactory.newTransformer();
+            Transformer xformer = tFactory.newTransformer();            
+            
+            String systemValue = (new File(document.getDoctype().getSystemId())).getPath();
+            System.out.println(systemValue);
+            xformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemValue);            
+            //xformer.setOutputProperty(OutputKeys.METHOD, "xml");
             xformer.setOutputProperty(OutputKeys.INDENT, "yes");
             
             // Write to a file
@@ -201,12 +211,10 @@ public class XML
      * @param src Resource value (src attribute)
      * @return The root (head) element
      */
-    public static Element createResourceTree(String id, String src)
+    public static Element createResourceTree(String id, String src, Document doc)
     {
-        //Create the head node	    
-	    Document doc = getDocument();
-	    Element root = doc.createElement("resources");
-	    doc.appendChild(root);
+        //Create the head node
+	    Element root = doc.createElement("resources");	    
 	    
 	    //Create the child node (the one we really want)
 	    Element resource = doc.createElement("res");

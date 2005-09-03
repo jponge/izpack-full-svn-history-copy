@@ -37,12 +37,12 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import utils.UI;
 
@@ -149,7 +149,7 @@ public abstract class IzPackStage extends JPanel implements Stage
         return bottom;
     }
     
-    public abstract Document createInstallerData();
+    public abstract Element[] createInstallerData(Document doc);
     
     public abstract ValidationResult validateStage();
     

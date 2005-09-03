@@ -33,9 +33,9 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import utils.XML;
 
@@ -49,43 +49,33 @@ public class XMLCreator
      */
     public XMLCreator(ArrayList<IzPackStage> stageList)
     {
-        xmlChunks = new ArrayList<Document>();
+        xmlChunks = new ArrayList<Element>();
         this.stageList = stageList;        
     }
     
     public Document createInstallXML()
     {
-        loadXMLChunksFromStages();
+        Document doc = XML.createDocument();
         
-        XPath xpath = XPathFactory.newInstance().newXPath();
         
-        Element root = XML.createRootElement("installation");
-        Document rootDoc = root.getOwnerDocument();
+        loadXMLChunksFromStages(doc);        
         
+        Element root = XML.createElement("installation", doc);        
         root.setAttribute("version", "1.0");
-                
-        for (Document doc : xmlChunks)
+        
+        doc.appendChild(root);
+
+        System.out.println(xmlChunks.size());
+        for (Element elem : xmlChunks)
         {            
-            try
-            {
-                Node node = (Node) xpath.evaluate("//installation", doc, XPathConstants.NODE);
-                node = node.getFirstChild();
-                
-                Node importedNode = rootDoc.importNode(node, true);
-                root.appendChild(importedNode);
-            }
-            catch (XPathExpressionException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            root.appendChild(elem);
         }
         
         System.err.println("**********************************");
         System.out.flush();
         System.err.flush();
         
-        XML.printXML(rootDoc);
+        XML.printXML(doc);
         System.err.println("**********************************");
         
         return null;
@@ -94,17 +84,22 @@ public class XMLCreator
     /**
      * Make each stage create it's required XML chunk, and store it for processing
      */
-    private void loadXMLChunksFromStages()
-    {
+    private void loadXMLChunksFromStages(Document doc)
+    {   
         for (IzPackStage stage : stageList)
         {   
-            Document doc = stage.createInstallerData();
+            Element[] elem = stage.createInstallerData(doc);
             
-            if (doc != null)
-                xmlChunks.add(doc);
+            if (elem != null)
+            {
+                for (int i = 0; i < elem.length; i++)
+                {
+                    xmlChunks.add(elem[i]);
+                }                
+            }
         }
     }
         
-    private ArrayList<Document> xmlChunks;
-    private ArrayList<IzPackStage> stageList;
+    private ArrayList<Element> xmlChunks;
+    private ArrayList<IzPackStage> stageList;    
 }

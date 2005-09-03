@@ -28,7 +28,6 @@ import izpack.frontend.model.AuthorManager;
 import izpack.frontend.model.stages.GeneralInformationModel;
 import izpack.frontend.view.IzPackFrame;
 import izpack.frontend.view.stages.IzPackStage;
-import izpack.frontend.view.stages.configure.panels.ConfigurePanel;
 import izpack.frontend.view.stages.configure.panels.IzPackPanel;
 
 import java.awt.event.ActionEvent;
@@ -44,9 +43,6 @@ import javax.swing.JList;
 import javax.swing.JTextField;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import utils.XML;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;

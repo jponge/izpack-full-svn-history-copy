@@ -24,13 +24,14 @@
 package izpack.frontend.model.stages;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * @author Andy Gombos
  */
 public interface StageDataModel
 {
-    public Document writeToXML();
+    public Element[] writeToXML(Document doc);
     
     public void initFromXML(Document doc);
 }

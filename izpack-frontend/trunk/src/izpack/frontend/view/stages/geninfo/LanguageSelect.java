@@ -38,11 +38,6 @@ import javax.swing.ImageIcon;
 import javax.swing.ListModel;
 import javax.swing.SwingConstants;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import utils.XML;
-
 import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.list.SelectionInList;
 

@@ -33,7 +33,6 @@ import izpack.frontend.view.components.ItemProgressPanel;
 import izpack.frontend.view.renderers.ImageLabel;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.configure.panels.ConfigurePanel;
-import izpack.frontend.view.stages.configure.panels.NoEditingNecessary;
 import izpack.frontend.view.stages.configure.panels.NoEditorCreated;
 import izpack.frontend.view.stages.panelselect.PanelSelection;
 
@@ -46,6 +45,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.jgoodies.binding.beans.PropertyConnector;
 import com.jgoodies.validation.ValidationResult;
@@ -91,10 +91,9 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
     }
 
     @Override
-    public Document createInstallerData()
-    {
-        System.out.println("panel config xml");
-        return model.writeToXML();
+    public Element[] createInstallerData(Document doc)
+    {        
+        return model.writeToXML(doc);
     }
 
     @Override

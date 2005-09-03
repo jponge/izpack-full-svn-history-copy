@@ -28,14 +28,9 @@ import izpack.frontend.model.stages.GeneralInformationModel;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.validation.Severity;
-import com.jgoodies.validation.ValidationCapable;
 import com.jgoodies.validation.ValidationResult;
-import com.jgoodies.validation.message.PropertyValidationMessage;
 import com.jgoodies.validation.util.PropertyValidationSupport;
 import com.jgoodies.validation.util.ValidationUtils;
-import com.jgoodies.validation.view.ValidationComponentUtils;
 
 /**
  * Validates the GeneralInfo model.

@@ -36,7 +36,7 @@ public class NoEditorCreated extends JPanel implements ConfigurePanel
         add(new JLabel("No editor has been created for this panel"));
     }
     
-    public Element createXML()
+    public Element createXML(Document doc)
     {
         // TODO Auto-generated method stub
         return null;

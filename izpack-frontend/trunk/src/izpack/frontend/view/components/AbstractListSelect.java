@@ -24,7 +24,6 @@
 package izpack.frontend.view.components;
 
 import izpack.frontend.model.SelectListModel;
-import izpack.frontend.view.stages.configure.panels.ConfigurePanel;
 import izpack.frontend.view.stages.configure.panels.IzPackPanel;
 
 import java.awt.Color;

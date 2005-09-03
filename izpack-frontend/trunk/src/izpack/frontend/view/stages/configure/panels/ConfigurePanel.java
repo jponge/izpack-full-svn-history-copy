@@ -26,8 +26,6 @@ package izpack.frontend.view.stages.configure.panels;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.jgoodies.validation.ValidationResult;
-
 
 /**
  * @author Andy Gombos
@@ -36,10 +34,11 @@ public interface ConfigurePanel
 {
     /** 
      *  Create an XML segment for the install file to be compiled.  Follows the DTD.
+     * @param doc TODO
      * 
      *  @return An Element that forms the current XML tree
      */
-    public Element createXML();
+    public Element createXML(Document doc);
     
     /**
      *	Initialize panel values from a ready-to-compile installer file.  The panel must

@@ -34,12 +34,7 @@ import izpack.frontend.view.renderers.ImageLabel;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.ListModel;
-
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import utils.XML;
 
 import com.jgoodies.validation.ValidationResult;
 

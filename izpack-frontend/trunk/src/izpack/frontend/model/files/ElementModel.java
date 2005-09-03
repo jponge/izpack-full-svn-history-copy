@@ -23,7 +23,6 @@
  */
 package izpack.frontend.model.files;
 
-import org.w3c.dom.Document;
 
 /**
  * @author Andy Gombos

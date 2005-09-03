@@ -100,9 +100,9 @@ public class XInfo extends JPanel implements ConfigurePanel, ActionListener
      * 	<res ...>
      * </resources>
      */
-    public Element createXML()
+    public Element createXML(Document doc)
     {   
-        return XML.createResourceTree("XInfoPanel.info", filebox.getText());
+        return XML.createResourceTree("XInfoPanel.info", filebox.getText(), doc);
     }
 
     /* (non-Javadoc)

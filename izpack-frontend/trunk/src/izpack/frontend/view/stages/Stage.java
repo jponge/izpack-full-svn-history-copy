@@ -24,11 +24,11 @@
 package izpack.frontend.view.stages;
 
 import izpack.frontend.controller.StageChangeListener;
-import izpack.frontend.controller.validators.StageValidator;
 
 import javax.swing.JPanel;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.jgoodies.validation.ValidationResult;
 
@@ -49,10 +49,11 @@ public interface Stage
     /**
      *  Create the IzPack XML file for the compiler, or
      * null if this stage does not support being compiled.
+     * @param doc TODO
      * 
      * @return The installer data, or null
      */
-    public Document createInstallerData();
+    public Element[] createInstallerData(Document doc);
     
     /**
      * Validate all <code>Panels</code>s this <code>Stage</code>

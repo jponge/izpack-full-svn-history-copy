@@ -50,29 +50,25 @@ public class ConfigurationStageModel extends Model implements StageDataModel, Li
     }
 
     //TODO fix this so the elements are inserted properly
-    public Document writeToXML()
-    {
-        Element root = XML.createRootElement("installation");
-        Document rootDoc = root.getOwnerDocument();
+    public Element[] writeToXML(Document doc)
+    {   
+        if (editors == null)
+            return new Element[]{};
         
-        root.setAttribute("version", "1.0");
+        ArrayList<Element> editorXML = new ArrayList<Element>(editors.size());
         
         //TODO Create the interesting XML data
-        Element blah = XML.createElement("PanelConfiguration", rootDoc);
-        root.appendChild(blah);
-        
         for (ConfigurePanel editor : editors)
         {
-            Element xml = editor.createXML();
+            Element xml = editor.createXML(doc);
             
             if (xml != null)
             {   
-                Node editorXML = rootDoc.importNode(xml, true);
-                blah.appendChild(editorXML);
+                editorXML.add(xml);
             }
         }        
         
-        return rootDoc;
+        return editorXML.toArray(new Element[0]);
     }
 
     public void initFromXML(Document doc)

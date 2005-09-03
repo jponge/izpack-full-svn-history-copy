@@ -24,10 +24,10 @@
 package izpack.frontend.model;
 
 import izpack.frontend.model.files.ElementModel;
+import izpack.frontend.model.files.FileOrderComparator;
 import izpack.frontend.model.files.PackElement;
 import izpack.frontend.model.files.PackFileModel;
 import izpack.frontend.model.files.Parsable;
-import izpack.frontend.model.files.FileOrderComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;

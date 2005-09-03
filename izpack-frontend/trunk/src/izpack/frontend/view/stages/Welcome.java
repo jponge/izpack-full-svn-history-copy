@@ -44,6 +44,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -174,7 +175,7 @@ public class Welcome extends IzPackStage implements ActionListener
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.IzPackStage#createInstallerData()
      */
-    public Document createInstallerData()
+    public Element[] createInstallerData(Document doc)
     {
         // TODO Auto-generated method stub
         return null;

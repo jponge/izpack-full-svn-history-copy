@@ -40,8 +40,6 @@ import javax.swing.event.ListDataListener;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import utils.XML;
-
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.view.ValidationComponentUtils;
@@ -75,9 +73,9 @@ public class GeneralInformation extends IzPackStage
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.IzPackStage#createInstallerData()
      */
-    public Document createInstallerData()
+    public Element[] createInstallerData(Document doc)
     {           
-        return model.writeToXML();
+        return model.writeToXML(doc);
     }
 
     /* (non-Javadoc)

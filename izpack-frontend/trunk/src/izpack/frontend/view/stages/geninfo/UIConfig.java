@@ -25,16 +25,10 @@ package izpack.frontend.view.stages.geninfo;
 
 import izpack.frontend.view.components.YesNoCheckBox;
 import izpack.frontend.view.stages.IzPackStage;
-import izpack.frontend.view.stages.configure.panels.ConfigurePanel;
 import izpack.frontend.view.stages.configure.panels.IzPackPanel;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import utils.XML;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;

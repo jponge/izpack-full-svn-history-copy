@@ -36,7 +36,7 @@ public class PreviouslyConfigured extends JPanel implements ConfigurePanel
         add(new JLabel("This panel was previously configured. Make any changes there."));
     }
     
-    public Element createXML()
+    public Element createXML(Document doc)
     {
         // TODO Auto-generated method stub
         return null;

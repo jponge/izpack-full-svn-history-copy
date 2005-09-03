@@ -40,7 +40,6 @@ import izpack.frontend.view.components.table.FileListHeader;
 import izpack.frontend.view.components.table.PackCellEditor;
 import izpack.frontend.view.components.table.PackCellRenderer;
 import izpack.frontend.view.components.table.PackListHeader;
-import izpack.frontend.view.components.table.TableEditor;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.packs.editors.DirectoryEditor;
 import izpack.frontend.view.stages.packs.editors.EditorManager;
@@ -53,8 +52,6 @@ import izpack.frontend.view.stages.packs.editors.ParsableEditor;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.ListIterator;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -67,8 +64,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import org.w3c.dom.Document;
-
-import utils.XML;
+import org.w3c.dom.Element;
 
 import com.jgoodies.forms.builder.ButtonStackBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -126,9 +122,9 @@ public class Pack extends IzPackStage implements ActionListener, ListSelectionLi
     /* (non-Javadoc)
      * @see izpack.frontend.view.stages.IzPackStage#createInstallerData()
      */
-    public Document createInstallerData()
+    public Element[] createInstallerData(Document doc)
     {
-        return model.writeToXML();
+        return model.writeToXML(doc);
     }    
 
     /* (non-Javadoc)
