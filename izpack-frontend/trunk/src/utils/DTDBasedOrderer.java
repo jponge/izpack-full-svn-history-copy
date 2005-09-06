@@ -1,22 +1,13 @@
 /*
- * Created on Sep 2, 2005
- * 
- * $Id: DTDBasedOrderer.java Feb 8, 2004 izpack-frontend
- * Copyright (C) 2001-2003 IzPack Development Group
- * 
- * File : DTDBasedOrderer.java 
- * Description : TODO Add description
- * Author's email : gumbo@users.berlios.de
- * 
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or any later version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- * 
+ * Created on Sep 2, 2005 $Id: DTDBasedOrderer.java Feb 8, 2004 izpack-frontend
+ * Copyright (C) 2001-2003 IzPack Development Group File : DTDBasedOrderer.java
+ * Description : TODO Add description Author's email : gumbo@users.berlios.de
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or any later version. This
+ * program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -27,73 +18,66 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
+import javax.swing.tree.TreeNode;
 
+import org.w3c.dom.DOMError;
+import org.w3c.dom.DOMErrorHandler;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
+import utils.XML;
+import utils.XMLDocFlattener;
+import utils.XMLElementList;
+
+import com.sun.org.apache.xerces.internal.dom.DeferredElementImpl;
 import com.wutka.dtd.DTD;
 import com.wutka.dtd.DTDElement;
-import com.wutka.dtd.DTDItem;
 import com.wutka.dtd.DTDName;
 import com.wutka.dtd.DTDParser;
 import com.wutka.dtd.DTDSequence;
 
-public class DTDBasedOrderer
+public class DTDBasedOrderer implements DOMErrorHandler
 {
     public DTDBasedOrderer(String dtdFilename)
-    {
+    {        
+        dtdModel = new DefaultTreeModel(new DefaultMutableTreeNode("DTD"));
+
+        root = (DefaultMutableTreeNode) dtdModel.getRoot();
+        
         try
         {
             FileReader reader = new FileReader(dtdFilename);
-            
+
             DTDParser parser = new DTDParser(reader);
-            
-            DTD dtd = parser.parse(true);
-            
-            Vector items = dtd.items;
-            
-            dtdModel = new DefaultTreeModel(new DefaultMutableTreeNode("DTD"));
-            root = (DefaultMutableTreeNode) dtdModel.getRoot();
-            
-            for (Iterator iter = items.iterator(); iter.hasNext();)
+
+            DTD dtd = parser.parse(false);
+
+            items = dtd.items;
+
+            dtdElemTable = dtd.elements;
+
+            for (int i = 0; i < items.size(); i++)
             {
-                Object element = iter.next();
-                
-                if (element instanceof DTDElement)
+                Object obj = items.elementAt(i);
+                if (obj != null && obj instanceof DTDElement)
                 {
-                    DTDElement dtdElem = (DTDElement) element;
-                    DTDItem dtdContent = dtdElem.content;
-                    
-                    //DTDSequence gives the ordered list of elements in the DTD
-                    if (dtdContent instanceof DTDSequence)
-                    {
-                        DefaultMutableTreeNode dtdNode = new DefaultMutableTreeNode(dtdElem.name);
-                        dtdElements.put(dtdElem.name, dtdNode);
-                        root.add(dtdNode);
-                        
-                        DTDSequence seq = (DTDSequence) dtdContent;
-                        
-                        DTDItem dtdItems[] = seq.getItems();
-                        
-                        for (int i = 0; i < dtdItems.length; i++)
-                        {                            
-                            dtdNode.add(new DefaultMutableTreeNode(
-                                            ( (DTDName) dtdItems[i] ).value
-                                                               ));
-                        }
-                    }                        
+                    DTDElement element = (DTDElement) obj;
+
+                    addElement(root, element);
                 }
-            }            
+
+            }
+
+            TreeNode newRoot = root.getFirstChild();
+            dtdModel.setRoot(newRoot);
+            root = (DefaultMutableTreeNode) newRoot;
+
         }
         catch (FileNotFoundException e)
         {
@@ -105,72 +89,103 @@ public class DTDBasedOrderer
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
     }
-    
+
+    private void addElement(DefaultMutableTreeNode parent, DTDElement element)
+    {
+        // Has child elements
+        items.remove(element);
+        if (element.content instanceof DTDSequence)
+        {
+            DTDSequence seq = (DTDSequence) element.content;
+
+            Vector v = seq.getItemsVec();
+
+            DefaultMutableTreeNode curNode = new DefaultMutableTreeNode(
+                            element.name);
+            parent.add(curNode);
+
+            for (Object obj : v)
+            {
+                DTDName name = (DTDName) obj;
+
+                DTDElement elem = (DTDElement) dtdElemTable.get(name.value);
+
+                if (elem == null) continue;
+
+                addElement(curNode, elem);
+            }
+        }
+        else
+        {
+            DefaultMutableTreeNode curNode = new DefaultMutableTreeNode(
+                            element.name);
+            parent.add(curNode);
+        }
+
+    }
+
     public Document orderDocument(Document doc)
     {
-        elements = getXMLElements(doc);
+        elements = XMLDocFlattener.flattenDocument(doc);
+
         Document sortedDoc = XML.createDocument();
+
+        Node xmlRoot = elements.searchInList("installation").get(0);
+
+        xmlRoot = sortedDoc.importNode(xmlRoot, false);
+        sortedDoc.appendChild(xmlRoot);
         
-        //Find the installation node, since it's the root        
-        Node root = sortedDoc.appendChild(
-                        sortedDoc.adoptNode(elements.get("installation"))
-                        );
+        addNodes(xmlRoot, root);    
         
+        sortedDoc.getDomConfig().setParameter("comments", false);
+        sortedDoc.getDomConfig().setParameter("validate", true);
+        sortedDoc.getDomConfig().setParameter("error-handler", this);        
         
-        
+        sortedDoc.normalizeDocument();
+
         return sortedDoc;
     }
-    
-    private void addNodes(String name, Node root)
+
+    private void addNodes(Node parent, DefaultMutableTreeNode insertLocation)
     {
-        DefaultMutableTreeNode dtdNode = dtdElements.get(name);
-        
-        //Find the right node to add this new node to
-        String parentName = (String) ((DefaultMutableTreeNode) dtdNode.getParent() ).getUserObject();
-        
-        int index = dtdNode.getParent().getIndex(dtdNode);        
-        
-        try
+        for (int i = 0; i < insertLocation.getChildCount(); i++)
         {
-            Node parent = (Node) xpath.evaluate("//" + parentName, root, XPathConstants.NODE);
+            DefaultMutableTreeNode location = (DefaultMutableTreeNode) insertLocation
+                            .getChildAt(i);
+
+            XMLElementList xmlElements = elements
+                            .searchInList((String) location.getUserObject());
             
-            
-            
-        }
-        catch (XPathExpressionException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    
-    private HashMap<String, Node> getXMLElements(Node node)
-    {
-        HashMap<String, Node> docElements = new HashMap<String, Node>();
-        
-        NodeList nodeList = node.getChildNodes();
-        
-        if (nodeList != null)
-        {
-            if (node.getNodeType() == Node.ELEMENT_NODE)
-            {
-                docElements.put(node.getNodeName(), node.cloneNode(false));
-            }
-            
-            for (int i = 0; i < nodeList.getLength(); i++)
-            {
-                if (nodeList.item(i).getNodeType() == Node.ELEMENT_NODE)
-                    docElements.putAll(getXMLElements(nodeList.item(i)));
+            // Unable to find an appropriate element
+            if (xmlElements.size() == 0)            
+                continue;            
+
+            for (Node node : xmlElements)
+            {                   
+                Node adopted = parent.getOwnerDocument().importNode(node, true);
+                parent.appendChild(adopted);
+
+                //If there are more children in the DTD we can add, do so
+                if (location.getChildCount() != 0)
+                    addNodes(node, location);
             }
         }
-        
-        return docElements;        
     }
-    
-    private XPath xpath = XPathFactory.newInstance().newXPath();
-    private HashMap<String, Node> elements;
-    private HashMap<String, DefaultMutableTreeNode> dtdElements;
-    private DefaultTreeModel dtdModel;    
+
+    //DTD tree stuff    
+    private DefaultTreeModel dtdModel;
     private DefaultMutableTreeNode root;
+    private Hashtable dtdElemTable;
+    private Vector items;
+
+    //XML tree/storage stuff
+    private XMLElementList elements;
+
+    public boolean handleError(DOMError error)
+    {
+        System.out.println(error.getMessage());
+        return false;
+    }
 }

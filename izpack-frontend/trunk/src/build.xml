@@ -4,7 +4,7 @@
 <!-- Build file for IzPack Frontend -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<project name="IzFrontend" default="compile" basedir=".">
+<project name="IzFrontend" default="build" basedir=".">
 	
 	<!-- Define our library paths -->
 	<path id="build.classpath">

@@ -130,10 +130,14 @@ public class XML
             TransformerFactory tFactory = TransformerFactory.newInstance();
             Transformer xformer = tFactory.newTransformer();            
             
-            String systemValue = (new File(document.getDoctype().getSystemId())).getPath();
-            System.out.println(systemValue);
-            xformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemValue);            
-            //xformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            if (document.getDoctype() != null)
+            {
+                String systemValue = (new File(document.getDoctype().getSystemId())).getPath();
+            
+                xformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemValue);
+            }
+            
+            
             xformer.setOutputProperty(OutputKeys.INDENT, "yes");
             
             // Write to a file
