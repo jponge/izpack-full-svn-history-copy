@@ -32,6 +32,8 @@ import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 import utils.XML;
 
@@ -46,10 +48,8 @@ public class FileSet extends PackFileModel implements ListModel
     /* (non-Javadoc)
      * @see izpack.frontend.model.files.PackElement#writeXML()
      */
-    public Document writeXML()
-    {
-        Document doc = XML.getNewDocument();        
-        
+    public Element writeXML(Document doc)
+    {   
         Element fset = XML.createElement("fileset", doc);
         fset.setAttribute("dir", source);
         fset.setAttribute("targetdir", target);
@@ -69,15 +69,44 @@ public class FileSet extends PackFileModel implements ListModel
             
             Element set = element.writeXML(doc);
             fset.appendChild(set);
-        }        
+        }
         
-        doc.appendChild(fset);
-        return doc;
+        return fset;
     }
+    
+    public void initFromXML(Node elementNode)
+    {
+        NamedNodeMap attributes = elementNode.getAttributes();
+        
+        source = attributes.getNamedItem("dir").getNodeValue();
+        
+        target = attributes.getNamedItem("targetdir").getNodeValue();
+        
+        if (attributes.getNamedItem("os") != null)
+            os = attributes.getNamedItem("os").getNodeValue();       
+        
+        if (attributes.getNamedItem("override") != null)
+            override = attributes.getNamedItem("override").getNodeValue();
+        
+        caseSensitive = yesNoBoolean(attributes.getNamedItem("casesensitive").getNodeValue());
+        
+        defaultExcludes = yesNoBoolean(attributes.getNamedItem("defaultexcludes").getNodeValue());
+        
+        
+    }
+
     
     private String yesNoBoolean(boolean b)
     {
         return b ? "yes" : "no";
+    }
+    
+    private boolean yesNoBoolean(String b)
+    {
+        if (b.equalsIgnoreCase("yes"))
+            return true;
+        else
+            return false;
     }
     
     public ArrayList getSetList()
@@ -125,6 +154,8 @@ public class FileSet extends PackFileModel implements ListModel
         
         public abstract Element writeXML(Document d);
         
+        public abstract void initFromXML(Node node);
+        
         protected String set;
     }
     
@@ -147,6 +178,13 @@ public class FileSet extends PackFileModel implements ListModel
             
             return include;
         }
+
+        @Override
+        public void initFromXML(Node node)
+        {
+            // TODO Auto-generated method stub
+            
+        }
     }
     
     public static class Exclude extends Set
@@ -168,6 +206,13 @@ public class FileSet extends PackFileModel implements ListModel
             exclude.setAttribute("name", set);
             
             return exclude;
+        }
+
+        @Override
+        public void initFromXML(Node node)
+        {
+            // TODO Auto-generated method stub
+            
         }
     }
 

@@ -23,33 +23,53 @@
  */
 package izpack.frontend.view.renderers;
 
-import javax.swing.Icon;
+import izpack.frontend.model.LanguageMap;
+import izpack.frontend.model.stages.GeneralInformationModel.LangModel;
+
+import java.awt.Component;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.SoftBevelBorder;
 
 /**
  * @author Andy Gombos
  */
-public class LangLabel extends JLabel
+public class LangLabel extends DefaultListCellRenderer
 {
-    /**
-     * @param text
-     * @param icon
-     * @param horizontalAlignment
-     */
-    public LangLabel(String text, Icon icon, int horizontalAlignment)
+    public LangLabel()
     {
-        super(text, icon, horizontalAlignment);                
+        displayLabel = new JLabel("", SwingConstants.LEFT);
     }
     
-    public void setISO3Code(String code)
+    @Override
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus)
     {
-        iso3Code = code;
-    }
+        if (value instanceof LangModel)
+        {
+            LangModel model = (LangModel) value;
+            displayLabel.setText(langMap.get(model.iso3Code));
+            displayLabel.setIcon(new ImageIcon(model.flag));
+            
+            if (isSelected)
+                displayLabel.setBorder(selected);
+            else
+                displayLabel.setBorder(unselected);
+            
+            return displayLabel;
+        }        
+        
+        return null;
+    }    
     
-    public String getISO3Code()
-    {
-        return iso3Code;
-    }
+    static Border unselected = new SoftBevelBorder(SoftBevelBorder.RAISED);
+    static Border selected = new SoftBevelBorder(SoftBevelBorder.LOWERED);
     
-    String iso3Code;
+    LanguageMap langMap = LanguageMap.getInstance();
+    JLabel displayLabel;    
 }

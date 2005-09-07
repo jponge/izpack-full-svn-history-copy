@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -151,7 +152,7 @@ public class PanelInfoManager
      * 
      * @return ArrayList of the available panels
      */
-    public static ArrayList<PanelInfo> getAvailablePages()
+    public static ArrayList<PanelInfo> getAvailablePanels()
     {
         if (panels == null)
         {
@@ -176,8 +177,31 @@ public class PanelInfoManager
         }
     }
     
+    public static HashMap<String, PanelInfo> getAvailablePanelMap()
+    {
+        if (panelMap == null)
+        {
+            String[] confFiles = getConfigFiles();
+            panelMap = new HashMap<String, PanelInfo>(confFiles.length);            
+            
+            for (int i = 0; i < confFiles.length; i++)
+            {                       
+                PanelInfo panelInfo = loadPage(CONFIG_PATH + confFiles[i]);
+                
+                panelMap.put(panelInfo.getClassname(), panelInfo);            
+            }
+    
+            return panelMap;
+        }
+        else
+        {
+            return panelMap;
+        }
+    }
+    
     //Determine the correct path by requesting the language code of the application
     private static String CONFIG_PATH = "conf/pages/" + GUIController.getInstance().appConfiguration().getI18NLangCode() + "/";
     private static ArrayList<PanelInfo> panels = null;
+    private static HashMap<String, PanelInfo> panelMap = null;
     private static String editorPackage = IzPanel.class.getPackage().getName() + ".";
 }

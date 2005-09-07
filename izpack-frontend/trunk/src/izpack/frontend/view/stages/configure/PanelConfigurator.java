@@ -81,7 +81,7 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
         
         setLayout(layout);
         
-        availablePanels = PanelInfoManager.getAvailablePages();
+        availablePanels = PanelInfoManager.getAvailablePanels();
         
         model = new ConfigurationStageModel();
         
@@ -151,12 +151,11 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
     public void intervalAdded(ListDataEvent e)
     {        
         PanelSelectionModel psm = (PanelSelectionModel) e.getSource();
-        ImageLabel renderer = (ImageLabel) psm.get(e.getIndex0());
         
-        PanelInfo addedObject = availablePanels.get(renderer.getPanelArrayIndex());
+        PanelInfo panelModel = (PanelInfo) psm.get(e.getIndex0());
         
         PanelModel newAddedObject = model.new PanelModel();
-        newAddedObject.configData = addedObject;
+        newAddedObject.configData = panelModel;
         newAddedObject.valid = false;
         
         model.getPanels().add(e.getIndex0(), newAddedObject);
@@ -227,4 +226,9 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
      */
     private boolean secondContentsChangedEvent = false;
     private int index = -1;
+    public void initializeStageFromXML(Document doc)
+    {
+        // TODO Auto-generated method stub
+        
+    }
 }

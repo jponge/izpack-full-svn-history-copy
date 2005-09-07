@@ -23,11 +23,21 @@
  */
 package izpack.frontend.model.stages;
 
+import izpack.frontend.model.PanelInfo;
+import izpack.frontend.model.PanelInfoManager;
 import izpack.frontend.model.SelectListModel;
-import izpack.frontend.view.renderers.ImageLabel;
+
+import java.util.HashMap;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import utils.XML;
 
@@ -47,11 +57,10 @@ public class PanelSelectionModel extends SelectListModel implements StageDataMod
         
         for (int i = 0; i < getSize(); i++)
         {
-            ImageLabel il = (ImageLabel) getElementAt(i);
-            String classname = il.getClassname();
+            PanelInfo panelModel = (PanelInfo) get(i);            
             
             Element panel = XML.createElement("panel", doc);
-            panel.setAttribute("classname", classname);
+            panel.setAttribute("classname", panelModel.getClassname());
             
             panels.appendChild(panel);
         }
@@ -64,8 +73,27 @@ public class PanelSelectionModel extends SelectListModel implements StageDataMod
      */
     public void initFromXML(Document doc)
     {
-        // TODO Auto-generated method stub
+        XPath xpath = XPathFactory.newInstance().newXPath();
         
+        HashMap<String, PanelInfo> availablePanels = PanelInfoManager.getAvailablePanelMap();
+        
+        try
+        {
+            NodeList panels = (NodeList) xpath.evaluate("//panels/panel", doc, XPathConstants.NODESET);
+            
+            for (int i = 0; i < panels.getLength(); i++)
+            {
+                Node panel = panels.item(i);
+                
+                String classname = panel.getAttributes().getNamedItem("classname").getNodeValue();
+                
+                addElement(availablePanels.get(classname));
+            }
+        }
+        catch (XPathExpressionException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }        
     }
-
 }

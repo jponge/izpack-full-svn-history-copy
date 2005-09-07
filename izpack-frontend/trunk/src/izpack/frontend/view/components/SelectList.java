@@ -37,7 +37,6 @@ public class SelectList extends JList
     {
         super();
         
-        setCellRenderer(new LabelRenderer());
         setModel(new SelectListModel());
     }    
         

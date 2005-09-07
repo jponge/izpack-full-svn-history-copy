@@ -25,11 +25,15 @@ package izpack.frontend.model.files;
 
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * @author Andy Gombos
  */
 public interface PackElement extends ElementModel
 {
-    public Document writeXML();
+    public Element writeXML(Document doc);
+    
+    public void initFromXML(Node elementNode);
 }

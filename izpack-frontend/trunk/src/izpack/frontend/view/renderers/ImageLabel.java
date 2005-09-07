@@ -23,76 +23,98 @@
  */
 package izpack.frontend.view.renderers;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import izpack.frontend.model.PanelInfo;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.SoftBevelBorder;
 
 /**
  * @author Andy Gombos
  * 
  * Provide a component that displays an icon and text, but with consistent alignment
  */
-public class ImageLabel extends JButton implements ActionListener
+public class ImageLabel extends DefaultListCellRenderer
 {    
-    public ImageLabel(int index, String classname, String name, String shortDesc, String imgFile)
+    public ImageLabel()
     {
-        this.index = index;
-        this.classname = classname;
-        configure("<html>" +
-                		"<b>&nbsp;" + name + "</b>" +
-                		"<p> <font color=#969696>&nbsp;" + shortDesc + "</font>", imgFile);
+        renderer = new GradientPanel();
+        
+        renderer.setBackground(new Color(163, 198, 252));
+        
+        textContainer = new JLabel();     
+        iconContainer = new ImageIcon("res/imgs/folder.png");
+        
+        renderer.setLayout(new FlowLayout());
+        ((FlowLayout) renderer.getLayout()).setAlignment(FlowLayout.LEFT);
+        
+        renderer.add(new JLabel(iconContainer));
+        renderer.add(textContainer);
     }
     
-    public void configure(String text, String imgFile)
+    @Override
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus)
     {
-        setLayout(new FlowLayout());
-        ((FlowLayout) getLayout()).setAlignment(FlowLayout.LEFT);        
-        
-        icon = new JLabel(new ImageIcon(imgFile));        
-        lText = new JLabel(text);        
-                      
-        add(icon);
-        add(lText);
-        
-        addActionListener(this);
-    }
-    
-    private JLabel icon, lText;
-
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    //TODO Update when new LAF comes out
-    public void actionPerformed(ActionEvent e)
-    {
-        if (isSelected())
+        if (value instanceof PanelInfo)
         {
-            setBackground(Color.WHITE);
-            setSelected(false);
-        }
-        else
-        {
-            setBackground(Color.decode("0xCCCCCC"));
-            setSelected(true);
+            PanelInfo model = (PanelInfo) value;
+            
+            textContainer.setText("<html>" +
+                      "<b>&nbsp;" + model.getName() + "</b>" +
+                      "<p> <font color=#969696>&nbsp;" + model.getShortDesc() + "</font>");
+            
+            renderer.setToolTipText(model.getLongDesc());
+            
+            if (isSelected)            
+            {   
+                renderer.setBorder(selected);
+            }
+            else            
+            {                                
+                renderer.setBorder(unselected);
+            }
+            
+            return renderer;
         }
         
+        return null;
     }
+        
+    private GradientPanel renderer;
+    private JLabel textContainer;  
+    private ImageIcon iconContainer;
     
-    public String getClassname()
-    {
-        return classname;
-    }
+    private static Border unselected = new SoftBevelBorder(SoftBevelBorder.RAISED);
+    private static Border selected = new SoftBevelBorder(SoftBevelBorder.LOWERED);
     
-    public int getPanelArrayIndex()
+    public class GradientPanel extends JPanel
     {
-        return index;
+        @Override
+        public void paintComponent(Graphics g)
+        {   
+            super.paintComponent(g);
+            
+            Graphics2D g2 = (Graphics2D) g;
+            
+            Rectangle b = getBounds();
+            GradientPaint paint = new GradientPaint(0, 0, new Color(163, 198, 252), 
+                            b.width, b.height*.75f, new Color(239, 246, 250), true); 
+            
+            g2.setPaint(paint);
+            
+            g2.fillRect(0, 0, b.width, b.height);
+        }
     }    
-    
-    String classname;
-    private int index;
 }

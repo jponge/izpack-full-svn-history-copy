@@ -25,6 +25,8 @@ package izpack.frontend.model.files;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 import utils.XML;
 
@@ -37,10 +39,8 @@ public class FileModel extends PackFileModel
     /* (non-Javadoc)
      * @see izpack.frontend.model.files.PackElement#writeXML()
      */
-    public Document writeXML()
-    {   
-        Document doc = XML.getNewDocument();        
-        
+    public Element writeXML(Document doc)
+    {           
         Element file = XML.createElement("singlefile", doc);
         file.setAttribute("src", source);
         file.setAttribute("target", target);
@@ -51,8 +51,23 @@ public class FileModel extends PackFileModel
         if (!override.equals(""))
             file.setAttribute("override", override);
         
-        doc.appendChild(file);
-        return doc;
+        return file;
+    }
+
+    public void initFromXML(Node elementNode)
+    {
+        NamedNodeMap attributes = elementNode.getAttributes();
+        
+        source = attributes.getNamedItem("src").getNodeValue();
+        
+        target = attributes.getNamedItem("target").getNodeValue();
+        
+        if (attributes.getNamedItem("os") != null)
+            os = attributes.getNamedItem("os").getNodeValue();       
+        
+        if (attributes.getNamedItem("override") != null)
+            override = attributes.getNamedItem("override").getNodeValue();
+        
     }
 
 }

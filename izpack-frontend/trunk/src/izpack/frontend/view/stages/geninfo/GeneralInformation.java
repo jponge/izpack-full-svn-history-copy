@@ -176,4 +176,9 @@ public class GeneralInformation extends IzPackStage
     private static GeneralInformationModel model = null;
     private static PresentationModel presModel = null;
     private static GeneralInfoValidator validator = null;
+
+    public void initializeStageFromXML(Document doc)
+    {
+        model.initFromXML(doc);        
+    }
 }

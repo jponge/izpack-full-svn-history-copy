@@ -216,4 +216,10 @@ public class Welcome extends IzPackStage implements ActionListener
         // TODO Auto-generated method stub
         return null;
     }
+
+    public void initializeStageFromXML(Document doc)
+    {
+        // TODO Auto-generated method stub
+        
+    }
 }

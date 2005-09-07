@@ -34,10 +34,6 @@ import izpack.frontend.view.renderers.ImageLabel;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.w3c.dom.Document;
-
-import com.jgoodies.validation.ValidationResult;
-
 /**
  * @author Andy Gombos
  */
@@ -50,6 +46,9 @@ public class PanelSelectList extends AbstractListSelect
         src = new SelectList();
         dest = new SelectList();
         
+        src.setCellRenderer(new ImageLabel());
+        dest.setCellRenderer(new ImageLabel());
+        
         panelSelectModel = new PanelSelectionModel();
         
         dest.setModel(panelSelectModel);        
@@ -61,12 +60,12 @@ public class PanelSelectList extends AbstractListSelect
     public void initSrcList()
 	{
         int index = 0;
-	    ArrayList panels = PanelInfoManager.getAvailablePages();    	    
+	    ArrayList panels = PanelInfoManager.getAvailablePanels();    	    
         for (Iterator iter = panels.iterator(); iter.hasNext();)
         {
             PanelInfo page = (PanelInfo) iter.next();
             
-            ( (SelectListModel) src.getModel() ).addElement( new ImageLabel(index, page.getClassname(), page.getName(), page.getShortDesc(), "res/imgs/folder.png") );
+            ( (SelectListModel) src.getModel() ).addElement(page);
             index++;            
         }
 	}
@@ -78,47 +77,4 @@ public class PanelSelectList extends AbstractListSelect
     
     SelectList src, dest;
     PanelSelectionModel panelSelectModel;
-    
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.panels.ConfigurePanel#createXML()
-     */
-    /*public Element createXML()
-    {
-        ListModel lm = dest.getModel();
-        
-        Element panels = XML.createRootElement("panels");
-        Document panelsDoc = panels.getOwnerDocument();
-        
-        for (int i = 0; i < lm.getSize(); i++)
-        {
-            ImageLabel il = (ImageLabel) lm.getElementAt(i);
-            String classname = il.getClassname();
-            
-            Element panel = XML.createElement("panel", panelsDoc);
-            panel.setAttribute("classname", classname);
-            
-            panels.appendChild(panel);
-        }
-        
-        return panels;
-    }*/
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.panels.ConfigurePanel#initFromXML(org.w3c.dom.Document)
-     */
-    public void initFromXML(Document xmlFile)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.stages.panels.ConfigurePanel#validatePanel()
-     */
-    public ValidationResult validatePanel()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

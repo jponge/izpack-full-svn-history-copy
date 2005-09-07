@@ -47,6 +47,7 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -104,22 +105,22 @@ public class XML
         return document;
     }
     
-    public static void writeXML(String filename, Document document)
+    public static void writeXML(String filename, Node node)
     {       
-        writeXML(new StreamResult(filename), document);
+        writeXML(new StreamResult(filename), node);
     }
     
-    public static void printXML(Document document)
+    public static void printXML(Node node)
     {
-        writeXML(new StreamResult(System.out), document);
+        writeXML(new StreamResult(System.out), node);
     }
     
-    public static void writeXML(StreamResult stream, Document document)
+    public static void writeXML(StreamResult stream, Node node)
     {
         try
         {   
             // Prepare the DOM document for writing
-            Source source = new DOMSource(document);
+            Source source = new DOMSource(node);
 
             // Prepare the output file            
             Result result = stream;
@@ -130,9 +131,9 @@ public class XML
             TransformerFactory tFactory = TransformerFactory.newInstance();
             Transformer xformer = tFactory.newTransformer();            
             
-            if (document.getDoctype() != null)
+            if (node.getOwnerDocument().getDoctype() != null)
             {
-                String systemValue = (new File(document.getDoctype().getSystemId())).getPath();
+                String systemValue = (new File(node.getOwnerDocument().getDoctype().getSystemId())).getPath();
             
                 xformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemValue);
             }

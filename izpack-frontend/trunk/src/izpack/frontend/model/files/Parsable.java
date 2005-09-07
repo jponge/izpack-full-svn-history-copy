@@ -25,6 +25,7 @@ package izpack.frontend.model.files;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import utils.XML;
 
@@ -38,10 +39,8 @@ public class Parsable implements PackElement
     /* (non-Javadoc)
      * @see izpack.frontend.model.files.PackElement#writeXML()
      */
-    public Document writeXML()
-    {
-        Document doc = XML.getNewDocument();
-        
+    public Element writeXML(Document doc)
+    {   
         Element parsable = XML.createElement("parsable", doc);
         parsable.setAttribute("targetfile", targetfile);
         parsable.setAttribute("type", type);
@@ -52,7 +51,12 @@ public class Parsable implements PackElement
         if (os != null && !os.equals(""))
             parsable.setAttribute("os", os);
         
-        doc.appendChild(parsable);
-        return doc;
+        return parsable;
+    }
+
+    public void initFromXML(Node elementNode)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

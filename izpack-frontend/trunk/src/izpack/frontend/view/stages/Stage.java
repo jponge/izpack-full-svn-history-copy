@@ -56,6 +56,13 @@ public interface Stage
     public Element[] createInstallerData(Document doc);
     
     /**
+     * Initialize the stage from a saved XML document
+     * 
+     * @param doc The loaded document to read from
+     */
+    public void initializeStageFromXML(Document doc);
+    
+    /**
      * Validate all <code>Panels</code>s this <code>Stage</code>
      * uses, or true if the stage requires no validation.
      *  

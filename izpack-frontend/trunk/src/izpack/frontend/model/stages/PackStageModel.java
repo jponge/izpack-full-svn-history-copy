@@ -26,9 +26,15 @@ package izpack.frontend.model.stages;
 import izpack.frontend.model.PackModel;
 
 import javax.swing.table.DefaultTableModel;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import utils.XML;
 
@@ -67,7 +73,29 @@ public class PackStageModel extends DefaultTableModel implements StageDataModel
      */
     public void initFromXML(Document doc)
     {
-        // TODO Auto-generated method stub
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        
+        try
+        {
+            NodeList packs = (NodeList) xpath.evaluate("//packs/pack", doc, XPathConstants.NODESET);
+            NodeList desc  = (NodeList)     xpath.evaluate("//packs/pack/description", doc, XPathConstants.NODESET);
+            
+            for (int i = 0; i < packs.getLength(); i++)
+            {
+                PackModel pack = new PackModel();
+                pack.initFromXML(i, packs.item(i), desc.item(i));
+                
+                //Insert a row, but remove the empty one that was present originally
+                insertRow(i, new Object[]{pack});
+                removeRow(getRowCount() - i - 1);
+            }
+        }
+        catch (XPathExpressionException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         
     }
 }

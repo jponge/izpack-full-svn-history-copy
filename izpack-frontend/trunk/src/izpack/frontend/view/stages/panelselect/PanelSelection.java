@@ -130,4 +130,9 @@ public class PanelSelection extends IzPackStage implements ListDataListener
     {
         validateStage();        
     }
+
+    public void initializeStageFromXML(Document doc)
+    {
+        model.initFromXML(doc);        
+    }
 }

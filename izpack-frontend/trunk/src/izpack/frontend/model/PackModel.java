@@ -23,8 +23,12 @@
  */
 package izpack.frontend.model;
 
+import izpack.frontend.model.files.DirectoryModel;
 import izpack.frontend.model.files.ElementModel;
+import izpack.frontend.model.files.Executable;
+import izpack.frontend.model.files.FileModel;
 import izpack.frontend.model.files.FileOrderComparator;
+import izpack.frontend.model.files.FileSet;
 import izpack.frontend.model.files.PackElement;
 import izpack.frontend.model.files.PackFileModel;
 import izpack.frontend.model.files.Parsable;
@@ -34,10 +38,16 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import javax.swing.table.DefaultTableModel;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import utils.XML;
 
@@ -191,10 +201,9 @@ public class PackModel implements ElementModel
 
             System.out.println(pe.getClass());
 
-            Document elementDoc = pe.writeXML();
-            Node node = doc.importNode(elementDoc.getDocumentElement(), true);
+            Element packElem = pe.writeXML(doc);            
 
-            pack.appendChild(node);
+            pack.appendChild(packElem);
 
         }
         
@@ -224,15 +233,109 @@ public class PackModel implements ElementModel
         }
     }
     
-    DefaultTableModel model;
-    ArrayList elements = new ArrayList();
-
-    /* (non-Javadoc)
-     * @see izpack.frontend.model.files.ElementModel#writeXML()
-     */
-    public Document writeXML()
-    {
-        // TODO Auto-generated method stub
-        return null;
+    public void initFromXML(int packIndex, Node packNode, Node descNode)
+    {    
+        NamedNodeMap attributes = packNode.getAttributes();
+        
+        setName(getAttribute(attributes, "name"));
+        
+        setRequired(stringToBoolean(getAttribute(attributes, "required")));
+        
+        setPreselected(stringToBoolean(getAttribute(attributes, "preselected")));
+        
+        setLoose(stringToBoolean(getAttribute(attributes, "loose")));
+        
+        String os = getAttribute(attributes, "os");
+        if (os != null && !os.equals(""))
+            setOS(os);
+        
+        String id = getAttribute(attributes, "id");
+        if (id != null && !id.equals(""))
+            setId(id);
+        
+        setDesc(descNode.getTextContent());
+        
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        
+        XML.printXML(packNode);
+        
+        //Get lists of all the different types of pack pieces we can have
+        try
+        {            
+            String packLoc = "//pack[" + (packIndex + 1) + "]/";
+            
+            System.out.println(packLoc);
+            
+            NodeList dirs       = (NodeList) xpath.evaluate(packLoc + "file", packNode, XPathConstants.NODESET);
+            NodeList fileset    = (NodeList) xpath.evaluate(packLoc + "fileset", packNode, XPathConstants.NODESET);
+            NodeList files      = (NodeList) xpath.evaluate(packLoc + "singlefile", packNode, XPathConstants.NODESET);
+            NodeList execs      = (NodeList) xpath.evaluate(packLoc + "executable", packNode, XPathConstants.NODESET);
+            NodeList parsables  = (NodeList) xpath.evaluate(packLoc + "parsable", packNode, XPathConstants.NODESET);
+            
+            System.out.println("Num files: " + dirs.getLength());
+            
+            createChildParts(dirs, DirectoryModel.class);
+            createChildParts(files, FileModel.class);
+            createChildParts(fileset, FileSet.class);
+            createChildParts(execs, Executable.class);
+            createChildParts(parsables, Parsable.class);
+        }
+        catch (XPathExpressionException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
+    
+    private void createChildParts(NodeList parts, Class peModel)
+    {   
+        for (int i = 0; i < parts.getLength(); i++)
+        {
+            try
+            {
+                PackElement pe = (PackElement) peModel.newInstance();
+                
+                pe.initFromXML(parts.item(i));
+                
+                model.insertRow(i, new Object[]{pe});                
+                
+                if (model.getValueAt(model.getRowCount() - i - 1, 0) == null)
+                    model.removeRow(model.getRowCount() - i - 1);
+            }
+            catch (InstantiationException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch (IllegalAccessException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    private String getAttribute(NamedNodeMap attributes, String attributeName)
+    {
+        Node attr = attributes.getNamedItem(attributeName);
+        
+        if (attr != null)
+            return attr.getNodeValue();        
+        else
+            return null;
+    }
+    
+    private boolean stringToBoolean(String str)
+    {
+        if (str == null)
+            return false;
+        
+        if (str.equalsIgnoreCase("yes") || str.equalsIgnoreCase("true"))
+            return true;
+        
+        return false;
+    }
+    
+    private DefaultTableModel model;
+    private ArrayList elements = new ArrayList();
 }
