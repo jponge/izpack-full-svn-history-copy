@@ -23,14 +23,11 @@
  */
 package izpack.frontend.view.stages.configure;
 
-import izpack.frontend.model.PanelInfo;
-import izpack.frontend.model.PanelInfoManager;
 import izpack.frontend.model.stages.ConfigurationStageModel;
+import izpack.frontend.model.stages.PanelModel;
 import izpack.frontend.model.stages.PanelSelectionModel;
 import izpack.frontend.model.stages.StageDataModel;
-import izpack.frontend.model.stages.ConfigurationStageModel.PanelModel;
 import izpack.frontend.view.components.ItemProgressPanel;
-import izpack.frontend.view.renderers.ImageLabel;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.configure.panels.ConfigurePanel;
 import izpack.frontend.view.stages.configure.panels.NoEditorCreated;
@@ -41,7 +38,7 @@ import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.event.ListDataEvent;
+import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
@@ -50,7 +47,7 @@ import org.w3c.dom.Element;
 import com.jgoodies.binding.beans.PropertyConnector;
 import com.jgoodies.validation.ValidationResult;
 
-public class PanelConfigurator extends IzPackStage implements ListDataListener
+public class PanelConfigurator extends IzPackStage //implements ListDataListener
 {
 
     public PanelConfigurator()
@@ -59,13 +56,16 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
         
         PanelSelection panelSelectionInstance = (PanelSelection) getStage(PanelSelection.class);
         
+        PanelSelectionModel panelSelectionModel = null;
+        
         if (panelSelectionInstance != null)
         {
-            PanelSelectionModel panelSelectionModel = (PanelSelectionModel) panelSelectionInstance.getDataModel();
+            panelSelectionModel = (PanelSelectionModel) panelSelectionInstance.getDataModel();
             
             if (panelSelectionModel != null)
             {
-                panelSelectionModel.addListDataListener(this);
+                
+//                panelSelectionModel.addListDataListener(this);                
             }
             else
             {
@@ -75,19 +75,20 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
         }
         else
         {
-            System.err.println("Application did not initialize properly. Exiting");
+            System.err.println("Application did not initialize properly. Exiting.");
             System.exit(1);
         }
         
         setLayout(layout);
         
-        availablePanels = PanelInfoManager.getAvailablePanels();
+        //availablePanels = PanelInfoManager.getAvailablePanels();
         
-        model = new ConfigurationStageModel();
+        model = new ConfigurationStageModel(panelSelectionModel);
         
         progressPanel = new ItemProgressPanel(model);
         
         new PropertyConnector(progressPanel.getSelectionHolder(), "value",  this, "panelOnDisplay").updateProperty2();
+        new PropertyConnector(progressPanel.getListModel(), "value", this.model, "panels").updateProperty1();
     }
 
     @Override
@@ -110,11 +111,18 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
     
     public void initializeStage()
     {    
-        ArrayList<PanelModel> panels = model.getPanels();
-        editors = new ArrayList<ConfigurePanel>(panels.size());
+        System.out.println("Initializing");
         
-        for (PanelModel panelModel : panels)
+        //ArrayList<PanelModel> panels = model.getPanels();
+        ListModel panels = model.getPanels();
+        ArrayList<ConfigurePanel> editors = model.getEditors();
+        
+        
+        for (int i = 0; i < panels.getSize(); i++)
+        //for (PanelModel panelModel : panels)
         {
+            System.out.println(panels.getElementAt(i).getClass());
+            PanelModel panelModel = (PanelModel) panels.getElementAt(i);
             try
             {
                 Class editorClass = Class.forName(panelModel.configData.getEditorClassname());
@@ -141,14 +149,15 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
         }
         
         model.setEditors(editors);
+        progressPanel.calculatePreferredSize();
     }
 
     public JPanel getLeftNavBar()
-    {        
+    {   
         return progressPanel;
     }
 
-    public void intervalAdded(ListDataEvent e)
+    /*public void intervalAdded(ListDataEvent e)
     {        
         PanelSelectionModel psm = (PanelSelectionModel) e.getSource();
         
@@ -159,11 +168,15 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
         newAddedObject.valid = false;
         
         model.getPanels().add(e.getIndex0(), newAddedObject);
+        
+        progressPanel.calculatePreferredSize();
     }
 
     public void intervalRemoved(ListDataEvent e)
     {   
-        model.getPanels().remove(e.getIndex0());        
+        model.getPanels().remove(e.getIndex0());
+        
+        progressPanel.calculatePreferredSize();
     }
 
     public void contentsChanged(ListDataEvent e)
@@ -179,15 +192,17 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
             
             //Swap elements. This is different than the normal swap elements
             //because i calculated the delta and index differently (off a different element)
-            PanelModel original = model.getPanels().get(index - delta);
-            PanelModel replaced = model.getPanels().get(index);
+            PanelModel original = (PanelModel) model.getPanels().get(index - delta);
+            PanelModel replaced = (PanelModel) model.getPanels().get(index);
             model.getPanels().set(index, original);
             model.getPanels().set(index - delta, replaced);
             
             secondContentsChangedEvent = false;
-        }            
+        }   
+        
+        progressPanel.calculatePreferredSize();
     }
-    
+    */
     /*
      * 
      * Editor changing stuff - binding interface
@@ -200,7 +215,7 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
 
     public void setPanelOnDisplay(Object panelOnDisplay)
     {
-        System.out.println("Changing panel on display");
+        System.out.println("Changing panel on display: " + panelOnDisplay);
         
         if (panelOnDisplay == null)
             return;
@@ -211,8 +226,7 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
         layout.show(this, this.panelOnDisplay.configData.getEditorClassname());
     }
     
-    private ArrayList<PanelInfo> availablePanels;
-    private ArrayList<ConfigurePanel> editors;
+    //private ArrayList<PanelInfo> availablePanels;    
     private static ConfigurationStageModel model;
     private static ItemProgressPanel progressPanel;
     
@@ -228,7 +242,15 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
     private int index = -1;
     public void initializeStageFromXML(Document doc)
     {
-        // TODO Auto-generated method stub
+        model.initFromXML(doc);        
         
+        for (ConfigurePanel editor : model.getEditors())
+        {
+            this.add( (JComponent) editor, editor.getClass().getName());
+        }        
+        
+        //progressPanel.setPanels(new ArrayListModel(model.getPanels()));
+        progressPanel.validate();
+        progressPanel.calculatePreferredSize();        
     }
 }

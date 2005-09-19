@@ -23,8 +23,8 @@
  */
 package izpack.frontend.model.stages;
 
+import izpack.frontend.controller.PanelInfoManager;
 import izpack.frontend.model.PanelInfo;
-import izpack.frontend.model.PanelInfoManager;
 import izpack.frontend.model.SelectListModel;
 
 import java.util.HashMap;
@@ -57,10 +57,10 @@ public class PanelSelectionModel extends SelectListModel implements StageDataMod
         
         for (int i = 0; i < getSize(); i++)
         {
-            PanelInfo panelModel = (PanelInfo) get(i);            
+            PanelModel panelModel = (PanelModel) get(i);            
             
             Element panel = XML.createElement("panel", doc);
-            panel.setAttribute("classname", panelModel.getClassname());
+            panel.setAttribute("classname", panelModel.configData.getClassname());
             
             panels.appendChild(panel);
         }
@@ -87,7 +87,11 @@ public class PanelSelectionModel extends SelectListModel implements StageDataMod
                 
                 String classname = panel.getAttributes().getNamedItem("classname").getNodeValue();
                 
-                addElement(availablePanels.get(classname));
+                PanelModel model = new PanelModel();
+                model.configData = availablePanels.get(classname);
+                model.valid = false;
+                
+                addElement(model);
             }
         }
         catch (XPathExpressionException e)

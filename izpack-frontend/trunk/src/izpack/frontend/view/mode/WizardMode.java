@@ -37,6 +37,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -45,6 +46,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
+import org.w3c.dom.Document;
+
+import utils.XML;
 
 /**
  * Show Panel Select and General Information stages
@@ -93,6 +98,17 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        
+        //TEMP
+        /*Document d = XML.createDocument("install.xml");
+        ArrayList<IzPackStage> stages = IzPackStage.getAllStages();
+        System.err.println(stages);
+        for (IzPackStage stage : stages)
+        {
+            System.err.println(stage.getClass().getName());
+            stage.initializeStageFromXML(d);
+        }*/
+        //ETMP
         
         long stop = System.currentTimeMillis();
         

@@ -21,9 +21,11 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.model;
+package izpack.frontend.controller;
 
-import izpack.frontend.controller.GUIController;
+import izpack.frontend.model.Author;
+import izpack.frontend.model.PanelInfo;
+import izpack.frontend.model.PanelInfo.Resource;
 import izpack.frontend.view.stages.configure.panels.IzPanel;
 
 import java.io.File;
@@ -63,8 +65,7 @@ public class PanelInfoManager
 			
 			String classname = ( (Element) xpath.evaluate("/izpack-panel", doc, XPathConstants.NODE) ).getAttribute("classname");
             
-            String editingClass = editorPackage + 
-                    determineEditingClass(( (Element) xpath.evaluate("/izpack-panel", doc, XPathConstants.NODE) ).getAttribute("editingClass"));
+            String editingClass = ( (Element) xpath.evaluate("/izpack-panel", doc, XPathConstants.NODE) ).getAttribute("editingClass");
             
 			String name = ( (Element) xpath.evaluate("/izpack-panel", doc, XPathConstants.NODE) ).getAttribute("name");			
 						
@@ -122,17 +123,6 @@ public class PanelInfoManager
         {
            throw new RuntimeException(e);
         }
-    }    
-    
-    private static String determineEditingClass(String attribute)
-    {
-        if (attribute.equalsIgnoreCase("NONE"))
-            return "NoEditingNecessary";
-        else if (attribute.equalsIgnoreCase("PREVIOUSLY CONF"))
-            return "PreviouslyConfigured";
-        
-        
-        return attribute;
     }
 
     private static String[] getConfigFiles()
@@ -202,6 +192,5 @@ public class PanelInfoManager
     //Determine the correct path by requesting the language code of the application
     private static String CONFIG_PATH = "conf/pages/" + GUIController.getInstance().appConfiguration().getI18NLangCode() + "/";
     private static ArrayList<PanelInfo> panels = null;
-    private static HashMap<String, PanelInfo> panelMap = null;
-    private static String editorPackage = IzPanel.class.getPackage().getName() + ".";
+    private static HashMap<String, PanelInfo> panelMap = null;    
 }

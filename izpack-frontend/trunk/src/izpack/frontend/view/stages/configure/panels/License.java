@@ -23,7 +23,7 @@
  */
 package izpack.frontend.view.stages.configure.panels;
 
-import izpack.frontend.model.LicenseLoader;
+import izpack.frontend.controller.LicenseLoader;
 import izpack.frontend.model.LicenseModel;
 
 import java.awt.Dimension;
@@ -86,9 +86,9 @@ public class License extends JPanel implements ConfigurePanel
 		    public void actionPerformed(ActionEvent e)
 	        {
 		        JComboBox licBox = (JComboBox) e.getSource();
-	             Object o = licBox.getSelectedItem();
+	            Object o = licBox.getSelectedItem();
 	             
-	             if (o instanceof String)
+	             if (o instanceof String && !initFromXML)
 	             {	                 	           
 	                 if ( ((String) o).equals("<html><font size='+1'>Custom</font>") )
 	                 {
@@ -108,7 +108,7 @@ public class License extends JPanel implements ConfigurePanel
 	                 else
 	                 {	                 
 	                     licBox.setSelectedIndex(0);
-	                     licenseDisp.setText("");
+	                     licenseDisp.setText("License loading failed. Please choose another license, or select one from the above list.");
 	                 }
 	             }
 	             
@@ -129,20 +129,18 @@ public class License extends JPanel implements ConfigurePanel
 	
         licenseList.addItem("<html><font size='+1'><u>GPL Compatible</u></font>");        
 	    
-	    for (Iterator iter = licenses[0].iterator(); iter.hasNext();)
-	    {
-	        LicenseModel lic = (LicenseModel) iter.next();
-	        
-	        licenseList.addItem(lic);
-	    }
+	    for (LicenseModel license : licenses)
+        {
+            if (license.gplCompatible)
+                licenseList.addItem(license);
+        }	    
 	    
 	    licenseList.addItem("<html><font size='+1'><u>GPL Incompatible</u></font>");
 	    
-	    for (Iterator iter = licenses[1].iterator(); iter.hasNext();)
+        for (LicenseModel license : licenses)
 	    {
-	        LicenseModel lic = (LicenseModel) iter.next();
-	        
-	        licenseList.addItem(lic);
+            if (!license.gplCompatible)
+                licenseList.addItem(license);
 	    }	    
 	    
 	    licenseList.addItem("<html><font size='+1'>Custom</font>");
@@ -150,14 +148,14 @@ public class License extends JPanel implements ConfigurePanel
     
     private JComboBox licenseList;
     private JTextArea licenseDisp;
-    private ArrayList licenses[];
+    private ArrayList<LicenseModel> licenses;
     
     /* (non-Javadoc)
      * @see izpack.frontend.view.pages.configure.ConfigurePage#createXML()
      */
     public Element createXML(Document doc)
     {
-        LicenseModel lic = (LicenseModel) licenseList.getSelectedItem();       
+        LicenseModel lic = (LicenseModel) licenseList.getSelectedItem();
         
         return XML.createResourceTree("LicencePanel.licence", lic.filename, doc);        
     }
@@ -167,7 +165,34 @@ public class License extends JPanel implements ConfigurePanel
      */
     public void initFromXML(Document xmlFile)
     {
+        initFromXML = true;
+        
         String src = XML.getResourceValue(xmlFile, "LicencePanel.licence");
+        
+        if (!loadLicense(new File(src)))
+        {
+            licenseDisp.setText("Unable to load the license specified in the install file. Please choose one from the above list," + 
+                            "or custom to choose your own.");
+        }
+        
+        //Choose the right ComboBox option, or custom if we can't find a distributed license
+        for (LicenseModel license : licenses)
+        {
+            if (license.filename.equals(src))
+                licenseList.setSelectedItem(license);                
+        }
+        
+        if ( !(licenseList.getSelectedItem() instanceof LicenseModel) )
+        {
+            //Select Custom heading
+            LicenseModel loadedLicense = new LicenseModel();
+            loadedLicense.filename = src;
+            loadedLicense.name = "Custom license from XML file (" + new File(src).getName() + ")";
+            licenseList.addItem(loadedLicense);
+            licenseList.setSelectedIndex(licenseList.getItemCount() - 1);            
+        }
+        
+        initFromXML = false;
     }
 
     /* (non-Javadoc)
@@ -212,4 +237,6 @@ public class License extends JPanel implements ConfigurePanel
         
         return false;
     }
+    
+    private boolean initFromXML = false;
 }

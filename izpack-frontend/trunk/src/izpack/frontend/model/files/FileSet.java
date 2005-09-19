@@ -127,8 +127,6 @@ public class FileSet extends PackFileModel implements ListModel
     {
         int index = files.size();
         
-        System.out.println(index);
-        
         files.add(index, set);
         fireElementAddedEvent(index);
     }

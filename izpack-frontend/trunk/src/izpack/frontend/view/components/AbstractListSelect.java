@@ -93,6 +93,9 @@ public abstract class AbstractListSelect extends IzPackPanel implements ActionLi
         srcList = src;
         destList = dest;
         
+        
+        System.out.println(src + " " + dest);
+        
         srcList.invalidate();
         destList.setPreferredSize(srcList.getPreferredSize());
         

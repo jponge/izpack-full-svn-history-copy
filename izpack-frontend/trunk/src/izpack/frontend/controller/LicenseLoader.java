@@ -21,7 +21,9 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.model;
+package izpack.frontend.controller;
+
+import izpack.frontend.model.LicenseModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,10 +46,9 @@ import org.xml.sax.SAXException;
  */
 public class LicenseLoader
 {
-    public static ArrayList[] loadLicences()
-    {
-        ArrayList gplCompat = new ArrayList(4);
-        ArrayList gplUnCompat = new ArrayList(2);
+    public static ArrayList<LicenseModel> loadLicences()
+    {        
+        ArrayList<LicenseModel> licenses = new ArrayList<LicenseModel>(6);
         
 	    try
 	    {
@@ -84,15 +85,12 @@ public class LicenseLoader
 	                {
 	                    fieldNames[j] = fields.item(j).getTextContent();	                 
 	                }
-	            }
-	        
-	        	if (lic.gplCompatible)
-	                gplCompat.add(lic);
-	            else
-	                gplUnCompat.add(lic);
+	            }	        
+	        	
+                licenses.add(lic);
 	        }
 	        
-	        return new ArrayList[]{gplCompat, gplUnCompat};
+	        return licenses;
 	    }	
         catch (ParserConfigurationException e)
         {

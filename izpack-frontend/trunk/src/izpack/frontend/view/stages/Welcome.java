@@ -24,8 +24,8 @@
 package izpack.frontend.view.stages;
 
 import izpack.frontend.controller.GUIController;
+import izpack.frontend.controller.RecentFileManager;
 import izpack.frontend.model.LangResources;
-import izpack.frontend.model.RecentFileManager;
 import izpack.frontend.model.stages.StageDataModel;
 import izpack.frontend.view.GUIConstants;
 

@@ -23,7 +23,7 @@
  */
 package izpack.frontend.view.stages.configure;
 
-import izpack.frontend.model.stages.ConfigurationStageModel.PanelModel;
+import izpack.frontend.model.stages.PanelModel;
 
 import java.awt.Color;
 
@@ -52,7 +52,7 @@ public class ValidationDocumentationPanel extends JPanel
         if (panelOnDisplay instanceof PanelModel)
             this.panelOnDisplay = (PanelModel) panelOnDisplay;        
         
-        label.setText(this.panelOnDisplay.representingClassName);
+        label.setText(this.panelOnDisplay.configData.getClassname());
     } 
     
     private PanelModel panelOnDisplay;

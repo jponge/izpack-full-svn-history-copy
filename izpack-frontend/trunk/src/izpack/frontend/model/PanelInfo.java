@@ -23,6 +23,8 @@
  */
 package izpack.frontend.model;
 
+import izpack.frontend.view.stages.configure.panels.IzPanel;
+
 /**
  * @author Andy Gombos
  * 
@@ -36,7 +38,7 @@ public class PanelInfo implements Comparable
                     Author[] authors, Resource[] resources)
     {
         this.classname = classname;
-        this.editorClassname = editorClassname;
+        setEditorClassname(editorClassname);
         this.name = name;
         this.authors = authors;
         this.shortDesc = shortDesc;
@@ -175,7 +177,20 @@ public class PanelInfo implements Comparable
     }
 
     public void setEditorClassname(String editorClassname)
-    {
-        this.editorClassname = editorClassname;
+    {           
+        this.editorClassname = editorPackage + determineEditingClass(editorClassname);        
     }
+    
+    private static String determineEditingClass(String attribute)
+    {
+        if (attribute.equalsIgnoreCase("NONE"))
+            return "NoEditingNecessary";
+        else if (attribute.equalsIgnoreCase("PREVIOUSLY CONF"))
+            return "PreviouslyConfigured";
+        
+        
+        return attribute;
+    }
+    
+    private static String editorPackage = IzPanel.class.getPackage().getName() + ".";
 }

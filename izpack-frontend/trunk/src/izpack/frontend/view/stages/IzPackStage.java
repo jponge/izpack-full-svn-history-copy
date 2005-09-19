@@ -47,6 +47,7 @@ import org.w3c.dom.Element;
 import utils.UI;
 
 import com.jgoodies.binding.PresentationModel;
+import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.util.DefaultValidationResultModel;
 import com.jgoodies.validation.util.ValidationResultModel;
@@ -81,16 +82,12 @@ public abstract class IzPackStage extends JPanel implements Stage
      */
     public final JPanel getTopNavBar()
     {
-        JPanel base = new JPanel();
+        //JPanel base = new JPanel();        
         
-        System.out.println("Current class: " + this.getClass());
+        
+        
         final StageContainer previousCont = stageOrder.getPreviousStage(this.getClass());
         final StageContainer nextCont = stageOrder.getNextStage(this.getClass());
-        
-        if (previousCont != null)
-            System.out.println("Prev: " + previousCont.stageClass);
-        if (nextCont != null)
-            System.out.println("Next: " + nextCont.stageClass);
         
         JButton previous = null, next = null;
         
@@ -106,7 +103,7 @@ public abstract class IzPackStage extends JPanel implements Stage
             }
         	});        
         	
-        	base.add(previous);
+        	//base.add(previous);
         }
         
         if (nextCont != null)
@@ -123,12 +120,19 @@ public abstract class IzPackStage extends JPanel implements Stage
 	
 	        });
 	     
-	        if (previous != null)
-	            next.setPreferredSize(previous.getPreferredSize());
-	        base.add(next);
+	        //if (previous != null)
+	          //  next.setPreferredSize(previous.getPreferredSize());
+	        //base.add(next);
+           
 	    }
         
-        return base;
+        if (previous == null)
+            return ButtonBarFactory.buildRightAlignedBar(next);
+        else if (next == null)
+            return ButtonBarFactory.buildRightAlignedBar(previous);
+        else
+            return ButtonBarFactory.buildRightAlignedBar(previous, next);
+        //return base;
     }
     
     /*

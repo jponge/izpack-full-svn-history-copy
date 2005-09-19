@@ -23,30 +23,40 @@
  */
 package izpack.frontend.model.stages;
 
+import izpack.frontend.controller.PanelInfoManager;
 import izpack.frontend.model.PanelInfo;
 import izpack.frontend.view.stages.configure.panels.ConfigurePanel;
+import izpack.frontend.view.stages.configure.panels.NoEditorCreated;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
+import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
-import utils.XML;
 
 import com.jgoodies.binding.beans.Model;
 
 public class ConfigurationStageModel extends Model implements StageDataModel, ListDataListener
 {
 
-    public ConfigurationStageModel()
+    public ConfigurationStageModel(PanelSelectionModel psm)
     {
         super();
-       
-        panels = new ArrayList<PanelModel>();
+        
+        //panels = new ArrayListModel(psm);
+        panels = psm;
+        editors = new ArrayList<ConfigurePanel>();
+        
+        panels.addListDataListener(this);        
     }
 
     //TODO fix this so the elements are inserted properly
@@ -72,9 +82,55 @@ public class ConfigurationStageModel extends Model implements StageDataModel, Li
     }
 
     public void initFromXML(Document doc)
-    {
-        // TODO Auto-generated method stub
+    {        
+        HashMap<String, PanelInfo> panels = PanelInfoManager.getAvailablePanelMap();        
+        Set keys = panels.keySet();
+        
+        XPath xpath = XPathFactory.newInstance().newXPath();
 
+        for (Object key : keys)
+        {
+            try
+            {                
+                PanelInfo panelInfo = panels.get(key);
+                
+                Boolean panelPresent = (Boolean) xpath.evaluate("//panels/panel[@classname=\'" + panelInfo.getClassname() + "\']",
+                                doc, XPathConstants.BOOLEAN);
+                
+                if (panelPresent.booleanValue())
+                {                       
+                    ConfigurePanel editor = (ConfigurePanel) Class.forName(panelInfo.getEditorClassname()).newInstance();
+                
+                    editor.initFromXML(doc);
+                    
+                    PanelModel pModel = new PanelModel();
+                    pModel.configData = panelInfo;
+                    pModel.valid = false;
+                    
+                    ( (PanelSelectionModel) this.panels ).addElement(pModel);
+                    this.editors.add(editor);
+                }                
+            }
+            catch (InstantiationException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch (IllegalAccessException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch (ClassNotFoundException e)
+            {
+                this.editors.add(new NoEditorCreated());
+            }
+            catch (XPathExpressionException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
     
     public void setEditors(ArrayList<ConfigurePanel> editors)
@@ -82,25 +138,8 @@ public class ConfigurationStageModel extends Model implements StageDataModel, Li
         this.editors = editors;
     }
 
-    public class PanelModel
-    {
-        public Class representingClass;
-        
-        public String representingClassName;
-        
-        public PanelInfo configData;
-        
-        public boolean valid;
-        
-        @Override
-        public String toString()
-        {
-            return configData.getName();
-        }
-    }
-    
-    ArrayList<PanelModel> panels;
-    ArrayList<ConfigurePanel> editors;
+    private ListModel panels;
+    private ArrayList<ConfigurePanel> editors;
     int currentlyActivePanel;
     
     public int getCurrentlyActivePanel()
@@ -108,36 +147,44 @@ public class ConfigurationStageModel extends Model implements StageDataModel, Li
         return currentlyActivePanel;
     }
 
-    public ArrayList<PanelModel> getPanels()
+    public ListModel getPanels()
     {
         return panels;
     }
-
+ 
     public void setCurrentlyActivePanel(int currentlyActivePanel)
     {
         this.currentlyActivePanel = currentlyActivePanel;
     }
 
-    public void setPanels(ArrayList<PanelModel> panels)
+    public void setPanels(ListModel panels)
     {
         this.panels = panels;
+    }
+    
+    public void setPanels(ArrayList<PanelModel> panels)
+    {
+        //this.panels = new ArrayListModel(panels);
+    }
+
+    public ArrayList<ConfigurePanel> getEditors()
+    {
+        return editors;
     }
 
     public void intervalAdded(ListDataEvent e)
     {
-        // TODO Auto-generated method stub
-        
+        System.out.println("Panels added");        
     }
 
     public void intervalRemoved(ListDataEvent e)
     {
-        // TODO Auto-generated method stub
+        System.out.println("Panels removed");
         
     }
 
     public void contentsChanged(ListDataEvent e)
     {
-        // TODO Auto-generated method stub
-        
+        System.out.println("Panels moved");        
     }    
 }

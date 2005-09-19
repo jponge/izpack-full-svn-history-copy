@@ -197,9 +197,7 @@ public class PackModel implements ElementModel
         
         for (Iterator iter = elements.iterator(); iter.hasNext();)
         {
-            PackElement pe = (PackElement) iter.next();
-
-            System.out.println(pe.getClass());
+            PackElement pe = (PackElement) iter.next();            
 
             Element packElem = pe.writeXML(doc);            
 
@@ -213,24 +211,6 @@ public class PackModel implements ElementModel
     public DefaultTableModel getFilesModel()
     {
         return model;
-    }    
-    
-    public void printFiles()
-    {
-        System.out.println("Pack: " + name + " " + model.getRowCount());        
-        
-        for(int i = 0; i < model.getRowCount(); i++)
-        {
-            Object data = model.getValueAt(i, 0);
-            
-            if (data != null)
-            {
-                if (data instanceof PackFileModel)                
-                    System.out.println("\t" + ((PackFileModel) data ).source );
-                if (data instanceof Parsable)                
-                    System.out.println("\t" + ((Parsable) data ).targetfile );                
-            }
-        }
     }
     
     public void initFromXML(int packIndex, Node packNode, Node descNode)
@@ -257,22 +237,16 @@ public class PackModel implements ElementModel
         
         XPath xpath = XPathFactory.newInstance().newXPath();
         
-        XML.printXML(packNode);
-        
         //Get lists of all the different types of pack pieces we can have
         try
         {            
             String packLoc = "//pack[" + (packIndex + 1) + "]/";
-            
-            System.out.println(packLoc);
             
             NodeList dirs       = (NodeList) xpath.evaluate(packLoc + "file", packNode, XPathConstants.NODESET);
             NodeList fileset    = (NodeList) xpath.evaluate(packLoc + "fileset", packNode, XPathConstants.NODESET);
             NodeList files      = (NodeList) xpath.evaluate(packLoc + "singlefile", packNode, XPathConstants.NODESET);
             NodeList execs      = (NodeList) xpath.evaluate(packLoc + "executable", packNode, XPathConstants.NODESET);
             NodeList parsables  = (NodeList) xpath.evaluate(packLoc + "parsable", packNode, XPathConstants.NODESET);
-            
-            System.out.println("Num files: " + dirs.getLength());
             
             createChildParts(dirs, DirectoryModel.class);
             createChildParts(files, FileModel.class);

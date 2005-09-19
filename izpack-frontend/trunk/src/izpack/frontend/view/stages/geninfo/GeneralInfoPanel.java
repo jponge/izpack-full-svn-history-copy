@@ -23,8 +23,8 @@
  */
 package izpack.frontend.view.stages.geninfo;
 
+import izpack.frontend.controller.AuthorManager;
 import izpack.frontend.model.Author;
-import izpack.frontend.model.AuthorManager;
 import izpack.frontend.model.stages.GeneralInformationModel;
 import izpack.frontend.view.IzPackFrame;
 import izpack.frontend.view.stages.IzPackStage;

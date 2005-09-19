@@ -101,8 +101,7 @@ public class GeneralInformationModel extends Model implements StageDataModel
     }
 
     public void setAppName(String appName)
-    {
-        System.out.println("Set app name: " + appName);
+    {        
         String oldAppName = this.appName;
         this.appName = appName;
         firePropertyChange("appName", oldAppName, appName);
@@ -123,8 +122,7 @@ public class GeneralInformationModel extends Model implements StageDataModel
     }
 
     public void setHomepage(String homepage)
-    {
-        System.out.println("Set homepage: " + homepage);
+    {     
         String oldHomepage = this.homepage;
         this.homepage = homepage;
         firePropertyChange("homepage", oldHomepage, homepage);
@@ -145,8 +143,7 @@ public class GeneralInformationModel extends Model implements StageDataModel
     }
 
     public void setVersion(String version)
-    {
-        System.out.println("Set version: " + version);
+    {     
         String oldVersion = this.version;
         this.version = version;
         firePropertyChange("version", oldVersion, version);

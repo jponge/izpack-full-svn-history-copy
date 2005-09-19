@@ -23,9 +23,10 @@
  */
 package izpack.frontend.view.stages.panelselect;
 
+import izpack.frontend.controller.PanelInfoManager;
 import izpack.frontend.model.PanelInfo;
-import izpack.frontend.model.PanelInfoManager;
 import izpack.frontend.model.SelectListModel;
+import izpack.frontend.model.stages.PanelModel;
 import izpack.frontend.model.stages.PanelSelectionModel;
 import izpack.frontend.view.components.AbstractListSelect;
 import izpack.frontend.view.components.SelectList;
@@ -63,9 +64,13 @@ public class PanelSelectList extends AbstractListSelect
 	    ArrayList panels = PanelInfoManager.getAvailablePanels();    	    
         for (Iterator iter = panels.iterator(); iter.hasNext();)
         {
-            PanelInfo page = (PanelInfo) iter.next();
+            PanelInfo panel = (PanelInfo) iter.next();
+            PanelModel model = new PanelModel();
             
-            ( (SelectListModel) src.getModel() ).addElement(page);
+            model.configData = panel;
+            model.valid = false;
+            
+            ( (SelectListModel) src.getModel() ).addElement(model);
             index++;            
         }
 	}

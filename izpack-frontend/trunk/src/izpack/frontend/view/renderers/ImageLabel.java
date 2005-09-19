@@ -24,6 +24,7 @@
 package izpack.frontend.view.renderers;
 
 import izpack.frontend.model.PanelInfo;
+import izpack.frontend.model.stages.PanelModel;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -67,9 +68,10 @@ public class ImageLabel extends DefaultListCellRenderer
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus)
     {
-        if (value instanceof PanelInfo)
+        if (value instanceof PanelModel)
         {
-            PanelInfo model = (PanelInfo) value;
+            PanelModel pm = (PanelModel) value;
+            PanelInfo model = pm.configData;            
             
             textContainer.setText("<html>" +
                       "<b>&nbsp;" + model.getName() + "</b>" +
@@ -89,7 +91,7 @@ public class ImageLabel extends DefaultListCellRenderer
             return renderer;
         }
         
-        return null;
+        return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
     }
         
     private GradientPanel renderer;

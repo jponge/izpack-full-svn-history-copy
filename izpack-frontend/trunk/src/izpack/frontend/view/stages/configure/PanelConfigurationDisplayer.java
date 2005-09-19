@@ -23,7 +23,7 @@
  */
 package izpack.frontend.view.stages.configure;
 
-import izpack.frontend.model.stages.ConfigurationStageModel.PanelModel;
+import izpack.frontend.model.stages.PanelModel;
 
 import java.awt.BorderLayout;
 

@@ -39,13 +39,13 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -72,8 +72,6 @@ public class XML
         }        
         
         doc = builder.newDocument();
-        DocumentType doctype = builder.getDOMImplementation().createDocumentType("installation", "", "dtd/installation.dtd");              
-        doc.insertBefore(doctype, doc.getFirstChild());
         
         return doc;
     }
@@ -125,21 +123,19 @@ public class XML
             // Prepare the output file            
             Result result = stream;
 
+            //Load the XSL file to make everything pretty
+            StreamSource xsl = new StreamSource(new File("dtd/format.xsl"));
             // Write the DOM document to the file
             // Get Transformer
-            //This won't properly indent - research indicates a 1.5 bug (so 1.3 JAXP?)
+            //This won't properly indent - research indicates a 1.5 bug (so 1.3 JAXP?)            
             TransformerFactory tFactory = TransformerFactory.newInstance();
-            Transformer xformer = tFactory.newTransformer();            
+            Transformer xformer = tFactory.newTransformer(xsl);
             
-            if (node.getOwnerDocument().getDoctype() != null)
-            {
-                String systemValue = (new File(node.getOwnerDocument().getDoctype().getSystemId())).getPath();
+            //Set the output doctype
+            String systemValue = new File("dtd/installation.dtd").getPath();            
+            xformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemValue);
             
-                xformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemValue);
-            }
-            
-            
-            xformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            //xformer.setOutputProperty(OutputKeys.INDENT, "yes");
             
             // Write to a file
             xformer.transform(source, result);

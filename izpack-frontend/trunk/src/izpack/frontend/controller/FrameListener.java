@@ -21,7 +21,6 @@
  */
 package izpack.frontend.controller;
 
-import izpack.frontend.model.RecentFileManager;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;

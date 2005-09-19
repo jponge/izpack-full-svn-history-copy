@@ -26,8 +26,14 @@ package izpack.frontend.view.components;
 import izpack.frontend.model.stages.ConfigurationStageModel;
 import izpack.frontend.view.renderers.ItemProgressRenderer;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.util.ArrayList;
+
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListModel;
+import javax.swing.border.LineBorder;
 
 import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.list.SelectionInList;
@@ -47,11 +53,16 @@ public class ItemProgressPanel extends JPanel
     {
         this.model = model;
         
-        panelListBinding = new SelectionInList(model.getPanels());
+        panelListBinding = new SelectionInList((ListModel) model.getPanels());
         
         panelList = BasicComponentFactory.createList(panelListBinding, new ItemProgressRenderer());
         
+        //panelList = new JList(new ArrayListModel(model.getPanels()));
+        //panelList.setCellRenderer(new ItemProgressRenderer());
+        
         add(panelList);
+        
+        setBorder(new LineBorder(Color.BLACK));
     }
     
     public ValueModel getSelectionIndexHolder()
@@ -62,9 +73,41 @@ public class ItemProgressPanel extends JPanel
     public ValueModel getSelectionHolder()
     {
         return panelListBinding.getSelectionHolder();
+    }    
+    
+    public ValueModel getListModel()
+    {
+        return panelListBinding.getListHolder();
+    }
+    
+    public void setPanels(ListModel list)
+    {
+        panelListBinding.setListModel(list);
+    }
+    
+    public void calculatePreferredSize()
+    {
+        /*
+        ArrayList<PanelModel> listElems = model.getPanels();
+        
+        Dimension largest = new Dimension(0,0);       
+        
+        for (int i = 0; i < listElems.size(); i++)
+        {   
+            Dimension size = panelList.getCellRenderer().getListCellRendererComponent(panelList, listElems.get(i), 
+                            i, true, true).getPreferredSize();
+            
+            if (size.width > largest.width)
+                largest = size;     
+        }        
+        
+        System.out.println(panelList.getPreferredSize());
+        panelList.setPreferredSize(new Dimension(largest.width + 5, panelList.getHeight()));
+        System.out.println(panelList.getPreferredSize());
+        */
     }
     
     JList panelList;    
     SelectionInList panelListBinding;
-    ConfigurationStageModel model;
+    ConfigurationStageModel model;        
 }
