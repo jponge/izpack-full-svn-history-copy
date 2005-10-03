@@ -23,12 +23,14 @@
  */
 package utils;
 
+import java.awt.Frame;
 import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
@@ -54,7 +56,8 @@ public class UI
     
     public static void showError(String message, String title)
     {
-        JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
+        System.out.println(UI.getApplicationFrame());
+        JOptionPane.showMessageDialog(UI.getApplicationFrame(), message, title, JOptionPane.ERROR_MESSAGE);
     }
 
     public static JButton getNavButton(String label, int direction)
@@ -77,6 +80,19 @@ public class UI
             return longStr.substring(0, 4) + "..." + longStr.substring(longStr.lastIndexOf(System.getProperty("file.separator")));        
         else
             return longStr;
+    }
+    
+    public static Frame getApplicationFrame()
+    {
+        Frame[] frames = JFrame.getFrames();
+        
+        for (int i = 0; i < frames.length; i++)
+        {
+            if (frames[i].isShowing())
+                return frames[i];
+        }
+        
+        return null;
     }
     
     public static final int FORWARD = 1;

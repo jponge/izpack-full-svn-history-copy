@@ -58,9 +58,7 @@ public class UIConfig extends IzPackPanel
      * TODO Implement LAF preferences 
      */
     public void initComponents()
-    {
-        System.out.println("init");
-        
+    {   
         FormLayout layout = new FormLayout("pref, 3dlu, pref, 30dlu",
         "pref, 3dlu, pref, 3dlu, pref");
         DefaultFormBuilder builder = new DefaultFormBuilder(layout, this);

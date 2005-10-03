@@ -71,14 +71,11 @@ public class XMLAggregator
         //Remove the fake top node that was just to combine the different documents
         //For some reason, the document contains random text nodes
         //Search for the actual child node                        
-        Node realTop = top.getFirstChild();        
+        Node realTop = top.getFirstChild();
         
-        System.out.println("Real top " + realTop);
         Document doc = XML.getNewDocument();
         Node imported = doc.importNode(realTop, true);   
         doc.appendChild(imported);
-        
-        System.out.println(doc.getDocumentElement().getNodeName());
         
         return (Element) imported;
     }

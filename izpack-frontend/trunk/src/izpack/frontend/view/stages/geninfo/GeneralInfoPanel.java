@@ -26,7 +26,6 @@ package izpack.frontend.view.stages.geninfo;
 import izpack.frontend.controller.AuthorManager;
 import izpack.frontend.model.Author;
 import izpack.frontend.model.stages.GeneralInformationModel;
-import izpack.frontend.view.IzPackFrame;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.configure.panels.IzPackPanel;
 
@@ -43,6 +42,8 @@ import javax.swing.JList;
 import javax.swing.JTextField;
 
 import org.w3c.dom.Document;
+
+import utils.UI;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
@@ -168,7 +169,8 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener
     
     public Author displayAuthorDialog(Author oldAuthor)
     {
-        final JDialog dialog = new JDialog(IzPackFrame.getInstance(), langResources().getText("UI.GeneralInfoPage.Dialog.INFO.Text"), true);
+        System.out.println(UI.getApplicationFrame());
+        final JDialog dialog = new JDialog(UI.getApplicationFrame(), langResources().getText("UI.GeneralInfoPage.Dialog.INFO.Text"), true);
         final Author returnValue = new Author(null, null);
         
         FormLayout layout = new FormLayout("pref, 3dlu, 100dlu",

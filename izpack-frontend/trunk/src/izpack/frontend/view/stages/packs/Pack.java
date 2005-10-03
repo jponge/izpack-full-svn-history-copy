@@ -40,6 +40,7 @@ import izpack.frontend.view.components.table.FileListHeader;
 import izpack.frontend.view.components.table.PackCellEditor;
 import izpack.frontend.view.components.table.PackCellRenderer;
 import izpack.frontend.view.components.table.PackListHeader;
+import izpack.frontend.view.components.table.TableEditor;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.packs.editors.DirectoryEditor;
 import izpack.frontend.view.stages.packs.editors.EditorManager;
@@ -52,21 +53,24 @@ import izpack.frontend.view.stages.packs.editors.ParsableEditor;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import utils.UI;
 
 import com.jgoodies.forms.builder.ButtonStackBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -135,31 +139,16 @@ public class Pack extends IzPackStage implements ActionListener,
      * @see izpack.frontend.view.stages.Stage#initializeStage()
      */
     public void initializeStage()
-    {
-        //TODO broken
-
-        /*
-         * Finds the parent frame to base dialogs off of MUST have the stage
-         * added to the frame before calling initializeStage
-         */
-        /*
-         Frame parent = (Frame) this.getParent();
-
-         while (parent != null)
-         {
-         System.out.println(parent);
-         parent = (Frame) parent.getParent();
-         }
-
-         System.out.println(parent);
+    {    
+         Frame parent = UI.getApplicationFrame();
          
          //Set the parent component
          ListIterator li = EditorManager.getInstance().getEditorIterator();
          for (Iterator iter = li; iter.hasNext();)
          {
-         TableEditor element = (TableEditor) iter.next();
-         element.setLocationRelativeTo(parent);
-         }*/
+             TableEditor element = (TableEditor) iter.next();
+             element.setLocationRelativeTo(parent);
+         }
     }
 
     private JPanel createPackTable()
@@ -189,8 +178,6 @@ public class Pack extends IzPackStage implements ActionListener,
                     if (row != null && row instanceof PackModel)
                     {
                         PackModel pm = (PackModel) row;
-                        
-                        System.out.println(pm.getFilesModel());
 
                         filesTable.setModel(pm.getFilesModel());
                     }
@@ -354,7 +341,7 @@ public class Pack extends IzPackStage implements ActionListener,
                     {
                         row--;
                         PackModel pm = (PackModel) packTable.getValueAt(row, 0);
-                        System.out.println(pm.getFilesModel());
+                        
                         filesTable.setModel(pm.getFilesModel());
 
                         return;

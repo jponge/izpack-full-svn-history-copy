@@ -65,10 +65,9 @@ public class XML
         {
             builder = factory.newDocumentBuilder();            
         }
-        catch (ParserConfigurationException e)
+        catch (ParserConfigurationException pce)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(pce);
         }        
         
         doc = builder.newDocument();
@@ -87,17 +86,22 @@ public class XML
             builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             document = builder.parse(new File(filename));
         }        
-        catch (ParserConfigurationException e)
+        catch (ParserConfigurationException pce)
         {
+            throw new RuntimeException(pce);
         }
         catch (SAXException e)
         {
+            throw new RuntimeException(e);
         }
         catch (FileNotFoundException fnfe)
-        {            
+        {
+            System.out.println("fnfne");
+            UI.showError(fnfe.getLocalizedMessage(), "File not found");
         }
         catch (IOException e)
         {
+            throw new RuntimeException(e);
         }
         
         return document;

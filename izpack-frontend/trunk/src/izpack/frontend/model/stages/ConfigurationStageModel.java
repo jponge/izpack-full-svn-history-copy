@@ -45,7 +45,7 @@ import org.w3c.dom.Element;
 
 import com.jgoodies.binding.beans.Model;
 
-public class ConfigurationStageModel extends Model implements StageDataModel, ListDataListener
+public class ConfigurationStageModel extends Model implements StageDataModel
 {
 
     public ConfigurationStageModel(PanelSelectionModel psm)
@@ -55,8 +55,6 @@ public class ConfigurationStageModel extends Model implements StageDataModel, Li
         //panels = new ArrayListModel(psm);
         panels = psm;
         editors = new ArrayList<ConfigurePanel>();
-        
-        panels.addListDataListener(this);        
     }
 
     //TODO fix this so the elements are inserted properly
@@ -82,55 +80,10 @@ public class ConfigurationStageModel extends Model implements StageDataModel, Li
     }
 
     public void initFromXML(Document doc)
-    {        
-        HashMap<String, PanelInfo> panels = PanelInfoManager.getAvailablePanelMap();        
-        Set keys = panels.keySet();
-        
-        XPath xpath = XPathFactory.newInstance().newXPath();
-
-        for (Object key : keys)
-        {
-            try
-            {                
-                PanelInfo panelInfo = panels.get(key);
-                
-                Boolean panelPresent = (Boolean) xpath.evaluate("//panels/panel[@classname=\'" + panelInfo.getClassname() + "\']",
-                                doc, XPathConstants.BOOLEAN);
-                
-                if (panelPresent.booleanValue())
-                {                       
-                    ConfigurePanel editor = (ConfigurePanel) Class.forName(panelInfo.getEditorClassname()).newInstance();
-                
-                    editor.initFromXML(doc);
-                    
-                    PanelModel pModel = new PanelModel();
-                    pModel.configData = panelInfo;
-                    pModel.valid = false;
-                    
-                    ( (PanelSelectionModel) this.panels ).addElement(pModel);
-                    this.editors.add(editor);
-                }                
-            }
-            catch (InstantiationException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            catch (IllegalAccessException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            catch (ClassNotFoundException e)
-            {
-                this.editors.add(new NoEditorCreated());
-            }
-            catch (XPathExpressionException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+    {
+        PanelSelectionModel psm = (PanelSelectionModel) panels;
+        if (psm.getSize() == 0)
+            psm.initFromXML(doc);
     }
     
     public void setEditors(ArrayList<ConfigurePanel> editors)
@@ -171,20 +124,4 @@ public class ConfigurationStageModel extends Model implements StageDataModel, Li
     {
         return editors;
     }
-
-    public void intervalAdded(ListDataEvent e)
-    {
-        System.out.println("Panels added");        
-    }
-
-    public void intervalRemoved(ListDataEvent e)
-    {
-        System.out.println("Panels removed");
-        
-    }
-
-    public void contentsChanged(ListDataEvent e)
-    {
-        System.out.println("Panels moved");        
-    }    
 }

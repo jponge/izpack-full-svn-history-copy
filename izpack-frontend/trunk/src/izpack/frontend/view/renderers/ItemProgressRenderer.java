@@ -27,7 +27,6 @@ import izpack.frontend.model.stages.PanelModel;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.ImageIcon;
@@ -35,6 +34,9 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 
 public class ItemProgressRenderer implements ListCellRenderer
@@ -53,10 +55,12 @@ public class ItemProgressRenderer implements ListCellRenderer
         //Configure renderer
         JPanel renderer = new JPanel();
         
-        renderer.setBorder(new LineBorder(Color.BLACK));
+        renderer.setBorder(new CompoundBorder(new EmptyBorder(0, 2, 2, 2), new EtchedBorder(EtchedBorder.LOWERED)));
                 
         renderer.setLayout(new FlowLayout());
         ((FlowLayout) renderer.getLayout()).setAlignment(FlowLayout.LEFT);
+        
+        
         //End renderer configuration
         
         String labelText = "<html>" +
@@ -67,7 +71,8 @@ public class ItemProgressRenderer implements ListCellRenderer
         
         if (isSelected)
         {
-            renderer.add(selectedIcon);            
+            renderer.add(selectedIcon);
+            renderer.setBackground(renderer.getBackground().brighter());
         }
                 
         if (panelModel.valid)

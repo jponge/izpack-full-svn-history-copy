@@ -54,9 +54,7 @@ public class PanelConfigurationDisplayer extends JPanel
     }
 
     public void setPanelOnDisplay(Object panelOnDisplay)
-    {
-        System.out.println("Changing panel on display");
-        
+    {   
         if (panelOnDisplay == null)
             return;
         

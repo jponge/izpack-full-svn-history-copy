@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.ListModel;
+import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.w3c.dom.Document;
@@ -47,7 +48,7 @@ import org.w3c.dom.Element;
 import com.jgoodies.binding.beans.PropertyConnector;
 import com.jgoodies.validation.ValidationResult;
 
-public class PanelConfigurator extends IzPackStage //implements ListDataListener
+public class PanelConfigurator extends IzPackStage implements ListDataListener
 {
 
     public PanelConfigurator()
@@ -65,7 +66,7 @@ public class PanelConfigurator extends IzPackStage //implements ListDataListener
             if (panelSelectionModel != null)
             {
                 
-//                panelSelectionModel.addListDataListener(this);                
+                panelSelectionModel.addListDataListener(this);                
             }
             else
             {
@@ -118,10 +119,8 @@ public class PanelConfigurator extends IzPackStage //implements ListDataListener
         ArrayList<ConfigurePanel> editors = model.getEditors();
         
         
-        for (int i = 0; i < panels.getSize(); i++)
-        //for (PanelModel panelModel : panels)
-        {
-            System.out.println(panels.getElementAt(i).getClass());
+        for (int i = 0; i < panels.getSize(); i++)        
+        {            
             PanelModel panelModel = (PanelModel) panels.getElementAt(i);
             try
             {
@@ -157,9 +156,9 @@ public class PanelConfigurator extends IzPackStage //implements ListDataListener
         return progressPanel;
     }
 
-    /*public void intervalAdded(ListDataEvent e)
+    public void intervalAdded(ListDataEvent e)
     {        
-        PanelSelectionModel psm = (PanelSelectionModel) e.getSource();
+    /*    PanelSelectionModel psm = (PanelSelectionModel) e.getSource();
         
         PanelInfo panelModel = (PanelInfo) psm.get(e.getIndex0());
         
@@ -168,20 +167,20 @@ public class PanelConfigurator extends IzPackStage //implements ListDataListener
         newAddedObject.valid = false;
         
         model.getPanels().add(e.getIndex0(), newAddedObject);
-        
+      */  
         progressPanel.calculatePreferredSize();
     }
 
     public void intervalRemoved(ListDataEvent e)
     {   
-        model.getPanels().remove(e.getIndex0());
+        //model.getPanels().remove(e.getIndex0());
         
         progressPanel.calculatePreferredSize();
     }
 
     public void contentsChanged(ListDataEvent e)
     {
-        if (!secondContentsChangedEvent)
+        /*if (!secondContentsChangedEvent)
         {
             index = e.getIndex0();
             secondContentsChangedEvent = true;
@@ -199,10 +198,10 @@ public class PanelConfigurator extends IzPackStage //implements ListDataListener
             
             secondContentsChangedEvent = false;
         }   
-        
+    */    
         progressPanel.calculatePreferredSize();
     }
-    */
+    
     /*
      * 
      * Editor changing stuff - binding interface
@@ -247,9 +246,8 @@ public class PanelConfigurator extends IzPackStage //implements ListDataListener
         for (ConfigurePanel editor : model.getEditors())
         {
             this.add( (JComponent) editor, editor.getClass().getName());
-        }        
+        }
         
-        //progressPanel.setPanels(new ArrayListModel(model.getPanels()));
         progressPanel.validate();
         progressPanel.calculatePreferredSize();        
     }

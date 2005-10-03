@@ -127,8 +127,7 @@ public class GeneralInformation extends IzPackStage
             presModel.addBeanPropertyChangeListener(new PropertyChangeListener()
                             {
                                 public void propertyChange(PropertyChangeEvent evt)
-                                {
-                                    System.out.println("Validating");
+                                {                                    
                                     ValidationResult result = getValidator().validate();
                                     validationModel.setResult(result);
                                     ValidationComponentUtils.updateComponentTreeValidationBackground(generalInfoPage, result);
@@ -143,20 +142,17 @@ public class GeneralInformation extends IzPackStage
                             {
 
                                 public void intervalAdded(ListDataEvent e)
-                                {
-                                    System.out.println("Validating");                                    
+                                {                                                                     
                                     validationModel.setResult(getValidator().validate());
                                 }
 
                                 public void intervalRemoved(ListDataEvent e)
-                                {
-                                    System.out.println("Validating");                                    
+                                {                                                                     
                                     validationModel.setResult(getValidator().validate());
                                 }
 
                                 public void contentsChanged(ListDataEvent e)
-                                {
-                                    System.out.println("Validating");                                    
+                                {                                                                     
                                     validationModel.setResult(getValidator().validate());
                                 }
                             });

@@ -49,6 +49,7 @@ import javax.swing.SwingConstants;
 
 import org.w3c.dom.Document;
 
+import reporting.CrashHandler;
 import utils.XML;
 
 /**
@@ -65,8 +66,8 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
         new WizardMode();
     }
     
-    public WizardMode()
-    {   
+    private WizardMode()
+    {           
         long start = System.currentTimeMillis();
         
         setLayout(new BorderLayout());
@@ -100,14 +101,12 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
         setVisible(true);
         
         //TEMP
-        /*Document d = XML.createDocument("install.xml");
-        ArrayList<IzPackStage> stages = IzPackStage.getAllStages();
-        System.err.println(stages);
+        Document d = XML.createDocument("instal.xml");
+        ArrayList<IzPackStage> stages = IzPackStage.getAllStages();        
         for (IzPackStage stage : stages)
-        {
-            System.err.println(stage.getClass().getName());
+        {            
             stage.initializeStageFromXML(d);
-        }*/
+        }
         //ETMP
         
         long stop = System.currentTimeMillis();
@@ -260,5 +259,7 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
     {
         // TODO Auto-generated method stub
         
-    }    
+    }
+    
+    private static WizardMode instance = null;
 }

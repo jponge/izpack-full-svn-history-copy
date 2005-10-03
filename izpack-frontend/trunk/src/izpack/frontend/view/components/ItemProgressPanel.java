@@ -86,25 +86,24 @@ public class ItemProgressPanel extends JPanel
     }
     
     public void calculatePreferredSize()
-    {
-        /*
-        ArrayList<PanelModel> listElems = model.getPanels();
+    {   
+        ListModel listElems = model.getPanels();
         
-        Dimension largest = new Dimension(0,0);       
+        Dimension largest = new Dimension(0,0);     
+        int height = 0;
         
-        for (int i = 0; i < listElems.size(); i++)
+        for (int i = 0; i < listElems.getSize(); i++)
         {   
-            Dimension size = panelList.getCellRenderer().getListCellRendererComponent(panelList, listElems.get(i), 
+            Dimension size = panelList.getCellRenderer().getListCellRendererComponent(panelList, listElems.getElementAt(i), 
                             i, true, true).getPreferredSize();
             
+            height += size.height;
+            
             if (size.width > largest.width)
-                largest = size;     
-        }        
+                largest = size;
+        }
         
-        System.out.println(panelList.getPreferredSize());
-        panelList.setPreferredSize(new Dimension(largest.width + 5, panelList.getHeight()));
-        System.out.println(panelList.getPreferredSize());
-        */
+        panelList.setPreferredSize(new Dimension(largest.width + 5, height));              
     }
     
     JList panelList;    
