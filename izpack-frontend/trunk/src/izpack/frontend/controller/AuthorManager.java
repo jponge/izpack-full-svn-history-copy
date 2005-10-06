@@ -38,6 +38,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import exceptions.DocumentCreationException;
+import exceptions.UnhandleableException;
+
 import utils.XML;
 
 /**
@@ -50,13 +53,15 @@ public class AuthorManager
     public static ArrayList loadAuthors()
     {   
                     
-        Document document = XML.createDocument("conf/authors.xml");
-        
-        if (document == null)
+        Document document;
+        try
         {
-            System.out.println("Error loading authors.xml. Not processing");
+            document = XML.createDocument("conf/authors.xml");
+        }
+        catch (DocumentCreationException e1)
+        {
             return null;
-        }        
+        }       
         
         XPath xpath = XPathFactory.newInstance().newXPath();
 
@@ -67,7 +72,7 @@ public class AuthorManager
             
             authorElems = (NodeList) xpath.evaluate("//author", document, XPathConstants.NODESET);
 
-            ArrayList authors = new ArrayList();
+            ArrayList<Author> authors = new ArrayList<Author>();
 
             for (int i = 0; i < authorElems.getLength(); i++)
             {
@@ -84,11 +89,8 @@ public class AuthorManager
         }
         catch (XPathExpressionException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new UnhandleableException(e);
         }
-        
-        return null;
     }
     
     public static void writeAuthors(ArrayList authors) throws IOException

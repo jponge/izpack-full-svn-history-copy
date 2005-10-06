@@ -43,6 +43,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import exceptions.DocumentCreationException;
+import exceptions.UnhandleableException;
+
 import utils.XML;
 
 /**
@@ -121,7 +124,11 @@ public class PanelInfoManager
         }
         catch (XPathExpressionException e)
         {
-           throw new RuntimeException(e);
+           throw new UnhandleableException(e);
+        }
+        catch (DocumentCreationException e)
+        {
+            return null;
         }
     }
 

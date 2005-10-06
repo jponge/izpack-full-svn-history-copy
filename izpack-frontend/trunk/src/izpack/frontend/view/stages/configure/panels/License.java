@@ -169,6 +169,13 @@ public class License extends JPanel implements ConfigurePanel
         
         String src = XML.getResourceValue(xmlFile, "LicencePanel.licence");
         
+        //We have no value to initialize from. Might as well use the default values for the editor
+        if (src == null)
+        {            
+            initFromXML = false;
+            return;
+        }
+        
         if (!loadLicense(new File(src)))
         {
             licenseDisp.setText("Unable to load the license specified in the install file. Please choose one from the above list," + 

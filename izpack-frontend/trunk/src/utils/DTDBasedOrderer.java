@@ -81,13 +81,12 @@ public class DTDBasedOrderer implements DOMErrorHandler
         }
         catch (FileNotFoundException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            //TODO Give ablility to search for it?
+            UI.showError("Unable to find the DTD for the installer. Perhaps the installtion is corrupted.", "Unable to locate DTD");
         }
         catch (IOException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            UI.showError(e.getLocalizedMessage(), "IOException");
         }
 
     }

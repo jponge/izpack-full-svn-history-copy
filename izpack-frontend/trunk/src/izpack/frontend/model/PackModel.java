@@ -49,6 +49,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import exceptions.UnhandleableException;
+
+import utils.UI;
 import utils.XML;
 
 /**
@@ -256,8 +259,11 @@ public class PackModel implements ElementModel
         }
         catch (XPathExpressionException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            //I don't think this one will occur, but maybe
+            UI.showError("Error initializing a pack from the XML file. \n" + e.getLocalizedMessage(), "XML parsing failure");
+            
+            //Throw an exception for the automated handler to get
+            throw new UnhandleableException(e);
         }
     }
     
@@ -278,13 +284,13 @@ public class PackModel implements ElementModel
             }
             catch (InstantiationException e)
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                UI.showError("Unable to initialize pack data model" + 
+                                "\n" + e.getLocalizedMessage(), "Failure creating pack model");
             }
             catch (IllegalAccessException e)
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                //Shouldn't ever happen
+                throw new UnhandleableException(e);
             }
         }
     }

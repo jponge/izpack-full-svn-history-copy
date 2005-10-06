@@ -37,6 +37,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import utils.XML;
+import exceptions.DocumentCreationException;
+import exceptions.UnhandleableException;
 
 /**
  * @author Andy Gombos
@@ -70,14 +72,18 @@ public class RecentFileManager
                 Element element = (Element) fileElems.item(i);                
                 files.add(element.getAttribute("path"));
                 
-            }            
-            
-            return files;
+            }
         }
         catch (XPathException xpe)
         {
-            throw new RuntimeException(xpe);
+            throw new UnhandleableException(xpe);
         }
+        catch (DocumentCreationException e)
+        {
+            //Nothing to do, just no recent files list
+        }
+        
+        return files;
     }
     
     public void addUsedFile(String file)

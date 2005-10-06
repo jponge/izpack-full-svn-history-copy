@@ -32,6 +32,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import utils.XML;
+import exceptions.DocumentCreationException;
+import exceptions.UnhandleableException;
 
 /**
  * Model to hold configuration for the application. Loads the configuration via
@@ -127,8 +129,7 @@ public class AppConfiguration {
         }
         catch (XPathExpressionException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new UnhandleableException(e);
         }
         
         for (int i = 0; i < pages.getLength(); i++)
@@ -152,7 +153,15 @@ public class AppConfiguration {
 	 */
 	private void loadConfiguration()
 	{
-	    document = XML.createDocument(CONFIG_FILE);
+	    try
+        {
+            document = XML.createDocument(CONFIG_FILE);
+        }
+        catch (DocumentCreationException e)
+        {
+            throw new UnhandleableException(e);
+        }
+        
 	    System.out.println("configuration loaded");
 	}
 
@@ -165,8 +174,7 @@ public class AppConfiguration {
         }
         catch (XPathExpressionException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new UnhandleableException(e);
         }
         
         for (int i = 0; i < stages.getLength(); i++)
@@ -192,10 +200,7 @@ public class AppConfiguration {
         }
         catch (XPathExpressionException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new UnhandleableException(e);
         }
-        
-        return null;
     }
 }

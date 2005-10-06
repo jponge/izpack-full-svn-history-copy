@@ -30,6 +30,7 @@ public class CrashHandler implements UncaughtExceptionHandler
 {
     public void uncaughtException(Thread t, Throwable e)
     {   
+        System.out.println("*************Uncaught Exception**********");
         e.getCause().printStackTrace();
         Map<Thread, StackTraceElement[]> stackTraces = Thread.getAllStackTraces();
         

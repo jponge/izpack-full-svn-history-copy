@@ -42,6 +42,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathException;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
@@ -50,6 +51,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+
+import exceptions.DocumentCreationException;
+import exceptions.PreviouslyHandledException;
+import exceptions.UnhandleableException;
+
 
 /**
  * @author Andy Gombos
@@ -67,7 +74,7 @@ public class XML
         }
         catch (ParserConfigurationException pce)
         {
-            throw new RuntimeException(pce);
+            throw new UnhandleableException(pce);
         }        
         
         doc = builder.newDocument();
@@ -76,7 +83,7 @@ public class XML
     }
     
     //TODO Exception handling
-    public static Document createDocument(String filename)
+    public static Document createDocument(String filename) throws DocumentCreationException
     {
         DocumentBuilder builder;        
         Document document = null;
@@ -88,20 +95,21 @@ public class XML
         }        
         catch (ParserConfigurationException pce)
         {
-            throw new RuntimeException(pce);
+            throw new UnhandleableException(pce);
         }
         catch (SAXException e)
         {
-            throw new RuntimeException(e);
+            throw new UnhandleableException(e);
         }
         catch (FileNotFoundException fnfe)
-        {
-            System.out.println("fnfne");
+        {            
             UI.showError(fnfe.getLocalizedMessage(), "File not found");
+            
+            throw new DocumentCreationException(fnfe);
         }
         catch (IOException e)
         {
-            throw new RuntimeException(e);
+            throw new UnhandleableException(e);
         }
         
         return document;
@@ -146,11 +154,15 @@ public class XML
         }
         catch (TransformerConfigurationException tce)
         {
-            System.out.println("TransformerConfigurationException: " + tce);
+            //TODO Make this a better handler - it's not really a fatal error
+            //But, we can't save anything without a working transformer. So, maybe it is
+            //UI.showError("An error occurred configuring the transformer for XML output", )
+            throw new UnhandleableException(tce);
         }
         catch (TransformerException te)
         {
-            System.out.println("TransformerException: " + te);
+            //TODO Same as above
+            throw new UnhandleableException(te);
         }
     }
     
@@ -178,9 +190,9 @@ public class XML
 	 * 
      * @param document The XML document
      * @param id The resource ID to look for
-     * @return Value of the src attribute
+     * @return Value of the src attribute 
      */
-    public static String getResourceValue(Document document, String id)
+    public static String getResourceValue(Document document, String id) 
     {
         XPath xpath = XPathFactory.newInstance().newXPath();
         try
@@ -197,8 +209,8 @@ public class XML
         }
         catch (XPathExpressionException xpee)
         {
-            UI.showError("Error while searching for resource id: " + id, "Error restoring state");
-            xpee.printStackTrace();
+            //Chances are, this is because the resource is missing
+            //Therefore, just give a null return value
         } 
         
         return null;

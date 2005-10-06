@@ -39,6 +39,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import exceptions.UnhandleableException;
+
 import utils.XML;
 
 /**
@@ -96,8 +98,7 @@ public class PanelSelectionModel extends SelectListModel implements StageDataMod
         }
         catch (XPathExpressionException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new UnhandleableException(e);
         }        
     }
 }

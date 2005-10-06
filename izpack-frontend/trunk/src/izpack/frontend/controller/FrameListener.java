@@ -47,6 +47,8 @@ public class FrameListener implements WindowListener {
 
 	/**
 	 * Exits applications
+     * 
+     * Do things like save application state here
 	 */
 	public void windowClosing(WindowEvent e) {
 	    try
@@ -55,8 +57,8 @@ public class FrameListener implements WindowListener {
         }
         catch (IOException e1)
         {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+            //Ignore, because saving the recent files isn't worth displaying to the user
+            //Maybe disk space is full, or no permissions, or something
         }	    	    
 	    
 		System.exit(0);

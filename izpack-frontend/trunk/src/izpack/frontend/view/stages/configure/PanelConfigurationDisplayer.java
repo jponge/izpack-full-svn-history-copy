@@ -30,6 +30,10 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import exceptions.UnhandleableException;
+
+import utils.UI;
+
 public class PanelConfigurationDisplayer extends JPanel
 {    
     public PanelConfigurationDisplayer()
@@ -79,17 +83,16 @@ public class PanelConfigurationDisplayer extends JPanel
         {
             label.setText("No editing necessary");
             add(label);
-        }
-        //label.setText(this.panelOnDisplay.representingClassName);
+        }       
         catch (InstantiationException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            UI.showError("Unable to initialize editor " + this.panelOnDisplay.configData.getEditorClassname() + 
+                            "\n" + e.getLocalizedMessage(), "Failure creating editor");            
         }
         catch (IllegalAccessException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            //Shouldn't ever happen
+            throw new UnhandleableException(e);            
         }
     } 
     

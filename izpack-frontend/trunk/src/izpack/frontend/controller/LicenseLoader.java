@@ -41,6 +41,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import utils.UI;
+import exceptions.UnhandleableException;
+
 /**
  * @author Andy Gombos
  */
@@ -94,23 +97,19 @@ public class LicenseLoader
 	    }	
         catch (ParserConfigurationException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new UnhandleableException(e);
         }
         catch (SAXException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new UnhandleableException(e);
         }
         catch (IOException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            UI.showError("Error loading licenses: " + e.getLocalizedMessage(), "Error loading license");
         }
         catch (XPathExpressionException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new UnhandleableException(e);
         }
         
         return null;

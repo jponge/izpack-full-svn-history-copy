@@ -45,8 +45,12 @@ import javax.swing.event.ListDataListener;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import utils.UI;
+
 import com.jgoodies.binding.beans.PropertyConnector;
 import com.jgoodies.validation.ValidationResult;
+
+import exceptions.UnhandleableException;
 
 public class PanelConfigurator extends IzPackStage implements ListDataListener
 {
@@ -137,13 +141,13 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
             }
             catch (InstantiationException e)
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                UI.showError("Unable to initialize editor " + panelModel.configData.getEditorClassname() + 
+                                "\n" + e.getLocalizedMessage(), "Failure creating editor");
             }
             catch (IllegalAccessException e)
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                //Shouldn't ever happen
+                throw new UnhandleableException(e);            
             }
         }
         

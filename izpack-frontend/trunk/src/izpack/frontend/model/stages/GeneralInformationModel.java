@@ -25,7 +25,6 @@ package izpack.frontend.model.stages;
 
 import izpack.frontend.model.Author;
 import izpack.frontend.model.SelectListModel;
-import izpack.frontend.view.renderers.LangLabel;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -46,6 +45,8 @@ import utils.XML;
 
 import com.jgoodies.binding.beans.Model;
 import com.jgoodies.binding.list.ArrayListModel;
+
+import exceptions.UnhandleableException;
 
 /**
  * @author Andy Gombos
@@ -197,8 +198,7 @@ public class GeneralInformationModel extends Model implements StageDataModel
         }
         catch (XPathExpressionException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new UnhandleableException(e);
         }
     }
 

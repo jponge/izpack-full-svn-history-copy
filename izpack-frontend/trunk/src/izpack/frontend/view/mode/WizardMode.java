@@ -50,7 +50,10 @@ import javax.swing.SwingConstants;
 import org.w3c.dom.Document;
 
 import reporting.CrashHandler;
+import utils.UI;
 import utils.XML;
+import exceptions.DocumentCreationException;
+import exceptions.UnhandleableException;
 
 /**
  * Show Panel Select and General Information stages
@@ -63,6 +66,7 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
 {   
     public static void main(String[] args)
     {
+        Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
         new WizardMode();
     }
     
@@ -101,13 +105,20 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
         setVisible(true);
         
         //TEMP
-        Document d = XML.createDocument("instal.xml");
-        ArrayList<IzPackStage> stages = IzPackStage.getAllStages();        
-        for (IzPackStage stage : stages)
-        {            
-            stage.initializeStageFromXML(d);
+        try
+        {
+            Document d = XML.createDocument("install.xml");
+            
+            ArrayList<IzPackStage> stages = IzPackStage.getAllStages();        
+            for (IzPackStage stage : stages)
+            {            
+                stage.initializeStageFromXML(d);
+            }
         }
-        //ETMP
+        catch (DocumentCreationException dce)
+        {
+            
+        }
         
         long stop = System.currentTimeMillis();
         
@@ -132,13 +143,13 @@ public class WizardMode extends JFrame implements StageChangeListener, WindowLis
         }
         catch (InstantiationException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            UI.showError("Unable to create stage " + stageClass.getSimpleName() + ". Exiting", "Initialization failure");
+            System.exit(-1);
         }
         catch (IllegalAccessException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            //Shouldn't ever happen
+            throw new UnhandleableException(e);
         }
         
         return null;

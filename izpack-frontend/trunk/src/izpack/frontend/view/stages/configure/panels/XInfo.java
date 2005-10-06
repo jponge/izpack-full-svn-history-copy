@@ -117,6 +117,7 @@ public class XInfo extends JPanel implements ConfigurePanel, ActionListener
     {
         String filename = XML.getResourceValue(document, "XInfoPanel.info");
         
+        //Check to see if there's anything to load from
         if (filename != null)
         {
             loadFile(new File(filename));
