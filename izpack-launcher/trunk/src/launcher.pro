@@ -7,3 +7,6 @@ SOURCES = main.cpp launcher.cpp resolve-dialog.cpp
 RESOURCES = resources.qrc
 TRANSLATIONS = launcher_fr.ts
 TARGET=launcher
+win32 {
+    RC_FILE = win32.rc
+}
