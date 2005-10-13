@@ -99,8 +99,9 @@ public class XML
             throw new UnhandleableException(e);
         }
         catch (FileNotFoundException fnfe)
-        {            
-            UI.showError(fnfe.getLocalizedMessage(), "File not found");
+        {   
+            if (!filename.endsWith("authors.xml") && !filename.endsWith("recent.xml"))
+                UI.showError(fnfe.getLocalizedMessage(), "File not found");
             
             throw new DocumentCreationException(fnfe);
         }
