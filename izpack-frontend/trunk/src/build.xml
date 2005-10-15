@@ -17,14 +17,17 @@
 		<path refid="build.classpath" />
 		<pathelement location="build/classes" />
 	</path>
-			
+	
+	<available file="lib/standalone-compiler.jar" property="compiler.present" />
+	
+	<property environment="env" />
 	
 	<target name="init">
 		<mkdir dir="build/classes" />
 		<mkdir dir="dist" />
 	</target>
 		
-	<target name="build" depends ="init">
+	<target name="build" depends ="init,ensure_compiler_available" description="Builds the frontend">
 		<javac 
 			srcdir="."
 			destdir="build/classes"			
@@ -37,7 +40,7 @@
 		<echo>compilation complete</echo>
 	</target>
 	
-	<target name="archive" depends="build">
+	<target name="archive" depends="build" description="Creates a JAR of the frontend, ready to run">
 		<jar destfile="dist/FrontEnd.jar"
 			basedir="build/classes" />
 	</target>
@@ -47,7 +50,7 @@
 		<delete dir="dist" />
 	</target>
 	
-	<target name="run" depends="build">
+	<target name="run" depends="build,ensure_compiler_available" description="Starts the frontend, for testing">
 		<java
 			classname="izpack.frontend.view.mode.WizardMode"
 			fork="true">
@@ -69,5 +72,31 @@
 			<fileset dir="lib"/>
 		</copy>		
 	</target>
+	
+	<!-- See if we already have a file called standalone-compiler.jar	
+		 if not, acquire it 
+	 -->
+	<target name="ensure_compiler_available" unless="compiler.present">
+		<condition property="compiler.mustDownload">
+			<not>
+				<or>
+					<isset property="env.IZPACK_HOME"/>
+					<isset property="compiler.present"/>
+				</or>
+			</not>
+		</condition>
 		
+		<antcall target="copy_compiler_from_IZPACK_HOME" />
+		<antcall target="download_compiler_from_BerliOS" />		
+	</target>		
+	
+	<target name="copy_compiler_from_IZPACK_HOME" if="env.IZPACK_HOME" unless="compiler.present">
+		<echo>Copying from IzPack distribution</echo>
+		<copy file="${env.IZPACK_HOME}/lib/standalone-compiler.jar" todir="lib" />
+	</target>		
+	
+	<target name="download_compiler_from_BerliOS" if="compiler.mustDownload">
+		<echo>Downloading compiler file from BerliOS</echo>
+		<get dest="lib/standalone-compiler.jar" src="ftp://ftp.berlios.de/pub/izpack/standalone-compiler.jar" verbose="true"/>
+	</target>
 </project>

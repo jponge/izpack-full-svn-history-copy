@@ -30,7 +30,6 @@ import izpack.frontend.model.files.FileModel;
 import izpack.frontend.model.files.FileOrderComparator;
 import izpack.frontend.model.files.FileSet;
 import izpack.frontend.model.files.PackElement;
-import izpack.frontend.model.files.PackFileModel;
 import izpack.frontend.model.files.Parsable;
 
 import java.util.ArrayList;
@@ -49,10 +48,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import exceptions.UnhandleableException;
-
 import utils.UI;
 import utils.XML;
+import exceptions.UnhandleableException;
 
 /**
  * @author Andy Gombos

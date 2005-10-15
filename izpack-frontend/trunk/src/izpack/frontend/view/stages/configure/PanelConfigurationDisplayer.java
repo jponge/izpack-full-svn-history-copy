@@ -30,9 +30,8 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import exceptions.UnhandleableException;
-
 import utils.UI;
+import exceptions.UnhandleableException;
 
 public class PanelConfigurationDisplayer extends JPanel
 {    

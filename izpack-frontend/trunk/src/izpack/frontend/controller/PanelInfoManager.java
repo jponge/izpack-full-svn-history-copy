@@ -25,8 +25,6 @@ package izpack.frontend.controller;
 
 import izpack.frontend.model.Author;
 import izpack.frontend.model.PanelInfo;
-import izpack.frontend.model.PanelInfo.Resource;
-import izpack.frontend.view.stages.configure.panels.IzPanel;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -43,10 +41,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import utils.XML;
 import exceptions.DocumentCreationException;
 import exceptions.UnhandleableException;
-
-import utils.XML;
 
 /**
  * @author Andy Gombos

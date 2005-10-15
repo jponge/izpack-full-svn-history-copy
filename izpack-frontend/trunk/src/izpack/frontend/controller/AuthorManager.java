@@ -38,10 +38,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import utils.XML;
 import exceptions.DocumentCreationException;
 import exceptions.UnhandleableException;
-
-import utils.XML;
 
 /**
  * @author Andy Gombos

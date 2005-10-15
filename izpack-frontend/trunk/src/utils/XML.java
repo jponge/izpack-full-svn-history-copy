@@ -142,8 +142,8 @@ public class XML
             Transformer xformer = tFactory.newTransformer(xsl);
             
             //Set the output doctype
-            String systemValue = new File("dtd/installation.dtd").getPath();            
-            xformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemValue);
+            //String systemValue = new File("dtd/installation.dtd").getPath();            
+            //xformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemValue);
             
             //xformer.setOutputProperty(OutputKeys.INDENT, "yes");
             

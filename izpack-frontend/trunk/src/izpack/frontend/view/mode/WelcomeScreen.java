@@ -23,49 +23,39 @@
  */
 package izpack.frontend.view.mode;
 
+import izpack.frontend.actions.ActionHandler;
 import izpack.frontend.controller.GUIController;
-import izpack.frontend.controller.RecentFileManager;
 import izpack.frontend.model.LangResources;
 import izpack.frontend.view.GUIConstants;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Set;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-
-import utils.UI;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
-import exceptions.DocumentCreationException;
-
-public class WelcomeScreen extends JFrame implements ActionListener
+public class WelcomeScreen extends JFrame
 {
 
     /**
      * @param args
      */
     public static void main(String[] args)
-    {   
+    {        
         new WelcomeScreen().setVisible(true);
     }
 
     public WelcomeScreen()
-    {
+    {        
+        installerUI = new WizardMode();
+        
+        actionHandler = new ActionHandler(installerUI, this);
+        
+        
         FormLayout layout = new FormLayout("left:pref, 15dlu, left:pref",
                         "center:pref, 25dlu, pref, 10dlu, pref, 10dlu, pref, 10dlu, pref");
         DefaultFormBuilder builder = new DefaultFormBuilder(layout, new JPanel());
@@ -98,7 +88,7 @@ public class WelcomeScreen extends JFrame implements ActionListener
                                             "res/imgs/" + buttonNames[i]
                                                             + ".png"));
             buttons[i].setName(buttonNames[i]);
-            buttons[i].addActionListener(this);
+            buttons[i].addActionListener(actionHandler);
 
             buttons[i].setBorder(null);
 
@@ -116,108 +106,12 @@ public class WelcomeScreen extends JFrame implements ActionListener
         setContentPane(builder.getPanel());
         pack();
         
-        installerUI = new WizardMode();
-        
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-
-    public void actionPerformed(ActionEvent e)
-    {
-        if (e.getSource() instanceof JMenuItem)
-        {
-            openFile(((JMenuItem) e.getSource()).getName());
-            return;
-        }
-
-        JButton button = (JButton) e.getSource();
-        String name = button.getName();
-        if (name.equals(GUIConstants.BUTTON_NEW))
-        {
-            //Display the installer
-            if (installerUI != null)
-            {
-                setVisible(false);
-                installerUI.setVisible(true);
-            }
-        }
-        if (name.equals(GUIConstants.BUTTON_OPEN))
-        {
-            JFileChooser jfc = new JFileChooser();
-            if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-            {
-                String xmlFile = jfc.getSelectedFile().getAbsolutePath();
-                
-                try
-                {
-                    installerUI.initializeFromXML(xmlFile);
-                
-                    RecentFileManager.getInstance().addUsedFile(
-                                    xmlFile);
-                    
-                    installerUI.setVisible(true);
-                }
-                catch (DocumentCreationException dce)                
-                {
-                    //TODO error handling - anything not XML or malformed XML throws an exception
-                    UI.showError("Error loading file: " + dce.getLocalizedMessage(), "Error!");
-                }
-                
-            }
-        }
-        if (name.equals(GUIConstants.BUTTON_RECENT))
-        {
-            JPopupMenu menu = new JPopupMenu();
-            ArrayList recent = RecentFileManager.getInstance().loadRecentList();
-            for (Iterator iter = recent.iterator(); iter.hasNext();)
-            {
-                String file = (String) iter.next();
-                String fileBak = file;
-
-                // Shorten the path, so it doesn't cover the entire screen
-                if (file.length() > 60)
-                {
-                    int idx = file.lastIndexOf(System
-                                    .getProperty("file.separator"));
-                    file = file.substring(0, 15) + "..."
-                                    + file.substring(idx, file.length());
-                }
-
-                JMenuItem mi = menu.add(file);
-                mi.setName(fileBak);
-                mi.addActionListener(this);
-            }
-
-            Dimension d = button.getSize();
-            menu.show(this, button.getX() + d.width + 4, button.getY());
-        }
-
-        if (name.equals(GUIConstants.BUTTON_WEBSITE))
-        {
-            final String[] browserArgs = {"http://www.izforge.com/izpack",
-                            "nodebug", "dispose"};
-            se.bysoft.sureshot.gui.browser.MiniBrowser.main(browserArgs);
-
-        }
-        else if (name.equals(GUIConstants.BUTTON_MAILLIST))
-        {
-            final String[] browserArgs = {
-                            "http://lists.berlios.de/pipermail/izpack-users",
-                            "nodebug", "dispose"};
-            se.bysoft.sureshot.gui.browser.MiniBrowser.main(browserArgs);
-        }
-    }
-
-    /**
-     * @param name
-     */
-    private void openFile(String name)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
+    
     private LangResources langResources = GUIController.getInstance()
                     .langResources();    
     
     private WizardMode installerUI = null;
+    private ActionHandler actionHandler = null;
 }

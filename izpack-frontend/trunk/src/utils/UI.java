@@ -23,12 +23,12 @@
  */
 package utils;
 
+import java.awt.Container;
 import java.awt.Frame;
 import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -39,10 +39,30 @@ import javax.swing.SwingConstants;
  */
 public class UI
 {
-    public static File getFile (JComponent parent, String fileType)
+    public static File getFile (Container parent, String fileType)
     {
         JFileChooser jfc = new JFileChooser();
         jfc.setDialogTitle("Open a " + fileType + "...");
+        
+        if (jfc.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
+        {
+            return jfc.getSelectedFile();
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    public static File getFile (Container parent, String title, boolean directoriesOnly)
+    {
+        JFileChooser jfc = new JFileChooser();
+        jfc.setDialogTitle(title);
+        
+        if (directoriesOnly)
+            jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        else
+            jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         
         if (jfc.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
         {

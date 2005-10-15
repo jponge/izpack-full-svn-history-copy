@@ -28,7 +28,6 @@ import izpack.frontend.view.renderers.ItemProgressRenderer;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.ArrayList;
 
 import javax.swing.JList;
 import javax.swing.JPanel;

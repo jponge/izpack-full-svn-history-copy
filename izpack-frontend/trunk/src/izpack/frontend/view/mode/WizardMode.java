@@ -14,13 +14,9 @@
  */
 package izpack.frontend.view.mode;
 
-import izpack.frontend.controller.GUIController;
-import izpack.frontend.controller.RecentFileManager;
 import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.controller.StageChangeListener;
 import izpack.frontend.controller.XMLCreator;
-import izpack.frontend.model.LangResources;
-import izpack.frontend.view.GUIConstants;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.configure.PanelConfigurator;
 import izpack.frontend.view.stages.geninfo.GeneralInformation;
@@ -30,22 +26,16 @@ import izpack.frontend.view.stages.panelselect.PanelSelection;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
 import org.w3c.dom.Document;
@@ -53,11 +43,6 @@ import org.w3c.dom.Document;
 import reporting.CrashHandler;
 import utils.UI;
 import utils.XML;
-
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-
 import exceptions.DocumentCreationException;
 import exceptions.UnhandleableException;
 
@@ -114,7 +99,7 @@ public class WizardMode extends JFrame implements StageChangeListener,
     public static void main(String[] args)
     {
         Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
-        new WizardMode();
+        new WizardMode().setVisible(true);
     }
 
     public void initializeFromXML(String xmlFile) throws DocumentCreationException

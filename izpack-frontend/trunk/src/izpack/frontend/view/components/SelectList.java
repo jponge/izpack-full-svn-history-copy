@@ -24,7 +24,6 @@
 package izpack.frontend.view.components;
 
 import izpack.frontend.model.SelectListModel;
-import izpack.frontend.view.renderers.LabelRenderer;
 
 import javax.swing.JList;
 

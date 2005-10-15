@@ -23,22 +23,11 @@
  */
 package izpack.frontend.model.stages;
 
-import izpack.frontend.controller.PanelInfoManager;
-import izpack.frontend.model.PanelInfo;
 import izpack.frontend.view.stages.configure.panels.ConfigurePanel;
-import izpack.frontend.view.stages.configure.panels.NoEditorCreated;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 import javax.swing.ListModel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

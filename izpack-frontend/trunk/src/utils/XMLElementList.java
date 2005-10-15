@@ -1,7 +1,6 @@
 package utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.w3c.dom.Node;
 

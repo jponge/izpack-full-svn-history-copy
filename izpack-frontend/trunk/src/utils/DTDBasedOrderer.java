@@ -17,7 +17,6 @@ package utils;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -28,14 +27,8 @@ import javax.swing.tree.TreeNode;
 import org.w3c.dom.DOMError;
 import org.w3c.dom.DOMErrorHandler;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import utils.XML;
-import utils.XMLDocFlattener;
-import utils.XMLElementList;
-
-import com.sun.org.apache.xerces.internal.dom.DeferredElementImpl;
 import com.wutka.dtd.DTD;
 import com.wutka.dtd.DTDElement;
 import com.wutka.dtd.DTDName;

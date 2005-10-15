@@ -25,7 +25,6 @@ package izpack.frontend.view.renderers;
 
 import izpack.frontend.model.stages.PanelModel;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 
@@ -37,7 +36,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
 
 public class ItemProgressRenderer implements ListCellRenderer
 {
