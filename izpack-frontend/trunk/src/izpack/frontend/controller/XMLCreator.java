@@ -64,14 +64,7 @@ public class XMLCreator
             root.appendChild(elem);
         }
         
-        System.err.println("**********************************");
-        System.out.flush();
-        System.err.flush();
-        
-        XML.printXML(doc);
-        System.err.println("**********************************");
-        
-        return null;
+        return doc;
     }
     
     /**

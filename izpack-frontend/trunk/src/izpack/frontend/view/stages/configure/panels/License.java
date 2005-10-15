@@ -111,7 +111,7 @@ public class License extends JPanel implements ConfigurePanel
 	                 }
 	             }
 	             
-	             if (o instanceof LicenseModel)
+	             if (o instanceof LicenseModel && !initFromXML)
 	             {
 	                 LicenseModel lm = (LicenseModel) o;
 	                 File license = new File("res/licenses/" + lm.filename);
@@ -164,6 +164,7 @@ public class License extends JPanel implements ConfigurePanel
      */
     public void initFromXML(Document xmlFile)
     {
+        System.out.println("Configuring from XML");
         initFromXML = true;
         
         String src = XML.getResourceValue(xmlFile, "LicencePanel.licence");
@@ -195,7 +196,7 @@ public class License extends JPanel implements ConfigurePanel
             loadedLicense.filename = src;
             loadedLicense.name = "Custom license from XML file (" + new File(src).getName() + ")";
             licenseList.addItem(loadedLicense);
-            licenseList.setSelectedIndex(licenseList.getItemCount() - 1);            
+            licenseList.setSelectedItem(loadedLicense);            
         }
         
         initFromXML = false;

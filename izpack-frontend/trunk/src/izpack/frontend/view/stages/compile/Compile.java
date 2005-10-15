@@ -1,10 +1,10 @@
 /*
- * Created on Oct 13, 2005
+ * Created on Oct 15, 2005
  * 
- * $Id: CompileDisplay.java Feb 8, 2004 izpack-frontend
+ * $Id: Compile.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : CompileDisplay.java 
+ * File : Compile.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,17 +21,19 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package izpack.frontend.actions;
+package izpack.frontend.view.stages.compile;
 
-import java.awt.Frame;
+import izpack.frontend.actions.CompileManager;
+import izpack.frontend.controller.XMLCreator;
+import izpack.frontend.model.stages.StageDataModel;
+import izpack.frontend.view.stages.IzPackStage;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -40,39 +42,36 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import utils.UI;
+import utils.XML;
 
 import com.izforge.izpack.compiler.PackagerListener;
 import com.jgoodies.forms.builder.ButtonStackBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
+import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.validation.ValidationResult;
 
-public class CompileDisplay implements ActionListener
+public class Compile extends IzPackStage implements ActionListener
 {
-    public CompileDisplay(boolean inDialog)
-    {
+    public Compile()
+    {        
         display = new JPanel();
         console = new JTextArea(25, 50);
-        consoleDocument = console.getDocument();        
+        consoleDocument = console.getDocument();
         
-        if (inDialog)
-        {
-            frame = new JDialog(UI.getApplicationFrame(), "Installer Compiler", true);
-            frame.add(display);
-        }
-    }    
-    
-    public String[] getInstallationSettings()
-    {
         final StringBuffer installType = new StringBuffer();        
         
         FormLayout layout = new FormLayout("pref, 3dlu, center:pref, 3dlu, pref", "pref, 5dlu, pref, 5dlu, pref,"   //Installer type 
                                                          +"10dlu, pref,"                    //Base Directory
                                                          +"10dlu, pref,"                    //Output
-                                                         +"10dlu, pref");                   //OK/Cancel
+                                                         +"10dlu, pref,"                    //OK/Cancel
+                                                         +"20dlu, 75dlu");                   //Console
         
         DefaultFormBuilder builder = new DefaultFormBuilder(layout, display);
         
@@ -131,62 +130,99 @@ public class CompileDisplay implements ActionListener
         builder.setDefaultDialogBorder();
         
         
-        JButton OK = new JButton("OK");
+        JButton OK = new JButton("Compile");
         OK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                installType.append(bg.getSelection().getActionCommand());
-                
-                frame.setVisible(false);
-            }            
-        });
-        
-        JButton cancel = new JButton("Cancel");
-        cancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-                installType.append("");
-                
-                frame.setVisible(false);
+                performCompile(bg.getSelection().getActionCommand());
             }            
         });
         
         builder.setColumn(3);
-        builder.add(ButtonBarFactory.buildCenteredBar(OK, cancel));
+        builder.add(ButtonBarFactory.buildCenteredBar(OK));
         
-        
-        if (frame != null)
-        {
-            frame.pack();
-        
-            if (!frame.isVisible())
-                frame.setVisible(true);
-        }
-        
-        return new String[]{installType.toString(), baseDir.getText(), output.getText()};
-    }
-    
-    public void showCompileStatus()
-    {   
-        JDialog d = new JDialog((Frame) null, "Progress", false);
-        d.add(getCompileStatusPane());
-        
-        d.pack();
-        d.setVisible(true);        
-    }
-    
-    public JPanel getCompileStatusPane()
-    {
-        JPanel panel = new JPanel();
+        builder.nextLine(2);
         
         JScrollPane scroll = new JScrollPane(console);
-        
         console.setLineWrap(false);
+        builder.add(scroll, new CellConstraints(1, layout.getRowCount(), layout.getColumnCount(), 1));
         
-        panel.add(scroll);
-        
-        return panel;
+        add(display);
     }
+    
+    protected void performCompile(String actionCommand)
+    {
+        Document xml = new XMLCreator(IzPackStage.getAllStages()).createInstallXML();
+        
+        //TODO let user pick
+        String filename = output.getText().substring(0, output.getText().length() - 3) + "xml";
+        
+        XML.writeXML(filename, xml);
+        
+        CompileManager.compile(xml, new String[]{actionCommand, baseDir.getText(), output.getText()}, new CompileListener());
+    }
+
+    @Override
+    public Element[] createInstallerData(Document doc)
+    {        
+        return null;
+    }
+
+    @Override
+    public ValidationResult validateStage()
+    {        
+        return ValidationResult.EMPTY;
+    }
+
+    @Override
+    public StageDataModel getDataModel()
+    {
+        return null;
+    }
+
+    public void initializeStage()
+    {    
+        
+    }
+
+    public void initializeStageFromXML(Document doc)
+    {
+        //Do nothing        
+    }
+
+    public JPanel getLeftNavBar()
+    {
+        // TODO Auto-generated method stub
+        return new JPanel();
+    }
+
+    private JPanel display;
+    private JTextArea console;    
+    private javax.swing.text.Document consoleDocument;
+    
+    private JTextField baseDir, output;
+    private JButton browseBase, browseOutput;
+    
+    public void actionPerformed(ActionEvent e)
+    {
+        File file = null;
+        
+        if (e.getSource().equals(browseBase))
+        {
+            file = UI.getFile(UI.getApplicationFrame(), "Select a directory...", true);
+            
+            if (file != null)            
+                baseDir.setText(file.getAbsolutePath());
+        }
+        else
+        {
+            file = UI.getFile(UI.getApplicationFrame(), "Select an output file...", false);
+            
+            if (file != null)
+                output.setText(file.getAbsolutePath());
+        }
+        
+    }    
     
     class CompileListener implements PackagerListener
     {
@@ -255,40 +291,5 @@ public class CompileDisplay implements ActionListener
             }
         }
     }
-    
-    public static final int DIALOG = 0;
-    public static final int PANEL = 1;
-    
-    private JDialog frame;
-    private JPanel display;
-    private JTextArea console;    
-    private Document consoleDocument;
-    
-    private JTextField baseDir, output;
-    private JButton browseBase, browseOutput;
-    
-    public PackagerListener getPackagerListener()
-    {
-        return new CompileListener();        
-    }
 
-    public void actionPerformed(ActionEvent e)
-    {
-        File file = null;
-        
-        if (e.getSource().equals(browseBase))
-        {
-            file = UI.getFile(frame.getParent(), "Select a directory...", true);
-            
-            if (file != null)            
-                baseDir.setText(file.getAbsolutePath());
-        }
-        else
-        {
-            file = UI.getFile(frame.getParent(), "Select an output file...", false);
-            
-            if (file != null)
-                output.setText(file.getAbsolutePath());
-        }
-    }
 }

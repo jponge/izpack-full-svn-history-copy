@@ -86,7 +86,15 @@ public class ActionHandler implements ActionListener
             File f = UI.getFile(welcomeUI, "Open an installer XML file...", false);
             
             if (f != null)
-                CompileManager.compile(f.getAbsolutePath());                               
+            {
+                CompileDisplay displayer = new CompileDisplay(true);
+                
+                String installArgs[] = displayer.getInstallationSettings();
+                
+                displayer.showCompileStatus();
+                
+                CompileManager.compile(f.getAbsolutePath(), installArgs, displayer.getPackagerListener());
+            }
             
         }
         if (name.equals(GUIConstants.BUTTON_RECENT))

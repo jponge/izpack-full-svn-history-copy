@@ -84,6 +84,8 @@ public class AuthorManager
 
             Collections.sort(authors);
 
+            persistantAuthors = authors;
+            
             return authors;   
         }
         catch (XPathExpressionException e)
@@ -92,7 +94,7 @@ public class AuthorManager
         }
     }
     
-    public static void writeAuthors(ArrayList authors) throws IOException
+    public static void writeAuthors() throws IOException
     {   
         Document document = XML.createDocument();
         
@@ -100,7 +102,7 @@ public class AuthorManager
         Element root = document.createElement("authors");
         document.appendChild(root);
         
-        for (Iterator iter = authors.iterator(); iter.hasNext();)
+        for (Iterator iter = persistantAuthors.iterator(); iter.hasNext();)
         {
             Author auth = (Author) iter.next();
             Element author = document.createElement("author");
@@ -112,5 +114,12 @@ public class AuthorManager
         
         XML.writeXML("conf/authors.xml", document);
     }
+    
+    public static void updateAuthors(ArrayList authors)
+    {
+        persistantAuthors = authors;
+    }
+    
+    private static ArrayList persistantAuthors;
 }
 

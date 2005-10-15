@@ -147,6 +147,8 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener
                 Author author = displayAuthorDialog(null);
                 if (author.getName() != null)                
                     authorListModel.add(author);
+                
+                AuthorManager.updateAuthors(authorListModel);
             }
             //Edit
             else if (source.equals(actions[1]))
@@ -154,6 +156,8 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener
                 Author author = displayAuthorDialog((Author) authorModel.getSelection());
                 if (author.getName() != null)
                     authorListModel.set(authorList.getSelectedIndex(), author);
+                
+                AuthorManager.updateAuthors(authorListModel);
             }
             //Delete
             else if (source.equals(actions[2]))
@@ -162,6 +166,8 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener
                 if (authorModel.hasSelection())
                 {
                     authorListModel.remove(authorModel.getSelectionIndex());
+                    
+                    AuthorManager.updateAuthors(authorListModel);
                 }
             }
         }        

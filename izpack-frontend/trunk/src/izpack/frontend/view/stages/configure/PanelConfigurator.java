@@ -115,10 +115,7 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
     }
     
     public void initializeStage()
-    {    
-        System.out.println("Initializing");
-        
-        //ArrayList<PanelModel> panels = model.getPanels();
+    {                   
         ListModel panels = model.getPanels();
         ArrayList<ConfigurePanel> editors = model.getEditors();
         
@@ -128,8 +125,11 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
             PanelModel panelModel = (PanelModel) panels.getElementAt(i);
             try
             {
-                Class editorClass = Class.forName(panelModel.configData.getEditorClassname());
+                Class editorClass = Class.forName(panelModel.configData.getEditorClassname());                
                 Object editorInstance = editorClass.newInstance();
+                
+                if (xmlDoc != null)
+                    ((ConfigurePanel) editorInstance).initFromXML(xmlDoc);
                 
                 editors.add((ConfigurePanel) editorInstance);
                 
@@ -161,48 +161,17 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
     }
 
     public void intervalAdded(ListDataEvent e)
-    {        
-    /*    PanelSelectionModel psm = (PanelSelectionModel) e.getSource();
-        
-        PanelInfo panelModel = (PanelInfo) psm.get(e.getIndex0());
-        
-        PanelModel newAddedObject = model.new PanelModel();
-        newAddedObject.configData = panelModel;
-        newAddedObject.valid = false;
-        
-        model.getPanels().add(e.getIndex0(), newAddedObject);
-      */  
+    {
         progressPanel.calculatePreferredSize();
     }
 
     public void intervalRemoved(ListDataEvent e)
     {   
-        //model.getPanels().remove(e.getIndex0());
-        
         progressPanel.calculatePreferredSize();
     }
 
     public void contentsChanged(ListDataEvent e)
     {
-        /*if (!secondContentsChangedEvent)
-        {
-            index = e.getIndex0();
-            secondContentsChangedEvent = true;
-        }        
-        else
-        {   
-            int delta = index - e.getIndex0();
-            
-            //Swap elements. This is different than the normal swap elements
-            //because i calculated the delta and index differently (off a different element)
-            PanelModel original = (PanelModel) model.getPanels().get(index - delta);
-            PanelModel replaced = (PanelModel) model.getPanels().get(index);
-            model.getPanels().set(index, original);
-            model.getPanels().set(index - delta, replaced);
-            
-            secondContentsChangedEvent = false;
-        }   
-    */    
         progressPanel.calculatePreferredSize();
     }
     
@@ -241,18 +210,13 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
      *  Flag to see if we've recieved two contents changed events
      *  Occurs when moving elements up or down
      */
-    private boolean secondContentsChangedEvent = false;
+    private boolean initializedFromXML = false;
     private int index = -1;
+    
+    private Document xmlDoc;
+    
     public void initializeStageFromXML(Document doc)
     {
-        model.initFromXML(doc);        
-        
-        for (ConfigurePanel editor : model.getEditors())
-        {
-            this.add( (JComponent) editor, editor.getClass().getName());
-        }
-        
-        progressPanel.validate();
-        progressPanel.calculatePreferredSize();        
+        xmlDoc = doc;        
     }
 }

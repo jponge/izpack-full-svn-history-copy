@@ -18,6 +18,7 @@ import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.controller.StageChangeListener;
 import izpack.frontend.controller.XMLCreator;
 import izpack.frontend.view.stages.IzPackStage;
+import izpack.frontend.view.stages.compile.Compile;
 import izpack.frontend.view.stages.configure.PanelConfigurator;
 import izpack.frontend.view.stages.geninfo.GeneralInformation;
 import izpack.frontend.view.stages.packs.Pack;
@@ -40,7 +41,6 @@ import javax.swing.SwingConstants;
 
 import org.w3c.dom.Document;
 
-import reporting.CrashHandler;
 import utils.UI;
 import utils.XML;
 import exceptions.DocumentCreationException;
@@ -71,6 +71,7 @@ public class WizardMode extends JFrame implements StageChangeListener,
         createStage(PanelSelection.class, base);
         createStage(Pack.class, base);
         createStage(PanelConfigurator.class, base);
+        createStage(Compile.class, base);
 
         addWindowListener(this);
 
@@ -97,8 +98,7 @@ public class WizardMode extends JFrame implements StageChangeListener,
 
     
     public static void main(String[] args)
-    {
-        Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
+    {     
         new WizardMode().setVisible(true);
     }
 

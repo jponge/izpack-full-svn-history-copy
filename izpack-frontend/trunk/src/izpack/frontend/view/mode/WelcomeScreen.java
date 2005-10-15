@@ -34,6 +34,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import reporting.CrashHandler;
+import utils.PersistanceShutdownHook;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -46,6 +49,10 @@ public class WelcomeScreen extends JFrame
      */
     public static void main(String[] args)
     {        
+        Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
+        
+        Runtime.getRuntime().addShutdownHook(new PersistanceShutdownHook());
+        
         new WelcomeScreen().setVisible(true);
     }
 

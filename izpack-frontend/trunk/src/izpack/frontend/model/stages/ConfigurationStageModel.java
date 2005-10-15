@@ -71,8 +71,14 @@ public class ConfigurationStageModel extends Model implements StageDataModel
     public void initFromXML(Document doc)
     {
         PanelSelectionModel psm = (PanelSelectionModel) panels;
+        
         if (psm.getSize() == 0)
             psm.initFromXML(doc);
+    
+        for (int i = 0; i < psm.getSize(); i++)
+        {
+            
+        }
     }
     
     public void setEditors(ArrayList<ConfigurePanel> editors)

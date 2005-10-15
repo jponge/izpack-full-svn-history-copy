@@ -25,6 +25,7 @@ package izpack.frontend.view.stages;
 
 import izpack.frontend.model.LangResources;
 import izpack.frontend.view.IzPackFrame;
+import izpack.frontend.view.stages.compile.Compile;
 import izpack.frontend.view.stages.configure.PanelConfigurator;
 import izpack.frontend.view.stages.geninfo.GeneralInformation;
 import izpack.frontend.view.stages.packs.Pack;
@@ -45,6 +46,7 @@ public class StageOrder
         stages.add(new StageContainer(lr.getText("UI.StageNames.PanelSelect"), PanelSelection.class));
         stages.add(new StageContainer(lr.getText("UI.StageNames.Packs"), Pack.class));
         stages.add(new StageContainer(lr.getText("UI.StageNames.Configure"), PanelConfigurator.class));
+        stages.add(new StageContainer(lr.getText("UI.StageNames.Compile"), Compile.class));
     }
     
     public StageContainer getPreviousStage(Class stage)

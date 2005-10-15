@@ -25,6 +25,7 @@ package izpack.frontend.actions;
 
 import java.io.StringWriter;
 
+import javax.swing.SwingUtilities;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
@@ -33,16 +34,17 @@ import utils.XML;
 
 import com.izforge.izpack.compiler.CompilerConfig;
 import com.izforge.izpack.compiler.CompilerException;
+import com.izforge.izpack.compiler.PackagerListener;
 
 import exceptions.DocumentCreationException;
 
 public class CompileManager
 {   
-    public static void compile(String filename)
+    public static void compile(String filename, String[] installArgs, PackagerListener pl)
     {
         try
         {
-            compile(XML.createDocument(filename));
+            compile(XML.createDocument(filename), installArgs, pl);
         }
         catch (DocumentCreationException e)
         {
@@ -50,24 +52,19 @@ public class CompileManager
         }
     }
     
-    public static void compile(Document xmlFile)
+    public static void compile(Document xmlFile, String[] installArgs, PackagerListener pl)
     {
         StringWriter stringStream = new StringWriter(2000);
-        XML.writeXML(new StreamResult(stringStream), xmlFile);
-        
-        CompileDisplay displayer = new CompileDisplay(true);
-        
-        String installArgs[] = displayer.getInstallationSettings();        
+        XML.writeXML(new StreamResult(stringStream), xmlFile);        
         
         CompilerConfig compiler;
         try
         {
+            //TODO move this off the event thread
             compiler = new CompilerConfig(installArgs[1], installArgs[0], installArgs[2], 
-                            displayer.getPackagerListener(), stringStream.toString());
+                            pl, stringStream.toString());
             
-            displayer.showCompileStatus();
-            
-            compiler.executeCompiler();
+            //SwingUtilities.invokeLater(compiler.executeCompiler());
     
             // Waits
             while (compiler.isAlive())

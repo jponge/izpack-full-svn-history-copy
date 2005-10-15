@@ -1,14 +1,10 @@
-package reporting;
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.Map;
-import java.util.Set;
 /*
- * Created on Sep 20, 2005
+ * Created on Oct 15, 2005
  * 
- * $Id: CrashHandler.java Feb 8, 2004 izpack-frontend
+ * $Id: PersistanceShutdownHook.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : CrashHandler.java 
+ * File : PersistanceShutdownHook.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -25,16 +21,27 @@ import java.util.Set;
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+package utils;
 
-public class CrashHandler implements UncaughtExceptionHandler
+import java.io.IOException;
+
+import izpack.frontend.controller.AuthorManager;
+import izpack.frontend.controller.RecentFileManager;
+
+public class PersistanceShutdownHook extends Thread
 {
-    public void uncaughtException(Thread t, Throwable e)
-    {   
-        System.err.println("Unhandled exception");
-        System.err.println("Submitting an error report.");
-        System.err.println("This contains no personal information");
-        ErrorSubmitter.sendErrorReport(e);
+    @Override
+    public void run()
+    {
+        try
+        {
+            AuthorManager.writeAuthors();
+            RecentFileManager.getInstance().saveRecentFiles();
+        }
+        catch (IOException e)
+        {
+            //Ignore, not critical files
+        }
         
-        System.exit(-1);
     }
 }
