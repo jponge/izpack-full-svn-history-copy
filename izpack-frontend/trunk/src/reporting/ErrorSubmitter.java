@@ -37,7 +37,7 @@ import java.util.Set;
 
 public class ErrorSubmitter
 {
-    public static void sendErrorReport(Throwable e)
+    public static void sendErrorReport(Throwable e, String message)
     {
         try
         {
@@ -88,6 +88,9 @@ public class ErrorSubmitter
             
             os.write("&properties=".getBytes());
             os.write(properties.toString().getBytes());
+            
+            os.write("&message=".getBytes());
+            os.write(message.getBytes());
             
             if (con.getResponseCode() == 200)
                 System.err.println("Submit succeeded");

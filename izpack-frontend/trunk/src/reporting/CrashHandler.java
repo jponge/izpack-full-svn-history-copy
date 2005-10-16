@@ -1,7 +1,8 @@
 package reporting;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.Map;
-import java.util.Set;
 /*
  * Created on Sep 20, 2005
  * 
@@ -30,10 +31,26 @@ public class CrashHandler implements UncaughtExceptionHandler
 {
     public void uncaughtException(Thread t, Throwable e)
     {   
-        System.err.println("Unhandled exception");
+        System.err.println("Unhandled exception " + e.getClass().getName() + " " + e.getMessage());
         System.err.println("Submitting an error report.");
         System.err.println("This contains no personal information");
-        ErrorSubmitter.sendErrorReport(e);
+        
+        System.err.println("Please write a quick message of what you were doing when the exception occurred."); 
+        System.err.println("To skip, or sumbit a message, press ENTER.");
+        
+        String message = "";
+        
+        try
+        {
+            message = new BufferedReader(new InputStreamReader(System.in)).readLine();
+        }
+        catch (IOException e1)
+        {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        
+        ErrorSubmitter.sendErrorReport(e, message);
         
         System.exit(-1);
     }
