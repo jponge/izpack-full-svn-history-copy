@@ -52,7 +52,7 @@
 	
 	<target name="run" depends="build,ensure_compiler_available" description="Starts the frontend, for testing">
 		<java
-			classname="izpack.frontend.view.mode.WizardMode"
+			classname="izpack.frontend.view.mode.WelcomeScreen"
 			fork="true">
 			<classpath refid="execute.classpath" />
 		</java>
