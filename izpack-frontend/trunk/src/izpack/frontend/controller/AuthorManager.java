@@ -95,7 +95,10 @@ public class AuthorManager
     }
     
     public static void writeAuthors() throws IOException
-    {   
+    { 
+        if (persistantAuthors == null)
+            return;
+        
         Document document = XML.createDocument();
         
         //Create the root element (authors)

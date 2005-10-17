@@ -46,9 +46,11 @@ public class CrashHandler implements UncaughtExceptionHandler
         }
         catch (IOException e1)
         {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+            //Ignore, no sense in causing more errors
         }
+        
+        if (message == null)
+            message = "";
         
         ErrorSubmitter.sendErrorReport(e, message);
         

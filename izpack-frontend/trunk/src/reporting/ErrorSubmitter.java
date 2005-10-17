@@ -100,8 +100,7 @@ public class ErrorSubmitter
         catch (Exception e1)
         {
             //Do nothing, we're doing this because of an error :)
-            //Not really critical anyway
-            System.err.println("Error filing report: " + e1.getMessage());
+            //Not really critical anyway            
         }
     }
 
