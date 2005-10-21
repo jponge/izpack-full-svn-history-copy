@@ -23,6 +23,7 @@
  */
 package izpack.frontend.actions;
 
+import java.awt.EventQueue;
 import java.io.StringWriter;
 
 import javax.swing.SwingUtilities;
@@ -55,109 +56,78 @@ public class CompileManager
     public static void compile(Document xmlFile, String[] installArgs, PackagerListener pl)
     {
         StringWriter stringStream = new StringWriter(2000);
-        XML.writeXML(new StreamResult(stringStream), xmlFile);        
-        
-        CompilerConfig compiler;
-        try
+        XML.writeXML(new StreamResult(stringStream), xmlFile);
+     
+        System.out.println("Starting compiler");
+        System.out.println("On EVT: " + SwingUtilities.isEventDispatchThread());
+        //SwingUtilities.invokeLater(new CompileThread(pl, installArgs, stringStream.toString()));
+        new CompileThread(pl, installArgs, stringStream.toString()).start();
+        System.out.println("After start");
+    }
+    
+    protected static class CompileThread extends Thread
+    {
+        public CompileThread(PackagerListener pl, String[] installArgs, String xmlData)
         {
-            //TODO move this off the event thread
-            compiler = new CompilerConfig(installArgs[1], installArgs[0], installArgs[2], 
-                            pl, stringStream.toString());
+            packagerListener = pl;
             
-            //SwingUtilities.invokeLater(compiler.executeCompiler());
-    
-            // Waits
-            while (compiler.isAlive())
-                Thread.sleep(100);
-    
-            if (compiler.wasSuccessful())
-                System.out.println("Successful Compilation");
+            try
+            {               
+                System.out.println("basedir " + installArgs[0]);
+                System.out.println("kind " + installArgs[1]);
+                System.out.println("output " + installArgs[2]);
+                compiler = new CompilerConfig(installArgs[0], installArgs[1], installArgs[2], 
+                                pl, xmlData.toString());
+                
+                System.out.println("On EVT CT: " + SwingUtilities.isEventDispatchThread());
+            }
+            catch (CompilerException e)
+            {                
+                packagerListener.packagerMsg(e.getMessage(), PackagerListener.MSG_ERR);
+                
+                e.printStackTrace();
+            }            
         }
-        catch (CompilerException e1)
-        {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        
+        @Override
+        public void run()
+        {       
+            if (compiler == null)
+                return;
+            
+            try
+            {            
+                System.out.println("On EVT CTR: " + SwingUtilities.isEventDispatchThread());
+                
+                System.out.println(compiler.getCompiler().getProperties().keys());
+                
+                compiler.executeCompiler();
+        
+                // Waits
+                while (compiler.isAlive())
+                    Thread.sleep(100);
+        
+                if (compiler.wasSuccessful())
+                    packagerListener.packagerMsg("Successful Compilation");                        
+            }
+            catch (CompilerException e1)
+            {
+                packagerListener.packagerMsg(e1.getMessage(), PackagerListener.MSG_ERR);
+                
+                e1.printStackTrace();
+            }
+            catch (InterruptedException e)
+            {                
+            }
+            catch (Exception e)
+            {
+                packagerListener.packagerMsg(e.getMessage(), PackagerListener.MSG_ERR);
+                
+                e.printStackTrace();
+            }
         }
-        catch (Exception e2)
-        {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
-        }
+        
+        private final PackagerListener packagerListener;
+        private CompilerConfig compiler;
     }
-    
-    /*//  Calls the compiler
-
-    CompilerConfig compiler;
-    try
-    {
-        compiler = new CompilerConfig(
-                        "H:/izpack-src/_dist/sample/install2.xml",
-                        "H:/izpack-src/_dist/sample/", "standard",
-                        "installer.jar");
-
-        compiler.getCompiler().setPackagerListener(new PackagerListener()
-        {
-
-            public void packagerMsg(String arg0)
-            {
-                packagerMsg(arg0, PackagerListener.MSG_INFO);
-
-            }
-
-            public void packagerMsg(String arg0, int arg1)
-            {
-                final String prefix;
-                switch (arg1)
-                {
-                case MSG_DEBUG:
-                    prefix = "[ DEBUG ] ";
-                    break;
-                case MSG_ERR:
-                    prefix = "[ ERROR ] ";
-                    break;
-                case MSG_WARN:
-                    prefix = "[ WARNING ] ";
-                    break;
-                case MSG_INFO:
-                case MSG_VERBOSE:
-                default: // don't die, but don't prepend anything
-                    prefix = "";
-                }
-
-                System.out.println(prefix + arg0);
-            }
-
-            public void packagerStart()
-            {
-                System.out.println("Started packaging");
-
-            }
-
-            public void packagerStop()
-            {
-                System.out.println("Stopped Packaging");
-            }
-        });
-
-        //          CompilerConfig compiler = new CompilerConfig("H:\\insttemp\\", "standard", "installer.jar", null, );
-        compiler.executeCompiler();
-
-        // Waits
-        while (compiler.isAlive())
-            Thread.sleep(100);
-
-        if (compiler.wasSuccessful())
-            System.out.println("Successful Compilation");
-    }
-    catch (CompilerException e1)
-    {
-        // TODO Auto-generated catch block
-        e1.printStackTrace();
-    }
-    catch (Exception e2)
-    {
-        // TODO Auto-generated catch block
-        e2.printStackTrace();
-    }*/
-
 }

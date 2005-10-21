@@ -1,10 +1,10 @@
 /*
- * Created on Oct 15, 2005
+ * Created on Oct 19, 2005
  * 
- * $Id: PersistanceShutdownHook.java Feb 8, 2004 izpack-frontend
+ * $Id: CompileListener.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2001-2003 IzPack Development Group
  * 
- * File : PersistanceShutdownHook.java 
+ * File : CompileListener.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -21,27 +21,9 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package utils;
+package izpack.frontend.actions;
 
-import izpack.frontend.controller.AuthorManager;
-import izpack.frontend.controller.RecentFileManager;
-
-import java.io.IOException;
-
-public class PersistanceShutdownHook extends Thread
+public interface CompileListener
 {
-    @Override
-    public void run()
-    {
-        try
-        {
-            AuthorManager.writeAuthors();
-            RecentFileManager.getInstance().saveRecentFiles();
-        }
-        catch (IOException e)
-        {
-            //Ignore, not critical files
-        }
-        
-    }
+    public void compileRequested(CompileEvent ce);
 }

@@ -40,24 +40,22 @@ import javax.swing.SwingConstants;
 public class UI
 {
     public static File getFile (Container parent, String fileType)
-    {
-        JFileChooser jfc = new JFileChooser();
-        jfc.setDialogTitle("Open a " + fileType + "...");
-        
-        if (jfc.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
-        {
-            return jfc.getSelectedFile();
-        }
-        else
-        {
-            return null;
-        }
+    {        
+        return getFile(parent, "Open a " + fileType + "...", null, false);
     }
     
     public static File getFile (Container parent, String title, boolean directoriesOnly)
     {
+        return getFile(parent, title, null, directoriesOnly);
+    }
+    
+    public static File getFile (Container parent, String title, File start, boolean directoriesOnly)
+    {
         JFileChooser jfc = new JFileChooser();
         jfc.setDialogTitle(title);
+        
+        if (start != null)
+            jfc.setSelectedFile(start);
         
         if (directoriesOnly)
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

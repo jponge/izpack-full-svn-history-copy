@@ -58,9 +58,11 @@ public class WelcomeScreen extends JFrame
 
     public WelcomeScreen()
     {        
-        installerUI = new WizardMode();
+        installerUI = new WizardMode(this);
         
         actionHandler = new ActionHandler(installerUI, this);
+        
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         
         FormLayout layout = new FormLayout("left:pref, 15dlu, left:pref",

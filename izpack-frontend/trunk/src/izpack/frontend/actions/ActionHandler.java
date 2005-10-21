@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
+import javax.swing.JDialog;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -83,17 +83,34 @@ public class ActionHandler implements ActionListener
         if (name.equals(GUIConstants.BUTTON_COMPILE))
         {
             //TODO for all file choosers, set a *.xml filter
-            File f = UI.getFile(welcomeUI, "Open an installer XML file...", false);
+            final File f = UI.getFile(welcomeUI, "Open an installer XML file...", false);
             
             if (f != null)
             {
-                CompileDisplay displayer = new CompileDisplay(true);
+                final CompileDisplay displayer = new CompileDisplay(true, f);
                 
-                String installArgs[] = displayer.getInstallationSettings();
+                displayer.addCompileListener(new CompileListener()
+                {
+                    public void compileRequested(CompileEvent ce)
+                    {
+                        System.out.println("Compile requested");
+                        
+                        displayer.next();
+                        
+                        CompileManager.compile(f.getAbsolutePath(), new String[] {
+                            ce.getBaseDir(),
+                            ce.getInstallType(),                            
+                            ce.getOutputFile()},
+                            displayer.getPackagerListener()
+                            );
+                    }                    
+                });
                 
-                displayer.showCompileStatus();
+                JDialog dialog = new JDialog(UI.getApplicationFrame(), "Set compile settings");
                 
-                CompileManager.compile(f.getAbsolutePath(), installArgs, displayer.getPackagerListener());
+                dialog.add(displayer);
+                dialog.pack();
+                dialog.show();
             }
             
         }

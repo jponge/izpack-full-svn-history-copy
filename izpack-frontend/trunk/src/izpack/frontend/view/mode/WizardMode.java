@@ -55,8 +55,10 @@ import exceptions.UnhandleableException;
 public class WizardMode extends JFrame implements StageChangeListener,
                 WindowListener
 {
-    protected WizardMode()
+    protected WizardMode(WelcomeScreen launcherInstance)
     {
+        launcher = launcherInstance;
+        
         long start = System.currentTimeMillis();
 
         setLayout(new BorderLayout());
@@ -86,21 +88,14 @@ public class WizardMode extends JFrame implements StageChangeListener,
         getContentPane().add(leftNavBar, BorderLayout.WEST);
 
         setPreferredSize(new Dimension(700, 700));
-        pack();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack();        
 
         long stop = System.currentTimeMillis();
 
         long startupTime = stop - start;
         System.out.println(startupTime + "ms " + (startupTime / 1000f) + "s "
                         + (startupTime / 1000 / 60f) + "min");
-    }
-
-    
-    public static void main(String[] args)
-    {     
-        new WizardMode().setVisible(true);
-    }
+    }    
 
     public void initializeFromXML(String xmlFile) throws DocumentCreationException
     {
@@ -177,7 +172,8 @@ public class WizardMode extends JFrame implements StageChangeListener,
      */
     public void windowClosing(WindowEvent e)
     {
-        new XMLCreator(IzPackStage.getAllStages()).createInstallXML();
+        //TODO Make welcome screen visible
+        launcher.setVisible(true);        
     }
 
     /*
@@ -221,7 +217,7 @@ public class WizardMode extends JFrame implements StageChangeListener,
     public void windowOpened(WindowEvent e)
     {
         // TODO Auto-generated method stub
-
+        System.out.println("window opened");
     }
 
     /*
@@ -281,4 +277,5 @@ public class WizardMode extends JFrame implements StageChangeListener,
     CardLayout layout = new CardLayout();
 
     private static WizardMode instance = null;
+    private static WelcomeScreen launcher;
 }
