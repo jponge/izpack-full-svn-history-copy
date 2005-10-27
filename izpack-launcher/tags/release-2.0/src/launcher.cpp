@@ -1,0 +1,173 @@
+/* 
+ * The IzPack Launcher
+ * http://www.izforge.com/izpack/
+ * http://developer.berlios.de/projects/izpack/
+ * 
+ * Copyright (c) 2004, 2005 Julien Ponge - All rights reserved.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ */
+
+#include "launcher.h"
+
+Launcher::Launcher()
+{
+    QSettings ini("launcher.ini", QSettings::IniFormat, 0);
+    
+    // Top-level settings
+    if (ini.contains("jre"))
+    {
+        jre = ini.value("jre").toString();
+    }
+    if (ini.contains("jar"))
+    {
+        jar = ini.value("jar").toString();
+    }
+    if (ini.contains("download"))
+    {
+        download = ini.value("download").toString();
+    }
+    
+    // Platform-specific settings
+#ifdef Q_WS_WIN
+    QString group = "win32";
+#endif
+#ifdef Q_WS_MAC
+    QString group = "mac";
+#endif
+#ifdef Q_WS_X11
+    QString group = "x11";
+#endif
+    if (ini.contains(group + "/jre"))
+    {
+        jre = ini.value(group + "/jre").toString();
+    }
+    if (ini.contains(group + "/jar"))
+    {
+        jar = ini.value(group + "/jar").toString();
+    }
+    if (ini.contains(group + "/download"))
+    {
+        download = ini.value(group + "/download").toString();
+    }
+}
+
+bool Launcher::launch()
+{
+    return launch(javaExecPath);
+}
+
+bool Launcher::launch(const QString &runtimeExecPath)
+{
+    QStringList args;
+    args.append("-jar");
+    args.append(jar);
+    return QProcess::execute(runtimeExecPath, args);
+}
+
+void Launcher::downloadJRE()
+{
+
+#ifdef Q_WS_WIN
+
+    QStringList args;
+    args.append("url.dll,FileProtocolHandler");
+    args.append(download);
+    QProcess::execute("rundll32", args);
+
+#endif
+
+#ifdef Q_WS_X11
+
+    QStringList browsers;
+    browsers.append("firefox");
+    browsers.append("mozilla");
+    browsers.append("konqueror");
+    browsers.append("opera");
+    for (int i = 0; i < browsers.size(); ++i)
+    {
+        if (QProcess::execute(browsers.at(i), QStringList("-v")) == 0)
+        {
+            QProcess::execute(browsers.at(i), QStringList(download));
+            return;
+        }
+    }
+
+#endif
+
+#ifdef Q_WS_MAC
+
+    QProcess::execute("open", QStringList(download));
+
+#endif
+
+}
+
+bool Launcher::installProvidedJRE()
+{
+    return QProcess::execute(jre);
+}
+
+bool Launcher::detectJRE()
+{
+
+#ifdef Q_WS_WIN
+
+    // Windows-specific registry lookups    
+    QSettings settings("HKEY_LOCAL_MACHINE\\SOFTWARE\\JavaSoft"
+                       "\\Java Runtime Environment\\", QSettings::NativeFormat);
+    if (settings.contains("CurrentVersion"))
+    {
+        QString version = settings.value("CurrentVersion").toString();
+        if (version != "1.1")
+        {
+            QString path = settings.value(version + "/JavaHome").toString();
+            javaExecPath = path + "\\bin\\java";
+            return true;
+        }
+    }
+    
+#endif
+
+    // JAVA_HOME lookup
+    char* envRes = getenv("JAVA_HOME");
+    if (envRes)
+    {
+        QString path = QString(envRes);
+#ifdef Q_WS_QWIN
+        path = path + "\\bin\\java";
+#else
+        path = path + "bin/java";
+#endif
+        if (QFile::exists(path))
+        {
+            javaExecPath = path;
+            return true;
+        }
+    }
+
+    // Last chance, lucky trial
+    if (QProcess::execute("java", QStringList("-version")))
+    {
+        javaExecPath = "java";
+        return true;
+    }
+
+    return false;
+}
