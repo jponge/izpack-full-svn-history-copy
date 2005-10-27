@@ -1,0 +1,91 @@
+# translation of launcher.po to
+# translation of launcher.po to german.
+# This file is distributed under the same license as the izpack-launcher package.
+# Copyright (C) 2004 Marcus Stursberg.
+# marc eppelmann, 2005.
+# marc eppelmann, 2005.
+# marc eppelmann, 2005.
+# marc eppelmann, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: launcher\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-06-16 22:46+0200\n"
+"PO-Revision-Date: 2005-06-16 23:09+0200\n"
+"Last-Translator: marc eppelmann\n"
+"Language-Team:  <de@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.10\n"
+
+#: failuredialog.cpp:49
+msgid ""
+"The software that you are trying to install requires a Java Runtime "
+"Environment.\n"
+"The Java Runtime Environment could not be detected on your computer but it "
+"can be installed for you."
+msgstr ""
+"Die zu installierende Software benötigt eine Java[tm] Runtime Environment.\n"
+"Auf Ihrem System konnte keine Java[tm] Runtime Environment gefunden werden.\n"
+"Das Setup kann diese für sie installieren."
+
+#: failuredialog.cpp:62
+msgid "install the Java Environment included with this software"
+msgstr "Mitgelieferte Java[tm] Runtime Environment installieren."
+
+#: failuredialog.cpp:63
+msgid "manually locate an already installed Java Runtime Environment"
+msgstr "Eine Java[tm] Runtime Environment manuell auswählen."
+
+#: failuredialog.cpp:64
+msgid ""
+"download the latest version of the Java Runtime Environment from the "
+"Internet."
+msgstr "Die neueste Java[tm] Runtime Environment über das Internet laden."
+
+#: failuredialog.cpp:68
+msgid "You have the following installation choices:"
+msgstr "Sie haben folgende Auswahlmöglichkeiten:"
+
+#: failuredialog.cpp:74
+msgid "Continue"
+msgstr "Weiter"
+
+#: launcher.cpp:97 setup.cpp:99
+msgid "The configuration file '"
+msgstr "Die Konfigurationsdatei '"
+
+#: launcher.cpp:97 setup.cpp:99
+msgid "' does not contain a jar file entry."
+msgstr "' enthält keinen JAR-Datei Eintrag."
+
+#: launcher.cpp:197 setup.cpp:199
+msgid "The jar-file in the configuration file '"
+msgstr "Die Jar-Datei in der Konfigurationsdatei '"
+
+#: launcher.cpp:197 setup.cpp:199
+msgid "' does exist."
+msgstr "' existiert nicht."
+
+#: launcher.cpp:203 setup.cpp:205
+msgid "The jar-file '"
+msgstr "Die Jar-Datei '"
+
+#: launcher.cpp:203 setup.cpp:205
+msgid "' could not be executed."
+msgstr "' konnte nicht ausgeführt werden"
+
+#: launcher.cpp:211 setup.cpp:213
+msgid "Please choose a 'java' executable."
+msgstr "Bitte wählen sie eine Java.exe aus."
+
+#: launcher.cpp:232 setup.cpp:234
+msgid "The JRE could not be setup."
+msgstr "Das JRE Setup ist fehlgeschlagen."
+
+#: launcher.cpp:281 setup.cpp:283
+msgid "Could not find a web browser."
+msgstr "Es wurde kein Web-Browser gefunden."
+
