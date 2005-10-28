@@ -31,7 +31,8 @@
 		<javac 
 			srcdir="."
 			destdir="build/classes"			
-			deprecation="on">
+			deprecation="on"
+			verbose="true">
 			<classpath refid="build.classpath" />
 		</javac>
 		
