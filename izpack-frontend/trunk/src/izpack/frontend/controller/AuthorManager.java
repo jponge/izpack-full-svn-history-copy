@@ -79,10 +79,11 @@ public class AuthorManager
                 String email = xpath.evaluate("//author[" + (i + 1) + "]/@email", document);
                 Author author = new Author(aname, email);
 
-                authors.add(author);
+                if (!authors.contains(author))
+                    authors.add(author);
             }
 
-            Collections.sort(authors);
+            Collections.sort(authors);            
 
             persistantAuthors = authors;
             

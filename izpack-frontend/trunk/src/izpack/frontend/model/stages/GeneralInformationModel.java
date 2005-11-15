@@ -263,6 +263,9 @@ public class GeneralInformationModel extends Model implements StageDataModel
                         doc, XPathConstants.NODESET);
         if (authors == null) return;
 
+        //Remove all authors from the list because we're loading new ones
+        this.authors.clear();
+        
         for (int i = 0; i < authors.getLength(); i++)
         {
             Node author = authors.item(i);

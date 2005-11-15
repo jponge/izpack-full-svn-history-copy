@@ -85,6 +85,7 @@ public class FileSetEditor extends TableEditor
                 fileSetsModel.addSet(new SetEditor().showNewSetDialog());
             }            
         });
+        
         removeSet = new JButton(lr.getText("UI.FileSetEditor.RemoveSet"));
         removeSet.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e)

@@ -162,7 +162,7 @@ public class License extends JPanel implements ConfigurePanel
     /* (non-Javadoc)
      * @see izpack.frontend.view.pages.configure.ConfigurePage#initFromXML(org.w3c.dom.Document)
      */
-    public void initFromXML(Document xmlFile)
+    public void initFromXML(final Document xmlFile)
     {
         System.out.println("Configuring from XML");
         initFromXML = true;
