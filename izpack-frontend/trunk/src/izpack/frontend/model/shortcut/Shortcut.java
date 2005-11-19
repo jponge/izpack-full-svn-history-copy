@@ -13,21 +13,26 @@
 
 package izpack.frontend.model.shortcut;
 
-import java.net.URL;
+import com.jgoodies.binding.beans.Model;
 
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-
-public class Shortcut
+public class Shortcut extends Model
 {
     public Shortcut()
     {
-        
+        modelledOS = OS.Unix;
+        type = TYPE.Application;
+    }
+    
+    public void propogateChanges()
+    {
+        fireMulticastPropertyChange();
     }
     
     //TODO load/save xml representation
 
     // General
+    private OS modelledOS;
+    
     private String name;
     private String target;
     private String commandLine;
@@ -45,20 +50,20 @@ public class Shortcut
 
     // UNIX specific
     private TYPE type;
-    private URL url;
+    private String url;
     private String encoding = "UTF-8"; // Not set by the user
     private boolean terminal;
     private String KdeSubstUID; // Not implemented yet
 
-    private static enum OS {
+    public static enum OS {
         Windows, Unix, MacOS
     };
 
-    private static enum TYPE {
+    public static enum TYPE {
         Application, Link
     };
 
-    private static enum INITIAL_STATE {
+    public static enum INITIAL_STATE {
         noShow, normal, maximized, minimized
     };
 
@@ -135,85 +140,122 @@ public class Shortcut
     public void setApplications(boolean applications)
     {
         this.applications = applications;
+        
+        firePropertyChange("applications", null, applications);
     }
 
     public void setCommandLine(String commandLine)
     {
         this.commandLine = commandLine;
+        
+        firePropertyChange("commandLine", null, commandLine);
     }
 
     public void setDescription(String description)
     {
         this.description = description;
+        
+        firePropertyChange("description", null, description);
     }
 
     public void setDesktop(boolean desktop)
     {
         this.desktop = desktop;
+        
+        firePropertyChange("desktop", null, desktop);
     }
 
     public void setIconFile(String iconFile)
     {
         this.iconFile = iconFile;
+        
+        firePropertyChange("iconFile", null, iconFile);
     }
 
-    public void setInitialState(INITIAL_STATE initialState)
-    {
-        this.initialState = initialState;
+    public void setInitialState(INITIAL_STATE newState)
+    { 
+        initialState = newState;
+        
+        firePropertyChange("initialState", null, newState);
     }
 
     public void setName(String name)
     {
         this.name = name;
+        
+        firePropertyChange("name", null, name);
     }
 
     public void setProgramGroup(boolean programGroup)
     {
         this.programGroup = programGroup;
+        
+        firePropertyChange("programGroup", null, programGroup);
     }
 
     public void setStartMenu(boolean startMenu)
     {
         this.startMenu = startMenu;
+     
+        firePropertyChange("startMenu", null, startMenu);
     }
 
     public void setStartup(boolean startup)
     {
         this.startup = startup;
+        
+        firePropertyChange("startup", null, startup);
     }
 
     public void setTarget(String target)
     {
         this.target = target;
+        
+        firePropertyChange("target", null, target);
     }
 
     public void setTerminal(boolean terminal)
     {
         this.terminal = terminal;
+        
+        firePropertyChange("terminal", null, terminal);
     }
 
     public void setType(TYPE type)
     {
         this.type = type;
+        
+        firePropertyChange("type", null, type);
     }
 
     public void setWorkingDirectory(String workingDirectory)
     {
         this.workingDirectory = workingDirectory;
-    };
-    
-    public OS[] getSupportedOSes()
+        
+        firePropertyChange("workingDirectory", null, workingDirectory);
+    };    
+   
+    public String getUrl()
     {
-        return OS.values();
+        return url;
     }
-    
-    public INITIAL_STATE[] getInitialStates()
+
+    public void setUrl(String url)
     {
-        return INITIAL_STATE.values();
+        this.url = url;
+        
+        firePropertyChange("url", null, url);
     }
-    
-    public TYPE[] getShortcutTypes()
+
+    public OS getModelledOS()
     {
-        return TYPE.values();
+        return modelledOS;
+    }
+
+    public void setModelledOS(OS modelledOS)
+    {
+        this.modelledOS = modelledOS;
+        
+        firePropertyChange("modelledOS", null, modelledOS);
     }
 }

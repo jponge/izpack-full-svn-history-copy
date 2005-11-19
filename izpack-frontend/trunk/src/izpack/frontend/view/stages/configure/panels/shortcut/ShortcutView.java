@@ -23,9 +23,11 @@
 
 package izpack.frontend.view.stages.configure.panels.shortcut;
 
+import izpack.frontend.controller.filters.IconFilter;
 import izpack.frontend.model.shortcut.Shortcut;
 import izpack.frontend.view.components.JFileChooserIconPreview;
 
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -37,13 +39,22 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import utils.UI;
 
+import com.jgoodies.binding.adapter.BasicComponentFactory;
+import com.jgoodies.binding.adapter.Bindings;
+import com.jgoodies.binding.beans.BeanAdapter;
+import com.jgoodies.binding.beans.PropertyAdapter;
+import com.jgoodies.binding.beans.PropertyConnector;
+import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.debug.FormDebugPanel;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class ShortcutView extends JPanel
@@ -62,7 +73,7 @@ public class ShortcutView extends JPanel
         
         add(builder.getPanel());
         
-        os = new JComboBox(model.getSupportedOSes());
+        os = new JComboBox();
         
         addUIElement("OS", os);
         
@@ -84,51 +95,71 @@ public class ShortcutView extends JPanel
         builder.nextLine();
         
         addUIElement("Icon", icon = new JTextField(), iconBrowse = new JButton("Browse"));
-        addUIElement("", iconPreview = new JLabel("Preview", iconPreviewer, JLabel.LEADING));
-            iconPreview.setHorizontalTextPosition(JLabel.LEADING);
+        addUIElement("", iconPreview = new JLabel(iconPreviewer));
+        
             
-        appendUnixView();
+        //Create the panel that has the components specific to each OS    
+        specializationPanel = new JPanel();
+        specializationPanel.setLayout(specializationPanelLayout = new CardLayout());
+        
+        specializationPanel.add(createWindowsView(), Shortcut.OS.Windows.toString());
+        specializationPanel.add(createUnixView(), Shortcut.OS.Unix.toString());
+        
+        builder.append(specializationPanel, 5);
         
         configureListeners();
+        createBindings();
+        
+        this.model.setInitialState(Shortcut.INITIAL_STATE.maximized);
     }
     
-    private void appendWindowsView()
+    private JPanel createWindowsView()
     {        
-        builder.appendSeparator("Locations for Shortcuts");
+        FormLayout layout = new FormLayout("pref, 5dlu, 150dlu:grow, 5dlu, pref");
+        DefaultFormBuilder winBuilder = new DefaultFormBuilder(layout);
         
-        addUIElement("Desktop", desktop = new JCheckBox());
-        addUIElement("Program Group", programGroup = new JCheckBox());
-        addUIElement("Applications Menu", applications = new JCheckBox());
-        addUIElement("Start Menu", startMenu = new JCheckBox());
-        addUIElement("Startup", startup = new JCheckBox());
+        winBuilder.appendRow("20dlu");
+        winBuilder.append(DefaultComponentFactory.
+                        getInstance().createSeparator("Windows specific options", SwingConstants.CENTER), 5 );
+        winBuilder.nextLine();
+        winBuilder.appendRow("20dlu");        
         
-        builder.appendUnrelatedComponentsGapRow();
-        builder.nextLine();
+        winBuilder.append(new JLabel("<html><u>&nbsp;Locations for Shortcuts&nbsp;</u>"), 3);
+        winBuilder.nextLine();
         
-        addUIElement("Initial Window State", initialState = new JComboBox(model.getInitialStates()));
+        addUIElement("Desktop", desktop = new JCheckBox(), winBuilder);
+        addUIElement("Program Group", programGroup = new JCheckBox(), winBuilder);
+        addUIElement("Applications Menu", applications = new JCheckBox(), winBuilder);
+        addUIElement("Start Menu", startMenu = new JCheckBox(), winBuilder);
+        addUIElement("Startup", startup = new JCheckBox(), winBuilder);
+        
+        winBuilder.appendUnrelatedComponentsGapRow();
+        winBuilder.nextLine();
+        
+        addUIElement("Initial Window State", initialState = new JComboBox(Shortcut.INITIAL_STATE.values()), winBuilder);
+        
+        return winBuilder.getPanel();
     }
     
-    private void appendUnixView()
+    private JPanel createUnixView()
     {
-        builder.appendUnrelatedComponentsGapRow();
-        builder.nextLine();
+        FormLayout layout = new FormLayout("pref, 5dlu, 150dlu:grow, 5dlu, pref");
+        DefaultFormBuilder unixBuilder = new DefaultFormBuilder(layout);
         
-        addUIElement("Type of shortcut", type = new JComboBox(model.getShortcutTypes()));
-        addUIElement("URL", url = new JTextField());
-        addUIElement("Show terminal window", terminal = new JCheckBox());
-    }
-    
-    private void removeUnixView()
-    {
-        System.out.println("Removing");
-        remove(type);
-        remove(url);
-        remove(terminal);
         
-        appendWindowsView();
+        unixBuilder.appendRow("20dlu");
+        unixBuilder.append(DefaultComponentFactory.
+                        getInstance().createSeparator("Unix specific options", JSeparator.CENTER), 5 );        
+        unixBuilder.nextLine();
         
-        invalidate();
-        UI.getApplicationFrame().pack();
+        unixBuilder.appendUnrelatedComponentsGapRow();
+        unixBuilder.nextLine();
+        
+        addUIElement("Type of shortcut", type = new JComboBox(Shortcut.TYPE.values()), unixBuilder);
+        addUIElement("URL", url = new JTextField(), unixBuilder);        
+        addUIElement("Show terminal window", terminal = new JCheckBox(), unixBuilder);
+        
+        return unixBuilder.getPanel();
     }
     
     private void addUIElement(String label, JComponent component)
@@ -148,48 +179,102 @@ public class ShortcutView extends JPanel
         builder.nextLine();
     }
     
+    private void addUIElement(String label, JComponent component, DefaultFormBuilder builder)
+    {        
+        builder.append(label);
+        builder.append(component);
+        
+        builder.nextLine();
+    }
+    
+    private void addUIElement(String label, JComponent component, JButton button, DefaultFormBuilder builder)
+    {
+        builder.append(label);
+        builder.append(component);
+        builder.append(button);
+        
+        builder.nextLine();
+    }        
+    
     private void createBindings()
     {     
+        BeanAdapter bindings = new BeanAdapter(model);
         
+        //Bind the text fields
+        Bindings.bind(name, bindings.getValueModel("name"));
+        Bindings.bind(target, bindings.getValueModel("target"));
+        Bindings.bind(cmdLine, bindings.getValueModel("commandLine"));
+        Bindings.bind(workDir, bindings.getValueModel("workingDirectory"));
+        Bindings.bind(icon, bindings.getValueModel("iconFile"));
+        Bindings.bind(url, bindings.getValueModel("url"));
+        
+        //Bind the text area
+        Bindings.bind(desc, bindings.getValueModel("description"));
+        
+        //Bind the checkboxes        
+        Bindings.bind(desktop, bindings.getValueModel("desktop"));
+        Bindings.bind(programGroup, bindings.getValueModel("programGroup"));
+        Bindings.bind(applications, bindings.getValueModel("applications"));
+        Bindings.bind(startMenu, bindings.getValueModel("startMenu"));
+        Bindings.bind(startup, bindings.getValueModel("startup"));
+        Bindings.bind(terminal, bindings.getValueModel("terminal"));
+        
+        Bindings.bind(os, new SelectionInList(Shortcut.OS.values()));        
+        
+        //Configure bindings for combo boxes
+        //Get a changing selection holder, and bind that to the model
+        Bindings.bind(os, osSelection = new SelectionInList(Shortcut.OS.values()));
+        PropertyConnector.connect(osSelection.getSelectionHolder(), "value", model, "modelledOS");
+        
+        Bindings.bind(initialState, stateSelection = new SelectionInList(Shortcut.INITIAL_STATE.values()));
+        PropertyConnector.connect(stateSelection.getSelectionHolder(), "value", model, "initialState");
+        
+        Bindings.bind(type, typeSelection = new SelectionInList(Shortcut.TYPE.values()));
+        PropertyConnector.connect(typeSelection.getSelectionHolder(), "value", model, "type");
+        
+        model.propogateChanges();
     }
     
     private void configureListeners()
     {
         iconBrowse.addActionListener(new ActionListener()
-                        {
-                            //TODO Make code not a copy-and-paste from the javalobby article
-                            public void actionPerformed(ActionEvent e)
-                            {
-                                JFileChooser chooser = new JFileChooser();
-                                JFileChooserIconPreview previewPane = new JFileChooserIconPreview();
-                                chooser.setAccessory(previewPane);
-                                chooser.addPropertyChangeListener(previewPane);
-                                if (chooser.showDialog(UI.getApplicationFrame(), "Load") == JFileChooser.APPROVE_OPTION)
-                                {
-                                    iconPreviewer = new ImageIcon(chooser.getSelectedFile().getAbsolutePath());
-                                    icon.setText(chooser.getSelectedFile().getAbsolutePath());
-                                    
-                                    iconPreview.setIcon(iconPreviewer);
-                                    
-                                    validate();
-                                }
-                            }            
-                        });
-        
-        os.addActionListener(new ActionListener()
-                        {
+        {
+            // TODO Make code not a copy-and-paste from the javalobby article
+            public void actionPerformed(ActionEvent e)
+            {
+                JFileChooser chooser = new JFileChooser();                
+                JFileChooserIconPreview previewPane = new JFileChooserIconPreview();
+                chooser.setAccessory(previewPane);                
+                chooser.addPropertyChangeListener(previewPane);
+                
+                chooser.setFileFilter(new IconFilter());
+                    
+                if (chooser.showDialog(UI.getApplicationFrame(), "Load icon") == JFileChooser.APPROVE_OPTION)
+                {
+                    iconPreviewer = new ImageIcon(chooser.getSelectedFile()
+                                    .getAbsolutePath());
+                    icon.setText(chooser.getSelectedFile().getAbsolutePath());
 
-                            public void actionPerformed(ActionEvent e)
-                            {
-                                if (!os.getSelectedItem().toString().equals("Unix"));
-                                    removeUnixView();                                
-                            }
-            
-                        }
-        );
+                    iconPreview.setIcon(iconPreviewer);
+
+                    validate();
+                }
+            }
+        });
+
+        os.addActionListener(new ActionListener()
+        {
+
+            public void actionPerformed(ActionEvent e)
+            {
+                specializationPanelLayout.show(specializationPanel, os
+                                .getSelectedItem().toString());
+            }
+
+        });
     }
     
-    //Common UI elements
+    // Common UI elements
     JComboBox os, initialState, type;
     JTextField name, target, cmdLine, workDir, icon, url;
     JTextArea desc;
@@ -198,9 +283,13 @@ public class ShortcutView extends JPanel
     JButton iconBrowse, targetBrowse;
     
     JLabel iconPreview;
-    ImageIcon iconPreviewer;
-    
+    ImageIcon iconPreviewer;    
     
     private Shortcut model;
     private DefaultFormBuilder builder;
+    private JPanel specializationPanel;
+    private CardLayout specializationPanelLayout;
+    private SelectionInList stateSelection;
+    private SelectionInList typeSelection;
+    private SelectionInList osSelection;
 }
