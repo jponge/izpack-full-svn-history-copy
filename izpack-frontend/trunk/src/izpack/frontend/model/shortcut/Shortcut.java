@@ -13,14 +13,33 @@
 
 package izpack.frontend.model.shortcut;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
+import utils.XML;
+
 import com.jgoodies.binding.beans.Model;
+
+import exceptions.DocumentCreationException;
 
 public class Shortcut extends Model
 {
     public Shortcut()
     {
-        modelledOS = OS.Unix;
-        type = TYPE.Application;
+        Document doc;
+        try
+        {
+            doc = XML.createDocument("unix_shortcutSpec.xml");
+            
+            initFromXML(doc.getElementsByTagName("shortcut").item(0));
+        }
+        catch (DocumentCreationException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }        
     }
     
     public void propogateChanges()
@@ -28,8 +47,79 @@ public class Shortcut extends Model
         fireMulticastPropertyChange();
     }
     
-    //TODO load/save xml representation
+    public Element writeXML(Document doc)
+    {           
+        Element shortcut = XML.createElement("singlefile", doc);
+        
+        
+        return shortcut;
+    }
 
+    public void initFromXML(Node elementNode)
+    {
+        NamedNodeMap attributes = elementNode.getAttributes();
+        
+        name = attributes.getNamedItem("name").getNodeValue();        
+        target = attributes.getNamedItem("target").getNodeValue();
+        
+        commandLine = getOptionalAttribute(attributes, "commandLine");
+        workingDirectory = getOptionalAttribute(attributes, "workingDirectory");
+        description = getOptionalAttribute(attributes, "description");
+        
+        iconFile = getOptionalAttribute(attributes, "iconFile");
+        
+        String initialStateStr = getOptionalAttribute(attributes, "initialState");
+        for (INITIAL_STATE state : INITIAL_STATE.values())
+        {
+            if (state.toString().equals(initialStateStr))
+                initialState = state;
+        }
+        
+        programGroup = getAttributeAsBoolean(attributes, "programGroup");
+        desktop = getAttributeAsBoolean(attributes, "desktop");
+        applications = getAttributeAsBoolean(attributes, "applications");
+        startup = getAttributeAsBoolean(attributes, "startup");
+        startMenu = getAttributeAsBoolean(attributes, "startMenu");
+        
+        //Determine the type (application or link) of the shortcut, and whether or not this is UNIX
+        String typeStr = getOptionalAttribute(attributes, "type");
+        if (!typeStr.equals(""))
+        {
+            modelledOS = OS.Unix;
+            
+            for (TYPE typeElem : TYPE.values())
+            {
+                if (typeElem.toString().equals(typeStr))                    
+                    type = typeElem;
+            }   
+        }
+        
+        url = getOptionalAttribute(attributes, "url");
+        
+        terminal = getAttributeAsBoolean(attributes, "terminal");
+        
+        KdeSubstUID = getOptionalAttribute(attributes, "KdeSubstUID");
+    }
+    
+    private String getOptionalAttribute(NamedNodeMap attributes, String attribute)
+    {
+        if (attributes.getNamedItem(attribute) != null)
+            return attributes.getNamedItem(attribute).getNodeValue();
+        else
+            return "";
+    }   
+    
+    //TODO refactor these into some framework - preferably automatic - for the whole program
+    private boolean getAttributeAsBoolean(NamedNodeMap attributes, String attribute)
+    {
+        String str = getOptionalAttribute(attributes, attribute);
+        
+        if (str.equalsIgnoreCase("yes") || str.equalsIgnoreCase("true") || str.equalsIgnoreCase("on"))
+            return true;
+        
+        return false;
+    }
+    
     // General
     private OS modelledOS;
     

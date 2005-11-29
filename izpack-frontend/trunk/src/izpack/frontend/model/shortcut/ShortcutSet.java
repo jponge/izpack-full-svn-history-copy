@@ -46,6 +46,40 @@ public class ShortcutSet extends ArrayList
     {
         this.shortcuts = shortcuts;
     }
+    
+    public static enum LOCATION {Applications, StartMenu};
 
+    private String defaultName;
+    private LOCATION location;
+    private boolean skipIfNotSupported;
     private ArrayList<Shortcut> shortcuts;
+    public String getDefaultName()
+    {
+        return defaultName;
+    }
+
+    public LOCATION getLocation()
+    {
+        return location;
+    }
+
+    public boolean isSkipIfNotSupported()
+    {
+        return skipIfNotSupported;
+    }
+
+    public void setDefaultName(String defaultName)
+    {
+        this.defaultName = defaultName;
+    }
+
+    public void setLocation(LOCATION location)
+    {
+        this.location = location;
+    }
+
+    public void setSkipIfNotSupported(boolean skipIfNotSupported)
+    {
+        this.skipIfNotSupported = skipIfNotSupported;
+    }
 }

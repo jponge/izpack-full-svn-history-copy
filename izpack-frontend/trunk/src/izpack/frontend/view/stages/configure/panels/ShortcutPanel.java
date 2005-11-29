@@ -26,17 +26,19 @@ package izpack.frontend.view.stages.configure.panels;
 import java.awt.BorderLayout;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import utils.UI;
 
 import com.jgoodies.forms.builder.ButtonStackBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -49,7 +51,41 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
     {
         setLayout(new BorderLayout());
         
+        JTabbedPane tabs = new JTabbedPane();
+        
+        JPanel globalOptionsPanel = createGlobalOptionsPanel();
+        JPanel shortcutTablePanel = createShortcutCreationPanel();
+        
+        tabs.addTab("Global Options", globalOptionsPanel);
+        tabs.addTab("Shortcuts", shortcutTablePanel);
+        
+        add(tabs, BorderLayout.CENTER);
+    }
+
+    private JPanel createGlobalOptionsPanel()
+    {
+        FormLayout layout = new FormLayout("pref, 5dlu, pref");
+        DefaultFormBuilder builder = new DefaultFormBuilder(layout);
+        
+        builder.appendSeparator("Program Group");
+        
+        builder.append("Default Name", defaultName = new JTextField(25));
+        builder.append("Location", location = new JComboBox());
+        
+        builder.appendRow("10dlu");
+        builder.nextLine();
+        builder.nextLine();
+         
+        builder.append("<html>Skip shortcut stage<br>if creation is not<br>supported", skipIfNotSupported = new JCheckBox());
+        
+        return builder.getPanel();
+    }
+
+    private JPanel createShortcutCreationPanel()
+    {
         JPanel shortcutTablePanel = new JPanel();
+        JPanel completePanel = new JPanel();
+        completePanel.setLayout(new BorderLayout());
         
         FormLayout topLayout = new FormLayout("pref:grow, 5dlu, pref", "pref, 0dlu, pref");
         DefaultFormBuilder topBuilder = new DefaultFormBuilder(topLayout, shortcutTablePanel);
@@ -67,7 +103,7 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
         topBuilder.add(shortcutTable, cc.xyw(1, 3, 1, CellConstraints.FILL, CellConstraints.TOP));
         topBuilder.add(bsb.getPanel(), cc.xy(3, 3));
         
-        add(shortcutTablePanel, BorderLayout.NORTH);
+        
         
         //Configure the panel to respond to selection changes for the editing view
         shortcutTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -88,7 +124,11 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
         });
         
         shortcutView = new JPanel();
-        add(shortcutView, BorderLayout.CENTER);
+        
+        completePanel.add(shortcutTablePanel, BorderLayout.NORTH);
+        completePanel.add(shortcutView, BorderLayout.CENTER);
+        
+        return completePanel;
     }
 
     public Element createXML(Document doc)
@@ -103,6 +143,9 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
 
     }
 
-    final private JTable shortcutTable;
+    private JTable shortcutTable;
     private JPanel shortcutView;
+    private JTextField defaultName;
+    private JComboBox location;
+    private JCheckBox skipIfNotSupported;
 }
