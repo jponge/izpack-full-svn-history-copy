@@ -23,8 +23,11 @@
 
 package izpack.frontend.view.renderers;
 
+import izpack.frontend.model.shortcut.Shortcut;
+
 import java.awt.Component;
 
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -33,6 +36,15 @@ public class ShortcutRenderer extends DefaultTableCellRenderer
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
     {
+        if (value instanceof Shortcut)
+        {
+            Shortcut s = (Shortcut) value;
+            
+            String formatString = "%1$s     %2$s                              %3$s";
+            
+            return new JLabel(String.format(formatString, s.getModelledOS(), s.getName(), s.getTarget()));
+        }
+        
         // TODO Auto-generated method stub
         return super.getTableCellRendererComponent(table, value, isSelected, hasFocus,
                         row, column);

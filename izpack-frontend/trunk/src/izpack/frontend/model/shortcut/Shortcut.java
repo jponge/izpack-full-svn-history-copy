@@ -24,7 +24,7 @@ import com.jgoodies.binding.beans.Model;
 
 import exceptions.DocumentCreationException;
 
-public class Shortcut extends Model
+public class Shortcut extends Model implements Cloneable
 {
     public Shortcut()
     {
@@ -40,6 +40,13 @@ public class Shortcut extends Model
             // TODO Auto-generated catch block
             e.printStackTrace();
         }        
+    }
+    
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        // TODO Auto-generated method stub
+        return super.clone();
     }
     
     public void propogateChanges()

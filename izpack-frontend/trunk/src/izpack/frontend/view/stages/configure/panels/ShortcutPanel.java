@@ -23,23 +23,35 @@
 
 package izpack.frontend.view.stages.configure.panels;
 
+import izpack.frontend.model.shortcut.Shortcut;
+import izpack.frontend.model.shortcut.ShortcutSet;
+import izpack.frontend.view.renderers.ShortcutRenderer;
+import izpack.frontend.view.stages.configure.panels.shortcut.ShortcutView;
+
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.jgoodies.binding.adapter.Bindings;
+import com.jgoodies.binding.beans.BeanAdapter;
+import com.jgoodies.binding.beans.PropertyConnector;
+import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.forms.builder.ButtonStackBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
@@ -51,6 +63,8 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
     {
         setLayout(new BorderLayout());
         
+        model = new ShortcutSet();
+        
         JTabbedPane tabs = new JTabbedPane();
         
         JPanel globalOptionsPanel = createGlobalOptionsPanel();
@@ -60,6 +74,55 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
         tabs.addTab("Shortcuts", shortcutTablePanel);
         
         add(tabs, BorderLayout.CENTER);
+        
+        shortcutTable.setModel(model);
+        
+        createBindings();
+        addListeners();
+    }
+    
+    private void createBindings()
+    {
+        BeanAdapter bindings = new BeanAdapter(model);
+        
+        Bindings.bind(location, locationSelection = new SelectionInList(ShortcutSet.LOCATION.values()));
+        PropertyConnector.connect(locationSelection.getSelectionHolder(), "value", model, "location");
+        
+        Bindings.bind(skipIfNotSupported, bindings.getValueModel("skipIfNotSupported"));
+        Bindings.bind(defaultName, bindings.getValueModel("defaultName"));
+    }
+    
+    private void addListeners()
+    {
+        add.addActionListener(new ActionListener()
+                        {
+
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                  model.addShortcut(new Shortcut());                                
+                            }
+            
+        });
+        
+        remove.addActionListener(new ActionListener()
+                        {
+
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                  model.removeRow(shortcutTable.getSelectedRow());                                
+                            }
+            
+        });
+        
+        duplicate.addActionListener(new ActionListener()
+                        {
+
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                  model.duplicateShortcut((Shortcut) shortcutTable.getValueAt(shortcutTable.getSelectedRow(), 0));                                
+                            }
+            
+        });
     }
 
     private JPanel createGlobalOptionsPanel()
@@ -84,17 +147,18 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
     private JPanel createShortcutCreationPanel()
     {
         JPanel shortcutTablePanel = new JPanel();
-        JPanel completePanel = new JPanel();
+        JPanel completePanel = new JPanel();        
         completePanel.setLayout(new BorderLayout());
         
         FormLayout topLayout = new FormLayout("pref:grow, 5dlu, pref", "pref, 0dlu, pref");
         DefaultFormBuilder topBuilder = new DefaultFormBuilder(topLayout, shortcutTablePanel);
         
-        shortcutTable = new JTable(new Object[][]{{"a", "b", "C"}, {"d", "e", "f"}, {"g", "h", "i"}}, new Object[]{"OS", "Name", "Target"});        
+        shortcutTable = new JTable();
+        shortcutTable.setDefaultRenderer(Object.class, new ShortcutRenderer());        
         
         //Create the buttons to add and remove shortcuts
         ButtonStackBuilder bsb = new ButtonStackBuilder();        
-        bsb.addButtons(new JButton[]{new JButton("Add"), new JButton("Remove"), new JButton("Duplicate")});
+        bsb.addButtons(new JButton[]{add = new JButton("Add"), remove = new JButton("Remove"), duplicate = new JButton("Duplicate")});
         
         //Add the components
         CellConstraints cc = new CellConstraints();
@@ -102,8 +166,6 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
         topBuilder.add(shortcutTable.getTableHeader(), cc.xy(1, 1));
         topBuilder.add(shortcutTable, cc.xyw(1, 3, 1, CellConstraints.FILL, CellConstraints.TOP));
         topBuilder.add(bsb.getPanel(), cc.xy(3, 3));
-        
-        
         
         //Configure the panel to respond to selection changes for the editing view
         shortcutTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -113,20 +175,20 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
             public void valueChanged(ListSelectionEvent e)
             {
                 if (!e.getValueIsAdjusting())
-                {
-                    shortcutView.removeAll();
-                    shortcutView.add(new JLabel((String) shortcutTable.getValueAt(shortcutTable.getSelectedRow(), 0)));                    
+                {                    
+                    if (shortcutTable.getSelectedRow() != -1)
+                        shortcutViewScroll.setViewportView(new ShortcutView((Shortcut) shortcutTable.getValueAt(shortcutTable.getSelectedRow(), 0)));                    
                     
-                    shortcutView.validate();                    
+                    validate();                    
                 }
             }
             
-        });
+        });        
         
-        shortcutView = new JPanel();
+        shortcutViewScroll = new JScrollPane();
         
         completePanel.add(shortcutTablePanel, BorderLayout.NORTH);
-        completePanel.add(shortcutView, BorderLayout.CENTER);
+        completePanel.add(shortcutViewScroll, BorderLayout.CENTER);
         
         return completePanel;
     }
@@ -143,9 +205,14 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
 
     }
 
+    private JButton add, remove, duplicate;
     private JTable shortcutTable;
-    private JPanel shortcutView;
+    private JScrollPane shortcutViewScroll;
     private JTextField defaultName;
     private JComboBox location;
     private JCheckBox skipIfNotSupported;
+    
+    private DefaultTableModel shortcutTableModel;
+    private SelectionInList locationSelection;
+    private ShortcutSet model;
 }

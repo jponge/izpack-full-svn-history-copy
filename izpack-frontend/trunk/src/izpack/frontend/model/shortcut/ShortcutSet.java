@@ -23,28 +23,56 @@
 
 package izpack.frontend.model.shortcut;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Provides a container to store Shortcut instances, and perform operations on them.
  * 
  * @author Andy Gombos
  */
-public class ShortcutSet extends ArrayList
+public class ShortcutSet extends DefaultTableModel
 {
     public ShortcutSet()
-    {
-        shortcuts = new ArrayList<Shortcut>(5);
+    {   
+        pcs = new PropertyChangeSupport(this);        
+        
+        //TODO make format same as renderer in pseudo columns
+        this.addColumn("OS       Name                                Target");
     }
 
     public ArrayList<Shortcut> getShortcuts()
     {
+        ArrayList<Shortcut> shortcuts = new ArrayList<Shortcut>(5);
+        
+        for (int i = 0; i < getRowCount(); i++)
+        {
+            shortcuts.add((Shortcut) getValueAt(i, 0));
+        }
+        
         return shortcuts;
+    }    
+    
+    public void addShortcut(Shortcut shortcut)
+    {        
+        this.addRow(new Object[]{shortcut});
     }
-
-    public void setShortcuts(ArrayList<Shortcut> shortcuts)
+    
+    public void duplicateShortcut(Shortcut shortcut)
     {
-        this.shortcuts = shortcuts;
+        try
+        {
+            addShortcut((Shortcut) shortcut.clone());
+        }
+        catch (CloneNotSupportedException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
     public static enum LOCATION {Applications, StartMenu};
@@ -52,7 +80,7 @@ public class ShortcutSet extends ArrayList
     private String defaultName;
     private LOCATION location;
     private boolean skipIfNotSupported;
-    private ArrayList<Shortcut> shortcuts;
+    
     public String getDefaultName()
     {
         return defaultName;
@@ -71,15 +99,40 @@ public class ShortcutSet extends ArrayList
     public void setDefaultName(String defaultName)
     {
         this.defaultName = defaultName;
+        pcs.firePropertyChange("defaultName", null, defaultName);
     }
 
     public void setLocation(LOCATION location)
     {
         this.location = location;
+        pcs.firePropertyChange("location", null, location.toString());
     }
 
     public void setSkipIfNotSupported(boolean skipIfNotSupported)
     {
         this.skipIfNotSupported = skipIfNotSupported;
+        pcs.firePropertyChange("skipIfNotSupported", null, skipIfNotSupported);
     }
+    
+    public void addPropertyChangeListener(PropertyChangeListener pcl)
+    {
+        pcs.addPropertyChangeListener(pcl);
+    }
+    
+    public void addPropertyChangeListener(String property, PropertyChangeListener pcl)
+    {
+        pcs.addPropertyChangeListener(property, pcl);
+    }
+    
+    public void removePropertyChangeListener(PropertyChangeListener pcl)
+    {
+        pcs.removePropertyChangeListener(pcl);        
+    }
+    
+    public void removePropertyChangeListener(String property, PropertyChangeListener pcl)
+    {        
+        pcs.removePropertyChangeListener(property, pcl);        
+    }
+    
+    private PropertyChangeSupport pcs;
 }
