@@ -3,7 +3,7 @@ import java.awt.Component;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
-import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.border.Border;
 import javax.swing.border.SoftBevelBorder;
@@ -34,21 +34,17 @@ import javax.swing.border.SoftBevelBorder;
 /**
  * @author Andy Gombos
  */
-public class LabelRenderer extends DefaultListCellRenderer
+public class IconRenderer extends DefaultListCellRenderer
 {
 
     /* (non-Javadoc)
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
      */    
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus)
-    {                
-        JComponent c = (JComponent) value;
-        if (isSelected)
-            c.setBorder(selected);
-        else
-            c.setBorder(unselected);
+    {
+        Icon icon = (Icon) value;
         
-        return (Component) c;
+        return new JLabel(icon);
     }
 
     Border unselected = new SoftBevelBorder(SoftBevelBorder.RAISED);

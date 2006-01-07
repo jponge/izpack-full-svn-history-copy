@@ -1,6 +1,7 @@
 package izpack.frontend.view.win32;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
@@ -29,34 +30,52 @@ import java.util.ArrayList;
 
 public class NativeIconAccessor
 {   
-    public NativeIconAccessor(String filename)
+    public NativeIconAccessor(String filename) throws NativeIconException
     {
-        boolean successful = initializeIconSet(filename);
+        if (! new File(filename).exists())
+        {
+            throw new NativeIconException("Specified file \"" + filename + "\" does not exist" );
+        }
+        
+        initializeIconSet(filename);
         
         NativeIcon ni = getNativeBuffers();
         iconBuf = ni.icon;
         maskBuf = ni.mask;
         
+        //Calculate the size of the buffers.  a UINT is 4 bytes, and icons 
+        bufWidth = ni.width;
+        bufHeight = ni.height;
+        
         instances.add(this);
     }
     
-    public BufferedImage getIcon(int index)
+    public BufferedImage getIcon(int index) throws NativeIconException
     {
-        getNativeIcon(index);
+        //Check for invalid indexes
+        if (index > getNumIcons())
+            throw new NativeIconException("Icon index is greater than the number of icons in the file");
+        
+        int dimensions[] = getNativeIcon(index);
         
         iconBuf.clear();
         maskBuf.clear();
         
         // Copy buffer to BufferedImage BufferedImage bi = new
-        BufferedImage bi = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bi = new BufferedImage(dimensions[0], dimensions[1], BufferedImage.TYPE_INT_ARGB);
         
-        for (int y = 31; y >= 0; y--)
+        for (int y = bufHeight - 1; y >= 0 ; y--)
         {
-            for (int x = 0; x < 32; x++)
-            {
+            for (int x = 0; x < bufWidth; x++)
+            {                
                 int colorVal = createARGB(iconBuf.getInt(), maskBuf.getInt());
                 
-                bi.setRGB(x, y, colorVal);
+                //If the value isn't in the image, don't draw it
+                //VERY inefficient
+                if (x < dimensions[0] && y < dimensions[1])
+                {                    
+                    bi.setRGB(x, y, colorVal);
+                }
             }
         }
         
@@ -95,15 +114,23 @@ public class NativeIconAccessor
         }
     }
     
-    private native boolean initializeIconSet(String filename);
+    public void destroy()
+    {
+        destroyIconSet();
+        instances.remove(this);
+    }
+    
+    private native void initializeIconSet(String filename) throws NativeIconException;
     private native NativeIcon getNativeBuffers();    
     public native int getNumIcons();
     private native void destroyIconSet();
     
-    private native void getNativeIcon(int index);
+    private native int[] getNativeIcon(int index) throws NativeIconException;
     
     private ByteBuffer iconBuf;
     private ByteBuffer maskBuf;
+    
+    private int bufWidth, bufHeight;
     
     static
     {        

@@ -5,7 +5,7 @@
 class Icon
 {
 public:
-	Icon(HICON tIcon);
+	Icon(HICON tIcon);	
 
 	HICON getIcon() { return icon; }
 	int getWidth() { return width; }

@@ -56,28 +56,31 @@
 			Name="Release|Win32"
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
-			ConfigurationType="1"
-			CharacterSet="2">
+			ConfigurationType="2"
+			CharacterSet="2"
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OmitFramePointers="TRUE"
+				AdditionalIncludeDirectories="H:\jdk1.5\include\win32;H:\jdk1.5\include\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="TRUE"
 				RuntimeLibrary="4"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="0"
-				WarningLevel="3"
+				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="0"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/IconLoader.exe"
+				OutputFile="H:/eclipse/workspace/izpackfrontend/$(ProjectName).dll"
 				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
+				IgnoreAllDefaultLibraries="FALSE"
+				GenerateDebugInformation="FALSE"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -104,12 +107,20 @@
 			ConfigurationType="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="H:\jdk1.5\include\win32;H:\jdk1.5\include\"/>
+				OptimizeForProcessor="0"
+				AdditionalIncludeDirectories="H:\jdk1.5\include\win32;H:\jdk1.5\include\"
+				EnableFunctionLevelLinking="TRUE"
+				WarningLevel="4"
+				DebugInformationFormat="3"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="H:/eclipse/workspace/izpackfrontend/$(ProjectName).dll"/>
+				OutputFile="H:/eclipse/workspace/izpackfrontend/$(ProjectName).dll"
+				GenerateDebugInformation="TRUE"
+				GenerateMapFile="TRUE"
+				MapExports="TRUE"
+				MapLines="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -137,6 +148,9 @@
 				RelativePath="Icon.cpp">
 			</File>
 			<File
+				RelativePath="IconFileLoader.cpp">
+			</File>
+			<File
 				RelativePath="IconSet.cpp">
 			</File>
 			<File
@@ -144,6 +158,12 @@
 			</File>
 			<File
 				RelativePath="starter.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -154,6 +174,12 @@
 			</File>
 			<File
 				RelativePath="Icon.h">
+			</File>
+			<File
+				RelativePath="IconFileLoader.h">
+			</File>
+			<File
+				RelativePath="IconFileStructs.h">
 			</File>
 			<File
 				RelativePath="IconSet.h">

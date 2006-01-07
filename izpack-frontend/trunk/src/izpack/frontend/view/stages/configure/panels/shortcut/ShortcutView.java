@@ -23,9 +23,11 @@
 
 package izpack.frontend.view.stages.configure.panels.shortcut;
 
+import izpack.frontend.controller.filters.IcoLibFilter;
 import izpack.frontend.controller.filters.IconFilter;
 import izpack.frontend.model.shortcut.Shortcut;
 import izpack.frontend.view.components.JFileChooserIconPreview;
+import izpack.frontend.view.win32.IconChooser;
 
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
@@ -43,17 +45,15 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileFilter;
 
 import utils.UI;
 
-import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.beans.BeanAdapter;
-import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.beans.PropertyConnector;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.debug.FormDebugPanel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -242,20 +242,47 @@ public class ShortcutView extends JPanel
             // TODO Make code not a copy-and-paste from the javalobby article
             public void actionPerformed(ActionEvent e)
             {
-                JFileChooser chooser = new JFileChooser();                
+                JFileChooser chooser = new JFileChooser();     
+                FileFilter iconFilter = new IcoLibFilter();
+                
                 JFileChooserIconPreview previewPane = new JFileChooserIconPreview();
                 chooser.setAccessory(previewPane);                
                 chooser.addPropertyChangeListener(previewPane);
                 
-                chooser.setFileFilter(new IconFilter());
+                chooser.addChoosableFileFilter(iconFilter);
+                chooser.addChoosableFileFilter(new IconFilter());               
                     
                 if (chooser.showDialog(UI.getApplicationFrame(), "Load icon") == JFileChooser.APPROVE_OPTION)
                 {
-                    iconPreviewer = new ImageIcon(chooser.getSelectedFile()
+                    //If this is an icon inside a Windows resource, display the chooser
+                    if ( iconFilter.accept(chooser.getSelectedFile()) )
+                    {
+                        IconChooser icoChooser = new IconChooser(chooser.getSelectedFile()
+                                        .getAbsolutePath());
+                        icoChooser.setVisible(true);
+                        
+                        int iconIndex = icoChooser.getSelectedIconIndex();
+                        
+                        
+                        //-1 means cancel was pressed
+                        if (iconIndex != -1)
+                        {
+                            model.setIconIndex(iconIndex);
+                        }
+                        
+                        iconPreviewer = new ImageIcon(icoChooser.getIconImage());                        
+                    }
+                    else
+                    {
+                        //Just a normal image
+                        iconPreviewer = new ImageIcon(chooser.getSelectedFile()
                                     .getAbsolutePath());
-                    icon.setText(chooser.getSelectedFile().getAbsolutePath());
-
+                    }
+                    
+                    //Add the icon to the preview
                     iconPreview.setIcon(iconPreviewer);
+                    
+                    icon.setText(chooser.getSelectedFile().getAbsolutePath());
 
                     validate();
                 }

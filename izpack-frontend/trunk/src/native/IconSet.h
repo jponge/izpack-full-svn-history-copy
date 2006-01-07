@@ -11,9 +11,9 @@ using namespace std;
 class IconSet
 {
 public:
-	IconSet(string filename);	
+	IconSet(const char *filename);	
 
-	void getIcon(int index);
+	int* getIcon(int index);
 
 	UINT* getIconPixels()
 	{
@@ -30,12 +30,12 @@ public:
 		return numIcons;
 	}
 
-	int getWidth()
+	int getMaxWidth()
 	{
 		return width;
 	}
 
-	int getHeight()
+	int getMaxHeight()
 	{
 		return height;
 	}
@@ -46,6 +46,9 @@ private:
 	void createMemBuffers();
 	void fillBitmapHeader(BITMAP *bitmap, BITMAPINFOHEADER *header);
 	void getIconDimensions();	
+
+	void createIconsEXEDLL(const char *filename);
+	void createIconsICO(const char *filename);
 
 	int width, height;
 	int numIcons;

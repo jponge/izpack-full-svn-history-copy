@@ -12,7 +12,7 @@ extern "C" {
  * Method:    initializeIconSet
  * Signature: (Ljava/lang/String;)Z
  */
-JNIEXPORT jboolean JNICALL Java_izpack_frontend_view_win32_NativeIconAccessor_initializeIconSet
+JNIEXPORT void JNICALL Java_izpack_frontend_view_win32_NativeIconAccessor_initializeIconSet
   (JNIEnv *, jobject, jstring);
 
 /*
@@ -42,9 +42,9 @@ JNIEXPORT void JNICALL Java_izpack_frontend_view_win32_NativeIconAccessor_destro
 /*
  * Class:     izpack_frontend_view_win32_NativeIconAccessor
  * Method:    getNativeIcon
- * Signature: (I)V
+ * Signature: (I)[I
  */
-JNIEXPORT void JNICALL Java_izpack_frontend_view_win32_NativeIconAccessor_getNativeIcon
+JNIEXPORT jintArray JNICALL Java_izpack_frontend_view_win32_NativeIconAccessor_getNativeIcon
   (JNIEnv *, jobject, jint);
 
 #ifdef __cplusplus

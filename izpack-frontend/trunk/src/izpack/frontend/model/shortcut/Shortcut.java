@@ -31,7 +31,7 @@ public class Shortcut extends Model implements Cloneable
         Document doc;
         try
         {
-            doc = XML.createDocument("unix_shortcutSpec.xml");
+            doc = XML.createDocument("shortcutSpec.xml");
             
             initFromXML(doc.getElementsByTagName("shortcut").item(0));
         }
@@ -74,6 +74,17 @@ public class Shortcut extends Model implements Cloneable
         description = getOptionalAttribute(attributes, "description");
         
         iconFile = getOptionalAttribute(attributes, "iconFile");
+        
+        try
+        {
+            iconIndex = Integer.parseInt(getOptionalAttribute(attributes, "iconIndex"));
+        }
+        catch (NumberFormatException nfe)
+        {
+            //Catch so the program doesn't crash for a bad input file
+            //TODO maybe tell user
+            iconIndex = 0;
+        }
         
         String initialStateStr = getOptionalAttribute(attributes, "initialState");
         for (INITIAL_STATE state : INITIAL_STATE.values())
@@ -137,7 +148,8 @@ public class Shortcut extends Model implements Cloneable
     private String description;
 
     // Main functionality on Windows
-    private String iconFile;
+    private String  iconFile;
+    private int     iconIndex;
     private INITIAL_STATE initialState;
     private boolean programGroup;
     private boolean desktop;
@@ -354,5 +366,17 @@ public class Shortcut extends Model implements Cloneable
         this.modelledOS = modelledOS;
         
         firePropertyChange("modelledOS", null, modelledOS);
+    }
+
+    public int getIconIndex()
+    {
+        return iconIndex;
+    }
+
+    public void setIconIndex(int iconIndex)
+    {
+        this.iconIndex = iconIndex;
+        
+        firePropertyChange("iconIndex", null, iconIndex);
     }
 }

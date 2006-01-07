@@ -74,7 +74,6 @@ public class UI
     
     public static void showError(String message, String title)
     {
-        System.out.println(UI.getApplicationFrame());
         JOptionPane.showMessageDialog(UI.getApplicationFrame(), message, title, JOptionPane.ERROR_MESSAGE);
     }
 
