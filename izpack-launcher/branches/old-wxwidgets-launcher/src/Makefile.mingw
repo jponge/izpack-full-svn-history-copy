@@ -22,7 +22,8 @@ install_lang:
 	if not exist ..\dist\pt-BR mkdir ..\dist\pt-BR
 	if not exist ..\dist\es mkdir ..\dist\es
 	if not exist ..\dist\it mkdir ..\dist\it
-	if not exist ..\dist\nl mkdir ..\dist\nl  
+	if not exist ..\dist\nl mkdir ..\dist\nl
+	if not exist ..\dist\cz mkdir ..\dist\cz
 	copy fr\launcher.mo ..\dist\fr
 	copy es\launcher.mo ..\dist\es
 	copy de\launcher.mo ..\dist\de
@@ -30,3 +31,4 @@ install_lang:
 	copy pt-BR\launcher.mo ..\dist\pt-BR
 	copy it\launcher.mo ..\dist\it
 	copy nl\launcher.mo ..\dist\nl
+	copy cz\launcher.mo ..\dist\cz
