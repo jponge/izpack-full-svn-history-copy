@@ -43,7 +43,7 @@ install: all install_lang
 	strip ../dist/${EXEC}-${OS}
 
 install_lang:
-	mkdir -p ../dist/fr ../dist/de ../dist/da ../dist/pt-BR ../dist/es ../dist/it ../dist/nl
+	mkdir -p ../dist/fr ../dist/de ../dist/da ../dist/pt-BR ../dist/es ../dist/it ../dist/nl ../dist/cz
 	cp fr/launcher.mo ../dist/fr
 	cp es/launcher.mo ../dist/es
 	cp de/launcher.mo ../dist/de
@@ -51,6 +51,7 @@ install_lang:
 	cp pt-BR/launcher.mo ../dist/pt-BR
 	cp it/launcher.mo ../dist/it
 	cp nl/launcher.mo ../dist/nl
+	cp cz/launcher.mo ../dist/cz
 
 clean:
 	rm -f ${EXEC} ${OBJS}
