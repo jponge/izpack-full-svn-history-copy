@@ -26,22 +26,6 @@ import exceptions.DocumentCreationException;
 
 public class Shortcut extends Model implements Cloneable
 {
-    public Shortcut()
-    {
-        Document doc;
-        try
-        {
-            doc = XML.createDocument("shortcutSpec.xml");
-            
-            initFromXML(doc.getElementsByTagName("shortcut").item(0));
-        }
-        catch (DocumentCreationException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }        
-    }
-    
     @Override
     public Object clone() throws CloneNotSupportedException
     {
@@ -56,8 +40,37 @@ public class Shortcut extends Model implements Cloneable
     
     public Element writeXML(Document doc)
     {           
-        Element shortcut = XML.createElement("singlefile", doc);
+        Element shortcut = XML.createElement("shorcut", doc);
         
+        setOptionalAttribute(shortcut, "name", name);
+        setOptionalAttribute(shortcut, "target", target);
+        
+        setOptionalAttribute(shortcut, "commandLine", commandLine);
+        setOptionalAttribute(shortcut, "workingDirectory", workingDirectory);
+        setOptionalAttribute(shortcut, "description", description);
+        
+        setOptionalAttribute(shortcut, "iconFile", iconFile);        
+        
+        if (iconIndex != -1)
+            setOptionalAttribute(shortcut, "iconIndex", Integer.toString(iconIndex));
+        
+        if (initialState != null)
+            setOptionalAttribute(shortcut, "initialState", initialState.toString());        
+        
+        setOptionalAttribute(shortcut, "programGroup", programGroup);
+        setOptionalAttribute(shortcut, "desktop", desktop);
+        setOptionalAttribute(shortcut, "applications", applications);
+        setOptionalAttribute(shortcut, "startup", startup);
+        setOptionalAttribute(shortcut, "startMenu", startMenu);        
+        
+        if (type != null)
+            setOptionalAttribute(shortcut, "type", type.toString());        
+        
+        setOptionalAttribute(shortcut, "url", url);
+        
+        setOptionalAttribute(shortcut, "terminal", terminal);
+        
+        setOptionalAttribute(shortcut, "KdeSubstUID", KdeSubstUID);        
         
         return shortcut;
     }
@@ -77,7 +90,11 @@ public class Shortcut extends Model implements Cloneable
         
         try
         {
-            iconIndex = Integer.parseInt(getOptionalAttribute(attributes, "iconIndex"));
+            //See if icon index was specified
+            if (getOptionalAttribute(attributes, "iconIndex").equals(""))
+                iconIndex = -1;
+            else                
+                iconIndex = Integer.parseInt(getOptionalAttribute(attributes, "iconIndex"));
         }
         catch (NumberFormatException nfe)
         {
@@ -89,7 +106,7 @@ public class Shortcut extends Model implements Cloneable
         String initialStateStr = getOptionalAttribute(attributes, "initialState");
         for (INITIAL_STATE state : INITIAL_STATE.values())
         {
-            if (state.toString().equals(initialStateStr))
+            if (state.toString().equalsIgnoreCase(initialStateStr))
                 initialState = state;
         }
         
@@ -107,7 +124,7 @@ public class Shortcut extends Model implements Cloneable
             
             for (TYPE typeElem : TYPE.values())
             {
-                if (typeElem.toString().equals(typeStr))                    
+                if (typeElem.toString().equalsIgnoreCase(typeStr))                    
                     type = typeElem;
             }   
         }
@@ -117,6 +134,26 @@ public class Shortcut extends Model implements Cloneable
         terminal = getAttributeAsBoolean(attributes, "terminal");
         
         KdeSubstUID = getOptionalAttribute(attributes, "KdeSubstUID");
+    }
+    
+    private void setOptionalAttribute(Element elem, String attribute, String value)
+    {
+        if (value != null && ! value.equals(""))
+        {            
+            //Make the attribute name have a first lowercase letter
+            //Not the most efficient, but it's only going to be called a little bit
+            attribute = attribute.substring(0, 1).toLowerCase() + attribute.substring(1);
+            
+            elem.setAttribute(attribute, value);
+        }
+    }
+    
+    private void setOptionalAttribute(Element elem, String attribute, boolean value)
+    {
+        if (value)
+            elem.setAttribute(attribute, "yes");
+        else
+            elem.setAttribute(attribute, "no");
     }
     
     private String getOptionalAttribute(NamedNodeMap attributes, String attribute)
@@ -149,7 +186,7 @@ public class Shortcut extends Model implements Cloneable
 
     // Main functionality on Windows
     private String  iconFile;
-    private int     iconIndex;
+    private int     iconIndex = -1;
     private INITIAL_STATE initialState;
     private boolean programGroup;
     private boolean desktop;

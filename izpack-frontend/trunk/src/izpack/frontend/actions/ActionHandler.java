@@ -110,7 +110,7 @@ public class ActionHandler implements ActionListener
                 
                 dialog.add(displayer);
                 dialog.pack();
-                dialog.show();
+                dialog.setVisible(true);
             }
             
         }

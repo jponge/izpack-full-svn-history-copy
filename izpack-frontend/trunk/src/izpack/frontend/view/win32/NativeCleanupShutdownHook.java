@@ -27,8 +27,7 @@ public class NativeCleanupShutdownHook extends Thread
 {
     @Override
     public void run()
-    {
-        System.out.println("Cleaning up");
+    {        
         NativeIconAccessor.cleanupCreatedAccessors();
     }
 }

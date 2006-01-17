@@ -1,14 +1,10 @@
-package izpack.frontend.view.win32;
-import java.awt.image.BufferedImage;
-import java.nio.ByteBuffer;
-
 /*
- * Created on Dec 13, 2005
+ * Created on Jan 17, 2006
  * 
- * $Id: NativeIcon.java Feb 8, 2004 izpack-frontend
+ * $Id: HTMLLicense.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2005 Andy Gombos
  * 
- * File : NativeIcon.java 
+ * File : HTMLLicense.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -25,18 +21,12 @@ import java.nio.ByteBuffer;
  * limitations under the License.
  */
 
-public final class NativeIcon
+package izpack.frontend.view.stages.configure.panels;
+
+public class HTMLLicense
 {
-    public NativeIcon(ByteBuffer icon, ByteBuffer mask, int width, int height)
-    {    
-        this.icon = icon;
-        this.mask = mask;
-        
-        this.width = width;
-        this.height = height;
-    }    
-    
-    protected ByteBuffer icon;
-    protected ByteBuffer mask;
-    protected int width, height;
+    public HTMLLicense()
+    {
+        throw new RuntimeException("Not implemented");
+    }
 }

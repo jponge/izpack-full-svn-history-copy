@@ -50,7 +50,7 @@ import com.jgoodies.validation.ValidationResult;
  * 
  * @author Andy Gombos
  */
-public class XInfo extends JPanel implements ConfigurePanel, ActionListener
+public class XInfo extends FileEdit
 {    
     public XInfo()
     {

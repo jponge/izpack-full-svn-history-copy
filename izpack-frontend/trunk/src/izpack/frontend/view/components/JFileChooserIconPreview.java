@@ -73,6 +73,7 @@ public class JFileChooserIconPreview extends JPanel implements
     public void propertyChange(PropertyChangeEvent evt)
     {
         Icon icon = null;
+        
         if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(evt
                         .getPropertyName()))
         {
@@ -100,7 +101,10 @@ public class JFileChooserIconPreview extends JPanel implements
                     iconDisplay.add(previewWindowsIcon(filename));
                 }
                 
-                configurePreview((JComponent) iconDisplay.getComponent(0));
+                
+                //Make sure we have a preview visible
+                if (iconDisplay.getComponentCount() > 0)
+                    configurePreview((JComponent) iconDisplay.getComponent(0));
             }
          
             this.validate();
@@ -118,17 +122,28 @@ public class JFileChooserIconPreview extends JPanel implements
                     
                     //TODO only scale when oversized
                     float width = img.getWidth();
+                    
+                    Icon icon;
+                    
+                    if (width > maxImgWidth)
+                    {
+                        
                     float height = img.getHeight();
                     float scale = height / width;
                     width = maxImgWidth;
                     height = (width * scale); // height should be scaled
                                                 // from new width
-                    Icon icon = new ImageIcon(img.getScaledInstance(Math.max(1,
+                    icon = new ImageIcon(img.getScaledInstance(Math.max(1,
                                     (int) width),
                                     Math.max(1, (int) height),
                                     Image.SCALE_FAST));
+                    }
+                    else
+                    {
+                        icon = new ImageIcon(img);
+                    }
                     
-                    JLabel label = new JLabel(icon);
+                    JLabel label = new JLabel(icon);                   
                     
                     return label;
                 }

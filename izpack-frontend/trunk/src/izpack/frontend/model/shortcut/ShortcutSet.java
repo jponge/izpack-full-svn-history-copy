@@ -23,12 +23,23 @@
 
 package izpack.frontend.model.shortcut;
 
+import izpack.frontend.model.shortcut.Shortcut.INITIAL_STATE;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import com.sun.org.apache.bcel.internal.generic.LCONST;
+
+import utils.XML;
 
 /**
  * Provides a container to store Shortcut instances, and perform operations on them.
@@ -44,6 +55,75 @@ public class ShortcutSet extends DefaultTableModel
         //TODO make format same as renderer in pseudo columns
         this.addColumn("OS       Name                                Target");
     }
+    
+    //XML input/output stuff
+    public Document writeXML()
+    {        
+        Document doc = XML.createDocument();
+        
+        Element shortcutsRoot = XML.createElement("shortcuts", doc);
+        doc.appendChild(shortcutsRoot);
+        
+        //Add a node if we should skip when we can't create a shortcut
+        if (skipIfNotSupported)
+        {
+           shortcutsRoot.appendChild(XML.createElement("skipIfNotSupported", doc));
+        }
+        
+        Element programGroup = XML.createElement("programGroup", doc);
+        
+        if (defaultName != null)
+            programGroup.setAttribute("defaultName", defaultName);
+        
+        if (location != null)
+            programGroup.setAttribute("location", location.toString());
+        
+        shortcutsRoot.appendChild(programGroup);
+        
+        //Add each shortcut in the set to the file
+        ArrayList<Shortcut> shortcuts = getShortcuts();
+        
+        for (Shortcut shortcut : shortcuts)
+        {
+            shortcutsRoot.appendChild(shortcut.writeXML(doc));
+        }
+        
+        return doc;
+    }
+    
+    public void initXML(Document doc)
+    {
+        if (doc.getElementsByTagName("skipIfNotSupported").getLength() != 0)
+            skipIfNotSupported = true;
+        
+        NodeList programGroup = doc.getElementsByTagName("programGroup");        
+        if (programGroup.getLength() != 0)
+        {
+            Node programGroupElem = programGroup.item(0);
+            
+            NamedNodeMap attributes = programGroupElem.getAttributes();
+            
+            defaultName = attributes.getNamedItem("defaultName").getNodeValue();
+            
+            String locationStr = attributes.getNamedItem("location").getNodeValue();
+            
+            for (LOCATION loc : LOCATION.values())
+            {
+                if (loc.toString().equalsIgnoreCase(locationStr))
+                    location = loc;
+            }
+        }
+        
+        NodeList shortcuts = doc.getElementsByTagName("shortcut");
+        for (int i = 0; i < shortcuts.getLength(); i++)
+        {            
+            Shortcut s = new Shortcut();
+            s.initFromXML(shortcuts.item(i));
+            
+            addShortcut(s);            
+        }
+    }
+    
 
     public ArrayList<Shortcut> getShortcuts()
     {

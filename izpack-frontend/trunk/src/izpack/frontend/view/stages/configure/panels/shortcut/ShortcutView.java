@@ -32,6 +32,7 @@ import izpack.frontend.view.win32.IconChooser;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -57,6 +58,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.layout.FormLayout;
 
+//TODO Add pack-specific creation
 public class ShortcutView extends JPanel
 {
     /**
@@ -237,6 +239,7 @@ public class ShortcutView extends JPanel
     
     private void configureListeners()
     {
+        //TODO make sure if icon is a file, is included in installer files
         iconBrowse.addActionListener(new ActionListener()
         {
             // TODO Make code not a copy-and-paste from the javalobby article
@@ -250,7 +253,13 @@ public class ShortcutView extends JPanel
                 chooser.addPropertyChangeListener(previewPane);
                 
                 chooser.addChoosableFileFilter(iconFilter);
-                chooser.addChoosableFileFilter(new IconFilter());               
+                chooser.addChoosableFileFilter(new IconFilter());
+                
+                //Set the selected file
+                if (icon.getText() != "")
+                {
+                    chooser.setSelectedFile(new File(icon.getText()));
+                }
                     
                 if (chooser.showDialog(UI.getApplicationFrame(), "Load icon") == JFileChooser.APPROVE_OPTION)
                 {
