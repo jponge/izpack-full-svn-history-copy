@@ -190,19 +190,11 @@ public class XML
      * @return Value of the src attribute 
      */
     public static String getResourceValue(Document document, String id) 
-    {
-        XPath xpath = XPathFactory.newInstance().newXPath();
+    {        
         try
         {            
-            //Search only for the <res> element we are interested in
-            NodeList resource = (NodeList) xpath.evaluate("//res[@id='" + id + "']", document, XPathConstants.NODESET);
-            
-            if (resource.getLength() == 1)
-            {
-                String filename = xpath.evaluate("//res[1]/@src", resource.item(0));               
-             
-                return filename;
-            }
+            //Use XPath to return the resource value by searching with it
+            return xpath.evaluate("//res[@id='" + id + "']/@src", document);            
         }
         catch (XPathExpressionException xpee)
         {
@@ -239,6 +231,35 @@ public class XML
 	    return root;
     }
     
+    /**
+     * Structure:
+     * <variables>
+     *  <variable name="" value="">
+     * </variables>
+     *
+     * Parse a full install xml file to load a specified variable. Does not handle multiple variables with
+     * the same name
+     * 
+     * @param document The XML document
+     * @param id The variable name to look for
+     * @return Value of the src attribute 
+     */
+    public static String getVariable(Document document, String id) 
+    {        
+        try
+        {   
+            //Find the variable and return it's value
+            return xpath.evaluate("//variable[@name='" + id + "']/@value", document);
+        }
+        catch (XPathExpressionException xpee)
+        {
+            //Chances are, this is because the resource is missing
+            //Therefore, just give a null return value
+        } 
+        
+        return null;
+    }
+    
     public static Element createRootElement(String name)
     {
         Document doc = getNewDocument();
@@ -268,4 +289,5 @@ public class XML
     }
     
     private static Document doc;
+    private static XPath xpath = XPathFactory.newInstance().newXPath();
 }
