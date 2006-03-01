@@ -31,6 +31,7 @@ import izpack.frontend.view.stages.configure.panels.shortcut.ShortcutView;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -48,6 +49,8 @@ import javax.swing.table.DefaultTableModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import utils.XML;
+
 import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.beans.BeanAdapter;
 import com.jgoodies.binding.beans.PropertyConnector;
@@ -56,6 +59,8 @@ import com.jgoodies.forms.builder.ButtonStackBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+
+import exceptions.DocumentCreationException;
 
 public class ShortcutPanel extends JPanel implements ConfigurePanel
 {
@@ -167,7 +172,7 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
         topBuilder.add(shortcutTable, cc.xyw(1, 3, 1, CellConstraints.FILL, CellConstraints.TOP));
         topBuilder.add(bsb.getPanel(), cc.xy(3, 3));
         
-        //Configure the panel to respond to selection changes for the editing view
+        //Configure the panel to respond to selection changes for the editing view        
         shortcutTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         shortcutTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
         {
@@ -176,10 +181,15 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
             {
                 if (!e.getValueIsAdjusting())
                 {                    
+                    long start = System.nanoTime();
                     if (shortcutTable.getSelectedRow() != -1)
-                        shortcutViewScroll.setViewportView(new ShortcutView((Shortcut) shortcutTable.getValueAt(shortcutTable.getSelectedRow(), 0)));                    
+                        shortcutViewScroll.setViewportView(new ShortcutView((Shortcut) shortcutTable.getValueAt(shortcutTable.getSelectedRow(), 0)));
                     
                     validate();                    
+                    
+                    long stop = System.nanoTime();
+                    
+                    System.out.println("Switch time: " + (stop-start) / 1000000000.0);
                 }
             }
             
@@ -198,11 +208,43 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
         // TODO Auto-generated method stub
         return null;
     }
-
+    
     public void initFromXML(Document xmlFile)
     {
-        // TODO Auto-generated method stub
-
+        //Parse the XML file, and get the shortcut spec filenames in the resources
+        //Load these
+        
+        long start = System.currentTimeMillis();
+        
+        String winSpec =   XML.getResourceValue(xmlFile, "shortcutSpec.xml");
+        String unixSpec = XML.getResourceValue(xmlFile, "Unix_shortcutSpec.xml");
+        
+        //Have the model import the Windows shortcuts
+        try
+        {
+            model.initXML(XML.createDocument(winSpec));
+            
+            //Get the UNIX shortcuts by asking another model instance for them
+            ShortcutSet ss = new ShortcutSet();
+            ss.initXML(XML.createDocument(unixSpec));
+            
+            ArrayList<Shortcut> shortcuts = ss.getShortcuts();
+            
+            for (Shortcut shortcut : shortcuts)
+            {
+                model.addShortcut(shortcut);
+            }
+        }
+        catch (DocumentCreationException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        long stop = System.currentTimeMillis();
+        
+        System.out.println("Shortcut load time: " + (stop - start) / 1000.0 + " sec");
+        
     }
 
     private JButton add, remove, duplicate;

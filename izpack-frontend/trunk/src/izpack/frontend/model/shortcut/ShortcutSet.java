@@ -44,19 +44,28 @@ import utils.XML;
 /**
  * Provides a container to store Shortcut instances, and perform operations on them.
  * 
+ * Data is only actually stored in the first column
+ * 
  * @author Andy Gombos
  */
 public class ShortcutSet extends DefaultTableModel
 {
     public ShortcutSet()
     {   
-        pcs = new PropertyChangeSupport(this);        
+        pcs = new PropertyChangeSupport(this);
         
-        //TODO make format same as renderer in pseudo columns
-        this.addColumn("OS       Name                                Target");
+        this.addColumn("OS");
+        this.addColumn("Name");
+        this.addColumn("Target");
     }
     
-    //XML input/output stuff
+    @Override
+    public boolean isCellEditable(int row, int column)
+    {        
+        return false;
+    }
+    
+    // XML input/output stuff
     public Document writeXML()
     {        
         Document doc = XML.createDocument();
@@ -139,7 +148,7 @@ public class ShortcutSet extends DefaultTableModel
     
     public void addShortcut(Shortcut shortcut)
     {        
-        this.addRow(new Object[]{shortcut});
+        this.addRow(new Object[]{shortcut, new Object(), new Object()});
     }
     
     public void duplicateShortcut(Shortcut shortcut)

@@ -31,6 +31,7 @@ import izpack.frontend.view.components.ItemProgressPanel;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.configure.panels.ConfigurePanel;
 import izpack.frontend.view.stages.configure.panels.NoEditorCreated;
+import izpack.frontend.view.stages.configure.panels.ShortcutPanel;
 import izpack.frontend.view.stages.panelselect.PanelSelection;
 
 import java.awt.CardLayout;
@@ -80,8 +81,11 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
         }
         else
         {
-            System.err.println("Application did not initialize properly. Exiting.");
-            System.exit(1);
+            //System.err.println("Application did not initialize properly. Exiting.");
+            //System.exit(1);
+            
+            panelSelectionModel = new PanelSelectionModel();
+            panelSelectionModel.initWithAllPanels();
         }
         
         setLayout(layout);
@@ -127,6 +131,12 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
             {
                 Class editorClass = Class.forName(panelModel.configData.getEditorClassname());                
                 Object editorInstance = editorClass.newInstance();
+                
+                //Initialize shortcuts with thier XML files
+                if (editorClass.equals(ShortcutPanel.class))
+                {
+                    
+                }
                 
                 if (xmlDoc != null)
                     ((ConfigurePanel) editorInstance).initFromXML(xmlDoc);

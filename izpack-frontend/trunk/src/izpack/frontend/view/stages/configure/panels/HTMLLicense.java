@@ -1,10 +1,10 @@
 /*
  * Created on Jan 17, 2006
  * 
- * $Id: HTMLLicense.java Feb 8, 2004 izpack-frontend
+ * $Id: HTMLInfo.java Feb 8, 2004 izpack-frontend
  * Copyright (C) 2005 Andy Gombos
  * 
- * File : HTMLLicense.java 
+ * File : HTMLInfo.java 
  * Description : TODO Add description
  * Author's email : gumbo@users.berlios.de
  * 
@@ -23,10 +23,66 @@
 
 package izpack.frontend.view.stages.configure.panels;
 
-public class HTMLLicense
+import izpack.frontend.view.components.HTMLEditor;
+
+import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.text.BadLocationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import utils.IO;
+import utils.UI;
+
+/** Implement the information panel.  This allows the user to select or create
+ * a README type file - plain text that is
+ * 
+ * @author Andy Gombos
+ */
+public class HTMLLicense extends LicenseEdit
 {
     public HTMLLicense()
-    {
-        throw new RuntimeException("Not implemented");
+    {   
+        super(LicenseEdit.HTML);
+        
+        editor = new HTMLEditor();        
+                
+        setTextEditor(editor);
     }
+    
+    @Override
+    protected void updateEditorDisplay(String filename)
+    {
+        try
+        {
+            editor.loadDocument(filename);
+        }
+        catch (IOException ioe)        
+        {
+            UI.showError(ioe.getLocalizedMessage(), "IO error");
+        }
+        catch (BadLocationException e)
+        {
+            //Ignore, I don't think this can happen
+        }
+    }
+
+    public Element createXML(Document doc)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public void initFromXML(Document xmlFile)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    private HTMLEditor editor;
 }

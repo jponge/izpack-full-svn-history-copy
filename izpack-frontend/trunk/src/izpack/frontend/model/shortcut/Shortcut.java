@@ -128,6 +128,8 @@ public class Shortcut extends Model implements Cloneable
                     type = typeElem;
             }   
         }
+        else
+            modelledOS = OS.Windows;
         
         url = getOptionalAttribute(attributes, "url");
         

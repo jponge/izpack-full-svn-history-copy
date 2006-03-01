@@ -70,7 +70,7 @@ public class LicenseLoader
 	            //Use XPath to grab each value
 	            //I don't think this is very efficient, but it is only done once
 	            
-	            lic.filename = xpath.evaluate("//license[" + (i + 1) + "]/@file", document);            
+	            lic.filename = xpath.evaluate("//license[" + (i + 1) + "]/@fileBase", document);
 	            	            
 	            lic.name = xpath.evaluate("//license[" + (i + 1) + "]/name", document);
 	            

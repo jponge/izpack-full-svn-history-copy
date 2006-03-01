@@ -1,5 +1,5 @@
 <licenses>
-	<license file="gpl.txt">
+	<license fileBase="gpl">
 		<name>GNU General Public License (GPL)</name>		
 		<gpl_compatible>true</gpl_compatible>
 		<modifications>
@@ -8,31 +8,31 @@
 		</modifications>	
 	</license>	
 
-	<license file="lgpl.txt">	
+	<license fileBase="lgpl">	
 	<name>GNU Lesser General Public License (LGPL)</name>		
 		<gpl_compatible>true</gpl_compatible>
 		<modifications />
 	</license>	
 	
-	<license file="mpl.txt">	
+	<license fileBase="mpl">	
 	<name>Mozilla Public License (MPL)</name>		
 		<gpl_compatible>false</gpl_compatible>
 		<modifications />
 	</license>	
 	
-	<license file="mit.txt">	
+	<license fileBase="mit">	
 	<name>MIT License</name>		
 		<gpl_compatible>true</gpl_compatible>
 		<modifications />	
 	</license>	
 	
-	<license file="bsd.txt">	
+	<license fileBase="bsd">	
 	<name>Modified BSD License</name>		
 		<gpl_compatible>true</gpl_compatible>
 		<modifications />
 	</license>	
 	
-	<license file="cpl.txt">
+	<license fileBase="cpl">
 	<name>Common Public License (CPL)</name>		
 		<gpl_compatible>false</gpl_compatible>
 		<modifications />	

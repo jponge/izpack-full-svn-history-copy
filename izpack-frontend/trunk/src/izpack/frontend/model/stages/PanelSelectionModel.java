@@ -27,6 +27,7 @@ import izpack.frontend.controller.PanelInfoManager;
 import izpack.frontend.model.PanelInfo;
 import izpack.frontend.model.SelectListModel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.xpath.XPath;
@@ -89,10 +90,7 @@ public class PanelSelectionModel extends SelectListModel implements StageDataMod
                 String classname = panel.getAttributes().getNamedItem("classname").getNodeValue();
                 
                 PanelModel model = new PanelModel();
-                model.configData = availablePanels.get(classname);
-                
-                if (model.configData == null)
-                    System.out.println(panel.getAttributes().getNamedItem("classname"));
+                model.configData = availablePanels.get(classname);                
                 
                 model.valid = false;
                 
@@ -104,4 +102,21 @@ public class PanelSelectionModel extends SelectListModel implements StageDataMod
             throw new UnhandleableException(e);
         }        
     }
+    
+    //TODO temporary
+    public void initWithAllPanels()
+    {        
+        ArrayList<PanelInfo> availablePanels = PanelInfoManager.getAvailablePanels();
+        
+                for (PanelInfo info : availablePanels)
+                {
+                    PanelModel model = new PanelModel();
+                    model.configData = info;                
+                    
+                    model.valid = false;
+                    
+                    addElement(model);                 
+    
+                }
+                    }
 }
