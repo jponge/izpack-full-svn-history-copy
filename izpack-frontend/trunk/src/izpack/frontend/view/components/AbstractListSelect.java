@@ -54,12 +54,12 @@ public abstract class AbstractListSelect extends JPanel implements ActionListene
     public AbstractListSelect()
     {
         super();
-        // TODO Auto-generated constructor stub
+     
+        initComponents();
     }
 
     public void initComponents()
-    {
-        // TODO Auto-generated method stub
+    {   
         FormLayout layout = new FormLayout(
                 "pref:grow, 3dlu, pref, 3dlu, pref:grow",	//Columns
                 "100dlu, pref, 3dlu, pref, 20dlu, pref, 3dlu, pref, 100dlu"); //Rows
@@ -79,7 +79,7 @@ public abstract class AbstractListSelect extends JPanel implements ActionListene
         	builder.add(buttons[3], cc.xy(3, 8));
                 
         //Wrap lists in scrollpanes
-        srcPane = new JScrollPane();        	
+        srcPane = new JScrollPane();
         destPane = new JScrollPane();
         
         builder.add(srcPane, cc.xywh(1, 1, 1, 9));
@@ -88,8 +88,8 @@ public abstract class AbstractListSelect extends JPanel implements ActionListene
         builder.getPanel().setBackground(Color.WHITE);
     }   
     
-    public void initLists(SelectList src, SelectList dest)
-    {
+    public void initLists(SelectList src, SelectList dest)    
+    {     
         srcList = src;
         destList = dest;
         
@@ -99,7 +99,7 @@ public abstract class AbstractListSelect extends JPanel implements ActionListene
         srcList.addFocusListener(this);
         destList.addFocusListener(this);
         srcList.addListSelectionListener(this);
-        destList.addListSelectionListener(this);
+        destList.addListSelectionListener(this);        
         
         srcPane.setViewportView(srcList);
         destPane.setViewportView(destList);

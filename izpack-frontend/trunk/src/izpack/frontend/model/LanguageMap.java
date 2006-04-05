@@ -51,8 +51,15 @@ public class LanguageMap extends TreeMap<String, String>
         put("spa", "Spanish");
         put("svk", "Slovakian");
         put("swe", "Swedish");
-        put("ukr", "Ukrainian");
-
+        put("ukr", "Ukrainian");        
+    }
+    
+    public String getLanguage(String iso3)
+    {
+        if (containsKey(iso3))
+            return get(iso3);
+        else
+            return "Unknown";       
     }
 
     public static LanguageMap getInstance()

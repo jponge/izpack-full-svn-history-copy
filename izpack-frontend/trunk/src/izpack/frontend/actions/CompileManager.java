@@ -57,6 +57,8 @@ public class CompileManager
     {
         StringWriter stringStream = new StringWriter(2000);
         XML.writeXML(new StreamResult(stringStream), xmlFile);
+        
+        XML.writeXML(installArgs[2] + ".xml", xmlFile);
      
         System.out.println("Starting compiler");
         System.out.println("On EVT: " + SwingUtilities.isEventDispatchThread());

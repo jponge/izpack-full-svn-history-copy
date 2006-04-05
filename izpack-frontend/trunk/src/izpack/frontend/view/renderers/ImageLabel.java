@@ -71,7 +71,10 @@ public class ImageLabel extends DefaultListCellRenderer
         if (value instanceof PanelModel)
         {
             PanelModel pm = (PanelModel) value;
-            PanelInfo model = pm.configData;            
+            PanelInfo model = pm.configData;
+            
+            if (model == null)
+                System.out.println(pm);
             
             textContainer.setText("<html>" +
                       "<b>&nbsp;" + model.getName() + "</b>" +

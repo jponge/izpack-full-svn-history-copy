@@ -45,10 +45,10 @@ public class PanelInfo implements Comparable
         this.longDesc = longDesc;
         this.resources = resources;
         
-        if (authors.length == 0)
+        if (authors != null && authors.length == 0)
             authors = null;
         
-        if (resources.length == 0)
+        if (resources != null && resources.length == 0)
             resources = null;
     }
     

@@ -39,6 +39,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.w3c.dom.Document;
@@ -113,8 +114,9 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener
         authorModel = new SelectionInList(authorListModel);
                 
         authorList = BasicComponentFactory.createList(authorModel);
-        //authorList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        builder.add(authorList, cc.xywh(3, 7, 3, 6));
+        
+        JScrollPane authorListScroll = new JScrollPane(authorList);
+        builder.add(authorListScroll, cc.xywh(3, 7, 3, 6));
         
         builder.setColumn(7);
         builder.setRow(7);

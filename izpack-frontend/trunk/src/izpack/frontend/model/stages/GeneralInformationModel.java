@@ -26,6 +26,7 @@ package izpack.frontend.model.stages;
 import izpack.frontend.model.Author;
 import izpack.frontend.model.SelectListModel;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -236,6 +237,14 @@ public class GeneralInformationModel extends Model implements StageDataModel
             String isoCode = langCodes.item(i).getAttributes().getNamedItem("iso3").getNodeValue();
             
             URL location = ClassLoader.getSystemResource("res/imgs/flags/" + isoCode + ".gif");
+            
+            if (location == null)
+            {
+                System.out.println("Null location " + isoCode);
+                location = ClassLoader.getSystemResource("res/imgs/flags/unknown.png");                
+            }
+            
+            System.out.println(isoCode + " " + location);
             
             LangModel lang = new LangModel(isoCode, location);
             

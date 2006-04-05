@@ -52,7 +52,7 @@ public class LangLabel extends DefaultListCellRenderer
         if (value instanceof LangModel)
         {
             LangModel model = (LangModel) value;
-            displayLabel.setText(langMap.get(model.iso3Code));
+            displayLabel.setText(langMap.getLanguage(model.iso3Code));
             displayLabel.setIcon(new ImageIcon(model.flag));
             
             if (isSelected)

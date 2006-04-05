@@ -26,6 +26,7 @@ package izpack.frontend.model.stages;
 import izpack.frontend.controller.PanelInfoManager;
 import izpack.frontend.model.PanelInfo;
 import izpack.frontend.model.SelectListModel;
+import izpack.frontend.view.stages.configure.panels.NoEditorCreated;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,7 +91,12 @@ public class PanelSelectionModel extends SelectListModel implements StageDataMod
                 String classname = panel.getAttributes().getNamedItem("classname").getNodeValue();
                 
                 PanelModel model = new PanelModel();
-                model.configData = availablePanels.get(classname);                
+                model.configData = availablePanels.get(classname);
+                
+                if (model.configData == null)
+                {
+                    model.configData = new PanelInfo(classname, "NoEditorCreated", "Not supported", "Not supported", "Not Supported", null, null);
+                }
                 
                 model.valid = false;
                 

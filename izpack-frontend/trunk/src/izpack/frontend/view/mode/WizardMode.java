@@ -62,7 +62,7 @@ import exceptions.UnhandleableException;
 public class WizardMode extends JFrame implements StageChangeListener,
                 WindowListener
 {
-    protected WizardMode(WelcomeScreen launcherInstance)
+    public WizardMode(WelcomeScreen launcherInstance)
     {
         launcher = launcherInstance;
         
