@@ -54,43 +54,20 @@ public class XInfo extends FileEdit
 {    
     public XInfo()
     {
-        xinfo = new JTextArea();
-        filebox = new JTextField("Text file to be parsed: ");
-	    
-	    JScrollPane scrollPane = new JScrollPane();
-	    scrollPane.getViewport().add(xinfo);
-	    scrollPane.setPreferredSize(new Dimension(500, 350));
-	    xinfo.setWrapStyleWord(true);	    
-	    
-	    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-	    
-	    JButton browse = new JButton("Browse");
-        browse.addActionListener(this);
+        super();
         
-	    add(filebox);
-	    add(Box.createVerticalStrut(5));
-	    add(browse);	    
-	    add(Box.createVerticalStrut(15));
-	    add(scrollPane);
+        JScrollPane scrollPane = new JScrollPane();
+        editor = new JTextArea();
+        
+        scrollPane.getViewport().add(editor);
+        scrollPane.setPreferredSize(new Dimension(500, 350));
+        editor.setWrapStyleWord(true);
+        
+        setTextEditor(scrollPane);
     }
     
-    JTextArea xinfo;
-    JTextField filebox;
-
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e)
-    {     
-        File textFile = UI.getFile(this, "text");
-        loadFile(textFile);
-    }
-    
-    private void loadFile(File textFile)
-    {
-        filebox.setText(textFile.getAbsolutePath());
-        xinfo.setText(IO.loadFileIntoString(textFile));
-    }
+    private JTextArea editor;
+    private String filename;
 
     /* (non-Javadoc)
      * @see izpack.frontend.view.pages.configure.ConfigurePage#createXML()
@@ -102,7 +79,7 @@ public class XInfo extends FileEdit
      */
     public Element createXML(Document doc)
     {   
-        return XML.createResourceTree("XInfoPanel.info", filebox.getText(), doc);
+        return XML.createResourceTree("XInfoPanel.info", filename, doc);
     }
 
     /* (non-Javadoc)
@@ -115,20 +92,20 @@ public class XInfo extends FileEdit
      */
     public void initFromXML(Document document)
     {
-        String filename = XML.getResourceValue(document, "XInfoPanel.info");
+        String filename = XML.getResourceValueAsPath(document, "XInfoPanel.info");
         
         //Check to see if there's anything to load from
         if (filename != null)
         {
-            loadFile(new File(filename));
+            updateEditorDisplay(filename);
         }
     }
 
-    /* (non-Javadoc)
-     * @see izpack.frontend.view.pages.configure.ConfigurePage#validatePage()
-     */
-    public ValidationResult validatePanel()
-    {
-        return null;        
+    @Override
+    protected void updateEditorDisplay(String filename)
+    {        
+        editor.setText(IO.loadFileIntoString(new File(filename)));
+        
+        this.filename = filename;       
     }
 }

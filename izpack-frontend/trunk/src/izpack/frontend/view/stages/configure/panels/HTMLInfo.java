@@ -38,6 +38,7 @@ import org.w3c.dom.Element;
 
 import utils.IO;
 import utils.UI;
+import utils.XML;
 
 /** Implement the information panel.  This allows the user to select or create
  * a README type file - plain text that is
@@ -61,6 +62,8 @@ public class HTMLInfo extends FileEdit
         try
         {
             editor.loadDocument(filename);
+            
+            this.filename = filename;
         }
         catch (IOException ioe)        
         {
@@ -73,16 +76,20 @@ public class HTMLInfo extends FileEdit
     }
 
     public Element createXML(Document doc)
-    {
-        // TODO Auto-generated method stub
-        return null;
+    { 
+        Element root = XML.createResourceTree("HTMLInfoPanel.info", filename, doc);        
+        
+        return root;
     }
 
     public void initFromXML(Document xmlFile)
     {
-        // TODO Auto-generated method stub
+        String info = XML.getResourceValueAsPath(xmlFile, "HTMLInfoPanel.info");
         
+        if (info != null)
+            updateEditorDisplay(info);
     }
     
+    private String filename;
     private HTMLEditor editor;
 }

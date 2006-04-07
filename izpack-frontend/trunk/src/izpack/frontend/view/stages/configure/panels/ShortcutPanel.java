@@ -205,8 +205,34 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
 
     public Element createXML(Document doc)
     {
-        // TODO Auto-generated method stub
-        return null;
+        //Windows, Unix, Mac when implemented
+        Document[] docs = model.writeXML();
+        
+        //TODO make these configurable somehow
+        XML.writeXML("shortcutSpec_Windows.xml", docs[0]);
+        XML.writeXML("shortcutSpec_Unix.xml", docs[1]);
+        
+        //Create the resources specs, and native library stuff
+        
+        
+        Element root = XML.createElement("installation", doc);
+        root.setAttribute("version", "1.0");
+        
+        Element winResources = XML.createResourceTree("shortcutSpec.xml", "shortcutSpec_Windows.xml", doc);
+        Element unixResources = XML.createResourceTree("Unix_shortcutSpec.xml", "shortcutSpec_Unix.xml", doc);
+        
+        root.appendChild(winResources);
+        root.appendChild(unixResources);
+        
+        Element nativeLib = XML.createElement("native", doc);
+        nativeLib.setAttribute("type", "izpack");
+        nativeLib.setAttribute("name", "ShellLink.dll");        
+        
+        nativeLib.appendChild(XML.createElement("test", doc));
+        
+        root.appendChild(nativeLib);
+        
+        return root;
     }
     
     public void initFromXML(Document xmlFile)
@@ -216,8 +242,8 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
         
         long start = System.currentTimeMillis();
         
-        String winSpec =   XML.getResourceValue(xmlFile, "shortcutSpec.xml");
-        String unixSpec = XML.getResourceValue(xmlFile, "Unix_shortcutSpec.xml");
+        String winSpec =   XML.getResourceValueAsPath(xmlFile, "shortcutSpec.xml");
+        String unixSpec = XML.getResourceValueAsPath(xmlFile, "Unix_shortcutSpec.xml");
         
         //Have the model import the Windows shortcuts
         try

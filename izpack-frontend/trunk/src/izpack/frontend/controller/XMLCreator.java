@@ -36,7 +36,7 @@ public class XMLCreator
 {
     /**
      * Create an aggregator that can create a valid XML install file based on the data from
-     * stages. Manages order, asking the stages to create thier XML, merging all the elements together, etc.
+     * stages. Manages order, asking the stages to create their XML, merging all the elements together, etc.
      * 
      * @param stageList List of stages to ask to generate XML
      */

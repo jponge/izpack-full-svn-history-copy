@@ -66,10 +66,35 @@ public class ShortcutSet extends DefaultTableModel
     }
     
     // XML input/output stuff
-    public Document writeXML()
+    /**
+     * Return a document for each OS type selected
+     */
+    public Document[] writeXML()
     {        
-        Document doc = XML.createDocument();
+        Document winDoc = XML.createDocument();
+        Document unixDoc = XML.createDocument();
         
+        Element winRoot = writeShortcutHeader(winDoc);
+        Element unixRoot = writeShortcutHeader(unixDoc);
+        
+        //Add each shortcut in the set to the file
+        ArrayList<Shortcut> shortcuts = getShortcuts();
+        
+        for (Shortcut shortcut : shortcuts)
+        {
+            if (shortcut.getModelledOS() == Shortcut.OS.Windows)
+                winRoot.appendChild(shortcut.writeXML(winDoc));
+            else if (shortcut.getModelledOS() == Shortcut.OS.Unix)
+                unixRoot.appendChild(shortcut.writeXML(unixDoc));
+            
+            //TODO Mac support when IzPack gets it
+        }
+        
+        return new Document[] {winDoc, unixDoc};
+    }
+
+    private Element writeShortcutHeader(Document doc)
+    {
         Element shortcutsRoot = XML.createElement("shortcuts", doc);
         doc.appendChild(shortcutsRoot);
         
@@ -88,16 +113,7 @@ public class ShortcutSet extends DefaultTableModel
             programGroup.setAttribute("location", location.toString());
         
         shortcutsRoot.appendChild(programGroup);
-        
-        //Add each shortcut in the set to the file
-        ArrayList<Shortcut> shortcuts = getShortcuts();
-        
-        for (Shortcut shortcut : shortcuts)
-        {
-            shortcutsRoot.appendChild(shortcut.writeXML(doc));
-        }
-        
-        return doc;
+        return shortcutsRoot;
     }
     
     public void initXML(Document doc)

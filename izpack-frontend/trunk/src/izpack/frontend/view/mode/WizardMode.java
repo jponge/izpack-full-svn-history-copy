@@ -23,7 +23,6 @@ package izpack.frontend.view.mode;
 
 import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.controller.StageChangeListener;
-import izpack.frontend.controller.XMLCreator;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.compile.Compile;
 import izpack.frontend.view.stages.configure.PanelConfigurator;
@@ -36,6 +35,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.Box;

@@ -33,6 +33,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import utils.IO;
+import utils.XML;
 
 /** Implement the information panel.  This allows the user to select or create
  * a README type file - plain text that is
@@ -59,20 +60,29 @@ public class Info extends FileEdit
     protected void updateEditorDisplay(String filename)
     {
         editor.setText(IO.loadFileIntoString(new File(filename)));
+        
+        this.filename = filename;
     }
 
     public Element createXML(Document doc)
-    {
-        // TODO Auto-generated method stub
-        return null;
+    { 
+        Element root = XML.createResourceTree("InfoPanel.info", filename, doc);        
+        
+        return root;
     }
 
     public void initFromXML(Document xmlFile)
     {
-        // TODO Auto-generated method stub
+        String info = XML.getResourceValueAsPath(xmlFile, "InfoPanel.info");
         
+        if (xmlFile.getDocumentURI() != null)
+            info = new File(xmlFile.getDocumentURI()).getParent() + System.getProperty("file.separator") + info;
+        
+        if (info != null)
+            updateEditorDisplay(info);
     }
     
+    private String filename;
     private JTextArea editor;
 
 }

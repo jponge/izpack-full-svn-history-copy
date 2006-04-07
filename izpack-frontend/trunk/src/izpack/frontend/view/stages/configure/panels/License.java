@@ -33,6 +33,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import utils.IO;
+import utils.XML;
 
 /** Implement the license panel.  This allows the user to select or create
  * a README type file - plain text that is
@@ -59,20 +60,29 @@ public class License extends LicenseEdit
     protected void updateEditorDisplay(String filename)
     {
         editor.setText(IO.loadFileIntoString(new File(filename)));
+        
+        this.filename = filename;
     }
 
     public Element createXML(Document doc)
-    {
-        // TODO Auto-generated method stub
-        return null;
+    { 
+        Element root = XML.createResourceTree("LicencePanel.licence", filename, doc);        
+        
+        return root;
     }
 
     public void initFromXML(Document xmlFile)
     {
-        // TODO Auto-generated method stub
+        String license = XML.getResourceValueAsPath(xmlFile, "LicencePanel.licence");
+     
+        if (xmlFile.getDocumentURI() != null)
+            license = new File(xmlFile.getDocumentURI()).getParent() + System.getProperty("file.separator") + license;
         
+        if (license != null)
+            updateEditorDisplay(license);
     }
     
+    private String filename;
     private JTextArea editor;
 
 }

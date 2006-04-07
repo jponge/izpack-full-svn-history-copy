@@ -87,7 +87,16 @@ public class XML
         try
         {
             builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            document = builder.parse(new File(filename));
+            document = builder.parse(new File(filename));            
+            
+            String URI = new File(filename).getParent();
+            
+            if (URI == null)
+                URI = "";
+            else
+                URI = URI + System.getProperty("file.separator");
+            
+            document.setDocumentURI(URI);
         }        
         catch (ParserConfigurationException pce)
         {
@@ -203,6 +212,22 @@ public class XML
         } 
         
         return null;
+    }
+    
+    public static String getResourceValueAsPath(Document document, String id)
+    {
+        //TODO make this better - just to catch myself if I create a document badly
+        if (document.getDocumentURI() == null)
+            throw new RuntimeException("Error: Document URI does not exist");
+        
+        String resource = getResourceValue(document, id);
+        
+        if (resource != null)
+        {
+            resource = document.getDocumentURI() + resource;
+        }
+        
+        return resource;
     }
     
     /**

@@ -314,7 +314,10 @@ public class GeneralInformationModel extends Model implements StageDataModel
 
         info.appendChild(appname);
         info.appendChild(appversion);
-        info.appendChild(url);
+        
+        if (homepage != null && !homepage.equals(""))
+            info.appendChild(url);
+        
         info.appendChild(authorsElem);
 
         return info;

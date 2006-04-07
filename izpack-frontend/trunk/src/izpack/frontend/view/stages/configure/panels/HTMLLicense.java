@@ -25,19 +25,16 @@ package izpack.frontend.view.stages.configure.panels;
 
 import izpack.frontend.view.components.HTMLEditor;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import utils.IO;
 import utils.UI;
+import utils.XML;
 
 /** Implement the information panel.  This allows the user to select or create
  * a README type file - plain text that is
@@ -61,6 +58,8 @@ public class HTMLLicense extends LicenseEdit
         try
         {
             editor.loadDocument(filename);
+            
+            this.filename = filename;
         }
         catch (IOException ioe)        
         {
@@ -73,16 +72,20 @@ public class HTMLLicense extends LicenseEdit
     }
 
     public Element createXML(Document doc)
-    {
-        // TODO Auto-generated method stub
-        return null;
+    { 
+        Element root = XML.createResourceTree("HTMLLicencePanel.licence", filename, doc);        
+        
+        return root;
     }
 
     public void initFromXML(Document xmlFile)
     {
-        // TODO Auto-generated method stub
+        String license = XML.getResourceValueAsPath(xmlFile, "HTMLLicencePanel.licence");        
         
+        if (license != null)
+            updateEditorDisplay(license);
     }
     
+    private String filename;
     private HTMLEditor editor;
 }
