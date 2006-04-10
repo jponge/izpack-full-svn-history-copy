@@ -226,9 +226,7 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
         
         Element nativeLib = XML.createElement("native", doc);
         nativeLib.setAttribute("type", "izpack");
-        nativeLib.setAttribute("name", "ShellLink.dll");        
-        
-        nativeLib.appendChild(XML.createElement("test", doc));
+        nativeLib.setAttribute("name", "ShellLink.dll");
         
         root.appendChild(nativeLib);
         

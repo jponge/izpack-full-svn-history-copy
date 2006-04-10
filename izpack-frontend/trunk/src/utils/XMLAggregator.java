@@ -1,33 +1,24 @@
 /*
- * Created on Apr 3, 2005
- * 
- * $Id: XMLAggregator.java Feb 8, 2004 izpack-frontend
- * Copyright (C) 2005 Andy Gombos
- * 
- * File : XMLAggregator.java 
- * Description : TODO Add description
- * Author's email : gumbo@users.berlios.de
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0
- *     
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Created on Apr 3, 2005 $Id: XMLAggregator.java Feb 8, 2004 izpack-frontend
+ * Copyright (C) 2005 Andy Gombos File : XMLAggregator.java Description : TODO
+ * Add description Author's email : gumbo@users.berlios.de Licensed under the
+ * Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law
+ * or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 
 package utils;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
+import java.util.Iterator;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -36,85 +27,134 @@ import org.w3c.dom.NodeList;
  */
 public class XMLAggregator
 {
-    public static Element mergeElements (Element top)
-    {        
-        storeParents(top);        
-     
-        for (int i = 0; i < parentNodes.size(); i++)
+    public XMLAggregator(Document doc)
+    {
+        Node root = doc.getDocumentElement();
+        
+        ArrayList<MergeableElements> duplicates = findCombinableNodes(root);
+        
+        System.out.println(duplicates);
+        
+        for (MergeableElements elements : duplicates)
         {
-            Element node = (Element) parentNodes.get(i);            
-            
-            int index = 0;
-            if ( (index = containsNotElement(node, i) ) != -1)
-            {   
-                Element donor = (Element) parentNodes.get(index);
-                Element source = node;
-                Document sourceDoc = source.getOwnerDocument();
-                
-                NodeList donorChildren = donor.getChildNodes();
-                for (int j = 0; j < donorChildren.getLength(); j++)
-                {
-                    //Copy and remove the donor node's children
-                    Node importedDonor = sourceDoc.importNode(donorChildren.item(j), true);
-                    donor.removeChild(donorChildren.item(j));
-                    
-                    source.appendChild(importedDonor);
-                }
-                
-                //Remove the donor node
-                parentNodes.remove(index);
-                donor.getParentNode().removeChild(donor);
-            }
-            
+            elements.merge();
         }
         
-        //Remove the fake top node that was just to combine the different documents
-        //For some reason, the document contains random text nodes
-        //Search for the actual child node                        
-        Node realTop = top.getFirstChild();
-        
-        Document doc = XML.getNewDocument();
-        Node imported = doc.importNode(realTop, true);   
-        doc.appendChild(imported);
-        
-        return (Element) imported;
+        XML.printXML(doc);        
     }
-    
-    private static void storeParents(Element start)
-    {
-        NodeList children = start.getChildNodes();
+
+    private ArrayList<MergeableElements> findCombinableNodes(Node root)
+    {        
         
-        if (children == null)
-            return;
+        ArrayList<MergeableElements> duplicates = new ArrayList<MergeableElements>();
+        
+        NodeList children = root.getChildNodes();
+        
+        for (int i = 0; i < children.getLength(); i++)
+        {   
+            for (int j = 0; j < children.getLength(); j++)
+            {   
+                if (i != j && children.item(i).getNodeType() == Node.ELEMENT_NODE && children.item(j).getNodeType() == Node.ELEMENT_NODE &&
+                                areNodesEqual(children.item(i), children.item(j)))
+                {   
+                    MergeableElements me = new MergeableElements(children.item(i), children.item(j));
+                    
+                    if (!duplicates.contains(me))
+                        duplicates.add(me);
+                }
+            }
+        }
         
         for (int i = 0; i < children.getLength(); i++)
         {
-            Node child = children.item(i);
-            if (child.hasChildNodes())
-            {                
-                parentNodes.add(child);
-            	storeParents( (Element) child );
-            }
-        }
-    }
-    
-    private static int containsNotElement(Element node, int index)
-    {
-        for (ListIterator iter = parentNodes.listIterator(); iter.hasNext();)
-        {
-            Element element = (Element) iter.next();
-            
-            if (element.getNodeName().equals(node.getNodeName()))
-            {                
-                int idx = iter.nextIndex() - 1;
-                
-                if (idx != index)
-                    return idx;
+            if (children.item(i).getNodeType() == Node.ELEMENT_NODE)
+            {   
+                duplicates.addAll(findCombinableNodes(children.item(i)));
             }
         }
         
-        return -1;
+        return duplicates;
     }
     
-    private static ArrayList parentNodes = new ArrayList();
+    private boolean areNodesEqual(Node n1, Node n2)
+    {
+        if (! n1.getNodeName().equals(n2.getNodeName()))
+            return false;
+        
+        NamedNodeMap attr1 = n1.getAttributes();
+        NamedNodeMap attr2 = n2.getAttributes();
+        
+        if (attr1 != null && attr2 != null)
+        {
+            if (attr1.getLength() == attr2.getLength())
+            {
+                for (int i = 0; i < attr1.getLength(); i++)
+                {
+                    Node attrNode1 = attr1.item(i);
+                    Node attrNode2 = attr2.getNamedItem(attrNode1.getNodeName());
+                    
+                    if (attrNode2 == null)
+                        return false;
+                    
+                    if (! attrNode1.getNodeValue().equals(attrNode2.getNodeValue()) )
+                        return false;
+                }
+            }
+        }
+        else if ( (attr1 != null && attr2 == null) || (attr1 == null && attr2 != null))
+            return false;
+        
+        if (n1.getNodeValue() != null && !n1.getNodeValue().equals(n2.getNodeValue()))
+            return false;
+        
+        if (! n1.getOwnerDocument().equals(n2.getOwnerDocument()))
+            return false;
+        
+        return true;
+    }
+    
+    private class MergeableElements
+    {
+        public MergeableElements(Node n1, Node n2)
+        {
+            this.n1 = n1;
+            this.n2 = n2;
+        }
+        
+        public void merge()
+        {
+            Node source = n1;
+            Node dest = n2;                    
+            
+            NodeList sourceChildren = source.getChildNodes();
+            
+            for (int k = 0; k < sourceChildren.getLength(); k++)
+            {
+                if (sourceChildren.item(k).getNodeType() == Node.ELEMENT_NODE)
+                {   
+                    dest.appendChild(sourceChildren.item(k));
+                }
+            }               
+        
+            if (source.getParentNode() != null)
+                source.getParentNode().removeChild(source);
+        }
+        
+        @Override
+        public boolean equals(Object obj)
+        {
+            MergeableElements me = (MergeableElements) obj;
+            
+            return ( (n1.isSameNode(me.n1) && n2.isSameNode(me.n2)) || (n1.isSameNode(me.n2) && n2.isSameNode(me.n1)) );
+        }
+        
+        @Override
+        public String toString()
+        {
+            return "{" + n1 + "=>" + n2 + "}";
+        }
+        
+        public Node n1;
+        public Node n2;
+    }
 }

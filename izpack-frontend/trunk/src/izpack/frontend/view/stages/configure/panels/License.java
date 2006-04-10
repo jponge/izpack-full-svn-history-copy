@@ -74,9 +74,6 @@ public class License extends LicenseEdit
     public void initFromXML(Document xmlFile)
     {
         String license = XML.getResourceValueAsPath(xmlFile, "LicencePanel.licence");
-     
-        if (xmlFile.getDocumentURI() != null)
-            license = new File(xmlFile.getDocumentURI()).getParent() + System.getProperty("file.separator") + license;
         
         if (license != null)
             updateEditorDisplay(license);

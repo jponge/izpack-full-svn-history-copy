@@ -32,7 +32,8 @@
 			srcdir="."
 			destdir="build/classes"			
 			deprecation="on"
-			verbose="true">
+			verbose="true"
+			excludes="tests/**">
 			<classpath refid="build.classpath" />
 		</javac>
 		
