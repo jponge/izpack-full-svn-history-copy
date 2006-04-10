@@ -31,6 +31,7 @@ import javax.swing.ListModel;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import com.jgoodies.binding.beans.Model;
 
@@ -57,11 +58,14 @@ public class ConfigurationStageModel extends Model implements StageDataModel
         //TODO Create the interesting XML data
         for (ConfigurePanel editor : editors)
         {
-            Element xml = editor.createXML(doc);
+            Element[] xml = editor.createXML(doc);
             
             if (xml != null)
-            {   
-                editorXML.add(xml);
+            {       
+                for (int i = 0; i < xml.length; i++)
+                {
+                    editorXML.add(xml[i]);
+                }                
             }
         }        
         

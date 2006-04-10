@@ -67,7 +67,7 @@ public class JDKPath extends JPanel implements ConfigurePanel
         bg.add(no);
     }
     
-    public Element createXML(Document doc)
+    public Element[] createXML(Document doc)
     {
         Element root = XML.createElement("variables", doc);
         
@@ -93,7 +93,7 @@ public class JDKPath extends JPanel implements ConfigurePanel
         maxVerElem.setAttribute("value", maxVer.getText());
         root.appendChild(maxVerElem);
         
-        return root;
+        return new Element[]{root};
     }
 
     public void initFromXML(Document xmlFile)

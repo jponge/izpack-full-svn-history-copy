@@ -36,9 +36,9 @@ public interface ConfigurePanel
      *  Create an XML segment for the install file to be compiled.  Follows the DTD.
      * @param doc TODO
      * 
-     *  @return An Element that forms the current XML tree
+     *  @return An Element array that contains elements for the current XML tree
      */
-    public Element createXML(Document doc);
+    public Element[] createXML(Document doc);
     
     /**
      *	Initialize panel values from a ready-to-compile installer file.  The panel must

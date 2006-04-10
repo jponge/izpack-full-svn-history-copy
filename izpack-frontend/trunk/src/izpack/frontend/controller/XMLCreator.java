@@ -31,6 +31,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import utils.XML;
+import utils.XMLAggregator;
 
 public class XMLCreator
 {
@@ -57,14 +58,13 @@ public class XMLCreator
         root.setAttribute("version", "1.0");
         
         doc.appendChild(root);
-
-        System.out.println(xmlChunks.size());
+        
         for (Element elem : xmlChunks)
         {            
             root.appendChild(elem);
         }
         
-        return doc;
+        return XMLAggregator.aggregateDocument(doc);
     }
     
     /**

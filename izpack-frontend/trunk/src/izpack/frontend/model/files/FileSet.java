@@ -34,6 +34,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import utils.XML;
 
@@ -43,7 +44,7 @@ import utils.XML;
 public class FileSet extends PackFileModel implements ListModel
 {
     public boolean caseSensitive = true, defaultExcludes = true;
-    private ArrayList files = new ArrayList();
+    private ArrayList<Set> files = new ArrayList<Set>();
 
     /* (non-Javadoc)
      * @see izpack.frontend.model.files.PackElement#writeXML()
@@ -93,6 +94,38 @@ public class FileSet extends PackFileModel implements ListModel
         
         if (attributes.getNamedItem("defaultexcludes") != null)
             defaultExcludes = yesNoBoolean(attributes.getNamedItem("defaultexcludes").getNodeValue());
+        
+        //TODO implement Set loading
+        NodeList children = elementNode.getChildNodes();
+        
+        for (int i = 0; i < children.getLength(); i++)
+        {
+            Node child = children.item(i);
+            
+            if (child.getNodeType() == Node.ELEMENT_NODE)
+            {
+                if (child.getNodeName().equals("include"))
+                {                    
+                    String include = child.getAttributes().getNamedItem("name").getNodeValue();
+                    
+                    if (include != null)
+                    {
+                        files.add(new Include(include));
+                    }
+                    //TODO throw malformed XML error here
+                }
+                else if (child.getNodeName().equals("exclude"))
+                {                    
+                    String exclude = child.getAttributes().getNamedItem("name").getNodeValue();
+                    
+                    if (exclude != null)
+                    {
+                        files.add(new Exclude(exclude));
+                    }
+                    //TODO throw malformed XML error here
+                }
+            }
+        }
     }
 
     
@@ -273,5 +306,5 @@ public class FileSet extends PackFileModel implements ListModel
         }
     }
     
-    private ArrayList dataListeners = new ArrayList();
+    private ArrayList<ListDataListener> dataListeners = new ArrayList<ListDataListener>();
 }

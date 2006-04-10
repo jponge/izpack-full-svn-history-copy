@@ -75,11 +75,11 @@ public class HTMLInfo extends FileEdit
         }
     }
 
-    public Element createXML(Document doc)
+    public Element[] createXML(Document doc)
     { 
         Element root = XML.createResourceTree("HTMLInfoPanel.info", filename, doc);        
         
-        return root;
+        return new Element[]{root};
     }
 
     public void initFromXML(Document xmlFile)

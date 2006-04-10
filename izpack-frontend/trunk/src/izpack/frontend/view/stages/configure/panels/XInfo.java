@@ -77,9 +77,9 @@ public class XInfo extends FileEdit
      * 	<res ...>
      * </resources>
      */
-    public Element createXML(Document doc)
+    public Element[] createXML(Document doc)
     {   
-        return XML.createResourceTree("XInfoPanel.info", filename, doc);
+        return new Element[]{XML.createResourceTree("XInfoPanel.info", filename, doc)};
     }
 
     /* (non-Javadoc)

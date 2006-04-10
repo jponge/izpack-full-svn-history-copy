@@ -32,6 +32,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
 import utils.XML;
+import utils.XMLAggregator;
 
 import com.izforge.izpack.compiler.CompilerConfig;
 import com.izforge.izpack.compiler.CompilerException;
@@ -54,10 +55,11 @@ public class CompileManager
     }
     
     public static void compile(Document xmlFile, String[] installArgs, PackagerListener pl)
-    {
+    {   
         StringWriter stringStream = new StringWriter(2000);
         XML.writeXML(new StreamResult(stringStream), xmlFile);
         
+        //TODO Make this configurable
         XML.writeXML(installArgs[2] + ".xml", xmlFile);
      
         System.out.println("Starting compiler");

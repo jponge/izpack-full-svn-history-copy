@@ -64,11 +64,11 @@ public class License extends LicenseEdit
         this.filename = filename;
     }
 
-    public Element createXML(Document doc)
+    public Element[] createXML(Document doc)
     { 
         Element root = XML.createResourceTree("LicencePanel.licence", filename, doc);        
         
-        return root;
+        return new Element[]{root};
     }
 
     public void initFromXML(Document xmlFile)

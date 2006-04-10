@@ -27,23 +27,21 @@ import org.w3c.dom.NodeList;
  */
 public class XMLAggregator
 {
-    public XMLAggregator(Document doc)
+    public static Document aggregateDocument(Document doc)
     {
         Node root = doc.getDocumentElement();
         
         ArrayList<MergeableElements> duplicates = findCombinableNodes(root);
-        
-        System.out.println(duplicates);
         
         for (MergeableElements elements : duplicates)
         {
             elements.merge();
         }
         
-        XML.printXML(doc);        
+        return doc;        
     }
 
-    private ArrayList<MergeableElements> findCombinableNodes(Node root)
+    private static ArrayList<MergeableElements> findCombinableNodes(Node root)
     {        
         
         ArrayList<MergeableElements> duplicates = new ArrayList<MergeableElements>();
@@ -76,7 +74,7 @@ public class XMLAggregator
         return duplicates;
     }
     
-    private boolean areNodesEqual(Node n1, Node n2)
+    private static boolean areNodesEqual(Node n1, Node n2)
     {
         if (! n1.getNodeName().equals(n2.getNodeName()))
             return false;
@@ -113,7 +111,7 @@ public class XMLAggregator
         return true;
     }
     
-    private class MergeableElements
+    private static class MergeableElements
     {
         public MergeableElements(Node n1, Node n2)
         {

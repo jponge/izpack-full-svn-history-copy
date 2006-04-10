@@ -64,11 +64,11 @@ public class Info extends FileEdit
         this.filename = filename;
     }
 
-    public Element createXML(Document doc)
+    public Element[] createXML(Document doc)
     { 
         Element root = XML.createResourceTree("InfoPanel.info", filename, doc);        
         
-        return root;
+        return new Element[]{root};
     }
 
     public void initFromXML(Document xmlFile)

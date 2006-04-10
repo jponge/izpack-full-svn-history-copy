@@ -71,11 +71,11 @@ public class HTMLLicense extends LicenseEdit
         }
     }
 
-    public Element createXML(Document doc)
+    public Element[] createXML(Document doc)
     { 
         Element root = XML.createResourceTree("HTMLLicencePanel.licence", filename, doc);        
         
-        return root;
+        return new Element[]{root};
     }
 
     public void initFromXML(Document xmlFile)

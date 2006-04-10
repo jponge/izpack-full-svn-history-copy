@@ -203,7 +203,7 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
         return completePanel;
     }
 
-    public Element createXML(Document doc)
+    public Element[] createXML(Document doc)
     {
         //Windows, Unix, Mac when implemented
         Document[] docs = model.writeXML();
@@ -215,22 +215,14 @@ public class ShortcutPanel extends JPanel implements ConfigurePanel
         //Create the resources specs, and native library stuff
         
         
-        Element root = XML.createElement("installation", doc);
-        root.setAttribute("version", "1.0");
-        
         Element winResources = XML.createResourceTree("shortcutSpec.xml", "shortcutSpec_Windows.xml", doc);
-        Element unixResources = XML.createResourceTree("Unix_shortcutSpec.xml", "shortcutSpec_Unix.xml", doc);
-        
-        root.appendChild(winResources);
-        root.appendChild(unixResources);
+        Element unixResources = XML.createResourceTree("Unix_shortcutSpec.xml", "shortcutSpec_Unix.xml", doc);        
         
         Element nativeLib = XML.createElement("native", doc);
         nativeLib.setAttribute("type", "izpack");
         nativeLib.setAttribute("name", "ShellLink.dll");
         
-        root.appendChild(nativeLib);
-        
-        return root;
+        return new Element[]{winResources, unixResources, nativeLib};
     }
     
     public void initFromXML(Document xmlFile)
