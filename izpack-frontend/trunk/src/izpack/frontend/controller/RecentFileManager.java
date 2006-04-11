@@ -50,12 +50,12 @@ public class RecentFileManager
         if (instance == null)
         {
             instance = new RecentFileManager();
-            files = new ArrayList();
+            files = new ArrayList<String>();
         }
         return instance;
     }
     
-    public ArrayList loadRecentList()
+    public ArrayList<String> loadRecentList()
     {
         if (files.size() != 0)
             return files;
@@ -86,9 +86,12 @@ public class RecentFileManager
         return files;
     }
     
-    public void addUsedFile(String file)
+    public void addUsedFile(String file, boolean current)
     {
         files.add(0, file);
+        
+        if (current)
+            currentFile = file;
     }
     
     public void saveRecentFiles() throws IOException
@@ -111,6 +114,12 @@ public class RecentFileManager
         XML.writeXML("conf/recent.xml", doc);
     }
     
-    private static ArrayList files;
+    public String getCurrentFile()
+    {
+        return currentFile;
+    } 
+    
+    private static String currentFile;
+    private static ArrayList<String> files;
     private static RecentFileManager instance;
 }

@@ -60,9 +60,29 @@ public class UI
         if (directoriesOnly)
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         else
-            jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         
         if (jfc.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
+        {
+            return jfc.getSelectedFile();
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    public static File getSaveFile(Container parent, File start)
+    {
+        JFileChooser jfc = new JFileChooser();        
+        jfc.setDialogTitle("Save As");
+
+        if (start != null)
+            jfc.setSelectedFile(start);
+        
+        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        if (jfc.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION)
         {
             return jfc.getSelectedFile();
         }

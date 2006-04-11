@@ -26,4 +26,6 @@ package izpack.frontend.actions;
 public interface CompileListener
 {
     public void compileRequested(CompileEvent ce);
+    
+    public void cancelCompile();
 }

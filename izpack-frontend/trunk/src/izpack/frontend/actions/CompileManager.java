@@ -23,8 +23,8 @@
 
 package izpack.frontend.actions;
 
-import java.awt.EventQueue;
 import java.io.StringWriter;
+import java.lang.Thread.State;
 
 import javax.swing.SwingUtilities;
 import javax.xml.transform.stream.StreamResult;
@@ -32,7 +32,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
 import utils.XML;
-import utils.XMLAggregator;
 
 import com.izforge.izpack.compiler.CompilerConfig;
 import com.izforge.izpack.compiler.CompilerException;
@@ -62,11 +61,19 @@ public class CompileManager
         //TODO Make this configurable
         XML.writeXML(installArgs[2] + ".xml", xmlFile);
      
-        System.out.println("Starting compiler");
-        System.out.println("On EVT: " + SwingUtilities.isEventDispatchThread());
-        //SwingUtilities.invokeLater(new CompileThread(pl, installArgs, stringStream.toString()));
-        new CompileThread(pl, installArgs, stringStream.toString()).start();
-        System.out.println("After start");
+        currentCompile = new CompileThread(pl, installArgs, stringStream.toString());
+        
+        currentCompile.start();        
+    }
+    
+    @SuppressWarnings("deprecation")
+    public static void stopCompile()
+    {
+        //Check to see if there is a compiler to stop        
+        if (currentCompile != null && currentCompile.getState() == State.RUNNABLE)
+        {
+            currentCompile.getCompiler().stop();
+        }
     }
     
     protected static class CompileThread extends Thread
@@ -91,6 +98,11 @@ public class CompileManager
                 
                 e.printStackTrace();
             }            
+        }
+        
+        public CompilerConfig getCompiler()
+        {
+            return compiler;
         }
         
         @Override
@@ -134,4 +146,6 @@ public class CompileManager
         private final PackagerListener packagerListener;
         private CompilerConfig compiler;
     }
+    
+    private static CompileThread currentCompile;    
 }

@@ -28,13 +28,16 @@ import izpack.frontend.controller.GUIController;
 import izpack.frontend.model.LangResources;
 import izpack.frontend.view.GUIConstants;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import reporting.CrashHandler;
+import sun.security.krb5.internal.ac;
 import utils.PersistanceShutdownHook;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -57,12 +60,14 @@ public class WelcomeScreen extends JFrame
     }
 
     public WelcomeScreen()
-    {        
-        installerUI = new WizardMode(this);
+    {   
+        actionHandler = new ActionHandler(this);        
+        installerUI = new WizardMode(this);        
+        actionHandler.setInstallerUI(installerUI);
         
-        actionHandler = new ActionHandler(installerUI, this);
         
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);        
+        setTitle("IzPack Frontend - alpha");
         
         
         FormLayout layout = new FormLayout("left:pref, 15dlu, left:pref",
@@ -112,8 +117,15 @@ public class WelcomeScreen extends JFrame
             }
         }
 
-        setContentPane(builder.getPanel());
+        builder.setDefaultDialogBorder();
+        setContentPane(builder.getPanel());        
         pack();
+        
+        //Center on the screen        
+        Dimension windowSize = getSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screenSize.width - windowSize.width) / 2,
+                (screenSize.height - windowSize.height) / 2);
         
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
@@ -122,5 +134,5 @@ public class WelcomeScreen extends JFrame
                     .langResources();    
     
     private WizardMode installerUI = null;
-    private ActionHandler actionHandler = null;
+    protected ActionHandler actionHandler = null;
 }

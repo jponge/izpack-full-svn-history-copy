@@ -24,6 +24,9 @@
 package izpack.frontend.actions;
 
 import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -72,14 +75,33 @@ public class CompileDisplay extends JPanel implements ActionListener
         layout.next(this);
     }
     
+    public void dispose()
+    {
+        Component c = this;
+        
+        while ( !(c.getParent() instanceof Window) )
+        {
+            c = c.getParent();
+        }       
+        
+
+        ( (Window) c.getParent() ).dispose();
+    }
+    
     /**
      * Provide browse action
      */
     public void actionPerformed(ActionEvent e)
     {
         File file = null;
-
-        if (e.getSource().equals(browseBase))
+        
+        if (e.getSource().equals(redoCompile))
+        {
+            fireCompileCanel();
+            
+            layout.previous(this);
+        }
+        else if (e.getSource().equals(browseBase))
         {
             File baseDirFile = null;
             
@@ -200,7 +222,17 @@ public class CompileDisplay extends JPanel implements ActionListener
         
         JButton cancel = null;
         if (showingInDialog)
+        {
              cancel = new JButton("Cancel");
+             
+             cancel.addActionListener(new ActionListener()
+                             {
+                                public void actionPerformed(ActionEvent e)
+                                {
+                                    dispose();                                    
+                                }                 
+                             });
+        }
 
         builder.setColumn(3);
         
@@ -217,7 +249,13 @@ public class CompileDisplay extends JPanel implements ActionListener
     public CompileConsole getConsole()
     {
         if (console == null)
+        {
             console = new CompileConsole();
+        
+            redoCompile = console.getReturnButton();
+            
+            redoCompile.addActionListener(this);
+        }
         
         return console;
     }
@@ -238,10 +276,18 @@ public class CompileDisplay extends JPanel implements ActionListener
     }
     
     private void fireCompileEvent(CompileEvent ce)
-    {
+    {        
         for (CompileListener cl : listeners)    
         {
             cl.compileRequested(ce);
+        }
+    }
+    
+    private void fireCompileCanel()
+    {
+        for (CompileListener cl : listeners)    
+        {
+            cl.cancelCompile();
         }
     }
 
@@ -250,6 +296,8 @@ public class CompileDisplay extends JPanel implements ActionListener
     
     private JPanel settingsPanel;
     private CompileConsole console;
+    
+    private JButton redoCompile;
     
     private final boolean showingInDialog;
     

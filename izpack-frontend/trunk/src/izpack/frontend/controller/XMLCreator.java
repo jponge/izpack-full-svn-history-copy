@@ -51,7 +51,6 @@ public class XMLCreator
     {
         Document doc = XML.createDocument();
         
-        
         loadXMLChunksFromStages(doc);        
         
         Element root = XML.createElement("installation", doc);        

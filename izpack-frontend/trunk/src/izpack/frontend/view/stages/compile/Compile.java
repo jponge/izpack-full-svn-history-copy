@@ -64,6 +64,11 @@ public class Compile extends IzPackStage implements CompileListener
                         ce.getOutputFile()}, 
                         displayer.getPackagerListener());
     }
+    
+    public void cancelCompile()
+    {
+        CompileManager.stopCompile();                        
+    }
 
     @Override
     public Element[] createInstallerData(Document doc)

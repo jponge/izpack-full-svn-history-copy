@@ -21,6 +21,7 @@
 
 package izpack.frontend.view.mode;
 
+import izpack.frontend.actions.ActionHandler;
 import izpack.frontend.controller.StageChangeEvent;
 import izpack.frontend.controller.StageChangeListener;
 import izpack.frontend.view.stages.IzPackStage;
@@ -33,6 +34,8 @@ import izpack.frontend.view.stages.panelselect.PanelSelection;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -43,7 +46,11 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import org.w3c.dom.Document;
@@ -65,7 +72,8 @@ public class WizardMode extends JFrame implements StageChangeListener,
     public WizardMode(WelcomeScreen launcherInstance)
     {
         launcher = launcherInstance;
-        
+        actionHandler = launcher.actionHandler;        
+
         long start = System.currentTimeMillis();
 
         setLayout(new BorderLayout());
@@ -94,26 +102,18 @@ public class WizardMode extends JFrame implements StageChangeListener,
         getContentPane().add(infoPanel, BorderLayout.SOUTH);
         getContentPane().add(leftNavBar, BorderLayout.WEST);
 
+        createMenuBar();
+
         setPreferredSize(new Dimension(700, 700));
-        pack();        
+        pack();
 
         long stop = System.currentTimeMillis();
 
         long startupTime = stop - start;
-        System.out.println(startupTime + "ms " + (startupTime / 1000f) + "s "
+        System.out.println("Startup time: " + startupTime + "ms " + (startupTime / 1000f) + "s "
                         + (startupTime / 1000 / 60f) + "min");
-    }    
-
-    public void initializeFromXML(String xmlFile) throws DocumentCreationException
-    {
-        Document d = XML.createDocument(xmlFile);
-
-        ArrayList<IzPackStage> stages = IzPackStage.getAllStages();
-        for (IzPackStage stage : stages)
-        {
-            stage.initializeStageFromXML(d);
-        }
     }
+
     /*
      * (non-Javadoc)
      * 
@@ -150,83 +150,33 @@ public class WizardMode extends JFrame implements StageChangeListener,
         layout.show(base, e.getStageClass().toString());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
-     */
-    public void windowActivated(WindowEvent e)
-    {
-        // TODO Auto-generated method stub
+    public void initializeFromXML(String xmlFile)
+                    throws DocumentCreationException
+    {        
+        Document d = XML.createDocument(xmlFile);
 
+        ArrayList<IzPackStage> stages = IzPackStage.getAllStages();
+        for (IzPackStage stage : stages)
+        {
+            stage.initializeStageFromXML(d);
+        }
+        
+        changeStage(new StageChangeEvent(GeneralInformation.class));
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
-     */
-    public void windowClosed(WindowEvent e)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
-     */
+    
     public void windowClosing(WindowEvent e)
     {
         //TODO Make welcome screen visible
-        launcher.setVisible(true);        
+        launcher.setVisible(true);
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
-     */
-    public void windowDeactivated(WindowEvent e)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
-     */
-    public void windowDeiconified(WindowEvent e)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
-     */
-    public void windowIconified(WindowEvent e)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
-     */
-    public void windowOpened(WindowEvent e)
-    {
-        // TODO Auto-generated method stub
-        System.out.println("window opened");
-    }
-
+    
+    public void windowActivated(WindowEvent e) {}    
+    public void windowClosed(WindowEvent e) {}    
+    public void windowDeactivated(WindowEvent e) {}    
+    public void windowDeiconified(WindowEvent e) {}    
+    public void windowIconified(WindowEvent e) {}    
+    public void windowOpened(WindowEvent e) {}
+    
     /*
      * Create a panel with the 'IzPack' logo for the top left corner
      */
@@ -243,6 +193,37 @@ public class WizardMode extends JFrame implements StageChangeListener,
         navPanel.add(Box.createHorizontalGlue());
 
         return navPanel;
+    }
+
+    private void createMenuBar()
+    {   
+        //TODO Internationalize
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem openItem = new JMenuItem("Open");
+        openItem.setName("open");
+        JMenuItem saveItem = new JMenuItem("Save");
+        saveItem.setName("save");
+        JMenuItem saveAsItem = new JMenuItem("Save As");
+        saveAsItem.setName("saveas");
+        JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.setName("exit");
+
+        openItem.addActionListener(actionHandler);
+        saveItem.addActionListener(actionHandler);
+        saveAsItem.addActionListener(actionHandler);
+        exitItem.addActionListener(actionHandler);
+
+        fileMenu.add(openItem);
+        fileMenu.add(saveItem);
+        fileMenu.add(saveAsItem);
+        fileMenu.add(new JSeparator());
+        fileMenu.add(exitItem);
+
+        menuBar.add(fileMenu);
+        
+        this.setJMenuBar(menuBar);
     }
 
     /*
@@ -276,14 +257,11 @@ public class WizardMode extends JFrame implements StageChangeListener,
         return null;
     }
 
-    
-
     JPanel base = new JPanel(), iconPanel, infoPanel = new JPanel(),
-                    leftNavBar = new JPanel();    
+                    leftNavBar = new JPanel();
 
-    CardLayout layout = new CardLayout();
+    CardLayout layout = new CardLayout();    
 
-    private static WizardMode instance = null;
     private static WelcomeScreen launcher;
+    private static ActionHandler actionHandler; 
 }
- 

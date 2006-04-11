@@ -20,7 +20,10 @@ package izpack.frontend.actions;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -67,7 +70,12 @@ public class CompileConsole extends JComponent implements PackagerListener
 
         setLayout(new BorderLayout());
         add(scroll, BorderLayout.CENTER);
-
+        
+        //TODO Internationalize
+        redo = new JButton("Return to the settings panel");
+        
+        add(redo, BorderLayout.SOUTH);
+        
         consoleDocument = console.getDocument();
     }
 
@@ -133,9 +141,15 @@ public class CompileConsole extends JComponent implements PackagerListener
         {
         }
     }
+    
+    public JButton getReturnButton()
+    {
+        return redo;
+    }
 
     private JTextPane console;
     private JScrollPane scroll;
+    private JButton redo;
 
-    private Document consoleDocument;
+    private Document consoleDocument;    
 }

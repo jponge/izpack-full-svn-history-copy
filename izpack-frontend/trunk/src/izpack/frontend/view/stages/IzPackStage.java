@@ -177,7 +177,7 @@ public abstract class IzPackStage extends JPanel implements Stage
      * @return The stage object
      */    
     public static IzPackStage getStage(Class stage)
-    {
+    {         
         for (IzPackStage element : stageList)
         {            
             if (element.getClass().equals(stage))
