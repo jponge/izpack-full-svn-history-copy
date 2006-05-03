@@ -72,7 +72,7 @@ public class WizardMode extends JFrame implements StageChangeListener,
     public WizardMode(WelcomeScreen launcherInstance)
     {
         launcher = launcherInstance;
-        actionHandler = launcher.actionHandler;        
+        actionHandler = launcher.actionHandler;
 
         long start = System.currentTimeMillis();
 
@@ -123,7 +123,7 @@ public class WizardMode extends JFrame implements StageChangeListener,
      *      create the navigation bar at the top. Perhaps not the best design
      */
     public void changeStage(StageChangeEvent e)
-    {
+    {       
         if (e.isConsumed()) return;
 
         e.consume();
@@ -148,6 +148,8 @@ public class WizardMode extends JFrame implements StageChangeListener,
         pack();
 
         layout.show(base, e.getStageClass().toString());
+        
+        repaint();
     }
 
     public void initializeFromXML(String xmlFile)

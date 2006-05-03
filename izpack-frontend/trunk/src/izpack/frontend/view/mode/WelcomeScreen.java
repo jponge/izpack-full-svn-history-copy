@@ -36,23 +36,28 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
-import sun.security.krb5.internal.ac;
 import utils.PersistanceShutdownHook;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 
 public class WelcomeScreen extends JFrame
 {
 
     /**
      * @param args
+     * @throws UnsupportedLookAndFeelException 
      */
-    public static void main(String[] args)
+    public static void main(String[] args) throws UnsupportedLookAndFeelException
     {        
         //Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
+        
+        //UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
         
         Runtime.getRuntime().addShutdownHook(new PersistanceShutdownHook());
         
@@ -62,13 +67,13 @@ public class WelcomeScreen extends JFrame
     public WelcomeScreen()
     {   
         actionHandler = new ActionHandler(this);        
+        
         installerUI = new WizardMode(this);        
         actionHandler.setInstallerUI(installerUI);
         
         
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);        
-        setTitle("IzPack Frontend - alpha");
-        
+        setTitle("IzPack Frontend - alpha");        
         
         FormLayout layout = new FormLayout("left:pref, 15dlu, left:pref",
                         "center:pref, 25dlu, pref, 10dlu, pref, 10dlu, pref, 10dlu, pref");

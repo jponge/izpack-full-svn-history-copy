@@ -31,6 +31,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import utils.UI;
 import utils.XML;
 import exceptions.DocumentCreationException;
 import exceptions.UnhandleableException;
@@ -49,6 +50,7 @@ public class AppConfiguration {
 	public final static String T_UI = "user-interface";
 	public final static String T_APP_VERSION = "app-version";
 	public final static String T_APP_NAME = "app-name";
+    public final static String T_IZPACK_HOME = "izpack-home";
 	
 	// Attributes used within the config file.
 	public final static String A_CLASS = "class";
@@ -113,6 +115,19 @@ public class AppConfiguration {
 			return elem.getTextContent();
 		}
 	}
+    
+    public String getIzpackHome()
+    {   
+        return getElement(T_IZPACK_HOME).getTextContent();
+    }
+    
+    public void setIzpackHome(String izpackHome)
+    {       
+        Element homeElem = getElement(T_IZPACK_HOME);
+        homeElem.setTextContent(izpackHome);
+        
+        XML.writeXML(CONFIG_FILE, document);
+    }
 	
 	/**
 	 * Get the value of the <code>A_CLASS</code> attribute of the <code>XMLElement</code>
@@ -161,8 +176,6 @@ public class AppConfiguration {
         {
             throw new UnhandleableException(e);
         }
-        
-	    System.out.println("configuration loaded");
 	}
 
     public String getClass4Stage(String name)

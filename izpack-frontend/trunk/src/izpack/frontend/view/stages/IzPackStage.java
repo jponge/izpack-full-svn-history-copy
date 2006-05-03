@@ -217,7 +217,8 @@ public abstract class IzPackStage extends JPanel implements Stage
 	 */
 	public void addStageChangeListener(StageChangeListener stl)
 	{	 
-	    changeListenerList.add(stl);
+        if (!changeListenerList.contains(stl))
+            changeListenerList.add(stl);
 	}
 	
 	public void removeStageChangeListener(StageChangeListener stl)

@@ -23,8 +23,11 @@
 
 package izpack.frontend.actions;
 
+import izpack.frontend.controller.GUIController;
+
 import java.io.StringWriter;
 import java.lang.Thread.State;
+import java.util.Enumeration;
 
 import javax.swing.SwingUtilities;
 import javax.xml.transform.stream.StreamResult;
@@ -83,14 +86,11 @@ public class CompileManager
             packagerListener = pl;
             
             try
-            {               
-                System.out.println("basedir " + installArgs[0]);
-                System.out.println("kind " + installArgs[1]);
-                System.out.println("output " + installArgs[2]);
+            {   
                 compiler = new CompilerConfig(installArgs[0], installArgs[1], installArgs[2], 
-                                pl, xmlData.toString());
+                                pl, xmlData);
                 
-                System.out.println("On EVT CT: " + SwingUtilities.isEventDispatchThread());
+                compiler.setIzpackHome(GUIController.getInstance().appConfiguration().getIzpackHome());
             }
             catch (CompilerException e)
             {                
@@ -112,11 +112,7 @@ public class CompileManager
                 return;
             
             try
-            {            
-                System.out.println("On EVT CTR: " + SwingUtilities.isEventDispatchThread());
-                
-                System.out.println(compiler.getCompiler().getProperties().keys());
-                
+            {   
                 compiler.executeCompiler();
         
                 // Waits

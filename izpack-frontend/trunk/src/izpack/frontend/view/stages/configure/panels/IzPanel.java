@@ -29,7 +29,7 @@ import java.util.Observer;
  * 
  * @author Daniel Guggi
  */
-public interface IzPanel extends Observer {
+public interface IzPanel {
 	/**
 	 * Add a element to the private elements collection.
 	 * @param name The name of the element.

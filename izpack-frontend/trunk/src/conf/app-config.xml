@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 	$Id: izpack-frontend Feb 8, 2004 izpack-frontend
 	Copyright (C) 2001-2003 IzPack Development Group
@@ -20,19 +20,17 @@
 	this program; if not, write to the Free Software Foundation, Inc., 59 Temple
 	Place - Suite 330, Boston, MA 02111-1307, USA.
 -->
-
 <!-- IzPack frontend config file. -->
 <izpack-frontend>
-	<app-version>0.1f</app-version>
-	<app-name>IzPack Frontend [prototype]</app-name>
-	<i18n bundle-location="res/i18n/LangResources" lang-code="en"/>
-	
-	<user-interface>
-		<panel name="PanelSelect" class="izpack.frontend.view.stages.panelselect.PanelSelect"/>
-		<panel name="GeneralInfoPanel" class="izpack.frontend.view.stages.geninfo.GeneralInfoPanel"/>
-		
-		<stage name="WelcomeStage" class="izpack.frontend.view.stages.Welcome"/>
-		<stage name="PanelSelectionStage" class="izpack.frontend.view.stages.panelselect.PanelSelection"/>
-		<stage name="GeneralInfoStage" class="izpack.frontend.view.stages.geninfo.GeneralInformation"/>
-	</user-interface>
+    <app-version>0.1f</app-version>
+    <app-name>IzPack Frontend [prototype]</app-name>
+    <i18n bundle-location="res/i18n/LangResources" lang-code="en"/>
+    <izpack-home>H:\izpack-src</izpack-home>
+    <user-interface>
+        <panel class="izpack.frontend.view.stages.panelselect.PanelSelect" name="PanelSelect"/>
+        <panel class="izpack.frontend.view.stages.geninfo.GeneralInfoPanel" name="GeneralInfoPanel"/>
+        <stage class="izpack.frontend.view.stages.Welcome" name="WelcomeStage"/>
+        <stage class="izpack.frontend.view.stages.panelselect.PanelSelection" name="PanelSelectionStage"/>
+        <stage class="izpack.frontend.view.stages.geninfo.GeneralInformation" name="GeneralInfoStage"/>
+    </user-interface>
 </izpack-frontend>

@@ -238,13 +238,11 @@ public class GeneralInformationModel extends Model implements StageDataModel
             
             URL location = ClassLoader.getSystemResource("res/imgs/flags/" + isoCode + ".gif");
             
+            //Handle a location if we don't know WTF it is
             if (location == null)
-            {
-                System.out.println("Null location " + isoCode);
+            {                
                 location = ClassLoader.getSystemResource("res/imgs/flags/unknown.png");                
             }
-            
-            System.out.println(isoCode + " " + location);
             
             LangModel lang = new LangModel(isoCode, location);
             

@@ -40,7 +40,7 @@ import java.util.Observer;
  * 
  * @author Daniel Guggi
  */
-public interface AppBase extends Observer {
+public interface AppBase {
 	/**
 	 * Init the components for the base.
 	 */

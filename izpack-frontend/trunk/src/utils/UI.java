@@ -60,7 +60,7 @@ public class UI
         if (directoriesOnly)
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         else
-            jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         
         if (jfc.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
         {

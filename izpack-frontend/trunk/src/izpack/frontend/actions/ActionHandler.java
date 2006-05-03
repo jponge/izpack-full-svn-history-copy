@@ -62,15 +62,13 @@ public class ActionHandler implements ActionListener
     }
     
     public void actionPerformed(ActionEvent e)
-    {   
+    {           
         String actionName = "";
         JButton button = null;
         
         if (e.getSource() instanceof JMenuItem)
         {
-            String menuItemName = ((JMenuItem) e.getSource()).getName();
-            
-            System.out.println("Menu Item: " + menuItemName);            
+            String menuItemName = ((JMenuItem) e.getSource()).getName();            
 
             if (menuItemName.equals("open"))
             {
@@ -147,9 +145,7 @@ public class ActionHandler implements ActionListener
                 displayer.addCompileListener(new CompileListener()
                 {
                     public void compileRequested(CompileEvent ce)
-                    {
-                        System.out.println("Compile requested");
-                        
+                    {   
                         displayer.next();
                         
                         CompileManager.compile(f.getAbsolutePath(), new String[] {

@@ -56,9 +56,7 @@ public class IzPackFrame extends JFrame implements AppBase {
 	private IzPackFrame() {
 		super();
 		this.setTitle(
-			GUIController.getInstance().appConfiguration().getAppName(true));
-		// i18n
-		langResources().addObserver(this);
+			GUIController.getInstance().appConfiguration().getAppName(true));		
 		// configure
 		this.configureUI();
 		// init
@@ -94,8 +92,7 @@ public class IzPackFrame extends JFrame implements AppBase {
 			}
 		}
 		// we didnt find the page
-		if (createFlag) {
-		    System.out.println("Locating " + name);
+		if (createFlag) {		    
 			String pageClass =
 				GUIController.getInstance().appConfiguration().getClass4Page(
 					name);		
@@ -118,8 +115,8 @@ public class IzPackFrame extends JFrame implements AppBase {
 					"Error while creating Page '" + name + "'!",
 					e);
 			}
-			System.out.println("page " + name + " created.");
-			return page;
+			
+            return page;
 		} else {
 			// we should not create the page, so return null
 			return null;
@@ -138,8 +135,7 @@ public class IzPackFrame extends JFrame implements AppBase {
         }
         // we didnt find the page
         if (createFlag)
-        {
-            System.out.println("Locating " + name);
+        {            
             String stageClass = GUIController.getInstance().appConfiguration()
                     .getClass4Stage(name);
             // create the page
@@ -164,7 +160,7 @@ public class IzPackFrame extends JFrame implements AppBase {
                 throw new RuntimeException("Error while creating Page '" + name
                         + "'!", e);
             }
-            System.out.println("stage " + name + " created.");
+            
             return stage;
         }
         else
@@ -206,18 +202,6 @@ public class IzPackFrame extends JFrame implements AppBase {
 	}
 
 	/**
-	 * Gets invoked if the <code>LangResources</code> needs to update
-	 * the frame. To provide this frame with different <code>Observable</code> objects,
-	 * someone has to override this method to take appropriate actions when updated
-	 * by an observable object.
-	 */
-	public void update(Observable o, Object arg) {
-		if (o instanceof LangResources) {
-			this.updateStaticText();
-		}
-	}
-
-	/**
 	 * Initialize the frame. <code>CardLayout</code> is used as the main display manager, because
 	 * its easy to display the single pages. Also adds the <code>izpack.frontend.FrameListener</code>.
 	 */
@@ -234,15 +218,7 @@ public class IzPackFrame extends JFrame implements AppBase {
 	 */
 	public void configureUI() {
 	    
-	}
-	
-	/**
-	 * Update the static text for this frame. This method gets invoked if the <code>LangResources</code> object
-	 * invokes the <code>update(Observable o, Object arg)</code> method.
-	 */
-	public void updateStaticText() {
-		System.out.println("got update");
-	}
+	}	
 
 	/**
 	 * Get the application configuration.

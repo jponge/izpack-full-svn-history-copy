@@ -23,9 +23,11 @@
 
 package izpack.frontend.actions;
 
+import izpack.frontend.controller.GUIController;
+import izpack.frontend.view.IzPackFrame;
+
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,15 +65,21 @@ public class CompileDisplay extends JPanel implements ActionListener
         console = getConsole();
         
         if (f != null)
+        {
             baseDir.setText(f.getParent());
+            
+            String filename = f.getAbsolutePath();
+            output.setText(filename.substring(0, filename.length() - 3) + "jar");
+        }
+        
+        homeDir.setText(GUIController.getInstance().appConfiguration().getIzpackHome());
         
         add(settingsPanel, SETTINGS_PANEL);
         add(console, CONSOLE_PANEL);        
     }
     
     public void next()
-    {
-        System.out.println("next");
+    {        
         layout.next(this);
     }
     
@@ -122,6 +130,20 @@ public class CompileDisplay extends JPanel implements ActionListener
                     }
                 }
         }
+        else if (e.getSource().equals(browseHome))
+        {
+            File homeDirFile = null;
+            
+            if (homeDir.getText() != null && homeDir.getText().length() > 0)
+                homeDirFile = new File(homeDir.getText());
+                
+            file = UI.getFile(UI.getApplicationFrame(), "Select a directory...", homeDirFile, true);
+
+            if (file != null)
+            {                    
+                homeDir.setText(file.getAbsolutePath());                 
+            }
+        }
         else
         {
             File outputFile = null;
@@ -148,6 +170,7 @@ public class CompileDisplay extends JPanel implements ActionListener
                         "pref, 3dlu, center:pref, 3dlu, pref",
                         "pref, 5dlu, pref, 5dlu, pref," //Installer type 
                                         + "10dlu, pref," //Base Directory                                        
+                                        + "10dlu, pref," //Home Directory
                                         + "10dlu, pref"); //OK/Cancel
 
         DefaultFormBuilder builder = new DefaultFormBuilder(layout,
@@ -195,6 +218,14 @@ public class CompileDisplay extends JPanel implements ActionListener
         builder.add(baseDir = new JTextField(30));
         builder.nextColumn(2);
         builder.add(browseBase = new JButton("Browse"));
+        
+        builder.nextLine(2);
+        builder.setColumn(1);
+        builder.addLabel("IzPack Home directory");
+        builder.nextColumn(2);
+        builder.add(homeDir = new JTextField(30));
+        builder.nextColumn(2);
+        builder.add(browseHome = new JButton("Browse"));
 
         builder.nextLine(2);
         builder.setColumn(1);
@@ -205,6 +236,7 @@ public class CompileDisplay extends JPanel implements ActionListener
         builder.add(browseOutput = new JButton("Browse"));
 
         browseBase.addActionListener(this);
+        browseHome.addActionListener(this);
         browseOutput.addActionListener(this);
 
         builder.nextLine(2);
@@ -214,9 +246,11 @@ public class CompileDisplay extends JPanel implements ActionListener
         {
             public void actionPerformed(ActionEvent e)
             {
+                GUIController.getInstance().appConfiguration().setIzpackHome(homeDir.getText());                
+                
                 fireCompileEvent(new CompileEvent(bg.getSelection().getActionCommand(),
                                 baseDir.getText(),
-                                output.getText() ));                
+                                output.getText() ));
             }
         });
         
@@ -291,8 +325,8 @@ public class CompileDisplay extends JPanel implements ActionListener
         }
     }
 
-    private JTextField baseDir, output;
-    private JButton browseBase, browseOutput;
+    private JTextField baseDir, homeDir, output;
+    private JButton browseBase, browseHome, browseOutput;
     
     private JPanel settingsPanel;
     private CompileConsole console;

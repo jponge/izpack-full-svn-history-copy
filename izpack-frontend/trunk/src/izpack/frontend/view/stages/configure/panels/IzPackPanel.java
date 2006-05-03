@@ -56,9 +56,8 @@ public abstract class IzPackPanel extends JPanel implements IzPanel {
 	 *
 	 */
 	public IzPackPanel(IzPackStage parentStage) {
-		super();		
-		// i18n
-		langResources().addObserver(this);
+		super();
+		
 		// set up the arraylist
 		elements = new ArrayList();
 		// init all components
@@ -91,27 +90,6 @@ public abstract class IzPackPanel extends JPanel implements IzPanel {
 		}
 		// nothing found
 		return null;
-	}
-	
-	/**
-	 * Update the static text for this page. This method gets invoked if the <code>LangResources</code> object
-	 * invokes the <code>update(Observable o, Object arg)</code> method.
-	 */
-	protected void updateStaticText() {
-		System.out.println("update static text invoked!");
-	}
-	
-	/**
-	 * Gets invoked if the <code>LangResources</code> needs to update
-	 * the page. To provide this page with different <code>Observable</code> objects,
-	 * someone has to override this method to take appropriate actions when updated
-	 * by an observable object.
-	 */
-	public void update(Observable o, Object arg) {
-		// update language stuff
-		if (o instanceof LangResources) {
-			updateStaticText();
-		}
 	}
 	
 	/**
