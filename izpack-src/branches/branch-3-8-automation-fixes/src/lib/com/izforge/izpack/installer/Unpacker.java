@@ -704,7 +704,6 @@ public class Unpacker extends Thread
             if (!f.isDirectory())
             // skip directories - they cannot be removed safely yet
             {
-                this.handler.emitNotification("deleting " + f.getPath());
                 f.delete();
             }
 
