@@ -64,7 +64,7 @@ detect:
     else
     {
         ResolveDialog* dlg = new ResolveDialog();
-        if (launcher.isJREProvided())
+        if (!launcher.isJREProvided())
         {
             dlg->disableProvidedRadio();
         }

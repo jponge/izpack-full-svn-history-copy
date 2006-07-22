@@ -1,3 +1,7 @@
+2006.07.22 (Julien Ponge)
+* main.cpp: fix for stupid error that disables the JRE radio button if a JRE
+  is provider, and enables it when it is not.
+
 Release 2.0 (2005.10.27) [release-2.0]
 
 * New Qt-based launcher.
