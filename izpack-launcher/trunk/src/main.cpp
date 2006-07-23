@@ -55,7 +55,7 @@ int main(int argc, char** argv)
 detect:
     if (launcher.detectJRE())
     {
-        if (!launcher.launch())
+        if (launcher.launch() != 0)
         {
             show_launch_error_message();
             return 1;   
@@ -75,8 +75,8 @@ detect:
         switch (dlg->getResolveChoice())
         {
         case MANUAL:
-            if (!launcher.launch(QFileDialog::getOpenFileName(0,
-                QT_TR_NOOP("Please select the 'java' executable program."))))
+            if (launcher.launch(QFileDialog::getOpenFileName(0,
+                QT_TR_NOOP("Please select the 'java' executable program."))) != 0)
             {
                 show_launch_error_message();
                 return 1; 

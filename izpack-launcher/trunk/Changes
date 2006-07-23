@@ -1,3 +1,9 @@
+2006.07.23 (Julien Ponge)
+* launcher.cpp, main.cpp: fixes on the interpretation of the QProcess:execute()
+  return values. The launcher should be running fine now.
+* Mac OS X: build universal binaries.
+* Mac OS X: script to embed the Qt libraries inside the application bundle.
+
 2006.07.22 (Julien Ponge)
 * main.cpp: fix for stupid error that disables the JRE radio button if a JRE
   is provider, and enables it when it is not.
