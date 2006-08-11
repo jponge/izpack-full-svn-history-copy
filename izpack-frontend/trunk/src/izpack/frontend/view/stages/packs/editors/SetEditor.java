@@ -77,7 +77,7 @@ public class SetEditor extends JDialog implements ActionListener
         builder.add(new JLabel(lr.getText("UI.SetEditor.Name")), new CellConstraints(1, 1), descriptor, cc.xy(3, 1));
         builder.add(include, cc.xy(1, 3));        
         builder.add(exclude, cc.xy(3, 3));        
-        builder.add(ButtonBarFactory.buildOKCancelBar(ok, cancel), cc.xyw(1, 5, 3, CellConstraints.CENTER, CellConstraints.FILL));
+        builder.add(ButtonBarFactory.buildOKCancelBar(ok, cancel), cc.xyw(1, 5, 3, CellConstraints.CENTER, CellConstraints.FILL));        
         
         add(builder.getPanel());        
         pack();

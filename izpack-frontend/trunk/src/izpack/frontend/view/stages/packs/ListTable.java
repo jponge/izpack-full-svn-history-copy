@@ -81,7 +81,7 @@ public class ListTable extends JTable implements MouseListener
     }
     
     public void addElement(ElementModel em)
-    {
+    {   
         boolean elementAdded = false;
         for (int i = 0; i < model.getRowCount(); i++)
         {
@@ -119,7 +119,7 @@ public class ListTable extends JTable implements MouseListener
     }
     
     private void insertElementWithEditor(int row, Class type)
-    {
+    {        
         doubleClickEditor = em.getEditor(type);
         doubleClickEditor.configureClean();
         doubleClickEditor.setVisible(true);

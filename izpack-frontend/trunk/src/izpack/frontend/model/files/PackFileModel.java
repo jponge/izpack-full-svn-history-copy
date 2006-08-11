@@ -23,10 +23,13 @@
 
 package izpack.frontend.model.files;
 
+import izpack.frontend.model.OS;
+
 /**
  * @author Andy Gombos
  */
 public abstract class PackFileModel implements PackElement
 {
-    public String target = "", source = "", os = "", override = "";
+    public String target = "", source = "", override = "";
+    public OS os;
 }

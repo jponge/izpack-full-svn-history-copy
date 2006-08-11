@@ -73,21 +73,24 @@ public class PackStageModel extends DefaultTableModel implements StageDataModel
      */
     public void initFromXML(Document doc)
     {
-        XPath xpath = XPathFactory.newInstance().newXPath();
+        XPath xpath = XPathFactory.newInstance().newXPath();        
+        
+        
+        //Remove the spacer rows
+        for (int i = getRowCount() - 1; i >= 0; i--)
+            removeRow(i);
         
         try
         {
             NodeList packs = (NodeList) xpath.evaluate("//packs/pack", doc, XPathConstants.NODESET);
-            NodeList desc  = (NodeList)     xpath.evaluate("//packs/pack/description", doc, XPathConstants.NODESET);
+            NodeList desc  = (NodeList) xpath.evaluate("//packs/pack/description", doc, XPathConstants.NODESET);
             
             for (int i = 0; i < packs.getLength(); i++)
-            {
+            {                
                 PackModel pack = new PackModel();
                 pack.initFromXML(i, packs.item(i), desc.item(i));
                 
-                //Insert a row, but remove the empty one that was present originally
-                insertRow(i, new Object[]{pack});
-                removeRow(getRowCount() - i - 1);
+                insertRow(i, new Object[]{pack});                
             }
         }
         catch (XPathExpressionException e)

@@ -23,6 +23,8 @@
 
 package izpack.frontend.model.files;
 
+import izpack.frontend.model.OS;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -53,16 +55,15 @@ public class FileSet extends PackFileModel implements ListModel
     {   
         Element fset = XML.createElement("fileset", doc);
         fset.setAttribute("dir", source);
-        fset.setAttribute("targetdir", target);
-        
-        if (!os.equals(""))
-            fset.setAttribute("os", os);
+        fset.setAttribute("targetdir", target);        
         
         if (!override.equals(""))
             fset.setAttribute("override", override);
         
         fset.setAttribute("casesensitive", yesNoBoolean(caseSensitive));
         fset.setAttribute("defaultexcludes", yesNoBoolean(defaultExcludes));
+        
+        os.createXML(doc, fset);
         
         for (Iterator iter = files.iterator(); iter.hasNext();)
         {
@@ -83,8 +84,8 @@ public class FileSet extends PackFileModel implements ListModel
         
         target = attributes.getNamedItem("targetdir").getNodeValue();
         
-        if (attributes.getNamedItem("os") != null)
-            os = attributes.getNamedItem("os").getNodeValue();       
+        os = new OS();
+        os.initFromXML(elementNode);
         
         if (attributes.getNamedItem("override") != null)
             override = attributes.getNamedItem("override").getNodeValue();

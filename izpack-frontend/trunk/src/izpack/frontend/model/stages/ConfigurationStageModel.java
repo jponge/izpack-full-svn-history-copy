@@ -123,4 +123,11 @@ public class ConfigurationStageModel extends Model implements StageDataModel
     {
         return editors;
     }
+
+    public void reset()
+    {
+        editors.clear();
+        
+        currentlyActivePanel = 0;        
+    }
 }

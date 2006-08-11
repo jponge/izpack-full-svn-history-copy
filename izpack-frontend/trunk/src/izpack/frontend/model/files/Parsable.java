@@ -23,8 +23,11 @@
 
 package izpack.frontend.model.files;
 
+import izpack.frontend.model.OS;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import utils.XML;
@@ -34,7 +37,8 @@ import utils.XML;
  */
 public class Parsable implements PackElement
 {
-    public String targetfile, type = "plain", encoding, os;
+    public String targetfile, type = "plain", encoding;
+    public OS os;    
 
     /* (non-Javadoc)
      * @see izpack.frontend.model.files.PackElement#writeXML()
@@ -48,15 +52,22 @@ public class Parsable implements PackElement
         if (encoding != null && !encoding.equals(""))
             parsable.setAttribute("encoding", encoding);
         
-        if (os != null && !os.equals(""))
-            parsable.setAttribute("os", os);
+        os.createXML(doc, parsable);
         
         return parsable;
     }
 
     public void initFromXML(Node elementNode)
     {
-        // TODO Auto-generated method stub
+        NamedNodeMap attributes = elementNode.getAttributes();
         
+        //TODO handle error about missing required attributes
+        targetfile = attributes.getNamedItem("targetfile").getNodeValue();
+        
+        if (attributes.getNamedItem("encoding") != null)
+            encoding = attributes.getNamedItem("encoding").getNodeValue();
+        
+        os = new OS();
+        os.initFromXML(elementNode);        
     }
 }

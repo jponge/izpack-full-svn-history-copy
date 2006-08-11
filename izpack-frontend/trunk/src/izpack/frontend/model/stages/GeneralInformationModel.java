@@ -23,12 +23,13 @@
 
 package izpack.frontend.model.stages;
 
+import izpack.frontend.controller.AuthorManager;
 import izpack.frontend.model.Author;
 import izpack.frontend.model.SelectListModel;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.ListModel;
 import javax.xml.xpath.XPath;
@@ -173,6 +174,30 @@ public class GeneralInformationModel extends Model implements StageDataModel
     //GUI Prefs
     boolean resizable;
     int width, height;
+    
+    public void resetModel()
+    {        
+        setAppName("");        
+        setHeight(0);
+        setWidth(0);
+        setHomepage("");        
+        setResizable(true);
+        setVersion("");
+        
+        authors.clear();
+        
+        
+        ArrayList authorListData = AuthorManager.loadAuthors();
+        if (authorListData != null)
+        {
+            for (Iterator iter = authorListData.iterator(); iter.hasNext(); )
+            {
+               authors.add(iter.next());
+            }        
+        }
+        
+        langCodes.clear();
+    }
 
     /* (non-Javadoc)
      * @see izpack.frontend.model.stages.StageDataModel#writeToXML()

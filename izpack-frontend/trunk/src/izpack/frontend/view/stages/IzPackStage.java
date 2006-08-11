@@ -36,10 +36,13 @@ import izpack.frontend.view.stages.StageOrder.StageContainer;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -49,14 +52,14 @@ import utils.UI;
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.ValidationResultModel;
 import com.jgoodies.validation.util.DefaultValidationResultModel;
-import com.jgoodies.validation.util.ValidationResultModel;
 import com.jgoodies.validation.view.ValidationResultViewFactory;
 
 /**
  * @author Andy Gombos
  */
-public abstract class IzPackStage extends JPanel implements Stage
+public abstract class IzPackStage extends JPanel implements Stage, PropertyChangeListener
 {   
     protected boolean addValidationListeners = true;
 
@@ -64,15 +67,46 @@ public abstract class IzPackStage extends JPanel implements Stage
     {
         return validationModel;
     }
+    
     public void setValidationModel(ValidationResultModel validationModel)
     {
         this.validationModel = validationModel;
     }
+    
     protected IzPackStage()
     {   
-        registerStage(this);       
+        registerStage(this);
+        
+        validationModel.addPropertyChangeListener(
+                        ValidationResultModel.PROPERTYNAME_ERRORS, this);
+
         
         //TODO Make the center component a fixed size
+    }
+    
+    public abstract void resetStage();
+
+    public JPanel getLeftNavBar()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public void initializeStage()
+    {
+        validationModel.setResult(validateStage());        
+    }
+
+    public void initializeStageFromXML(Document doc)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        //if ( ((Boolean) evt.getNewValue() ).booleanValue() == false)
+          //  next.setEnabled(true);
     }
 
     /*
@@ -81,15 +115,11 @@ public abstract class IzPackStage extends JPanel implements Stage
      * @see izpack.frontend.view.stages.Stage#getTopNavBar()
      */
     public final JPanel getTopNavBar()
-    {
-        //JPanel base = new JPanel();        
-        
-        
-        
+    {        
         final StageContainer previousCont = stageOrder.getPreviousStage(this.getClass());
         final StageContainer nextCont = stageOrder.getNextStage(this.getClass());
         
-        JButton previous = null, next = null;
+        JButton previous = null;
         
         if (previousCont != null)
         {
@@ -101,9 +131,7 @@ public abstract class IzPackStage extends JPanel implements Stage
             {
                 fireStageChangeEvent(new StageChangeEvent(previousCont.stageClass));
             }
-        	});        
-        	
-        	//base.add(previous);
+        	});
         }
         
         if (nextCont != null)
@@ -111,18 +139,15 @@ public abstract class IzPackStage extends JPanel implements Stage
 	        next = UI.getNavButton(nextCont.buttonText, UI.FORWARD);
 	        
 	        next.addActionListener(new ActionListener()
-	        {
-	
+	        {	
 	            public void actionPerformed(ActionEvent e)
 	            {
 	                fireStageChangeEvent(new StageChangeEvent(nextCont.stageClass));
-	            }
-	
-	        });
-	     
-	        //if (previous != null)
-	          //  next.setPreferredSize(previous.getPreferredSize());
-	        //base.add(next);
+	            }	
+	        });	     
+            
+//            if (validationModel.hasErrors())
+  //              next.setEnabled(false);
            
 	    }
         
@@ -131,8 +156,7 @@ public abstract class IzPackStage extends JPanel implements Stage
         else if (next == null)
             return ButtonBarFactory.buildRightAlignedBar(previous);
         else
-            return ButtonBarFactory.buildRightAlignedBar(previous, next);
-        //return base;
+            return ButtonBarFactory.buildRightAlignedBar(previous, next);      
     }
     
     /*
@@ -146,9 +170,12 @@ public abstract class IzPackStage extends JPanel implements Stage
         
         validationModel.setResult(validateStage());
         
-        bottom.add(ValidationResultViewFactory.createReportList(validationModel));
+        JScrollPane resultsPane = new JScrollPane(ValidationResultViewFactory.createReportList(validationModel));
+        resultsPane.setPreferredSize(new Dimension(500, 100));
+        
+        bottom.add(resultsPane);
 
-        bottom.setPreferredSize(new Dimension(700, 100));
+        bottom.setPreferredSize(new Dimension(700, 120));
 
         return bottom;
     }
@@ -254,6 +281,8 @@ public abstract class IzPackStage extends JPanel implements Stage
 	
 	protected static LangResources lr = IzPackFrame.getInstance().langResources();
 	protected static StageOrder stageOrder = new StageOrder();
+    
+    private JButton next = null;
 	
 	protected ValidationResultModel validationModel = new DefaultValidationResultModel();
 }

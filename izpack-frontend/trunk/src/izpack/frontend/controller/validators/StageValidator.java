@@ -23,12 +23,13 @@
 
 package izpack.frontend.controller.validators;
 
-import com.jgoodies.validation.ValidationCapable;
+import com.jgoodies.validation.Validator;
+
 
 /**
  * @author Andy Gombos
  */
-public interface StageValidator extends ValidationCapable
+public interface StageValidator extends Validator
 {
 
 }

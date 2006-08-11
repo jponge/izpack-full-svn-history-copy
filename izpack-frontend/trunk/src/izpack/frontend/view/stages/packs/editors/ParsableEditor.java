@@ -26,14 +26,17 @@ package izpack.frontend.view.stages.packs.editors;
 import izpack.frontend.model.files.ElementModel;
 import izpack.frontend.model.files.Parsable;
 import izpack.frontend.view.components.FormatComboBox;
-import izpack.frontend.view.components.OSComboBox;
+import izpack.frontend.view.components.OSSelector;
 import izpack.frontend.view.components.table.TableEditor;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -41,6 +44,10 @@ import javax.swing.JTextField;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.validation.Severity;
+import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.message.PropertyValidationMessage;
+import com.jgoodies.validation.view.ValidationComponentUtils;
 
 /**
  * @author Andy Gombos
@@ -58,7 +65,9 @@ public class ParsableEditor extends TableEditor
         targetFile = new JTextField();
         format = new FormatComboBox();
         encoding = new JTextField();
-        os = new OSComboBox();
+        os = new OSSelector();
+        
+        targetFile.getDocument().addDocumentListener(this);
         
         ok = new JButton(lr.getText("UI.Buttons.OK"));
         ok.addActionListener(this);
@@ -84,13 +93,14 @@ public class ParsableEditor extends TableEditor
         builder.nextLine();
         builder.append(lr.getText("UI.ParsableEditor.Encoding"), encoding);
         builder.nextLine();
-        builder.append(lr.getText("UI.ParsableEditor.OS"), os);
+        builder.append(lr.getText("UI.ParsableEditor.OS"), os, 3);
         builder.nextLine();        
         
         builder.appendUnrelatedComponentsGapRow();
         builder.nextLine();
         builder.append(ButtonBarFactory.buildOKCancelBar(ok, cancel), 3);
         
+        configureValidation();
         getContentPane().add(builder.getPanel());
         pack();
         getRootPane().setDefaultButton(ok);
@@ -116,7 +126,7 @@ public class ParsableEditor extends TableEditor
         encoding.setText(pm.encoding);
         
         format.setFormat(pm.type);
-        os.setOS(pm.os);
+        os.setOsModel(pm.os);
     }
 
     /* (non-Javadoc)
@@ -129,7 +139,7 @@ public class ParsableEditor extends TableEditor
         encoding.setText("");
         
         format.setSelectedIndex(-1);
-        os.setSelectedIndex(-1);        
+        os.setNoneSelected();        
     }
 
     /* (non-Javadoc)
@@ -143,7 +153,7 @@ public class ParsableEditor extends TableEditor
         pm.encoding = encoding.getText();
         
         pm.type = format.getFormat();
-        pm.os = os.getOS();
+        pm.os = os.getOsModel();
         
         return pm;
     }
@@ -152,7 +162,7 @@ public class ParsableEditor extends TableEditor
     JTextField targetFile;
     FormatComboBox format;
     JTextField encoding;
-    OSComboBox os;
+    OSSelector os;
     /* (non-Javadoc)
      * @see izpack.frontend.view.components.table.TableEditor#handles(java.lang.Class)
      */
@@ -160,4 +170,38 @@ public class ParsableEditor extends TableEditor
     {
         return type.equals(Parsable.class);
     }   
+    
+    @Override
+    public void configureValidation()
+    {   
+        ValidationComponentUtils.setMandatory(targetFile, true);        
+        
+        ValidationComponentUtils.setMessageKey(targetFile, "Target.file");                
+        
+        ValidationComponentUtils.updateComponentTreeSeverityBackground(this, ValidationResult.EMPTY);
+    }
+
+    @Override
+    public ValidationResult validateEditor()
+    {        
+        ValidationResult vr = new ValidationResult();        
+        
+        if (targetFile.getText().length() == 0)
+            vr.add(new PropertyValidationMessage(Severity.ERROR, "is mandatory", targetFile, "Target", "file"));
+        else if (!new File(targetFile.getText()).exists())
+            vr.add(new PropertyValidationMessage(Severity.WARNING, "may not exist", targetFile, "Target", "file"));
+        
+        targetFile.setToolTipText(null);
+        
+        List messages = vr.getMessages();
+        for (Object object : messages)
+        {
+            PropertyValidationMessage message = (PropertyValidationMessage) object;
+            ((JComponent) message.target()).setToolTipText(message.formattedText());
+        }
+        
+        ValidationComponentUtils.updateComponentTreeSeverityBackground(this, vr);
+        
+        return vr;
+    }
 }

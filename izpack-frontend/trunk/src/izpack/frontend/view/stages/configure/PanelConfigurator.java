@@ -69,8 +69,7 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
             panelSelectionModel = (PanelSelectionModel) panelSelectionInstance.getDataModel();
             
             if (panelSelectionModel != null)
-            {
-                
+            {                
                 panelSelectionModel.addListDataListener(this);                
             }
             else
@@ -228,5 +227,16 @@ public class PanelConfigurator extends IzPackStage implements ListDataListener
     public void initializeStageFromXML(Document doc)
     {
         xmlDoc = doc;        
+    }
+
+    @Override
+    public void resetStage()
+    {        
+        model.reset();
+        
+        PanelSelectionModel panelSelectionModel = new PanelSelectionModel();
+        //panelSelectionModel.initWithAllPanels();
+        
+        model.setPanels(panelSelectionModel);
     }
 }

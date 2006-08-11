@@ -32,6 +32,15 @@ public class PanelModel
     public boolean valid;
     
     @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof PanelModel)
+            return configData.getName().equals(( (PanelModel) obj).configData.getName());
+        else
+            return false;
+    }
+    
+    @Override
     public String toString()
     {
         return configData.getName();

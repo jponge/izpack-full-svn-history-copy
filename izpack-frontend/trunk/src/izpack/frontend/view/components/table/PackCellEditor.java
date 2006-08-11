@@ -25,6 +25,7 @@ package izpack.frontend.view.components.table;
 
 import izpack.frontend.model.PackModel;
 
+import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.AbstractCellEditor;
@@ -77,7 +78,7 @@ public class PackCellEditor extends AbstractCellEditor implements TableCellEdito
      
         editingValue = pm;
         
-        if (isSelected)
+        if (isSelected)        
             panel.setBorder(selected);
         else
             panel.setBorder(null);

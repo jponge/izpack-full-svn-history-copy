@@ -27,19 +27,26 @@ import izpack.frontend.model.PackModel;
 import izpack.frontend.model.files.ElementModel;
 import izpack.frontend.view.components.AbstractListSelect;
 import izpack.frontend.view.components.DependencyListSelect;
-import izpack.frontend.view.components.OSComboBox;
+import izpack.frontend.view.components.OSSelector;
 import izpack.frontend.view.components.YesNoRadioPanel;
 import izpack.frontend.view.components.table.TableEditor;
 
 import java.awt.Frame;
+import java.io.File;
+import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.validation.Severity;
+import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.message.PropertyValidationMessage;
+import com.jgoodies.validation.view.ValidationComponentUtils;
 
 /**
  * @author Andy Gombos
@@ -57,10 +64,13 @@ public class PackEditor extends TableEditor
         name = new JTextField();
         desc = new JTextField();
         id = new JTextField();
-        osBox = new OSComboBox();
+        osSel = new OSSelector();
         requiredPanel = new YesNoRadioPanel("yes");
         preselectPanel = new YesNoRadioPanel("yes");
-        looseFilesPanel = new YesNoRadioPanel("no");        
+        looseFilesPanel = new YesNoRadioPanel("no");
+        
+        name.getDocument().addDocumentListener(this);
+        desc.getDocument().addDocumentListener(this);        
         
         ok = new JButton(lr.getText("UI.Buttons.OK"));
         ok.addActionListener(this);
@@ -68,13 +78,13 @@ public class PackEditor extends TableEditor
         cancel = new JButton(lr.getText("UI.Buttons.Cancel"));
         cancel.addActionListener(this);
         
-        builder.append(lr.getText("UI.PackEditor.Name"), name);
+        builder.append(lr.getText("UI.PackEditor.Name"), name, 2);
         builder.nextLine();
         builder.append(lr.getText("UI.PackEditor.Desc"), desc, 2);
         builder.nextLine();
-        builder.append(lr.getText("UI.PackEditor.ID"), id);
+        builder.append(lr.getText("UI.PackEditor.ID"), id, 2);
         builder.nextLine();
-        builder.append(lr.getText("UI.PackEditor.OS"), osBox);
+        builder.append(lr.getText("UI.PackEditor.OS"), osSel, 2);
         builder.nextLine();
         
         builder.appendUnrelatedComponentsGapRow();        
@@ -87,15 +97,12 @@ public class PackEditor extends TableEditor
         builder.nextLine();
         
         builder.appendUnrelatedComponentsGapRow();
-        builder.nextLine();
-        
-        //builder.append(createDependencyPanel());
-        
-        //builder.appendUnrelatedComponentsGapRow();
-        //builder.nextLine();
+        builder.nextLine();        
         
         builder.append(ButtonBarFactory.buildOKCancelBar(ok, cancel), 3);
         builder.nextLine();
+        
+        configureValidation();
         
         getContentPane().add(builder.getPanel());
         pack();
@@ -122,6 +129,8 @@ public class PackEditor extends TableEditor
     {
         name.requestFocusInWindow();
         
+        validateEditor();
+        
         super.setVisible(b);
     }
     
@@ -132,7 +141,7 @@ public class PackEditor extends TableEditor
         name.setText(p.getName());
         desc.setText(p.getDesc());
         id.setText(p.getId());
-        osBox.setOS(p.getOS());
+        osSel.setOsModel(p.getOS());
         
         requiredPanel.setBoolean(p.isRequired());
         preselectPanel.setBoolean(p.isPreselected());
@@ -146,7 +155,7 @@ public class PackEditor extends TableEditor
         p.setName(name.getText());
         p.setDesc(desc.getText());
         p.setId(id.getText());
-        p.setOS(osBox.getOS());
+        p.setOSes(osSel.getOsModel());
         
         p.setRequired(requiredPanel.getBoolean());
         p.setPreselected(preselectPanel.getBoolean());
@@ -156,7 +165,7 @@ public class PackEditor extends TableEditor
     }    
     
     JTextField name, desc, id;
-    OSComboBox osBox;
+    OSSelector osSel;
     YesNoRadioPanel preselectPanel;
     YesNoRadioPanel looseFilesPanel;
     YesNoRadioPanel requiredPanel;    
@@ -170,7 +179,7 @@ public class PackEditor extends TableEditor
         desc.setText("");
         id.setText("");
         
-        osBox.setSelectedIndex(-1);
+        osSel.setNoneSelected();
        
         requiredPanel.setBoolean(true);
         preselectPanel.setBoolean(true);
@@ -183,5 +192,45 @@ public class PackEditor extends TableEditor
     public boolean handles(Class type)
     {
         return type.equals(PackModel.class);
+    }
+    
+    @Override
+    public void configureValidation()
+    {   
+        System.out.println("pack config valid");
+        ValidationComponentUtils.setMandatory(name, true);
+        ValidationComponentUtils.setMandatory(desc, true);
+        
+        ValidationComponentUtils.setMessageKey(name, "Pack.name");
+        ValidationComponentUtils.setMessageKey(desc, "Pack.description");        
+        
+        validateEditor();
+    }
+
+    @Override
+    public ValidationResult validateEditor()
+    {        
+        ValidationResult vr = new ValidationResult();
+        
+        if (name.getText().length() == 0)
+            vr.add(new PropertyValidationMessage(Severity.ERROR, "is mandatory", name, "Pack", "name"));
+        
+        if (desc.getText().length() == 0)
+            vr.add(new PropertyValidationMessage(Severity.ERROR, "is mandatory", desc, "Pack", "description"));
+        
+        name.setToolTipText(null);
+        desc.setToolTipText(null);
+        
+        List messages = vr.getMessages();
+        for (Object object : messages)
+        {
+            PropertyValidationMessage message = (PropertyValidationMessage) object;
+            ((JComponent) message.target()).setToolTipText(message.formattedText());
+        }
+        
+        ValidationComponentUtils.updateComponentTreeSeverityBackground(this, vr);
+        ValidationComponentUtils.updateComponentTreeMandatoryAndBlankBackground(this);
+        
+        return vr;
     }
 }

@@ -33,12 +33,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import com.jgoodies.validation.ValidationResult;
 
 /**
  * @author Andy Gombos
  */
-public abstract class TableEditor extends JDialog implements ActionListener
-{     
+public abstract class TableEditor extends JDialog implements ActionListener, DocumentListener
+{   
     public TableEditor(Frame parent)
     {
         super(parent);
@@ -57,7 +61,23 @@ public abstract class TableEditor extends JDialog implements ActionListener
     public abstract void configureClean();
 
     public abstract ElementModel getModel();
+    
+    public abstract void configureValidation();
+    
+    public abstract ValidationResult validateEditor();
+    
+    public void insertUpdate(DocumentEvent e)
+    {
+        validateEditor();        
+    }
 
+    public void removeUpdate(DocumentEvent e)
+    {
+        validateEditor();        
+    }
+
+    public void changedUpdate(DocumentEvent e) {}
+    
     public boolean wasOKPressed()
     {
         return !cancelled;

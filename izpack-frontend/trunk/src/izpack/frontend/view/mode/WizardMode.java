@@ -103,8 +103,7 @@ public class WizardMode extends JFrame implements StageChangeListener,
         getContentPane().add(leftNavBar, BorderLayout.WEST);
 
         createMenuBar();
-
-        setPreferredSize(new Dimension(700, 700));
+        
         pack();
 
         long stop = System.currentTimeMillis();
@@ -113,8 +112,19 @@ public class WizardMode extends JFrame implements StageChangeListener,
         System.out.println("Startup time: " + startupTime + "ms " + (startupTime / 1000f) + "s "
                         + (startupTime / 1000 / 60f) + "min");
     }
-
-    /*
+    
+    public void resetState()
+    {
+        ArrayList<IzPackStage> stages = IzPackStage.getAllStages();
+        for (IzPackStage stage : stages)
+        {
+            stage.resetStage();
+        }
+        
+        changeStage(new StageChangeEvent(GeneralInformation.class));
+    }
+    
+     /*
      * (non-Javadoc)
      * 
      * @see izpack.frontend.controller.StageChangeListener#changeStage(izpack.frontend.controller.StageChangeEvent)
@@ -265,5 +275,5 @@ public class WizardMode extends JFrame implements StageChangeListener,
     CardLayout layout = new CardLayout();    
 
     private static WelcomeScreen launcher;
-    private static ActionHandler actionHandler; 
+    private static ActionHandler actionHandler;         
 }

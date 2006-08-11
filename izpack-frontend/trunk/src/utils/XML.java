@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -39,15 +40,16 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import exceptions.DocumentCreationException;
@@ -90,7 +92,7 @@ public class XML
             document = builder.parse(new File(filename));            
             
             String URI = new File(filename).getParent();
-            
+                        
             if (URI == null)
                 URI = "";
             else
@@ -172,6 +174,47 @@ public class XML
         }
     }
     
+    public static void writeXML(StreamResult stream, Node node, String xslFile)
+    {
+        try
+        {   
+            // Prepare the DOM document for writing
+            Source source = new DOMSource(node);
+
+            // Prepare the output file            
+            Result result = stream;
+
+            //Load the XSL file to make everything pretty
+            StreamSource xsl = new StreamSource(new File(xslFile));
+            // Write the DOM document to the file
+            // Get Transformer
+            //This won't properly indent - research indicates a 1.5 bug (so 1.3 JAXP?)            
+            TransformerFactory tFactory = TransformerFactory.newInstance();
+            Transformer xformer = tFactory.newTransformer(xsl);
+            
+            //Set the output doctype
+            //String systemValue = new File("dtd/installation.dtd").getPath();            
+            //xformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, systemValue);
+            
+            //xformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            
+            // Write to a file
+            xformer.transform(source, result);
+        }
+        catch (TransformerConfigurationException tce)
+        {
+            //TODO Make this a better handler - it's not really a fatal error
+            //But, we can't save anything without a working transformer. So, maybe it is
+            //UI.showError("An error occurred configuring the transformer for XML output", )
+            throw new UnhandleableException(tce);
+        }
+        catch (TransformerException te)
+        {
+            //TODO Same as above
+            throw new UnhandleableException(te);
+        }
+    }
+    
     public static Document merge(Document doc1, Document doc2)
     {
         Element head1 = doc1.getDocumentElement();
@@ -202,7 +245,7 @@ public class XML
     {        
         try
         {            
-            //Use XPath to return the resource value by searching with it
+            //Use XPath to return the resource value by searching with it            
             return xpath.evaluate("//res[@id='" + id + "']/@src", document);            
         }
         catch (XPathExpressionException xpee)

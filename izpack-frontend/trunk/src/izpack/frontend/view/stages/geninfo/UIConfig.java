@@ -27,16 +27,23 @@ import izpack.frontend.view.components.YesNoCheckBox;
 import izpack.frontend.view.stages.IzPackStage;
 import izpack.frontend.view.stages.configure.panels.IzPackPanel;
 
+import java.text.Format;
+import java.text.NumberFormat;
+
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.adapter.Bindings;
+import com.jgoodies.binding.value.ConverterFactory;
+import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.formatter.EmptyNumberFormatter;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 
 /**
@@ -68,7 +75,7 @@ public class UIConfig extends IzPackPanel
         //TODO internationailze
         resizable = new YesNoCheckBox("Allow window resizes");
         
-        width = BasicComponentFactory.createIntegerField(pm.getModel("width"));
+        width = BasicComponentFactory.createIntegerField(pm.getModel("width"));        
         width.setColumns(5);
         height = BasicComponentFactory.createIntegerField(pm.getModel("height"));
         height.setColumns(5);
@@ -96,7 +103,7 @@ public class UIConfig extends IzPackPanel
         ValidationComponentUtils.setMessageKey(height, "GUIPrefs.height");
         ValidationComponentUtils.setMessageKey(width, "GUIPrefs.width");
         
-        ValidationComponentUtils.updateComponentTreeValidationBackground(this, ValidationResult.EMPTY);
+        ValidationComponentUtils.updateComponentTreeSeverityBackground(this, ValidationResult.EMPTY);
     }
     
     PresentationModel pm;

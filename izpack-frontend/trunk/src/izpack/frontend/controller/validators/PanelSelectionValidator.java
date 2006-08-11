@@ -23,6 +23,8 @@
 
 package izpack.frontend.controller.validators;
 
+import izpack.frontend.model.PanelInfo;
+import izpack.frontend.model.stages.PanelModel;
 import izpack.frontend.model.stages.PanelSelectionModel;
 
 import com.jgoodies.validation.Severity;
@@ -55,10 +57,48 @@ public class PanelSelectionValidator implements StageValidator
                             "Panels",
                             "dest"
                             ));
+        }                
+        
+        tmp.configData = new PanelInfo("", "", "Install Panel", "", "", null, null);        
+        
+        if (!model.contains(tmp))
+        {
+            vr.add(new PropertyValidationMessage(
+                            Severity.ERROR,
+                            "must have an installation panel to perform the install",
+                            model,
+                            "Panels",
+                            "dest"));
+        }
+        
+        tmp.configData = new PanelInfo("", "", "Welcome Panel", "", "", null, null);        
+        
+        if (!model.contains(tmp))
+        {
+            vr.add(new PropertyValidationMessage(
+                            Severity.WARNING,
+                            "should have a welcome panel",
+                            model,
+                            "Panels",
+                            "dest"));
+        }
+        
+        tmp.configData = new PanelInfo("", "", "Finish Panel", "", "", null, null);        
+        tmp2.configData = new PanelInfo("", "", "Simple Finish Panel", "", "", null, null);
+        
+        if (! (model.contains(tmp) || model.contains(tmp2)) )
+        {
+            vr.add(new PropertyValidationMessage(
+                            Severity.WARNING,
+                            "should have a finishing panel",
+                            model,
+                            "Panels",
+                            "dest"));
         }
         
         return vr;
     }
 
+    private PanelModel tmp = new PanelModel(), tmp2 = new PanelModel();
     PanelSelectionModel model;
 }

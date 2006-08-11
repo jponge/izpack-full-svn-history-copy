@@ -23,6 +23,8 @@
 
 package izpack.frontend.model.files;
 
+import izpack.frontend.model.OS;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -45,11 +47,10 @@ public class DirectoryModel extends PackFileModel
         dir.setAttribute("src", source);
         dir.setAttribute("targetdir", target);
         
-        if (!os.equals(""))
-            dir.setAttribute("os", os);
-        
         if (!override.equals(""))
             dir.setAttribute("override", override);
+        
+        os.createXML(doc, dir);
         
         return dir;
     }
@@ -62,8 +63,8 @@ public class DirectoryModel extends PackFileModel
        
        target = attributes.getNamedItem("targetdir").getNodeValue();
        
-       if (attributes.getNamedItem("os") != null)
-           os = attributes.getNamedItem("os").getNodeValue();       
+       os = new OS();
+       os.initFromXML(elementNode);
        
        if (attributes.getNamedItem("override") != null)
            override = attributes.getNamedItem("override").getNodeValue();

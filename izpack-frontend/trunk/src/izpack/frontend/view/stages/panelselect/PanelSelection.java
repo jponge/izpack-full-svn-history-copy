@@ -135,4 +135,10 @@ public class PanelSelection extends IzPackStage implements ListDataListener
     {
         model.initFromXML(doc);        
     }
+
+    @Override
+    public void resetStage()
+    {
+        model.clear();
+    }
 }

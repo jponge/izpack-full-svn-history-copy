@@ -119,7 +119,7 @@ public class GeneralInformation extends IzPackStage
     }
     
     public PresentationModel getValidatingModel()
-    {
+    {   
         if (presModel == null)
         {
             presModel = new PresentationModel(getDataModel());
@@ -130,7 +130,7 @@ public class GeneralInformation extends IzPackStage
                                 {                                    
                                     ValidationResult result = getValidator().validate();
                                     validationModel.setResult(result);
-                                    ValidationComponentUtils.updateComponentTreeValidationBackground(generalInfoPage, result);
+                                    ValidationComponentUtils.updateComponentTreeSeverityBackground(generalInfoPage, result);
                                 }                
                             });
 
@@ -177,4 +177,11 @@ public class GeneralInformation extends IzPackStage
     {
         model.initFromXML(doc);        
     }
+
+    @Override
+    public void resetStage()
+    {
+        model.resetModel();        
+    }
+    
 }

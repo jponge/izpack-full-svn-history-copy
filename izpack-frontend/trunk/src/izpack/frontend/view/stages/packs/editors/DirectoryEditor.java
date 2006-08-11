@@ -26,7 +26,7 @@ package izpack.frontend.view.stages.packs.editors;
 import izpack.frontend.controller.filters.DirectoryFilter;
 import izpack.frontend.model.files.DirectoryModel;
 import izpack.frontend.model.files.ElementModel;
-import izpack.frontend.view.components.OSComboBox;
+import izpack.frontend.view.components.OSSelector;
 import izpack.frontend.view.components.OverwriteComboBox;
 import izpack.frontend.view.components.table.TableEditor;
 
@@ -34,8 +34,10 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -43,6 +45,10 @@ import javax.swing.JTextField;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.validation.Severity;
+import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.message.PropertyValidationMessage;
+import com.jgoodies.validation.view.ValidationComponentUtils;
 
 /**
  * @author Andy Gombos
@@ -52,6 +58,7 @@ public class DirectoryEditor extends TableEditor
     public DirectoryEditor(Frame parent)
     {
         super(parent);
+        setTitle(lr.getText("UI.DirEditor.Title"));
         
         FormLayout layout = new FormLayout("right:max(40dlu;p), 3dlu, 80dlu, 3dlu, max(25dlu;p)", "");
         DefaultFormBuilder builder = new DefaultFormBuilder(layout, new JPanel());
@@ -60,7 +67,7 @@ public class DirectoryEditor extends TableEditor
         target = new JTextField();
         source = new JTextField();
         overwrite = new OverwriteComboBox();
-        os = new OSComboBox();        
+        os = new OSSelector();        
                 
         browse = new JButton(lr.getText("UI.Buttons.Browse"));
         
@@ -92,7 +99,7 @@ public class DirectoryEditor extends TableEditor
         builder.nextLine();        
         builder.append("<html>" + lr.getText("UI.DirEditor.Overwrite"), overwrite);
         builder.nextLine();
-        builder.append(lr.getText("UI.DirEditor.OS"), os);
+        builder.append(lr.getText("UI.DirEditor.OS"), os, 3);
         builder.nextLine();
         
         builder.appendUnrelatedComponentsGapRow();
@@ -124,7 +131,7 @@ public class DirectoryEditor extends TableEditor
         target.setText(fm.target);
         
         overwrite.setOverwriteOption(fm.override);
-        os.setOS(fm.os);
+        os.setOsModel(fm.os);
     }
 
     /* (non-Javadoc)
@@ -137,7 +144,7 @@ public class DirectoryEditor extends TableEditor
         target.setText("$INSTALL_PATH");
 
         overwrite.setSelectedIndex(-1);
-        os.setSelectedIndex(-1);
+        os.setNoneSelected();
     }
 
     /* (non-Javadoc)
@@ -150,7 +157,7 @@ public class DirectoryEditor extends TableEditor
         fm.source = source.getText();
         fm.target = target.getText();
         
-        fm.os = os.getOS();
+        fm.os = os.getOsModel();
         fm.override = overwrite.getOverwriteOption();
         
         return fm;
@@ -158,7 +165,7 @@ public class DirectoryEditor extends TableEditor
 
     JButton browse;
     JTextField target, source;    
-    OSComboBox os;
+    OSSelector os;
     OverwriteComboBox overwrite;
     /* (non-Javadoc)
      * @see izpack.frontend.view.components.table.TableEditor#handles(java.lang.Class)
@@ -166,5 +173,48 @@ public class DirectoryEditor extends TableEditor
     public boolean handles(Class type)
     {
         return type.equals(DirectoryModel.class);
+    }
+    
+    @Override
+    public void configureValidation()
+    {
+        System.out.println("Configure validation");
+        
+        ValidationComponentUtils.setMandatory(target, true);
+        ValidationComponentUtils.setMandatory(source, true);
+        
+        ValidationComponentUtils.setMessageKey(target, "Target.file");
+        ValidationComponentUtils.setMessageKey(source, "Source.file");        
+        
+        ValidationComponentUtils.updateComponentTreeSeverityBackground(this, ValidationResult.EMPTY);
+    }
+
+    @Override
+    public ValidationResult validateEditor()
+    {        
+        ValidationResult vr = new ValidationResult();
+        
+        if (target.getText().length() == 0)
+            vr.add(new PropertyValidationMessage(Severity.ERROR, "is mandatory", target, "Target", "file"));
+        
+        if (source.getText().length() == 0)
+            vr.add(new PropertyValidationMessage(Severity.ERROR, "is mandatory", source, "Source", "file"));
+        else        
+            if (!new File(source.getText()).exists())
+                vr.add(new PropertyValidationMessage(Severity.WARNING, "may not exist", source, "Source", "file"));
+        
+        target.setToolTipText(null);
+        source.setToolTipText(null);
+        
+        List messages = vr.getMessages();
+        for (Object object : messages)
+        {
+            PropertyValidationMessage message = (PropertyValidationMessage) object;
+            ((JComponent) message.target()).setToolTipText(message.formattedText());
+        }
+        
+        ValidationComponentUtils.updateComponentTreeSeverityBackground(this, vr);
+        
+        return vr;
     }
 }

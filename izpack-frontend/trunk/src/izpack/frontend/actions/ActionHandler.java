@@ -108,6 +108,10 @@ public class ActionHandler implements ActionListener
             if (installerUI != null)
             {
                 welcomeUI.setVisible(false);
+                
+                System.out.println("Creating new installer");                
+                
+                installerUI.resetState();
                 installerUI.setVisible(true);
             }
         }

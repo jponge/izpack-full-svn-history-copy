@@ -62,7 +62,8 @@ public class PackModel implements ElementModel
         model = new DefaultTableModel(15, 1);
     }
     
-    private String name = "", desc = "", id = "", os = "";
+    private String name = "", desc = "", id = "";
+    private OS oses = new OS();
     private boolean required = true, preselected = true, loose = false;
     
     /**
@@ -96,9 +97,9 @@ public class PackModel implements ElementModel
     /**
      * @return Returns the os.
      */
-    public String getOS()
-    {
-        return os;
+    public OS getOS()
+    {        
+        return oses;
     }
     /**
      * @return Returns the preselected.
@@ -145,10 +146,11 @@ public class PackModel implements ElementModel
     /**
      * @param os The os to set.
      */
-    public void setOS(String os)
-    {
-        this.os = os;
+    public void setOSes(OS os)
+    {     
+        this.oses = os;
     }
+    
     /**
      * @param preselected The preselected to set.
      */
@@ -171,18 +173,17 @@ public class PackModel implements ElementModel
         pack.setAttribute("name", name);
         pack.setAttribute("required", required ? "yes" : "no");
         pack.setAttribute("preselected", preselected ? "yes" : "no");
-        pack.setAttribute("loose", loose ? "true" : "false");
-        
-        if (!os.equals(""))
-            pack.setAttribute("os", os);
-        
+        pack.setAttribute("loose", loose ? "true" : "false");        
+                
         if (!id.equals(""))        
             pack.setAttribute("id", id);
         
         Element descElem = XML.createElement("description", doc);
         descElem.setTextContent(desc);
         
-        pack.appendChild(descElem);
+        pack.appendChild(descElem);        
+     
+        oses.createXML(doc, pack);
         
         //Convert the model into a list so it can be sorted
         ArrayList elements = new ArrayList();
@@ -226,10 +227,6 @@ public class PackModel implements ElementModel
         
         setLoose(stringToBoolean(getAttribute(attributes, "loose")));
         
-        String os = getAttribute(attributes, "os");
-        if (os != null && !os.equals(""))
-            setOS(os);
-        
         String id = getAttribute(attributes, "id");
         if (id != null && !id.equals(""))
             setId(id);
@@ -243,12 +240,15 @@ public class PackModel implements ElementModel
         {            
             String packLoc = "//pack[" + (packIndex + 1) + "]/";
             
+            NodeList os         = (NodeList) xpath.evaluate(packLoc + "os", packNode, XPathConstants.NODESET);
+            
             NodeList dirs       = (NodeList) xpath.evaluate(packLoc + "file", packNode, XPathConstants.NODESET);
             NodeList fileset    = (NodeList) xpath.evaluate(packLoc + "fileset", packNode, XPathConstants.NODESET);
             NodeList files      = (NodeList) xpath.evaluate(packLoc + "singlefile", packNode, XPathConstants.NODESET);
             NodeList execs      = (NodeList) xpath.evaluate(packLoc + "executable", packNode, XPathConstants.NODESET);
             NodeList parsables  = (NodeList) xpath.evaluate(packLoc + "parsable", packNode, XPathConstants.NODESET);
             
+            oses.initFromXML(os);
             createChildParts(dirs, DirectoryModel.class);
             createChildParts(files, FileModel.class);
             createChildParts(fileset, FileSet.class);

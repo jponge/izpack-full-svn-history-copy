@@ -21,6 +21,16 @@
  * limitations under the License.
  */
 
+/*
+ * 
+ * 
+ * 
+ * TODO Implement arguments
+ * 
+ * 
+ * 
+ * 
+ */
 package izpack.frontend.view.stages.packs.editors;
 
 import izpack.frontend.controller.ComboBoxParser;
@@ -29,6 +39,7 @@ import izpack.frontend.controller.filters.JARFilter;
 import izpack.frontend.model.files.ElementModel;
 import izpack.frontend.model.files.Executable;
 import izpack.frontend.view.ClassChooser;
+import izpack.frontend.view.components.OSSelector;
 import izpack.frontend.view.components.YesNoRadioPanel;
 import izpack.frontend.view.components.table.TableEditor;
 
@@ -37,10 +48,12 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -49,6 +62,10 @@ import javax.swing.JTextField;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.validation.Severity;
+import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.message.PropertyValidationMessage;
+import com.jgoodies.validation.view.ValidationComponentUtils;
 
 /**
  * @author Andy Gombos
@@ -71,9 +88,13 @@ public class ExecutableEditor extends TableEditor
         execClass = new JTextField();
         bin = new JRadioButton(lr.getText("UI.ExecutableEditor.Type.Bin"));
         jar = new JRadioButton(lr.getText("UI.ExecutableEditor.Type.JAR"));
+        os = new OSSelector();
         stage = new JComboBox(ComboBoxParser.parseProperty(lr.getText("UI.ComboBox.Stage")));
         failure = new JComboBox(ComboBoxParser.parseProperty(lr.getText("UI.ComboBox.Failure")));
         keep = new YesNoRadioPanel("no");
+        
+        target.getDocument().addDocumentListener(this);
+        execClass.getDocument().addDocumentListener(this);
         
         JPanel typePanel = new JPanel();
         typePanel.setLayout(new FlowLayout());
@@ -120,6 +141,8 @@ public class ExecutableEditor extends TableEditor
         builder.append(lr.getText("UI.ExecutableEditor.Class"), execClass);
         builder.nextLine();
         builder.append(lr.getText("UI.ExecutableEditor.Type"), typePanel);
+        builder.nextLine();
+        builder.append(lr.getText("UI.ExecutableEditor.OS"), os);
         builder.nextLine();
         builder.append(lr.getText("UI.ExecutableEditor.Stage"), stage);
         builder.nextLine();
@@ -210,12 +233,49 @@ public class ExecutableEditor extends TableEditor
         
         return em;
     }
+    
+    @Override
+    public void configureValidation()
+    {        
+        ValidationComponentUtils.setMessageKey(target, "Target.file");
+        ValidationComponentUtils.setMessageKey(execClass, "Executable.class");        
+        
+        ValidationComponentUtils.updateComponentTreeSeverityBackground(this, ValidationResult.EMPTY);
+    }
+
+    @Override
+    public ValidationResult validateEditor()
+    {        
+        System.out.println("Validating");
+        ValidationResult vr = new ValidationResult();
+        
+        if (target.getText().length() == 0)
+            vr.add(new PropertyValidationMessage(Severity.WARNING, "should be provided", target, "Target", "file"));
+        
+        if (target.getText().endsWith("jar") && execClass.getText().length() == 0)
+            vr.add(new PropertyValidationMessage(Severity.WARNING, "should specify the class to execute from the JAR", execClass, "Executable", "class"));
+        
+        target.setToolTipText(null);        
+        execClass.setToolTipText(null);
+        
+        List messages = vr.getMessages();
+        for (Object object : messages)
+        {
+            PropertyValidationMessage message = (PropertyValidationMessage) object;
+            ((JComponent) message.target()).setToolTipText(message.formattedText());
+        }
+        
+        ValidationComponentUtils.updateComponentTreeSeverityBackground(this, vr);
+        
+        return vr;
+    }
 
     JButton browse;
     JTextField target;
     JTextField execClass;
-    JRadioButton bin, jar;
+    JRadioButton bin, jar;    
     JComboBox stage;
     JComboBox failure;
     YesNoRadioPanel keep;
+    OSSelector os;
 }

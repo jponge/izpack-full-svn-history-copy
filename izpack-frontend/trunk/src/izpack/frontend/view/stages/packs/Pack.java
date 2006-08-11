@@ -220,7 +220,7 @@ public class Pack extends IzPackStage implements ActionListener,
     {
         JScrollPane scroll = new JScrollPane();
         scroll
-                        .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                        .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);        
 
         scroll.setViewportView(table);
 
@@ -456,4 +456,10 @@ public class Pack extends IzPackStage implements ActionListener,
         model.initFromXML(doc);
     }
 
+    @Override
+    public void resetStage()
+    {
+        for (int i = 0; i < model.getRowCount(); i++)
+            model.removeRow(i);        
+    }
 }

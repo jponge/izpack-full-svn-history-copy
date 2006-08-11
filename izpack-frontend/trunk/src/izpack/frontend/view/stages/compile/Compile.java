@@ -105,4 +105,11 @@ public class Compile extends IzPackStage implements CompileListener
     }
     
     final CompileDisplay displayer;
+
+    @Override
+    public void resetStage()
+    {
+        // TODO Auto-generated method stub
+        
+    }
 }

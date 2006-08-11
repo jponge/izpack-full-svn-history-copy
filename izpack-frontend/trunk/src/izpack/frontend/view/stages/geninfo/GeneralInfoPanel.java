@@ -134,7 +134,7 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener
         }
         
         configureValidation();
-        ValidationComponentUtils.updateComponentTreeValidationBackground(this, ValidationResult.EMPTY);                
+        ValidationComponentUtils.updateComponentTreeSeverityBackground(this, ValidationResult.EMPTY);                
     }
     
     public void actionPerformed(ActionEvent e)
@@ -252,8 +252,8 @@ public class GeneralInfoPanel extends IzPackPanel implements ActionListener
         ValidationComponentUtils.setMessageKey(appName, "Info.application name");
         ValidationComponentUtils.setMessageKey(version, "Info.application version");
         ValidationComponentUtils.setMessageKey(homepage, "Info.homepage");
-    }
-    
+    }    
+       
     ArrayList authorListModel;
     
     SelectionInList authorModel;    

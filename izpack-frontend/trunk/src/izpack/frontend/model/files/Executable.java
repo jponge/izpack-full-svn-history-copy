@@ -23,8 +23,11 @@
 
 package izpack.frontend.model.files;
 
+import izpack.frontend.model.OS;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import utils.XML;
@@ -37,6 +40,7 @@ import utils.XML;
 public class Executable implements PackElement
 {
     public String target = "", execClass = "", type = "", stage = "", failure = "", keep = "", args = "";
+    public OS os;
 
     /* (non-Javadoc)
      * @see izpack.frontend.model.files.ElementModel#writeXML()
@@ -53,6 +57,8 @@ public class Executable implements PackElement
         setOptionalAttribute(executable, "failure", failure);
         setOptionalAttribute(executable, "keep", keep);
         
+        os.createXML(doc, executable);
+        
         Element argsElem = XML.createElement("args", doc);
         Element arg = XML.createElement("arg", doc);
         arg.setAttribute("value", args);
@@ -67,11 +73,30 @@ public class Executable implements PackElement
     {
         if ((value != null) && !value.equals(""))
             elem.setAttribute(attrName, value);
-    }
+    } 
 
     public void initFromXML(Node elementNode)
     {
-        // TODO Auto-generated method stub
+        NamedNodeMap attributes = elementNode.getAttributes();
         
+        if (attributes.getNamedItem("targetfile") != null)
+            target = attributes.getNamedItem("targetfile").getNodeValue();
+        if (attributes.getNamedItem("class") != null)
+            execClass = attributes.getNamedItem("class").getNodeValue();
+        if (attributes.getNamedItem("type") != null)
+            type  = attributes.getNamedItem("type").getNodeValue();
+        if (attributes.getNamedItem("stage") != null)            
+            stage = attributes.getNamedItem("stage").getNodeValue();
+        if (attributes.getNamedItem("failure") != null)
+            failure = attributes.getNamedItem("failure").getNodeValue();
+        if (attributes.getNamedItem("keep") != null)
+            keep = attributes.getNamedItem("keep").getNodeValue();
+        
+        
+        //TODO handle args
+        //args = attributes.getNamedItem("src").getNodeValue();
+        
+        os = new OS();
+        os.initFromXML(elementNode);
     }
 }
