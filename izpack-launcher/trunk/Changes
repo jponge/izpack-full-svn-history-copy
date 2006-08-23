@@ -1,3 +1,6 @@
+2006.08.23 (Julien Ponge)
+* Updated Win32 binary.
+
 2006.07.23 (Julien Ponge)
 * launcher.cpp, main.cpp: fixes on the interpretation of the QProcess:execute()
   return values. The launcher should be running fine now.
