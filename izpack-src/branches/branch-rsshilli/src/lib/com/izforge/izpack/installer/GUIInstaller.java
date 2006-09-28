@@ -1,5 +1,5 @@
 /*
- * $Id:$
+ * $Id$
  * IzPack - Copyright 2001-2006 Julien Ponge, All Rights Reserved.
  * 
  * http://www.izforge.com/izpack/
@@ -36,6 +36,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -67,6 +68,7 @@ import com.izforge.izpack.LocaleDatabase;
 import com.izforge.izpack.gui.ButtonFactory;
 import com.izforge.izpack.gui.IzPackMetalTheme;
 import com.izforge.izpack.gui.LabelFactory;
+import com.izforge.izpack.gui.SplashScreen;
 import com.izforge.izpack.util.Debug;
 import com.izforge.izpack.util.OsVersion;
 import com.izforge.izpack.util.VariableSubstitutor;
@@ -96,6 +98,9 @@ public class GUIInstaller extends InstallerBase
 
     /** holds language to ISO-3 language code translation */
     private static HashMap isoTable;
+
+    /** This is the optional splash screen to show while the installer starts up. */
+    protected SplashScreen splashScreen;
 
     /**
      * The constructor.
@@ -139,13 +144,25 @@ public class GUIInstaller extends InstallerBase
         // Load custom langpack if exist.
         addCustomLangpack(installdata);
 
+        // Load custom langpack if exist and we're not skipping it.
         // We launch the installer GUI
         SwingUtilities.invokeLater(new Runnable() {
             public void run()
             {
                 try
                 {
+                    // Show the splash screen, if it's set and "skip_splash" wasn't set on the command line.
+                    if (!"true".equalsIgnoreCase(System.getProperty("skip_splash"))) {
+                        loadSplashScreen();
+                    }
+
                     loadGUI();
+
+                    // Close the splash screen
+                    if (!"true".equalsIgnoreCase(System.getProperty("skip_splash"))) {
+                        unloadSplashScreen();
+                    }
+
                 }
                 catch (Exception e)
                 {
@@ -399,6 +416,25 @@ public class GUIInstaller extends InstallerBase
         }
     }
 
+    public void loadSplashScreen()
+    {
+        try
+        {
+            ImageIcon image = ResourceManager.getInstance().getImageIconResource("SplashScreen");
+            splashScreen = new SplashScreen(image.getImage());
+            splashScreen.run();
+        }
+        catch(ResourceNotFoundException e)
+        {
+            // There isn't a Splash screen specified.
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
     /**
      * Loads the GUI.
      * 
@@ -425,6 +461,13 @@ public class GUIInstaller extends InstallerBase
             title = vs.substitute(message, null);
         }
         new InstallerFrame(title, this.installdata);
+    }
+
+    protected void unloadSplashScreen(){
+        if(splashScreen != null)
+        {
+            splashScreen.close();
+        }
     }
 
     /**

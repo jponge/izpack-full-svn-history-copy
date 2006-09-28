@@ -58,6 +58,9 @@ public class Info implements Serializable
     /** The uninstaller name */
     private String uninstallerName = "uninstaller.jar";
 
+    /** The uninstaller path (in the $INSTALL_PATH) */
+    private String uninstallerPath = "Uninstaller";
+
     /** The path of the summary log file */
     private String summaryLogFilePath = "$INSTALL_PATH/Uninstaller/InstallSummary.htm";
 
@@ -230,6 +233,26 @@ public class Info implements Serializable
     public String getUninstallerName()
     {
         return this.uninstallerName;
+    }
+
+    /**
+     * Sets the path of the uninstaller.
+     *
+     * @param name the name of the uninstaller.
+     */
+    public void setUninstallerPath(String name)
+    {
+        this.uninstallerPath = name;
+    }
+
+    /**
+     * Returns the path of the uninstaller.
+     *
+     * @return the name of the uninstaller.
+     */
+    public String getUninstallerPath()
+    {
+        return this.uninstallerPath;
     }
 
     /**

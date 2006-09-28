@@ -93,8 +93,11 @@ public class AutomatedInstallData
     /** The current panel. */
     public int curPanelNumber;
 
-    /** Can we close the installer ? */
-    public boolean canClose = false;
+    /** Do we need to ask if it's okay if the user tries to close the installer? */
+    public boolean closeRequiresAsking = true;
+
+    /** Do we need to uninstall the installed files if the user tries to close the installer? */
+    public boolean closeRequiresUninstall = false;
 
     /** Did the installation succeed ? */
     public boolean installSuccess = true;
