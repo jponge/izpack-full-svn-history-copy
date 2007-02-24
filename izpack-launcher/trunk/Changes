@@ -1,4 +1,4 @@
-(next release)
+Release 2.2 (2007.02.24) [release-2.2]
 
 2007.02.20 (Julien Ponge)
 * Updated Win32 binary: static Qt linking, no mingw dependency and UPX
