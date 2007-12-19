@@ -1,0 +1,4 @@
+Apache License, Version 2.0
+--------------------------------
+
+(to be replaced with an up-to-date text)
