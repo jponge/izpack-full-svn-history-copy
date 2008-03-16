@@ -70,6 +70,9 @@ public:
         return jre != "";
     }
 
+    int execute(const QString &program, const QStringList &arguments);
+
+    int execute(const QString &program);
 };
 
 #endif

@@ -78,7 +78,7 @@ bool Launcher::launch(const QString &runtimeExecPath)
     QStringList args;
     args.append("-jar");
     args.append(jar);
-    return QProcess::execute(runtimeExecPath, args);
+    return Launcher::execute(runtimeExecPath, args);
 }
 
 void Launcher::downloadJRE()
@@ -89,7 +89,7 @@ void Launcher::downloadJRE()
     QStringList args;
     args.append("url.dll,FileProtocolHandler");
     args.append(download);
-    QProcess::execute("rundll32", args);
+    Launcher::execute("rundll32", args);
 
 #endif
 
@@ -102,9 +102,9 @@ void Launcher::downloadJRE()
     browsers.append("opera");
     for (int i = 0; i < browsers.size(); ++i)
     {
-        if (QProcess::execute(browsers.at(i), QStringList("-v")) == 0)
+        if (Launcher::execute(browsers.at(i), QStringList("-v")) == 0)
         {
-            QProcess::execute(browsers.at(i), QStringList(download));
+            Launcher::execute(browsers.at(i), QStringList(download));
             return;
         }
     }
@@ -113,7 +113,7 @@ void Launcher::downloadJRE()
 
 #ifdef Q_WS_MAC
 
-    QProcess::execute("open", QStringList(download));
+    Launcher::execute("open", QStringList(download));
 
 #endif
 
@@ -121,7 +121,7 @@ void Launcher::downloadJRE()
 
 bool Launcher::installProvidedJRE()
 {
-    return QProcess::execute(jre);
+    return Launcher::execute(jre);
 }
 
 bool Launcher::detectJRE()
@@ -167,7 +167,7 @@ bool Launcher::detectJRE()
 	// Mac OS X
 	QString pathOnOSX = "/System/Library/Frameworks/JavaVM.framework/"
 						"Versions/CurrentJDK/Commands/java";
-	if (QProcess::execute(pathOnOSX, QStringList("-version")) == 0)
+	if (Launcher::execute(pathOnOSX, QStringList("-version")) == 0)
 	{
 		javaExecPath = pathOnOSX;
 		return true;
@@ -176,7 +176,7 @@ bool Launcher::detectJRE()
 #endif
 
     // Last chance, lucky trial
-    if (QProcess::execute("java", QStringList("-version")) == 0)
+    if (Launcher::execute("java", QStringList("-version")) == 0)
     {
         javaExecPath = "java";
         return true;
@@ -184,3 +184,37 @@ bool Launcher::detectJRE()
 
     return false;
 }
+
+int Launcher::execute(const QString &program, const QStringList &arguments) 
+{
+    QProcess process;
+    
+    process.setReadChannelMode(QProcess::ForwardedChannels);
+    process.start(program, arguments);
+    process.waitForFinished(-1);
+    
+    int exitCode = process.exitCode();
+    if (process.error() == QProcess::FailedToStart)
+    {
+        exitCode = -1;
+    }
+    
+    return exitCode;
+}
+
+int Launcher::execute(const QString &program)
+{
+    QProcess process;
+    process.setReadChannelMode(QProcess::ForwardedChannels);
+    process.start(program);
+    process.waitForFinished(-1);
+    
+    int exitCode = process.exitCode();
+    if (process.error() == QProcess::FailedToStart)
+    {
+        exitCode = -1;
+    }
+    
+    return exitCode;
+}
+

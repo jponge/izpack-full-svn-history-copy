@@ -84,7 +84,7 @@ detect:
             break;
         
         case PROVIDED:
-            if (!launcher.installProvidedJRE())
+            if (launcher.installProvidedJRE())
             {
                 QMessageBox::critical(0, QT_TR_NOOP("Error"),
                     QT_TR_NOOP("The provided Java Runtime Environment could not be installed."));
