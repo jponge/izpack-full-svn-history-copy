@@ -31,8 +31,8 @@ import java.util.ArrayList;
  */
 public class Main
 {
-   /** */
-   private static final String APP_VERSION = "0.1";
+   /* */
+   private static final String APP_VERSION = "0.2-test";
 
    /**
     * Main method to run.
@@ -41,7 +41,7 @@ public class Main
     */
    public static void main(String[] args)
    {
-      System.out.println("\nTestLangPacks in IzPack for review    version " + APP_VERSION);
+      System.out.println("\nTestLangPacks for IzPack    version " + APP_VERSION);
       System.out.println("");
 
       // We need at least one argument.
@@ -79,7 +79,9 @@ public class Main
             return;
          }
          else
+         {
             xmlTestFile = args[x];
+         }
       }
 
       LangPack langPackBase = null;
@@ -125,7 +127,9 @@ public class Main
          key = itemBase.GetKey();
          // If there isn't any ID string,
          if (key==null)
+         {
             continue;   // just go to next.
+         }
          for (LanguageItem itemToCheck : langItemsTest)
          {
             String checkKey = itemToCheck.GetKey();
@@ -134,18 +138,24 @@ public class Main
                if (key.equals(checkKey))
                {
                   if (itemToCheck.GetValue() != null)
+                  {
                      found = true;  // Only filled id and txt will procedure true!
+                  }
                }
             }
          }
+
          if (!found)
          {
             System.out.println(MakeKeyValueString(key, itemBase.GetValue()));
-            found = false;
          }
+         found = false;
       }
+
       if (key==null)
+      {
          System.out.println("   (none)");
+      }
 
       // Finding ID's which are not needed anymore.
       // -----------------------------------------
@@ -158,7 +168,9 @@ public class Main
          key = itemToCheck.GetKey();
          // If there isn't any ID string,
          if (key==null)
+         {
             continue;   // just go to next.
+         }
          for (LanguageItem itemBase : langItemsBase)
          {
             String checkKey = itemBase.GetKey();
@@ -168,18 +180,24 @@ public class Main
                if (checkKey.equals(key))
                {
                   if (checkValue != null)
+                  {
                      found = true;  // Only filled id and txt will procedure true!
+                  }
                }
             }
          }
+
          if (!found)
          {
             System.out.println(MakeKeyValueString(key, itemToCheck.GetValue()));
-            found = false;
          }
+         found = false;
       }
+
       if (key==null)
+      {
          System.out.println("   (none)");
+      }
       
       // Check unknown attributes.
       // ------------------------
@@ -196,13 +214,18 @@ public class Main
             System.out.println(msg + ":");
             int max = unknownAttrs.length;
             for (int x=0; x < max; x++)
+            {
                System.out.println("      "+unknownAttrs[x]);
+            }
             unknownAttrs = null;
             found = true;
          }
       }
+      
       if (!found)
+      {
          System.out.println("   (none)");
+      }
 
       // Finding unknown elements.
       // ------------------------
@@ -211,11 +234,15 @@ public class Main
 
       String[] unknownElements = langPackTest.GetUnknownElements();
       if (unknownElements.length==0)
+      {
          System.out.println("   (none)");
+      }
       else
       {
          for (String elem : unknownElements)
+         {
             System.out.println("   <"+elem+" ... />");
+         }
       }
    }
 
@@ -230,7 +257,9 @@ public class Main
    {
       String totMsg = "";
       if (caption!=null && caption.contains(""))
+      {
          totMsg = "\n" + caption + ":\n   ";
+      }
       totMsg = totMsg +  msg;
       outStream.println(totMsg);
    }
@@ -246,14 +275,22 @@ public class Main
       String msg = "   str ";
       //"   str id=\"" + key + "\" txt=\"" + itemBase.GetValue() + "\"");
       if (key==null || key.equals(""))
+      {
          msg = msg + "(id missing!) ";
+      }
       else
+      {
          msg = msg + "id=\"" + key + "\" ";
+      }
 
       if (value==null || value.equals(""))
+      {
          msg = msg + "(txt missing!)";
+      }
       else
+      {
          msg = msg + "txt=\"" + value + "\"";
+      }
 
       return msg;
    }

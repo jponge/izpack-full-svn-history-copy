@@ -126,11 +126,17 @@ public class XmlDocument
       {
          String msg = null;
          if (e.code == DOMException.NOT_FOUND_ERR)
+         {
             msg = "Parameter name is not recognized.";
+         }
          else if (e.code == DOMException.NOT_SUPPORTED_ERR)
+         {
             msg = "Parameter name is recognized but the requested value cannot be set.";
+         }
          else if (e.code == DOMException.TYPE_MISMATCH_ERR)
+         {
             msg = "Parameter name is incompatible with the expected value type.";
+         }
 
          Main.PrintMessage(System.err, "Error in normalize parameters", msg);
          throw new LangPackException();
@@ -163,11 +169,17 @@ public class XmlDocument
       {
          String msg = null;
          if (e.code == DOMException.NOT_FOUND_ERR)
+         {
             msg = "Parameter name is not recognized.";
+         }
          else if (e.code == DOMException.NOT_SUPPORTED_ERR)
+         {
             msg = "Parameter name is recognized but the requested value cannot be set.";
+         }
          else if (e.code == DOMException.TYPE_MISMATCH_ERR)
+         {
             msg = "Parameter name is incompatible with the expected value type.";
+         }
 
          Main.PrintMessage(System.err, "Normalize parameters", msg);
       }
@@ -190,7 +202,9 @@ public class XmlDocument
    public String[] GetUnknownElements()
    {
       if (inputSource == null)
+      {
          return new String[0];
+      }
 
       ArrayList<String> elems = new ArrayList<String>();
       String nodeName = null;

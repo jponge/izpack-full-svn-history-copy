@@ -128,29 +128,6 @@ public class LangPack
    public String[] GetUnknownElements()
    {
       return xmlDoc.GetUnknownElements();
-
-//      NodeList nodeList = null;
-//      try
-//      {
-//         nodeList = xmlDoc.GetUnknownElements();
-//      }
-//      catch (LangPackException e)
-//      {
-//         return new String[0];
-//      }
-//      
-//      int max = nodeList.getLength();
-//      if (max == 0)
-//         return new String[0];
-//      else
-//      {
-//         String[] elements = new String[max];
-//         for (int x=0; x < max; x++)
-//         {
-//            elements[x] = nodeList.item(x).getNodeName();
-//         }
-//         return elements;
-//      }
    }
 
    /**
@@ -167,7 +144,9 @@ public class LangPack
       {
          Node attrNode = attributes.item(x);
          if (attrNode.getNodeName().compareTo("id".toLowerCase())!=0 && attrNode.getNodeName().compareTo("txt".toLowerCase())!=0)
+         {
             unknown.add(attrNode.getNodeName()+"=\""+attrNode.getNodeValue()+"\"");
+         }
       }
       String[] tmp = new String[0]; // Make empty String array. This makes to use "T[] toArray(T[] a)" in ArrayList.
       return unknown.toArray(tmp);  // Return ArrayList items in String[].
