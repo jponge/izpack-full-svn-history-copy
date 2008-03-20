@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class Main
 {
    /* */
-   private static final String APP_VERSION = "0.2-test";
+   private static final String APP_VERSION = "0.2";
 
    /**
     * Main method to run.
