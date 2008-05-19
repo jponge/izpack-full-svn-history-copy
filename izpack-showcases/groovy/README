@@ -1,0 +1,35 @@
+Julian Ponge wrote:
+
+> The requirement is to package Groovy + some modules, just like the
+> Win32 version currently does. Then we can have improvements like
+> shortcuts creation, file-type association, ...
+
+I have created an IzPack Groovy installer, containing:
+    *	Groovy 1.5.4
+    *	Documentation
+    *	COM Scripting module
+    *	Gant module
+    *	GraphicsBuilder module
+
+It installs (and uninstalls) shortcuts and file associations on Windows.
+
+To build, you need to download the following from http://groovy.codehaus.org/,
+into the downloads directory (or elsewhere):
+    *	groovy-binary-1.5.4.zip
+    *	groovy-docs-1.5.4.zip
+    *	gant-1.1.1_groovy-1.5.4.zip
+    *	scriptom-1.5.4.zip
+    *	graphicsbuilder-0.5.1.zip
+
+Set IZPACK_HOME to point at your IzPack-3.11.0 installation, then simply
+invoke ant:
+
+    ant -Dgroovy-zip.dir=downloads clean package
+
+which creates the installer in build/groovy-1.5.4_installer.jar.
+
+I have tested the installer on Windows XP and Mac OS X.
+
+--
+derek@baums.org.uk
+Fri Mar 28 2008
