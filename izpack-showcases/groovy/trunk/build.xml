@@ -138,7 +138,6 @@
     <appname>@{app.title}</appname>
     <appsubpath>@{app.subpath}</appsubpath>
     <appversion>@{app.version}</appversion>
-    <uninstaller name="@{app.name}-uninstaller.jar" write="yes" />
 
     <!-- following appears in HelloPanel -->
     <authors>
@@ -183,6 +182,8 @@
     <res id="Win_NT_shortcutSpec.xml" src="resource/winShortcutSpec.xml" />
     <res id="shortcutSpec.xml" src="resource/emptyShortcutSpec.xml" />
     <res id="ProcessPanel.Spec.xml" src="resource/processSpec.xml" />
+    <res src="resource/groovy-splash.png" id="installer.langsel.img"/>
+    <res src="resource/RegistrySpec.xml" id="RegistrySpec.xml"/>
   </resources>
 
   <native type="izpack" name="ShellLink.dll"/>
@@ -200,6 +201,14 @@
     <panel classname="ShortcutPanel" /> 
     <panel classname="FinishPanel"/>
   </panels>
+  
+  <listeners>
+    <listener installer="SummaryLoggerInstallerListener"/>
+    <listener installer="RegistryInstallerListener"
+              uninstaller="RegistryUninstallerListener">
+      <os family="windows"/>
+    </listener>
+  </listeners>
 
   <packs>
     <pack name="Base" required="yes">
@@ -273,6 +282,12 @@
     </pack>
 
   </packs>
+  
+  <native type="izpack" name="ShellLink.dll"/>
+  <native type="3rdparty" name="COIOSHelper.dll" stage="both">
+    <os family="windows"/>
+  </native>
+
 </installation>
       ]]></config>
     </izpack>
