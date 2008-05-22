@@ -139,10 +139,16 @@
     <url>http://groovy.codehaus.org</url>
   </info>
 
-  <guiprefs width="640" height="480" resizable="yes">
+  <guiprefs width="800" height="600" resizable="yes">
+    <modifier key="allXGap" value="5"/>
+    <modifier key="allYGap" value="5"/>
+    <modifier key="paragraphYGap" value="15"/>
     <modifier key="useHeadingPanel" value="yes"/>
-    <modifier key="headingFontSize" value="1.5"/>
+    <modifier key="headingLineCount" value="1"/>
+    <modifier key="headingFontSize" value="2"/>
+    <modifier key="headingBackgroundColor" value="0x00ffffff"/>
     <modifier key="headingPanelCounter" value="text"/>
+    <modifier key="headingPanelCounterPos" value="inHeading"/>
   </guiprefs>
 
   <locale>
@@ -159,8 +165,7 @@
       == -->
     <res id="Heading.image" src="resource/groovy.png" />
 
-    <res id="LicencePanel.licence"
-	src="@{build.dir}/binary/groovy-@{groovy.version}/LICENSE.txt" />
+    <res id="HTMLLicencePanel.licence" src="resource/asl2.html" />
 
     <!-- FIXME: parse=yes results in a blank panel -->
     <res id="HTMLInfoPanel.info"
@@ -178,7 +183,7 @@
     <!-- <panel classname="HelloPanel"/>
     -->
     <panel classname="HTMLInfoPanel"/>
-    <panel classname="LicencePanel"/>
+    <panel classname="HTMLLicencePanel"/>
     <panel classname="TargetPanel" /> 
     <panel classname="PacksPanel"/>
     <panel classname="SummaryPanel"/>
