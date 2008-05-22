@@ -17,6 +17,12 @@
     == You shouldn't need to change anything below here
     -->
 
+  <condition property="run.downloads">
+    <not>
+        <isset property="skip.downloads"/>
+    </not>
+  </condition>
+
   <property name="app.group" value="Groovy" />
   <property name="app.name" value="groovy" />
   <property name="app.title" value="Groovy" />
@@ -94,7 +100,7 @@
 
   </target>
   
-  <target name="download">
+  <target name="download" if="run.downloads">
     <mkdir dir="${groovy-zip.dir}"/>
     <get src="${groovy-bin-url}" dest="${groovy-zip.dir}/${groovy-bin-archive}"
         verbose="on" usetimestamp="yes"/>
@@ -113,7 +119,9 @@
   <target name="package" depends="prepare" >
     <izpack basedir="${basedir}"
 	    izPackDir="${izpack.dir}"
-	    output="${build.dir}/${app.name}-${app.version}_installer.jar">
+	    output="${build.dir}/${app.name}-${app.version}_installer.jar"
+   	    compression="deflate"
+        compressionlevel="9">
       <config><![CDATA[
 <installation version="1.0">
   <variables>
