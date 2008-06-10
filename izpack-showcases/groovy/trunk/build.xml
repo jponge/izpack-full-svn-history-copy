@@ -10,6 +10,8 @@
   <property name="gant.version" value="1.3.0" />
   <property name="scriptom.version" value="1.5.4" />
   <property name="graphicsbuilder.version" value="0.5.1" />
+  <property name="jidebuilder.version" value="1.0" />
+  <property name="svg-salamander.version" value="1.0" />
   <property environment="env" />
   <property name="izpack.dir" value="${env.IZPACK_HOME}" />
 
@@ -54,6 +56,16 @@
   <property name="graphicsbuilder-url"
     value="http://docs.codehaus.org/download/attachments/12190076/${graphicsbuilder-archive}" />
 
+  <property name="jidebuilder-archive"
+    value="jidebuilder-${jidebuilder.version}.jar" />
+  <property name="jidebuilder-url"
+    value="http://svn.codehaus.org/groovy-contrib/jidebuilder/trunk/dist/jidebuilder-${jidebuilder.version}.jar" />
+
+  <property name="svg-salamander-archive"
+    value="svg-salamander-${svg-salamander.version}.jar" />
+  <property name="svg-salamander-url"
+    value="http://docs.codehaus.org/download/attachments/34701376/svg-salamander-${svg-salamander.version}.jar" />
+
   <property name="izpack.jar"
 	location="${izpack.dir}/lib/standalone-compiler.jar" />
   <property name="groovy-binary.zip"
@@ -73,7 +85,7 @@
     <delete dir="build" />
   </target>
 
-  <target name="prepare" depends="download, check" >
+  <target name="prepare" depends="download" >
 
     <taskdef name="izpack"
       classpath="${izpack.jar}"
@@ -111,6 +123,10 @@
     <get src="${scriptom-url}" dest="${groovy-zip.dir}/${scriptom-archive}"
         verbose="on" usetimestamp="yes"/>
     <get src="${graphicsbuilder-url}" dest="${groovy-zip.dir}/${graphicsbuilder-archive}"
+        verbose="on" usetimestamp="yes"/>
+    <get src="${jidebuilder-url}" dest="${groovy-zip.dir}/${jidebuilder-archive}"
+        verbose="on" usetimestamp="yes"/>
+    <get src="${svg-salamander-url}" dest="${groovy-zip.dir}/${svg-salamander-archive}"
         verbose="on" usetimestamp="yes"/>
   </target>
 
@@ -189,8 +205,6 @@
   <native type="izpack" name="ShellLink.dll"/>
 
   <panels>
-    <!-- <panel classname="HelloPanel"/>
-    -->
     <panel classname="HTMLInfoPanel"/>
     <panel classname="HTMLLicencePanel"/>
     <panel classname="TargetPanel" /> 
@@ -211,8 +225,8 @@
   </listeners>
 
   <packs>
-    <pack name="Base" required="yes">
-      <description>Groovy Base Installation</description>
+    <pack name="Groovy core" required="yes">
+      <description>Groovy core files installation.</description>
 
       <fileset dir="@{build.dir}/binary/groovy-@{groovy.version}"
       	targetdir="$INSTALL_PATH">
@@ -239,13 +253,13 @@
       <executable targetfile="$INSTALL_PATH/bin/java2groovy" os="unix"/>
     </pack>
 
-    <pack name="FileAssoc" required="no">
+    <pack name="File associations" required="no">
       <os family="windows" />
-      <description>Add file associations, so .groovy scripts can be launched from Windows explorer</description>
+      <description>Adds file associations on Windows.</description>
     </pack>
 
     <pack name="Documentation" required="no">
-      <description>Groovy Documentation, including PDF Wiki snapshot</description>
+      <description>Groovy Documentation, including a PDF Wiki snapshot.</description>
       <fileset dir="@{build.dir}/docs/groovy-@{groovy.version}"
       	targetdir="$INSTALL_PATH">
       </fileset>
@@ -254,7 +268,7 @@
     <pack name="Scriptom" required="no">
       <os family="windows" />
       <description>COM Scripting Module.
-      REQUIRES Microsoft Visual C++ 2005 SP1 Redistributable Package
+      Microsoft Visual C++ 2005 SP1 Redistributable Package is required.
       </description>
       <fileset dir="@{build.dir}/scriptom"
       	targetdir="$INSTALL_PATH">
@@ -262,7 +276,7 @@
     </pack>
 
     <pack name="Gant" required="no">
-      <description>Groovy Ant Module</description>
+      <description>Groovy Ant module.</description>
       <fileset dir="@{build.dir}/gant-@{gant.version}"
       	targetdir="$INSTALL_PATH">
 	  <exclude name="README_Install.txt" />
@@ -271,14 +285,21 @@
     </pack>
 
     <pack name="GraphicsBuilder" required="no">
-      <description>Groovy builder for Java 2D.
-      REQUIRES Java 6</description>
+      <description>Groovy builder for Java 2D. Java 6 is required!</description>
       <fileset dir="@{build.dir}/graphicsbuilder"
       	targetdir="$INSTALL_PATH">
 	  <exclude name="README.txt" />
       </fileset>
       <executable targetfile="$INSTALL_PATH/bin/graphicsPad" os="unix" />
       <executable targetfile="$INSTALL_PATH/bin/svg2groovy" os="unix" />
+    </pack>
+    
+    <pack name="JideBuilder" required="no">
+      <description>JideBuilder is a Groovy builder for the open source JIDE Common Layer.</description>
+      <fileset dir="@{groovy-zip.dir}" targetdir="$INSTALL_PATH/lib">
+        <include name="@{jidebuilder-archive}"/>
+        <include name="@{svg-salamander-archive}"/>
+      </fileset>
     </pack>
 
   </packs>
@@ -291,39 +312,6 @@
 </installation>
       ]]></config>
     </izpack>
-  </target>
-
-  <available file="${izpack.jar}" property="izpack.jar.available" />
-  <available file="${groovy-binary.zip}" property="groovy-binary.zip.available" />
-  <available file="${groovy-docs.zip}" property="groovy-docs.zip.available" />
-  <available file="${gant.zip}" property="gant.zip.available" />
-  <available file="${scriptom.zip}" property="scriptom.zip.available" />
-  <available file="${graphicsbuilder.zip}" property="graphicsbuilder.zip.available" />
-
-  <target name="check" depends="check.izpack, check.groovy-binary, check.groovy-docs, check.gant, check.scriptom, check.graphicsbuilder" />
-
-  <target name="check.izpack" unless="izpack.jar.available" >
-    <fail message="${izpack.jar} not found. Have you set IZPACK_HOME?" />
-  </target>
-
-  <target name="check.groovy-binary" unless="groovy-binary.zip.available" >
-    <fail message="${groovy-binary.zip} not found. Have you set -Dgroovy-zip.dir=?" />
-  </target>
-
-  <target name="check.groovy-docs" unless="groovy-docs.zip.available" >
-    <fail message="${groovy-docs.zip} not found. Have you set -Dgroovy-zip.dir=?" />
-  </target>
-
-  <target name="check.gant" unless="gant.zip.available" >
-    <fail message="${gant.zip} not found. Have you set -Dgroovy-zip.dir=?" />
-  </target>
-
-  <target name="check.scriptom" unless="scriptom.zip.available" >
-    <fail message="${scriptom.zip} not found. Have you set -Dgroovy-zip.dir=?" />
-  </target>
-
-  <target name="check.graphicsbuilder" unless="graphicsbuilder.zip.available" >
-    <fail message="${graphicsbuilder.zip} not found. Have you set -Dgroovy-zip.dir=?" />
   </target>
 
 </project>

@@ -3,7 +3,6 @@
 
   <job name="Copy base native launchers">
     <os family="windows" />
-    <executeForPack name="Base" />
     <executefile name="cmd.exe">
       <arg>/c</arg>
       <arg>cd /d $INSTALL_PATH\bin &amp; for %i in (groovyc groovysh java2groovy) do copy groovy.exe %i.exe</arg>
@@ -12,7 +11,6 @@
 
   <job name="Copy groovyConsole native launcher">
     <os family="windows" />
-    <executeForPack name="Base" />
     <executefile name="cmd.exe">
       <arg>/c</arg>
       <arg>cd /d $INSTALL_PATH\bin &amp; copy groovyw.exe groovyConsole.exe</arg>
@@ -37,9 +35,9 @@
     </executefile>
   </job>
 
-  <job name="Add File Associations">
+  <job name="Add file associations">
     <os family="windows" />
-    <executeForPack name="FileAssoc" />
+    <executeForPack name="File associations" />
     <executefile name="cmd.exe">
       <arg>/c</arg>
       <arg>assoc .groovy=Groovy &amp; ftype Groovy="$INSTALL_PATH\bin\groovy.exe" "%1" %*</arg>
@@ -47,7 +45,7 @@
   </job>
 
   <!-- We can't easily set path in environment, so remind user to do it! -->
-  <job name="Set Path">
+  <job name="Set path">
     <os family="windows" />
     <executefile name="cmd.exe">
       <arg>/c</arg>
@@ -57,7 +55,7 @@
 
   <!-- ProcessPanel is not needed in Unix, but it's difficult to hide it.
        So print a message. rather than leaving a blank panel. -->
-  <job name="Export Path">
+  <job name="Export path">
     <os family="unix" />
     <executefile name="/bin/echo">
       <arg>Now add Groovy to your PATH: export PATH="$INSTALL_PATH/bin:$PATH"</arg>
