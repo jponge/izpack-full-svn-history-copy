@@ -267,8 +267,7 @@
 
     <pack name="Scriptom" required="no">
       <os family="windows" />
-      <description>COM Scripting Module.
-      Microsoft Visual C++ 2005 SP1 Redistributable Package is required.
+      <description>COM Scripting Module. Microsoft Visual C++ 2005 SP1 Redistributable Package is required.
       </description>
       <fileset dir="@{build.dir}/scriptom"
       	targetdir="$INSTALL_PATH">

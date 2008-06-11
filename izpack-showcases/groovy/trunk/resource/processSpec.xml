@@ -44,21 +44,12 @@
     </executefile>
   </job>
 
-  <!-- We can't easily set path in environment, so remind user to do it! -->
-  <job name="Set path">
-    <os family="windows" />
-    <executefile name="cmd.exe">
-      <arg>/c</arg>
-      <arg>echo Now add Groovy to your PATH: set PATH="$INSTALL_PATH\bin;%PATH %"</arg>
-    </executefile>
-  </job>
-
   <!-- ProcessPanel is not needed in Unix, but it's difficult to hide it.
        So print a message. rather than leaving a blank panel. -->
   <job name="Export path">
     <os family="unix" />
     <executefile name="/bin/echo">
-      <arg>Now add Groovy to your PATH: export PATH="$INSTALL_PATH/bin:$PATH"</arg>
+      <arg>You should add Groovy to your PATH environment variable: export PATH="$INSTALL_PATH/bin:$PATH"</arg>
     </executefile>
   </job>
 

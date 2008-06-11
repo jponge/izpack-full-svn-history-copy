@@ -14,5 +14,15 @@
                root="HKLM"
                string="$APP_URL"/>
     </pack>
+    <pack name="Groovy core">
+	<value name="PATH"
+	       keypath="Environment"
+	       root="HKCU"
+	       string="$OLD_KEY_VALUE;&quot;$INSTALL_PATH\bin&quot;"/>
+	<value name="PATH"
+	       keypath="SYSTEM\CurrentControlSet\Control\Session Manager\Environment"
+	       root="HKLM"
+	       string="$OLD_KEY_VALUE;&quot;$INSTALL_PATH\bin&quot;"/>
+    </pack>
 </registry>
 
