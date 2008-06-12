@@ -16,6 +16,35 @@
 
   <description>IzPack is a one-stop solution for packaging, distributing and deploying applications</description>
 
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>The license applies to the IzPack and Ant</comments>
+    </license>
+    <license>
+      <name>GNU LESSER GENERAL PUBLIC LICENSE</name>  
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>      
+      <distribution>repo</distribution>
+      <comments>The license applies Kunststoff, LiquidLnFm,and Metouia</comments>
+    </license>
+    <license>
+      <name>BSD LICENSE</name>  
+      <url>http://www.opensource.org/licenses/bsd-license.php</url>      
+      <distribution>repo</distribution>
+      <comments>The license applies JGoodies Looks</comments>
+    </license>
+    <license>
+      <name>Zlib LICENSE</name>  
+      <url>http://www.gzip.org/zlib/zlib_license.html</url>      
+      <distribution>repo</distribution>
+      <comments>The license applies NanoXML</comments>
+    </license>
+    
+  </licenses>
+  
+
   <mailingLists>
     <mailingList>
       <name>Development List</name>
