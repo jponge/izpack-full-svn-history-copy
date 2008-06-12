@@ -1,13 +1,13 @@
 <project>
 
   <parent>
-    <groupId>org.codehaus.izpack</groupId>
+    <groupId>org.izpack</groupId>
     <artifactId>izpack-parent</artifactId>
     <version>1-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.codehaus.izpack</groupId>
+  
   <artifactId>izpack-standalone-compiler</artifactId>
   <version>4.0.0-SNAPSHOT</version>
   
