@@ -14,6 +14,8 @@
     <url>http://codehaus.org</url>
   </organization>
 
+  <description>IzPack is a one-stop solution for packaging, distributing and deploying applications</description>
+
   <mailingLists>
     <mailingList>
       <name>Development List</name>

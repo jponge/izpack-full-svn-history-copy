@@ -1,0 +1,107 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.izpack</groupId>
+  <artifactId>izpack-standalone-compiler</artifactId>
+  <version>4.0.0-SNAPSHOT</version>
+  
+  <name>IzPack Standalone Compiler</name>
+
+  <description>standlone-compiler.jar extracting from an official IzPack Installation</description>
+  
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>The license applies to the IzPack and Ant</comments>
+    </license>
+    <license>
+      <name>GNU LESSER GENERAL PUBLIC LICENSE</name>  
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>      
+      <distribution>repo</distribution>
+      <comments>The license applies Kunststoff, LiquidLnFm,and Metouia</comments>
+    </license>
+    <license>
+      <name>BSD LICENSE</name>  
+      <url>http://www.opensource.org/licenses/bsd-license.php</url>      
+      <distribution>repo</distribution>
+      <comments>The license applies JGoodies Looks</comments>
+    </license>
+    <license>
+      <name>Zlib LICENSE</name>  
+      <url>http://www.gzip.org/zlib/zlib_license.html</url>      
+      <distribution>repo</distribution>
+      <comments>The license applies NanoXML</comments>
+    </license>
+    
+  </licenses>
+  
+
+  <packaging>jar</packaging>  
+
+  <!--
+    Use maven to extract the standalone-compiler.jar and the associated javadoc and sources from an existing izpack installation.
+    So make sure to have the IzPack installed with the same version as this pom's
+  -->
+  
+  <build>
+  
+    <defaultGoal>package</defaultGoal>
+    
+     <plugins>
+     
+      <!-- user assembly to reassemble javadoc and sources jars -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-2</version>
+        <executions>
+          <execution>
+            <id>package-javadoc</id>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/javadoc.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+          <execution>
+            <id>package-sources</id>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/sources.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+     
+      <!-- copy the real standlone-compiler to this project and overwrite the implicit jar already built by the jar packaging -->
+      <plugin>
+         <artifactId>maven-antrun-plugin</artifactId>
+         <executions>
+           <execution>
+             <id>staging</id>
+             <goals><goal>run</goal></goals>
+             <phase>package</phase>
+             <configuration>
+               <tasks>
+                  <copy file="${izpack.dir}/lib/standalone-compiler.jar" tofile="${project.build.directory}/${project.build.finalName}.jar" overwrite="true"/>
+               </tasks>
+             </configuration>
+           </execution>
+         </executions>
+       </plugin>
+     </plugins>
+  </build>
+  
+  <properties>
+    <izpack.dir>c:/program files/izpack</izpack.dir>
+  </properties>
+</project>
