@@ -2,6 +2,7 @@
 <project name="Maven IzPack Plugin">
   <bannerLeft>
       <name>IzPack</name>
+      <src>http://media.xircles.codehaus.org/_projects/izpack/_logos/medium.png</src>
       <href>http://izpack.org</href>
   </bannerLeft>
    <bannerRight>
@@ -11,9 +12,8 @@
    </bannerRight>
   <body>
     <links>
-         <item name="IzPack" href="http://www.izforge.com/izpack/"/>
+         <item name="IzPack" href="http://izpack.org"/>
          <item name="IzPack wiki" href="http://openfacts.berlios.de/index-en.phtml?title=IzPack"/>
-         <item name="Mojo" href="http://mojo.codehaus.org"/>
          <item name="Maven" href="http://maven.apache.org/"/>
     </links>
     
