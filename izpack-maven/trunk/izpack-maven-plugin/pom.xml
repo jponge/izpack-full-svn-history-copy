@@ -1,7 +1,7 @@
 <project>
   <parent>
     <artifactId>izpack-parent</artifactId>
-    <groupId>org.izpack</groupId>
+    <groupId>org.codehaus.izpack</groupId>
     <version>1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -49,7 +49,7 @@
     
     <!--  need to file and upload request for this -->
     <dependency>
-      <groupId>org.izpack</groupId>
+      <groupId>org.codehaus.izpack</groupId>
       <artifactId>izpack-standalone-compiler</artifactId>
       <version>4.0.0-SNAPSHOT</version>
     </dependency>

@@ -1,7 +1,7 @@
 <project>
 
   <parent>
-    <groupId>org.izpack</groupId>
+    <groupId>org.codehaus.izpack</groupId>
     <artifactId>izpack-parent</artifactId>
     <version>1-SNAPSHOT</version>
   </parent>
