@@ -11,14 +11,23 @@
   <packaging>pom</packaging>
   
   <build>
-  
+     
+    <defaultGoal>package</defaultGoal>
     
       <plugins>
 
         <plugin>
-          <groupId>org.izpack</groupId>
+          <groupId>org.codehaus.izpack</groupId>
           <artifactId>izpack-maven-plugin</artifactId>
           <version>1.0-SNAPSHOT</version>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>izpack</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
         
       </plugins>

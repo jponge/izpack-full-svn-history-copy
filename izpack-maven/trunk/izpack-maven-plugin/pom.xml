@@ -1,17 +1,36 @@
 <project>
+
   <parent>
     <artifactId>izpack-parent</artifactId>
     <groupId>org.codehaus.izpack</groupId>
     <version>1-SNAPSHOT</version>
   </parent>
+  
   <modelVersion>4.0.0</modelVersion>
+  
   <artifactId>izpack-maven-plugin</artifactId>
+  
   <packaging>maven-plugin</packaging>
+  
   <name>IzPack Maven Plugin</name>
+  
   <version>1.0-SNAPSHOT</version>
+  
   <description>Maven plugin which assembles files an IzPack Installer</description>
-  <inceptionYear>2005</inceptionYear>
+  
+  <inceptionYear>2008</inceptionYear>
+  
   <url>http://izpack.codehaus.org/izpack-maven-plugin/</url>
+  
+  <distributionManagement>
+    <site>
+      <id>codehaus.org</id>
+      <name>IZPack Website</name>
+      <url>dav:https://dav.codehaus.org/izpack/izpack-maven-plugin</url>
+    </site>
+  </distributionManagement>
+  
+  
   <developers>
     <developer>
       <name>Miguel Griffa</name>
@@ -47,11 +66,11 @@
       <scope>test</scope>
     </dependency>
     
-    <!--  need to file and upload request for this -->
     <dependency>
       <groupId>org.codehaus.izpack</groupId>
       <artifactId>izpack-standalone-compiler</artifactId>
       <version>4.0.0-SNAPSHOT</version>
     </dependency>
+    
   </dependencies>
 </project>

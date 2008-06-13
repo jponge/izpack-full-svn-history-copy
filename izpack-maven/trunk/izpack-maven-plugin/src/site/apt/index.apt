@@ -1,0 +1,38 @@
+ ------
+ Maven IzPack Plugin - Introduction
+ ------
+ Miguel Griffa
+ ------
+ 30 January 2006
+ -----
+
+
+IzPack Maven Plugin
+
+
+  * Use this plugin to compile and produce a java installer from a IzPack XML configuration file.
+  
+  []
+
+
+* Goals Overview
+
+  * {{{izpack-mojo.html}izpack:izpack}}: Build the installer.
+  
+  []
+  
+
+* Usage
+  
+  Instructions on how to use the IzPack Maven Plugin can be found on the {{{usage.html}usage page}}.
+ 
+   
+* Examples
+
+
+  * {{{http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it} Asample maven project.}}: Fetch the sample project, run <mvn package>,
+    the sample installer is under taget directory.
+
+
+  []
+  
