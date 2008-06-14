@@ -24,7 +24,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-import com.izforge.izpack.ant.IzPackTask;
 import com.izforge.izpack.compiler.CompilerConfig;
 
 /**
@@ -32,7 +31,7 @@ import com.izforge.izpack.compiler.CompilerConfig;
  * 
  * @goal izpack
  * @phase package
- * @requiresDependencyResolution package
+ * @requiresDependencyResolution test
  * @version $Id:  $
  * @author Miguel Griffa
  */
@@ -76,13 +75,8 @@ public class IzPackMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        IzPackTask task = new IzPackTask();
-        task.setInput( izpackConfig.getAbsolutePath() );
-        task.setOutput( installerFile );
-        task.setBasedir( izpackConfig.getParentFile().getAbsolutePath() );
 
         checkOutputDirectory( installerFile );
-        task.setBasedir( basedir.getAbsolutePath() );
 
         // TODO it would be nice to pass properties to compiler, somehow
         buildInstaller();
