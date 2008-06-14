@@ -18,6 +18,7 @@
       <groupId>org.codehaus.izpack</groupId>
       <artifactId>izpack-standalone-compiler</artifactId>
       <version>4.0.0-SNAPSHOT</version>
+      <!-- dont want to download this artifact when retrieve the installer as transitive dependency -->
       <optional>true</optional>
     </dependency>
   </dependencies>
@@ -34,6 +35,7 @@
           <version>1.0-SNAPSHOT</version>
           <executions>
             <execution>
+              <id>installer1</id>
               <phase>package</phase>
               <goals>
                 <goal>izpack</goal>

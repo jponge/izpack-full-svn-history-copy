@@ -18,11 +18,16 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.plexus.util.StringUtils;
 
 import com.izforge.izpack.compiler.CompilerConfig;
 
@@ -40,34 +45,61 @@ public class IzPackMojo
 {
 
     /**
-     * The izpack default configuration file
+     * The izpack configuration file
      * @parameter  default-value="${basedir}/src/izpack/install.xml"
-     * @optional
+     * @since alpha 1
      */
     private File izpackConfig;
 
     /**
-     * Name of the installer configuration file to be generated
-     * @parameter default-value="${project.build.directory}/${project.build.finalName}.jar"
-     * @optional
-     */
-    private String installerFile;
-
-    /**
-     * Basedir for the the izpack project
+     * IzPack base directory.  
      * @parameter default-value="${basedir}/src/izpack"
-     * @optional
+     * @since alpha 1
      */
-    private File basedir;
+    private File izpackBasedir;
 
     /**
-     * kind argument for izpack, standard or web
+     * IzPack's kind argument.
      * @parameter expression="standard" default-value="standard"
-     * @optional
      */
     private String kind;
 
     /**
+     * Maven's classifier. Default to IzPack's kind when not given.  Must be uniqued among Maven's executions
+     * @parameter expression="standard" default-value="standard"
+     */
+    private String classifier;
+
+    /**
+     * Maven's file extension. 
+     * @parameter default-value="jar"
+     */
+    private String fileExtension;
+
+    /**
+     * The installer output file. Default to ${project.buid.finalName)-classifier.fileExtension
+     * Must be uniqued among Maven's executions
+     * @parameter 
+     */
+    private File installerFile;
+
+    /**
+     * Internal Maven's project
+     * @parameter expression="${project}"
+     * @readonly
+     */
+    protected MavenProject project;
+
+    /**
+     * Maven component to install/deploy the installer(s)
+     * 
+     * @component
+     * @readonly
+     */
+    private MavenProjectHelper projectHelper;
+
+    /**
+     * Dependencies and ${project.build.directory}/classes directory
      * @parameter expression="${project.compileClasspathElements}"
      */
     private List classpathElements;
@@ -75,18 +107,26 @@ public class IzPackMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        init();
 
-        checkOutputDirectory( installerFile );
-
-        // TODO it would be nice to pass properties to compiler, somehow
         buildInstaller();
     }
 
-    private void checkOutputDirectory( String file )
+    private void init()
         throws MojoFailureException
     {
-        File f = new File( file );
-        File dir = f.getParentFile();
+        if ( StringUtils.isEmpty( classifier ) )
+        {
+            classifier = this.kind;
+        }
+
+        if ( installerFile == null )
+        {
+            installerFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "="
+                + classifier + "." + fileExtension );
+        }
+
+        File dir = installerFile.getParentFile();
         if ( !dir.exists() )
         {
             if ( !dir.mkdirs() )
@@ -94,6 +134,8 @@ public class IzPackMojo
                 throw new MojoFailureException( "Could not create directory " + dir );
             }
         }
+
+        checkForDuplicateAttachArtifact();
     }
 
     private void buildInstaller()
@@ -105,12 +147,12 @@ public class IzPackMojo
         try
         {
             // else use external configuration referenced by the input attribute
-            CompilerConfig c = new CompilerConfig( this.izpackConfig.getAbsolutePath(), this.basedir.getAbsolutePath(),
-                                                   this.kind, this.installerFile );
+            CompilerConfig c = new CompilerConfig( izpackConfig.getAbsolutePath(), izpackBasedir.getAbsolutePath(),
+                                                   kind, installerFile.getAbsolutePath() );
 
             c.executeCompiler();
 
-            if ( ! c.wasSuccessful() )
+            if ( !c.wasSuccessful() )
             {
                 throw new MojoExecutionException( "IzPack compilation ERROR" );
             }
@@ -125,7 +167,25 @@ public class IzPackMojo
             {
                 Thread.currentThread().setContextClassLoader( classLoader );
             }
+        }
 
+        projectHelper.attachArtifact( project, fileExtension, classifier, installerFile );
+    }
+
+    private void checkForDuplicateAttachArtifact()
+        throws MojoFailureException
+    {
+        List attachedArtifacts = project.getAttachedArtifacts();
+
+        Iterator iter = attachedArtifacts.iterator();
+        
+        while ( iter.hasNext() )
+        {
+            Artifact artifact = (Artifact) iter.next();
+            if ( installerFile.equals( artifact.getFile() ) )
+            {
+                throw new MojoFailureException( "Duplicate installers found: " + installerFile );
+            }
         }
     }
 
@@ -151,7 +211,7 @@ public class IzPackMojo
         }
 
         URL[] urls = (URL[]) classpathURLs.toArray( new URL[classpathURLs.size()] );
-        
+
         return new URLClassLoader( urls, classLoader );
     }
 
