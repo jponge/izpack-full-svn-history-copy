@@ -26,7 +26,7 @@
 <installation version="1.0">
 
   <info>
-    <appname>GlassFish</appname>
+    <appname>Glassfish</appname>
     <appversion>v2 ur2 b04</appversion>
     <authors>
       <author email="" name="Julien Ponge (packager)"/>
@@ -71,6 +71,8 @@
     <res id="userInputSpec.xml" src="userinput.xml" />
     <res id="userInputLang.xml_eng" src="userinput-eng.xml" />
     <res id="userInputLang.xml_fra" src="userinput-fra.xml" />
+    <res src="RegistrySpec.xml" id="RegistrySpec.xml"/>
+    <res src="shortcutSpec.xml" id="shortcutSpec.xml"/>
   </resources>
 
   <panels>
@@ -80,8 +82,17 @@
     <panel classname="UserInputPanel" id="userinputpanel"/>
     <panel classname="InstallPanel" id="installpanel"/>
     <panel classname="ProcessPanel" id="processpanel"/>
+    <panel classname="ShortcutPanel" id="shortcutpanel"/> 
     <panel classname="SimpleFinishPanel" id="simplefinishpanel"/>
   </panels>
+  
+  <listeners>
+    <listener installer="SummaryLoggerInstallerListener"/>
+    <listener installer="RegistryInstallerListener"
+              uninstaller="RegistryUninstallerListener">
+      <os family="windows"/>
+    </listener>
+  </listeners>
   
   <packs>
     <pack name="GlassFish" required="yes">
@@ -134,5 +145,12 @@
     </pack>
     
   </packs>
+  
+  <native type="izpack" name="ShellLink.dll">
+    <os family="windows"/>
+  </native>
+  <native type="3rdparty" name="COIOSHelper.dll" stage="both">
+    <os family="windows"/>
+  </native>
   
 </installation>
