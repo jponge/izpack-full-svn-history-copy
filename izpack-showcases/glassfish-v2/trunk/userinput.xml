@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2007, 2008 Julien Ponge. All rights reserved.
+
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation
+  files (the "Software"), to deal in the Software without
+  restriction, including without limitation the rights to use,
+  copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the
+  Software is furnished to do so, subject to the following
+  conditions:
+
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  OTHER DEALINGS IN THE SOFTWARE.
+-->
+<userInput>
+  <panel order="0">
+    
+    <field type="staticText" align="left"
+           txt="Domain information"
+           id="divider.info"/>
+    <field type="divider" align="top" />
+            
+    <field type="text" variable="gf_domain_name">
+      <spec txt="Domain name:" id="text.domain.name" size="20" set="domain1"/>
+      <validator class="com.izforge.izpack.util.NotEmptyValidator"
+                 txt="The field cannot be empty!"
+                 id="validator.empty" />
+    </field>
+    <field type="text" variable="gf_instance_name">
+      <spec txt="Instance name:" id="text.instance.name" size="20" set="server"/>
+      <validator class="com.izforge.izpack.util.NotEmptyValidator"
+                 txt="The field cannot be empty!"
+                 id="validator.empty" />
+    </field>
+    <field type="text" variable="gf_admin_name">
+      <spec txt="Administrator username:"  id="text.admin.name" size="20" set="admin"/>
+      <validator class="com.izforge.izpack.util.NotEmptyValidator"
+                 txt="The field cannot be empty!"
+                 id="validator.empty" />
+    </field>
+    <field type="text" variable="gf_admin_password">
+      <spec txt="Administrator password:"  id="text.admin.password" size="20" set="adminadmin"/>
+      <validator class="com.izforge.izpack.util.RegularExpressionValidator"
+                 txt="The password must contain at least 8 characters!"
+                 id="validator.password">
+        <param name="pattern" value="\w{8,}" />
+      </validator>
+    </field>
+    
+    <field type="space" />
+    <field type="space" />
+        
+    <field type="staticText" align="left"
+           txt="Domain network ports"
+           id="divider.ports"/>
+    <field type="divider" align="top" />
+               
+    <field type="text" variable="gf_port_http">
+      <spec txt="HTTP listener port:"  id="text.http" size="5" set="8080"/>
+      <validator class="com.izforge.izpack.util.RegularExpressionValidator"
+                 txt="A port must be a positive number (0..32768)!"
+                 id="validator.port">
+        <param name="pattern" value="[0-9]{1,5}" />
+      </validator>
+    </field>
+    <field type="text" variable="gf_port_https">
+      <spec txt="HTTPS listener port:"  id="text.https" size="5" set="8181"/>
+      <validator class="com.izforge.izpack.util.RegularExpressionValidator"
+                 txt="A port must be a positive number (0..32768)!"
+                 id="validator.port">
+        <param name="pattern" value="[0-9]{1,5}" />
+      </validator>
+    </field>
+    <field type="text" variable="gf_port_admin">
+      <spec txt="Administration console port:"  id="text.adminport" size="5" set="4848"/>
+      <validator class="com.izforge.izpack.util.RegularExpressionValidator"
+                 txt="A port must be a positive number (0..32768)!"
+                 id="validator.port">
+        <param name="pattern" value="[0-9]{1,5}" />
+      </validator>
+    </field>
+    <field type="text" variable="gf_port_orb">
+      <spec txt="ORB port:" id="text.orb" size="5" set="3700"/>
+      <validator class="com.izforge.izpack.util.RegularExpressionValidator"
+                 txt="A port must be a positive number (0..32768)!"
+                 id="validator.port">
+        <param name="pattern" value="[0-9]{1,5}" />
+      </validator>
+    </field>
+    <field type="text" variable="gf_port_imq">
+      <spec txt="IMQ port:"  id="text.imq" size="5" set="7676"/>
+      <validator class="com.izforge.izpack.util.RegularExpressionValidator"
+                 txt="A port must be a positive number (0..32768)!"
+                 id="validator.port">
+        <param name="pattern" value="[0-9]{1,5}" />
+      </validator>
+    </field>
+    
+    <field type="space" />
+    <field type="space" />
+    
+    <field type="staticText" align="left"
+           txt="Creation options"
+           id="divider.options"/>
+    <field type="divider" align="top" />
+    
+    <field type="check" variable="gf_creation_script">
+      <spec txt="Create a cluster-mode domain" id="check.cluster"
+            true="setup-cluster.xml" false="setup.xml" set="false"/>
+    </field>
+    <field type="check" variable="gf_start_domain">
+      <spec txt="Start the domain after creation" id="check.startdomain" true="true" false="false" set="true"/>
+    </field>
+        
+  </panel>
+</userInput>
