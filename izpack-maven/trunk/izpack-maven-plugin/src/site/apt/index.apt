@@ -11,6 +11,7 @@ IzPack Maven Plugin
 
 
   * Use this plugin to compile and produce a java installer from a IzPack XML configuration file.
+    The installer is then installed/deployed to maven repositories at install/deploy phases respectively.    
   
   []
 
@@ -30,8 +31,8 @@ IzPack Maven Plugin
 * Examples
 
 
-  * {{{http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it} Asample maven project.}}: Fetch the sample project, run <mvn package>,
-    the sample installer is under taget directory.
+  * {{{http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it/sample/} A sample maven project.}}: Fetch the sample project, run <mvn package>,
+    the sample installer is under target directory.
 
 
   []

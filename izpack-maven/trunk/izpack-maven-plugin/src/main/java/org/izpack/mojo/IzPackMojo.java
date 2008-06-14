@@ -38,6 +38,7 @@ import com.izforge.izpack.compiler.CompilerConfig;
  * @phase package
  * @requiresDependencyResolution test
  * @version $Id:  $
+ * @author Dan T. Tran
  * @author Miguel Griffa
  */
 public class IzPackMojo
@@ -65,23 +66,10 @@ public class IzPackMojo
     private String kind;
 
     /**
-     * Maven's classifier. Default to IzPack's kind when not given.  Must be uniqued among Maven's executions
-     * @parameter expression="standard" default-value="standard"
-     */
-    private String classifier;
-
-    /**
      * Maven's file extension. 
      * @parameter default-value="jar"
      */
     private String fileExtension;
-
-    /**
-     * The installer output file. Default to ${project.buid.finalName)-classifier.fileExtension
-     * Must be uniqued among Maven's executions
-     * @parameter 
-     */
-    private File installerFile;
 
     /**
      * Internal Maven's project
@@ -104,6 +92,21 @@ public class IzPackMojo
      */
     private List classpathElements;
 
+    //////////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * Maven's classifier. Default to IzPack's kind when not given.  
+     * Must be unique among Maven's executions
+     */
+    private String classifier;
+
+    /**
+     * The installer output file. Default to ${project.build.finalName)-classifier.fileExtension
+     * Must be unique among Maven's executions
+     */
+    private File installerFile;
+
+    
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -115,16 +118,10 @@ public class IzPackMojo
     private void init()
         throws MojoFailureException
     {
-        if ( StringUtils.isEmpty( classifier ) )
-        {
-            classifier = this.kind;
-        }
+        classifier = this.kind;
 
-        if ( installerFile == null )
-        {
-            installerFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "="
-                + classifier + "." + fileExtension );
-        }
+        installerFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-"
+            + classifier + "." + fileExtension );
 
         File dir = installerFile.getParentFile();
         if ( !dir.exists() )
@@ -146,7 +143,6 @@ public class IzPackMojo
 
         try
         {
-            // else use external configuration referenced by the input attribute
             CompilerConfig c = new CompilerConfig( izpackConfig.getAbsolutePath(), izpackBasedir.getAbsolutePath(),
                                                    kind, installerFile.getAbsolutePath() );
 
@@ -178,7 +174,7 @@ public class IzPackMojo
         List attachedArtifacts = project.getAttachedArtifacts();
 
         Iterator iter = attachedArtifacts.iterator();
-        
+
         while ( iter.hasNext() )
         {
             Artifact artifact = (Artifact) iter.next();

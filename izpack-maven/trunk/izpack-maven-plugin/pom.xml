@@ -14,7 +14,7 @@
 
   <name>IzPack Maven Plugin</name>
 
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-alpha-1-SNAPSHOT</version>
 
   <description>Maven plugin which assembles files an IzPack Installer</description>
 
