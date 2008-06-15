@@ -79,7 +79,7 @@
                 <goal>izpack</goal>
               </goals>
               <configuration>
-                <izpackConfig>${basedir}/izpack/install-web.xml</izpackConfig>
+                <descriptor>${basedir}/izpack/install-web.xml</descriptor>
                 <kind>web</kind>
               </configuration>
             </execution>

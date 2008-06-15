@@ -30,10 +30,9 @@ IzPack Maven Plugin
    
 * Examples
 
+  * {{{http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it/sample/} A simple Maven project.}}
 
-  * {{{http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it/sample/} A sample maven project.}}: Fetch the sample project, run <mvn package>,
-    the sample installer is under target directory.
-
+  * {{{examples/groovy.html} Groovy Installer}}
 
   []
   

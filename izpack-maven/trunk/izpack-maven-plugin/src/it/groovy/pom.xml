@@ -28,21 +28,9 @@
 
     <defaultGoal>package</defaultGoal>
 
-    <resources>
-      <resource>
-        <directory>src/izpack/config</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
-
     <plugins>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <configuration>
-          <outputDirectory>${staging.dir}</outputDirectory>
-        </configuration>
-      </plugin>
 
+      <!--  fetch resource files from the orignal Ant build project -->
       <plugin>
         <artifactId>maven-scm-plugin</artifactId>
         <version>1.0</version>
@@ -55,13 +43,16 @@
             </goals>
             <configuration>
               <skipCheckoutIfExists>true</skipCheckoutIfExists>
-              <connectionUrl>scm:svn:http://svn.codehaus.org/izpack/izpack-showcases/groovy/trunk/resource</connectionUrl>
+              <connectionUrl>
+                scm:svn:http://svn.codehaus.org/izpack/izpack-showcases/groovy/trunk/resource
+              </connectionUrl>
               <checkoutDirectory>${staging.dir}/resource</checkoutDirectory>
             </configuration>
           </execution>
         </executions>
       </plugin>
 
+      <!-- fetch and unpack all dependent bundles into staging area -->
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.0</version>
@@ -109,6 +100,10 @@
               </artifactItems>
             </configuration>
           </execution>
+
+          <!-- izpack can't match include="scriptcom*.jar"
+            so, split into separate bin and lib directories -->
+
           <execution>
             <id>unpack-scriptom-dlls</id>
             <phase>process-resources</phase>
@@ -147,6 +142,8 @@
                   <outputDirectory>${staging.dir}/scriptom/lib</outputDirectory>
                 </artifactItem>
               </artifactItems>
+              <!--  need to use a explicit cache marker, to distinguish the execution from previous one
+                    since both executions share the same artifact -->
               <markersDirectory>${project.build.directory}/scriptomJarsMarker</markersDirectory>
             </configuration>
           </execution>
@@ -186,7 +183,7 @@
 
         <!-- common configuration by all executions -->
         <configuration>
-          <izpackConfig>${staging.dir}/install.xml</izpackConfig>
+          <descriptor>${basedir}/src/izpack/install.xml</descriptor>
           <izpackBasedir>${staging.dir}</izpackBasedir>
         </configuration>
 
@@ -247,6 +244,7 @@
             <artifactId>maven-install-plugin</artifactId>
             <configuration>
               <generatePom>true</generatePom>
+              <!--  use fake id for demo purpose  -->
               <groupId>izpack.demo</groupId>
             </configuration>
             <executions>
@@ -356,6 +354,11 @@
   </profiles>
 
   <properties>
+    <app.group>${project.groupId}</app.group>
+    <app.title>${project.name}</app.title>
+    <app.subpath>${project.artifactId}-${project.version}</app.subpath>
+    <app.version>${project.version}</app.version>
+  
     <staging.dir>${project.build.directory}/staging</staging.dir>
     <download.dir>${project.build.directory}/downloads</download.dir>
 

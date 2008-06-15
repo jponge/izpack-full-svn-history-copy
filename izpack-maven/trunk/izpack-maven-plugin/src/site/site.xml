@@ -25,7 +25,8 @@
     </menu>
 
     <menu name="Examples">
-      <item name="Live Example" href="http://svn.codehause.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it"/>
+      <item name="Lives Example" href="http://svn.codehause.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it"/>
+      <item name="Groovy Example" href="examples/groovy.html"/>
     </menu>
 
     ${reports}

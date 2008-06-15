@@ -18,7 +18,7 @@
 
     <!-- following appears in HelloPanel -->
     <authors>
-      <author name="groovy-dev" email="dev$groovy.codehaus.org"/>
+      <author name="groovy-dev" email="dev@groovy.codehaus.org"/>
     </authors>
     <url>http://groovy.codehaus.org</url>
   </info>

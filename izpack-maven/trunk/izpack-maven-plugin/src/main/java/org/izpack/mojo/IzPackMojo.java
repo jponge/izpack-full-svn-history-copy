@@ -15,11 +15,15 @@ package org.izpack.mojo;
  */
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
@@ -27,7 +31,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
-import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
 
 import com.izforge.izpack.compiler.CompilerConfig;
 
@@ -46,15 +51,17 @@ public class IzPackMojo
 {
 
     /**
-     * The izpack configuration file
+     * IzPack descriptor file.  This plugin interpolates and saves this file to
+     * a new location at ${izpackBasedir} and feed it to IzPack compiler
      * @parameter  default-value="${basedir}/src/izpack/install.xml"
      * @since alpha 1
      */
-    private File izpackConfig;
+    private File descriptor;
 
     /**
-     * IzPack base directory.  
-     * @parameter default-value="${basedir}/src/izpack"
+     * IzPack base directory.  This is the recommended place to create
+     * staging area as well.  Do not set it to any of the source tree.
+     * @parameter default-value="${project.build.directory}/izpack"
      * @since alpha 1
      */
     private File izpackBasedir;
@@ -93,7 +100,7 @@ public class IzPackMojo
     private List classpathElements;
 
     //////////////////////////////////////////////////////////////////////////////
-    
+
     /**
      * Maven's classifier. Default to IzPack's kind when not given.  
      * Must be unique among Maven's executions
@@ -106,7 +113,6 @@ public class IzPackMojo
      */
     private File installerFile;
 
-    
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -135,6 +141,38 @@ public class IzPackMojo
         checkForDuplicateAttachArtifact();
     }
 
+    private File preProcessConfigurationFile()
+        throws MojoExecutionException
+    {
+        Properties p = project.getProperties();
+
+        File interpolatedFile = new File( izpackBasedir, descriptor.getName() );
+
+        FileWriter writer = null;
+
+        FileReader fileReader = null;
+        try
+        {
+            fileReader = new FileReader( descriptor );
+            InterpolationFilterReader reader = new InterpolationFilterReader( fileReader, p );
+
+            writer = new FileWriter( interpolatedFile );
+            IOUtil.copy( reader, writer );
+        }
+        catch ( IOException e )
+        {
+            // All common causes to this should have been removed with previous checks.
+            throw new MojoExecutionException( "Error while interpolating pkginfo.", e );
+        }
+        finally
+        {
+            IOUtil.close( writer );
+            IOUtil.close( fileReader );
+        }
+
+        return interpolatedFile;
+    }
+
     private void buildInstaller()
         throws MojoExecutionException
     {
@@ -143,8 +181,10 @@ public class IzPackMojo
 
         try
         {
-            CompilerConfig c = new CompilerConfig( izpackConfig.getAbsolutePath(), izpackBasedir.getAbsolutePath(),
-                                                   kind, installerFile.getAbsolutePath() );
+            String config = this.preProcessConfigurationFile().getAbsolutePath();
+            String basedir = izpackBasedir.getAbsolutePath();
+
+            CompilerConfig c = new CompilerConfig( config, basedir, kind, installerFile.getAbsolutePath() );
 
             c.executeCompiler();
 
