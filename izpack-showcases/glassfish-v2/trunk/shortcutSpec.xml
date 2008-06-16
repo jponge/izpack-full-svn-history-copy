@@ -2,7 +2,7 @@
 <shortcuts>
   <skipIfNotSupported/>
 
-  <programGroup defaultName="$appGroup"
+  <programGroup defaultName="Glassfish"
                 location="applications"/>
 
   <shortcut
