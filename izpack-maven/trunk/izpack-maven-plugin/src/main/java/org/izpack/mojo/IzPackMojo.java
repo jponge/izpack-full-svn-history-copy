@@ -18,6 +18,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -141,33 +145,55 @@ public class IzPackMojo
         checkForDuplicateAttachArtifact();
     }
 
-    private File preProcessConfigurationFile()
+    /**
+     * Interpolate ${} and @{} expressions
+     * @return
+     * @throws MojoExecutionException
+     */
+    private File interpolateDescriptorFile()
         throws MojoExecutionException
     {
         Properties p = project.getProperties();
+        Reader fileReader = null;
+        StringWriter stringWriter = new StringWriter();
 
-        File interpolatedFile = new File( izpackBasedir, descriptor.getName() );
-
-        FileWriter writer = null;
-
-        FileReader fileReader = null;
+        //first interpolate @{}
         try
         {
             fileReader = new FileReader( descriptor );
-            InterpolationFilterReader reader = new InterpolationFilterReader( fileReader, p );
+            Reader reader = new InterpolationFilterReader( fileReader,p, "@{", "}" );
 
-            writer = new FileWriter( interpolatedFile );
-            IOUtil.copy( reader, writer );
+            IOUtil.copy( reader, stringWriter );
         }
         catch ( IOException e )
         {
-            // All common causes to this should have been removed with previous checks.
             throw new MojoExecutionException( "Error while interpolating pkginfo.", e );
         }
         finally
         {
-            IOUtil.close( writer );
             IOUtil.close( fileReader );
+        }
+
+        //interpolate ${}
+        File interpolatedFile = new File( izpackBasedir, descriptor.getName() );
+        Writer fileWriter = null;
+        try
+        {
+            String string = stringWriter.getBuffer().toString();
+            StringReader stringReader = new StringReader( string );
+            Reader reader = new InterpolationFilterReader( stringReader,p  );
+            
+            fileWriter = new FileWriter( interpolatedFile );
+            IOUtil.copy( reader, fileWriter );
+            
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Error while interpolating pkginfo.", e );
+        }
+        finally
+        {
+            IOUtil.close( fileWriter );
         }
 
         return interpolatedFile;
@@ -181,7 +207,7 @@ public class IzPackMojo
 
         try
         {
-            String config = this.preProcessConfigurationFile().getAbsolutePath();
+            String config = this.interpolateDescriptorFile().getAbsolutePath();
             String basedir = izpackBasedir.getAbsolutePath();
 
             CompilerConfig c = new CompilerConfig( config, basedir, kind, installerFile.getAbsolutePath() );
