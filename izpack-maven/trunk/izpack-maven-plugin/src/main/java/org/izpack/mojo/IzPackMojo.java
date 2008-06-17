@@ -63,8 +63,8 @@ public class IzPackMojo
     private File descriptor;
 
     /**
-     * IzPack base directory.  This is the recommended place to create
-     * staging area as well.  Do not set it to any of the source tree.
+     * IzPack base directory.  This is the recommended place for staging
+     * area as well.  Do not set it to any of the source tree directory
      * @parameter default-value="${project.build.directory}/izpack"
      * @since alpha 1
      */
@@ -73,12 +73,14 @@ public class IzPackMojo
     /**
      * IzPack's kind argument.
      * @parameter expression="standard" default-value="standard"
+     * @since alpha 1
      */
     private String kind;
 
     /**
      * Maven's file extension. 
      * @parameter default-value="jar"
+     * @since alpha 1
      */
     private String fileExtension;
 
@@ -86,6 +88,7 @@ public class IzPackMojo
      * Internal Maven's project
      * @parameter expression="${project}"
      * @readonly
+     * @since alpha 1
      */
     protected MavenProject project;
 
@@ -98,7 +101,7 @@ public class IzPackMojo
     private MavenProjectHelper projectHelper;
 
     /**
-     * Dependencies and ${project.build.directory}/classes directory
+     * Internal Dependencies and ${project.build.directory}/classes directory
      * @parameter expression="${project.compileClasspathElements}"
      */
     private List classpathElements;
