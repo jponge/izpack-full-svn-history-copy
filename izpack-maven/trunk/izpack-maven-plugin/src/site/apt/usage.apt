@@ -13,11 +13,13 @@ Maven IzPack Plugin
  
  The recommended practice is:
  
-   * Use the helps from  maven-assembly-plugin, maven-ant-plugin, maven-dependency-plugin, 
-     etc to first create a staging area prior to <package> phase.
+   * Use the helps from  maven-resource-plugin,maven-assembly-plugin, maven-ant-plugin, maven-dependency-plugin, 
+     etc to copy, assemble, interpolate all required files and directories to a staging directory
+     prior to <package> phase. 
      
    * Invoke this plugin at <package> phase to produce the final installer using the staging area.
-     The installer is then installed/deployed at install/deploy phases respectively.  
+     If you need to install/deploy the output installer to local/remote repositories, invoke
+     this plugin at <install/deploy> phase.
     
   []
 
