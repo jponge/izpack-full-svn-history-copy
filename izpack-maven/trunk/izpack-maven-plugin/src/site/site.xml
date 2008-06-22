@@ -13,7 +13,7 @@
   <body>
     <links>
          <item name="IzPack" href="http://izpack.org"/>
-         <item name="IzPack wiki" href="http://openfacts.berlios.de/index-en.phtml?title=IzPack"/>
+         <item name="IzPack Wiki" href="http://docs.codehaus.org/display/IZPACK/Home"/>
          <item name="Maven" href="http://maven.apache.org/"/>
     </links>
     

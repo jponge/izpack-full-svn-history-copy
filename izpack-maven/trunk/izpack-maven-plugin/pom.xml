@@ -34,10 +34,21 @@
 
   <developers>
     <developer>
+      <name>Dan Tran</name>
+      <email>Dan T. Tran@gmail.com</email>
+      <roles>
+        <role>Project Developer</role>
+      </roles>
+    </developer>
+    <developer>
       <name>Miguel Griffa</name>
       <email>miguel.griffa@gmail.com</email>
+      <roles>
+        <role>Original Contributer</role>
+      </roles>      
     </developer>
   </developers>
+
 
   <dependencies>
 
