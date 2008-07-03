@@ -108,7 +108,7 @@ public class Main
       try
       {
          langPackBase = new LangPack(xmlBaseFile);
-         langItemsBase = langPackBase.GetLangItems();
+         langItemsBase = langPackBase.getLangItems();
 
       }
       catch (Exception e)
@@ -127,7 +127,7 @@ public class Main
       try
       {
          langPackTest = new LangPack(xmlTestFile);
-         langItemsTest = langPackTest.GetLangItems();
+         langItemsTest = langPackTest.getLangItems();
       }
       catch (Exception e)
       {
@@ -143,7 +143,7 @@ public class Main
       String key = null;
       for (LanguageItem itemBase : langItemsBase)
       {
-         key = itemBase.GetKey();
+         key = itemBase.getKey();
          // If there isn't any ID string,
          if (key==null)
          {
@@ -151,12 +151,12 @@ public class Main
          }
          for (LanguageItem itemToCheck : langItemsTest)
          {
-            String checkKey = itemToCheck.GetKey();
+            String checkKey = itemToCheck.getKey();
             if (checkKey!=null)
             {
                if (key.equals(checkKey))
                {
-                  if (itemToCheck.GetValue() != null)
+                  if (itemToCheck.getValue() != null)
                   {
                      found = true;  // Only filled id and txt will procedure true!
                   }
@@ -166,7 +166,7 @@ public class Main
 
          if (!found)
          {
-            System.out.println(makeKeyValueString(key, itemBase.GetValue()));
+            System.out.println(makeKeyValueString(key, itemBase.getValue()));
          }
          found = false;
       }
@@ -185,7 +185,7 @@ public class Main
       boolean totalFoundState = false;
       for (LanguageItem itemToCheck : langItemsTest)
       {
-         key = itemToCheck.GetKey();
+         key = itemToCheck.getKey();
          // If there isn't any ID string,
          if (key==null)
          {
@@ -193,8 +193,8 @@ public class Main
          }
          for (LanguageItem itemBase : langItemsBase)
          {
-            String checkKey = itemBase.GetKey();
-            String checkValue = itemBase.GetValue();
+            String checkKey = itemBase.getKey();
+            String checkValue = itemBase.getValue();
             if (checkKey!=null && checkValue!=null)
             {
                if (checkKey.equals(key))
@@ -210,7 +210,7 @@ public class Main
 
          if (!found)
          {
-            System.out.println(makeKeyValueString(key, itemToCheck.GetValue()));
+            System.out.println(makeKeyValueString(key, itemToCheck.getValue()));
          }
          found = false;
       }
@@ -227,11 +227,11 @@ public class Main
       found = false;
       for (LanguageItem itemToCheck : langItemsTest)
       {
-         String[] unknownAttrs = itemToCheck.GetUnknownAttributes();
+         String[] unknownAttrs = itemToCheck.getUnknownAttributes();
          if (unknownAttrs != null)
          {
             String msg = "   Found unknown attributes in";
-            msg = msg + makeKeyValueString(itemToCheck.GetKey(), itemToCheck.GetValue());
+            msg = msg + makeKeyValueString(itemToCheck.getKey(), itemToCheck.getValue());
             System.out.println(msg + ":");
             int max = unknownAttrs.length;
             for (int x=0; x < max; x++)
@@ -253,7 +253,7 @@ public class Main
       System.out.println("\nFinding unknown elements in "+xmlTestFile+":");
       System.out.println("(means elements which are not supported.)");
 
-      String[] unknownElements = langPackTest.GetUnknownElements();
+      String[] unknownElements = langPackTest.getUnknownElements();
       if (unknownElements.length==0)
       {
          System.out.println("   (none)");
@@ -298,8 +298,8 @@ public class Main
                   {
                      String itemKey = "      \"";
                      String itemValue = "          \"";
-                     itemKey += values.get(i).GetKey() + "\"";
-                     itemValue += values.get(i).GetValue() + "\"";
+                     itemKey += values.get(i).getKey() + "\"";
+                     itemValue += values.get(i).getValue() + "\"";
                      System.out.println(itemKey + ":\n" + itemValue);
                   }
                }
@@ -353,7 +353,7 @@ public class Main
       // After looping return reduced list.
       
       // Get first word and save it.
-      String keyWord = getLastWord(sameStringArray.get(0).GetKey());
+      String keyWord = getLastWord(sameStringArray.get(0).getKey());
       // Remove first item.
       sameStringArray.remove(0);
       // Go through the rest items and find same strings
@@ -363,7 +363,7 @@ public class Main
       while (iter.hasNext())
       {
          LanguageItem temp = iter.next();
-         String currentKey = getLastWord(temp.GetKey());
+         String currentKey = getLastWord(temp.getKey());
          // If found,
          if (currentKey.equalsIgnoreCase(keyWord))
          {

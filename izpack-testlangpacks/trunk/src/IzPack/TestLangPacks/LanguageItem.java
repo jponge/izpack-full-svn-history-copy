@@ -47,7 +47,7 @@ public class LanguageItem
    /**
     * Returns the ID in 'str' element.
     */
-   public String GetKey()
+   public String getKey()
    {
       return key;
    }
@@ -55,7 +55,7 @@ public class LanguageItem
    /**
     * Returns the text in 'str' element.
     */
-   public String GetValue()
+   public String getValue()
    {
       return value;
    }
@@ -63,7 +63,7 @@ public class LanguageItem
    /**
     * Returns the unknown attributes in 'str' element.
     */
-   public String[] GetUnknownAttributes()
+   public String[] getUnknownAttributes()
    {
       return unknownAttrs;
    }
@@ -73,7 +73,7 @@ public class LanguageItem
     * 
     * @param key  ID to set.
     */
-   public void SetKey(String key)
+   public void setKey(String key)
    {
       this.key = key;
    }
@@ -83,7 +83,7 @@ public class LanguageItem
     * 
     * @param value   Value to set.
     */
-   public void SetValue(String value)
+   public void setValue(String value)
    {
       this.value = value;
    }
@@ -95,7 +95,7 @@ public class LanguageItem
     *                      index contain element and attributes (not 'id' and
     *                      'txt').
     */
-   public void SetUnknownAttributes(String[] unknownAttrs)
+   public void setUnknownAttributes(String[] unknownAttrs)
    {
       if (unknownAttrs.length > 0)
       {
@@ -109,7 +109,7 @@ public class LanguageItem
     * @param id   ID to check.
     * @return     true if IDs are the same. false if not.
     */
-   public boolean EqualsId(String id)
+   public boolean equalsId(String id)
    {
       return key.equals(id);
    }

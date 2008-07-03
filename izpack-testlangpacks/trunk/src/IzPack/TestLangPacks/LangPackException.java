@@ -71,7 +71,7 @@ public class LangPackException extends Exception
    /**
     * Returns the ID of the exception.
     */
-   public int GetId()
+   public int getId()
    {
       return id;
    }

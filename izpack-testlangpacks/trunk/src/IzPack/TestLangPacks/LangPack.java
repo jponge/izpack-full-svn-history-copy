@@ -54,16 +54,16 @@ public class LangPack
          throw new LangPackException(e.getMessage());
       }
 
-      if (xmlDoc.IsWellFormed())
+      if (xmlDoc.isWellFormed())
       {
-         Main.PrintMessage(System.out, null, "XML file is well-formed.");
+         Main.printMessage(System.out, null, "XML file is well-formed.");
       }
       else
       {
          throw new LangPackException("XML file is NOT well-formed!");
       }
 
-      rootElementStr = xmlDoc.GetRootName();
+      rootElementStr = xmlDoc.getRootName();
 
       // If root element is not "langpack",
       if (!rootElementStr.equals("langpack"))
@@ -72,7 +72,7 @@ public class LangPack
          throw new LangPackException("This is not valid IzPack language file!");
       }
 
-      langStrings = xmlDoc.GetLangStrings();
+      langStrings = xmlDoc.getLangStrings();
 
       int max = langStrings.getLength();
       NamedNodeMap attributes;
@@ -107,7 +107,7 @@ public class LangPack
          langArrayList.add(langItem);
          if (notFound)
          {
-            langItem.SetUnknownAttributes(GetUnknownAttributes(attributes));
+            langItem.setUnknownAttributes(getUnknownAttributes(attributes));
          }
       }
    }
@@ -116,7 +116,7 @@ public class LangPack
     * Returns all language items. Contains also those items which have missing keys,
     * values or unknown attributes.
     */
-   public ArrayList<LanguageItem> GetLangItems()
+   public ArrayList<LanguageItem> getLangItems()
    {
       return langArrayList;
    }
@@ -125,9 +125,9 @@ public class LangPack
     * Returns unknown elements (meaning elements which are not supported in
     * IzPack language file.
     */
-   public String[] GetUnknownElements()
+   public String[] getUnknownElements()
    {
-      return xmlDoc.GetUnknownElements();
+      return xmlDoc.getUnknownElements();
    }
 
    /**
@@ -136,7 +136,7 @@ public class LangPack
     * @return     Returns array table containing unknown attributes.
     *             String[].length will be 0 if there isn't any elements.
     */
-   private String[] GetUnknownAttributes(NamedNodeMap attributes)
+   private String[] getUnknownAttributes(NamedNodeMap attributes)
    {
       ArrayList<String> unknown = new ArrayList<String>();
       int max = attributes.getLength();

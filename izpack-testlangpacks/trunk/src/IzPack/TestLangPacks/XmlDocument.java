@@ -84,7 +84,7 @@ public class XmlDocument
       {
          throw new LangPackException(e.getMessage());
       }
-      SetNormalizeParameters();
+      setNormalizeParameters();
 
       try
       {
@@ -99,7 +99,7 @@ public class XmlDocument
    /**
     * Returns the root name of the XML file.
     */
-   public String GetRootName()
+   public String getRootName()
    {
       // Get the name of the root element.
       Element rootElement  = xmlDoc.getDocumentElement();
@@ -112,7 +112,7 @@ public class XmlDocument
     * @return  true  Documents is wel-formed. false document is not well-formed.
     * @throws  IzPack.TestLangPacks.LangPackException
     */
-   public boolean IsWellFormed() throws LangPackException
+   public boolean isWellFormed() throws LangPackException
    {
       domConf = xmlDoc.getDomConfig();
       try
@@ -138,7 +138,7 @@ public class XmlDocument
             msg = "Parameter name is incompatible with the expected value type.";
          }
 
-         Main.PrintMessage(System.err, "Error in normalize parameters", msg);
+         Main.printMessage(System.err, "Error in normalize parameters", msg);
          throw new LangPackException();
       }
 
@@ -156,7 +156,7 @@ public class XmlDocument
    /**
     * This is used when all additionals are first removed before testing language strings.
     */
-   private void SetNormalizeParameters()
+   private void setNormalizeParameters()
    {
       domConf = xmlDoc.getDomConfig();
       try
@@ -181,7 +181,7 @@ public class XmlDocument
             msg = "Parameter name is incompatible with the expected value type.";
          }
 
-         Main.PrintMessage(System.err, "Normalize parameters", msg);
+         Main.printMessage(System.err, "Normalize parameters", msg);
       }
    }
 
@@ -189,7 +189,7 @@ public class XmlDocument
     * Returns language strings in XML file.
     * @return  Returns NodeList containing all elements with "str".
     */
-   public NodeList GetLangStrings()
+   public NodeList getLangStrings()
    {
       return xmlDoc.getElementsByTagName("str");
    }
@@ -199,7 +199,7 @@ public class XmlDocument
     *
     * @throws LangPackException
     */
-   public String[] GetUnknownElements()
+   public String[] getUnknownElements()
    {
       if (inputSource == null)
       {
