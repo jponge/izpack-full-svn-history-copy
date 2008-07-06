@@ -1,7 +1,7 @@
 
 TestLangPacks utility for IzPack installation program
-version 0.2
-20.3.2008/Ari Voutilainen
+version 0.?
+6.7.2008/Ari Voutilainen
 
 
 Motivation
@@ -28,6 +28,13 @@ Finds ID's which should be added
 Finds ID's which are not needed anymore
 Finds unknown attributes in elements
 Finds unknown elements (means elements which are not supported)
+Check only base file (no other xml files needed)
+Finding possible same strings (finding with last word in the ID which
+   consists of two words or more, e.g. id="CheckedHelloPanel.headline"
+   so "headline" words are searched. This helps to find translations
+   in same context to check if they are translated as a same way. This
+   is helpfull when there have been several persons to translate the
+   language files.)
 
 The program is totally independent: it won't need any IzPack's classes
 to compile or run.

@@ -1,0 +1,76 @@
+
+=====================================================
+TestLangPacks utility for IzPack installation program
+=====================================================
+version 0.?
+6.7.2008/Ari Voutilainen
+
+-------
+Purpose
+-------
+
+This utility is indend to help in translating and testing IzPack
+language files. The program will produce listings which can be used to
+find strings which must be translated. Also other testings are done
+for the specified language file.
+
+
+-------------
+Documentation
+-------------
+
+This documentation has been devided into two files: for those who just
+want to translate IzPack installer and for those who are developers or
+who have source files of IzPack.
+
+The translators should read the file: izpack-translators.txt
+
+   and
+
+persons who have the source files: izpack-developers.txt
+
+
+Note for the both groups
+------------------------
+
+ALWAYS use editor which is character encoding aware. This kind of
+editors are for example Eclipse and NetBeans. Also commercial editors
+MS Visual Studio 200x IDE and Altova XML Editor are suitable for these
+tasks.
+
+To fail in character encoding will not produce correct characters
+especially with international characters.
+
+-----------------------
+Features of the program
+-----------------------
+
+Checks well-formness of the language files.
+Finds ID's which should be added.
+Finds ID's which are not needed anymore.
+Finds unknown attributes in elements.
+Finds unknown elements (means elements which are not supported).
+Check only base file (no other xml files needed).
+Finding possible same strings (finding with last word in the ID which
+   consists of two words or more, e.g. id="CheckedHelloPanel.headline"
+   so "headline" words are searched. This helps to find translations
+   in same context to check if they are translated as a same way. This
+   is helpfull when there have been several persons translating the
+   language files).
+
+The program is totally independent: it won't need any IzPack's classes
+to compile or run.
+
+
+Future features
+---------------
+Ability to check all IzPack's language files found at once.
+Ignore list for finding same strings.
+
+
+------------
+Requirements
+------------
+
+To run: Java 5.
+To get into IDE: IDE which will recognise Java 5.

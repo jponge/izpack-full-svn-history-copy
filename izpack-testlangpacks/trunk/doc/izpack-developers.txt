@@ -1,0 +1,60 @@
+
+=====================================================
+TestLangPacks utility for IzPack installation program
+=====================================================
+
+This file is the help file for IzPack developers who want to translate
+language files.
+
+
+To update language files use Update in your subversion (svn) client
+program.
+
+Drop following file:
+
+   TestLangPack.jar
+
+into the directory:
+
+   [your_eclipse_workspace]/IzPack/bin/langpacks/installer
+
+
+Run utility:
+
+   java -jar TestLangPack.jar [your_langugage_file].xml -s
+
+If you want results into the file write:
+
+   java -jar TestLangPack.jar [your_langugage_file].xml -s >translate.txt
+
+See results and check needed actions and translate strings.
+
+After translation have [your_langugage_file].xml. Make JIRA issue
+into:
+
+   http://jira.codehaus.org/secure/CreateIssue!default.jspa
+
+Check that Project is "IzPack" and Issue Type is "Task".
+
+Other details:
+   Summary           : Update for [your_langugage_name].
+   Priority          : Trivial
+   Due date          : [not needed]
+   Component/s       : Translations
+   Affects Version/s : (select your IzPack version)
+   Fix Version/s     : (you can leave this unselected. Project
+                       manager will select this)
+   Assignee          : Unassigned
+   Environment       : [not needed]
+   Description       : [not needed]
+   Original Estimate : [not needed]
+   Attachment        : [your_langugage_file].xml
+   Testcase included : None
+   Patch Submitted   : [leave unchecked]
+
+
+There are two batch files which can be used to get rid of too long
+command line:
+
+testlang.bat   The command file for Windows.
+testlang.sh    The shell script for Linux/Unix.

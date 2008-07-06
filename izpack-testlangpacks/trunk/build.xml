@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <project basedir="." default="build" name="IzPack-TestLangPacks">
-	
+
 <!--
 	27.3.2008	Initial auto-created of build.xml. Modified by Ari Voutilainen.
 -->
@@ -41,7 +41,7 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-	
+
     <!-- Package for TestLangPacks.jar -->
     <target name="jar.TestLangPacks" depends="build">
         <jar jarfile="bin/TestLangPacks.jar">
