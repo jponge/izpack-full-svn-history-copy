@@ -72,7 +72,7 @@ public class IzPackMojo
 
     /**
      * IzPack's kind argument.
-     * @parameter expression="standard" default-value="standard"
+     * @parameter  default-value="standard"
      * @since alpha 1
      */
     private String kind;
@@ -83,6 +83,13 @@ public class IzPackMojo
      * @since alpha 1
      */
     private String fileExtension;
+
+    /**
+     * Location of external custom panel's jars which must be placed under sub directory bin/panels. ( ie ${customPanelDirectory/bin/panels )
+     * @parameter default-value="${project.build.directory}/izpack"
+     * @since alpha 1
+     */
+    private File customPanelDirectory;
 
     /**
      * Internal Maven's project
@@ -164,7 +171,7 @@ public class IzPackMojo
         try
         {
             fileReader = new FileReader( descriptor );
-            Reader reader = new InterpolationFilterReader( fileReader,p, "@{", "}" );
+            Reader reader = new InterpolationFilterReader( fileReader, p, "@{", "}" );
 
             IOUtil.copy( reader, stringWriter );
         }
@@ -184,11 +191,11 @@ public class IzPackMojo
         {
             String string = stringWriter.getBuffer().toString();
             StringReader stringReader = new StringReader( string );
-            Reader reader = new InterpolationFilterReader( stringReader,p  );
-            
+            Reader reader = new InterpolationFilterReader( stringReader, p );
+
             fileWriter = new FileWriter( interpolatedFile );
             IOUtil.copy( reader, fileWriter );
-            
+
         }
         catch ( IOException e )
         {
@@ -259,20 +266,26 @@ public class IzPackMojo
     {
         List classpathURLs = new ArrayList();
 
-        for ( int i = 0; i < classpathElements.size(); i++ )
+        try
         {
-            String element = (String) classpathElements.get( i );
-            try
+            //make user prepared customer panel jar files available the the classpath
+            URL customerPanelUrl = this.customPanelDirectory.toURI().toURL();
+            classpathURLs.add( customerPanelUrl );
+            getLog().debug( "Added to classpath " + customPanelDirectory );
+            
+            
+            for ( int i = 0; i < classpathElements.size(); i++ )
             {
+                String element = (String) classpathElements.get( i );
                 File f = new File( element );
                 URL newURL = f.toURI().toURL();
                 classpathURLs.add( newURL );
                 getLog().debug( "Added to classpath " + element );
             }
-            catch ( Exception e )
-            {
-                throw new MojoExecutionException( "Error parsing classpath " + element + " " + e.getMessage() );
-            }
+        }
+        catch ( Exception e )
+        {
+            throw new MojoExecutionException( "Error parsing classpath: " + e.getMessage() );
         }
 
         URL[] urls = (URL[]) classpathURLs.toArray( new URL[classpathURLs.size()] );
