@@ -116,7 +116,7 @@ public class Main
          printMessage(System.err, "Error in base file", e.getMessage());
          return;
       }
-      
+
       if (checkOnlyBaseFile)
       {
          return;
@@ -140,6 +140,7 @@ public class Main
       System.out.println("\nFinding ID's which should be added ("+xmlBaseFile+" => "+xmlTestFile+"):");
 
       boolean found = false;
+      boolean itemPrinted = false;
       String key = null;
       for (LanguageItem itemBase : langItemsBase)
       {
@@ -167,11 +168,12 @@ public class Main
          if (!found)
          {
             System.out.println(makeKeyValueString(key, itemBase.getValue()));
+            itemPrinted = true;
          }
          found = false;
       }
 
-      if (key==null)
+      if (!itemPrinted)
       {
          System.out.println("   (none)");
       }
@@ -182,7 +184,7 @@ public class Main
 
       key = null;
       found = false;
-      boolean totalFoundState = false;
+      itemPrinted = false;
       for (LanguageItem itemToCheck : langItemsTest)
       {
          key = itemToCheck.getKey();
@@ -202,7 +204,6 @@ public class Main
                   if (checkValue != null)
                   {
                      found = true;  // Only filled id and txt will procedure true!
-                     totalFoundState = true;
                   }
                }
             }
@@ -211,15 +212,16 @@ public class Main
          if (!found)
          {
             System.out.println(makeKeyValueString(key, itemToCheck.getValue()));
+            itemPrinted = true;
          }
          found = false;
       }
 
-      if (key==null && totalFoundState==false)
+      if (!itemPrinted)
       {
          System.out.println("   (none)");
       }
-      
+
       // Check unknown attributes.
       // ------------------------
       System.out.println("\nFinding unknown attributes in "+xmlTestFile+":");
@@ -242,7 +244,7 @@ public class Main
             found = true;
          }
       }
-      
+
       if (!found)
       {
          System.out.println("   (none)");
@@ -251,7 +253,7 @@ public class Main
       // Finding unknown elements.
       // ------------------------
       System.out.println("\nFinding unknown elements in "+xmlTestFile+":");
-      System.out.println("(means elements which are not supported.)");
+      System.out.println("(means elements which are not supported)");
 
       String[] unknownElements = langPackTest.getUnknownElements();
       if (unknownElements.length==0)
@@ -265,15 +267,16 @@ public class Main
             System.out.println("   <"+elem+" ... />");
          }
       }
-      
+
       if (printSameStrings)
       {
          // Finding possible same strings (finding with last word in the ID which
          // consists of two words or more).
          // ---------------------------------------------------------------------
          System.out.println("\nFinding possible same strings in "+xmlTestFile+":");
-         System.out.println("   (Check that translations are congruent (that the strings in same context");
-         System.out.println("    have been translated at the same way). This also produces incorrect results!)");
+         System.out.println("   (Checks that translations are congruent (that the strings in same context");
+         System.out.println("    have been translated at the same way). This also produces incorrect");
+         System.out.println("    results!)\n");
          System.out.println("    Do NOT change at once! Check by hand in unclear cases.");
 
          // Collect same strings.
@@ -289,7 +292,7 @@ public class Main
                java.util.Map.Entry<String, ArrayList<LanguageItem>> keyValuePair = iter.next();
                String sameKey = keyValuePair.getKey();
                ArrayList<LanguageItem> values = keyValuePair.getValue();
-               int numValues = values.size(); 
+               int numValues = values.size();
                if (numValues > 1)
                {
                   System.out.println("\n   \"" + sameKey + "\":");
@@ -314,7 +317,7 @@ public class Main
 
    /**
     * Returns the same strings.
-    * 
+    *
     * @note Because this generates a lot of results and always, this feture must be activated manually.
     *
     * @param langItems  Language items to check.
@@ -325,7 +328,7 @@ public class Main
       ArrayList<LanguageItem> copyLangItemArray = new ArrayList<LanguageItem>(langItems);
       // Hashtable which will contain id's with same txt strings collected from 'copyLangItem'.
       Hashtable<String, ArrayList<LanguageItem>> sameStringsHastTable = new Hashtable<String, ArrayList<LanguageItem>>();
-      
+
       int amount = copyLangItemArray.size();
       while (amount > 0)
       {
@@ -336,22 +339,22 @@ public class Main
 
    /**
     * Collects the same strings for the current 'id'.
-    * 
+    *
     * @param sameStringArray        The array list where to search strings.
     * @param sameStringsHastTable   This hash table will contain all found strings. Key will contain one word and
-    *                               value part will contain array list of all id's found with key's content. 
+    *                               value part will contain array list of all id's found with key's content.
     * @return  Returns the number of the items in 'sameStringArray'.
     */
    private static int collectStrings(ArrayList<LanguageItem> sameStringArray, Hashtable<String, ArrayList<LanguageItem>> sameStringsHastTable)
    {  // Vähentää listasta löydetyt eli pienentää listan pituutta.
       // Palauttaa uuden listan.
       // Ikiluuppi, koska lista pienenee koko ajan
-      
+
       // Get first id word.
       // Remove it from the list.
       // Loop for the rest id words in the list. If the same id word is found save it and remove it from the list.
       // After looping return reduced list.
-      
+
       // Get first word and save it.
       String keyWord = getLastWord(sameStringArray.get(0).getKey());
       // Remove first item.
@@ -376,7 +379,7 @@ public class Main
          }
       }
       // Add found words into same string hash table. We take this only when there are more
-      // than 1 words in array list. 
+      // than 1 words in array list.
       if (words.size() > 1)
       {
          sameStringsHastTable.put(keyWord, words);
@@ -394,7 +397,7 @@ public class Main
    *                   is empty or 'idString' contains only one word. ID strings
    *                   containing only one word must always be different so it has
    *                   no use to compare them. There must more than 1 word in
-   *                   ID string. 
+   *                   ID string.
    */
   private static String getLastWord(String idString)
   {
