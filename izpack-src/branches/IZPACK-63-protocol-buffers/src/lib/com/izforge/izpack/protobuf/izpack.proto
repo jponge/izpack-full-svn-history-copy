@@ -1,0 +1,28 @@
+package com.izforge.izpack.protobuf;
+
+option java_package = "com.izforge.izpack.protobuf";
+option java_outer_classname = "IzPackProtos";
+
+message Info {
+    optional string appName = 1;
+    optional string appVersion = 2;
+    optional string installationSubPath = 3;
+    repeated Author authors = 4;
+    optional string appURL = 5;
+    optional string javaVersion = 6;
+    optional bool jdkRequired = 7;
+    optional string installerBase = 8;
+    optional string webDirURL = 9;
+    optional string uninstallerName = 10;
+    optional string uninstallerCondition = 11;
+    optional string summaryLogFilePath = 12;
+    optional string packDecoderClassName = 13;
+    optional string unpackerClassName = 14;
+    optional bool writeInstallationInformation = 15;
+    optional bool pack200Compression = 16;
+}
+
+message Author {
+    optional string name = 1;
+    optional string email = 2;
+}

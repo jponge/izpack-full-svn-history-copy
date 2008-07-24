@@ -23,6 +23,7 @@ import com.izforge.izpack.XPackFile;
 import com.izforge.izpack.io.FileSpanningOutputStream;
 import com.izforge.izpack.util.Debug;
 import com.izforge.izpack.util.FileUtil;
+import com.izforge.izpack.util.JarOutputStream;
 import net.n3.nanoxml.XMLElement;
 
 import java.io.*;
@@ -46,7 +47,7 @@ public class MultiVolumePackager extends PackagerBase
     /**
      * Executable zipped output stream. First to open, last to close.
      */
-    private ZipOutputStream primaryJarStream;
+    private com.izforge.izpack.util.JarOutputStream primaryJarStream;
 
 
     private XMLElement configdata = null;
@@ -242,9 +243,14 @@ public class MultiVolumePackager extends PackagerBase
             }
         }
 
-        primaryJarStream.putNextEntry(new ZipEntry("META-INF/MANIFEST.MF"));
+        primaryJarStream.putNextEntry(new org.apache.tools.zip.ZipEntry("META-INF/MANIFEST.MF"));
         primaryJarStream.write(modifiedmanifest.getBytes());
         primaryJarStream.closeEntry();
+    }
+
+    protected JarOutputStream getPrimaryJarStream()
+    {
+        return primaryJarStream;
     }
 
     /**
@@ -252,7 +258,7 @@ public class MultiVolumePackager extends PackagerBase
      */
     protected void writeInstallerObject(String entryName, Object object) throws IOException
     {
-        primaryJarStream.putNextEntry(new ZipEntry(entryName));
+        primaryJarStream.putNextEntry(new org.apache.tools.zip.ZipEntry(entryName));
         ObjectOutputStream out = new ObjectOutputStream(primaryJarStream);
         out.writeObject(object);
         out.flush();
@@ -346,7 +352,7 @@ public class MultiVolumePackager extends PackagerBase
 
             sendMsg("Writing Pack " + packNumber + ": " + pack.name, PackagerListener.MSG_VERBOSE);
             Debug.trace("Writing Pack " + packNumber + ": " + pack.name);
-            ZipEntry entry = new ZipEntry("packs/pack" + packNumber);
+            org.apache.tools.zip.ZipEntry entry = new org.apache.tools.zip.ZipEntry("packs/pack" + packNumber);
             // write the metadata as uncompressed object stream to primaryJarStream
             // first write a packs entry
 
@@ -453,7 +459,7 @@ public class MultiVolumePackager extends PackagerBase
         fout.flush();
         fout.close();
 
-        primaryJarStream.putNextEntry(new ZipEntry("volumes.info"));
+        primaryJarStream.putNextEntry(new org.apache.tools.zip.ZipEntry("volumes.info"));
         ObjectOutputStream out = new ObjectOutputStream(primaryJarStream);
         out.writeInt(volumes);
         out.writeUTF(volumename);
@@ -461,7 +467,7 @@ public class MultiVolumePackager extends PackagerBase
         primaryJarStream.closeEntry();
 
         // Now that we know sizes, write pack metadata to primary jar.
-        primaryJarStream.putNextEntry(new ZipEntry("packs.info"));
+        primaryJarStream.putNextEntry(new org.apache.tools.zip.ZipEntry("packs.info"));
         out = new ObjectOutputStream(primaryJarStream);
         out.writeInt(packsList.size());
 
@@ -481,12 +487,12 @@ public class MultiVolumePackager extends PackagerBase
     /**
      * Return a stream for the next jar.
      */
-    private ZipOutputStream getJarOutputStream(String name) throws IOException
+    private JarOutputStream getJarOutputStream(String name) throws IOException
     {
         File file = new File(baseFile.getParentFile(), name);
         sendMsg("Building installer jar: " + file.getAbsolutePath());
         Debug.trace("Building installer jar: " + file.getAbsolutePath());
-        ZipOutputStream jar = new ZipOutputStream(new FileOutputStream(file));
+        JarOutputStream jar = new JarOutputStream(new FileOutputStream(file));
         jar.setLevel(Deflater.BEST_COMPRESSION);
         // jar.setPreventClose(true); // Needed at using FilterOutputStreams which
         // calls close
@@ -504,7 +510,7 @@ public class MultiVolumePackager extends PackagerBase
      *
      * @see #copyStream(InputStream, OutputStream)
      */
-    private void copyZip(ZipInputStream zin, ZipOutputStream out, List<String> files) throws IOException
+    private void copyZip(ZipInputStream zin, JarOutputStream out, List<String> files) throws IOException
     {
         java.util.zip.ZipEntry zentry;
         if (!alreadyWrittenFiles.containsKey(out))
@@ -542,7 +548,7 @@ public class MultiVolumePackager extends PackagerBase
             try
             {
                 // Create new entry for zip file.
-                ZipEntry newEntry = new ZipEntry(currentName);
+                org.apache.tools.zip.ZipEntry newEntry = new org.apache.tools.zip.ZipEntry(currentName);
                 // Get input file date and time.
                 long fileTime = zentry.getTime();
                 // Make sure there is date and time set.
@@ -575,7 +581,7 @@ public class MultiVolumePackager extends PackagerBase
      *
      * @see #copyStream(InputStream, OutputStream)
      */
-    private void copyZipWithoutExcludes(ZipInputStream zin, ZipOutputStream out, List<String> excludes) throws IOException
+    private void copyZipWithoutExcludes(ZipInputStream zin, JarOutputStream out, List<String> excludes) throws IOException
     {
         java.util.zip.ZipEntry zentry;
         if (!alreadyWrittenFiles.containsKey(out))
@@ -614,7 +620,7 @@ public class MultiVolumePackager extends PackagerBase
             try
             {
                 // Create new entry for zip file.
-                ZipEntry newEntry = new ZipEntry(currentName);
+                org.apache.tools.zip.ZipEntry newEntry = new org.apache.tools.zip.ZipEntry(currentName);
                 // Get input file date and time.
                 long fileTime = zentry.getTime();
                 // Make sure there is date and time set.

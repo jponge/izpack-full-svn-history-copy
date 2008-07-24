@@ -22,7 +22,10 @@ package com.izforge.izpack.compiler;
 
 import com.izforge.izpack.Pack;
 import com.izforge.izpack.PackFile;
+import com.izforge.izpack.Info;
+import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.util.FileUtil;
+import com.izforge.izpack.util.JarOutputStream;
 import net.n3.nanoxml.XMLElement;
 import net.n3.nanoxml.XMLWriter;
 
@@ -148,6 +151,11 @@ public class Packager extends PackagerBase
         copyZip(inJarStream, primaryJarStream);
     }
 
+    protected JarOutputStream getPrimaryJarStream()
+    {
+        return primaryJarStream;
+    }
+
     /**
      * Write an arbitrary object to primary jar.
      */
@@ -156,7 +164,7 @@ public class Packager extends PackagerBase
         primaryJarStream.putNextEntry(new org.apache.tools.zip.ZipEntry(entryName));
         ObjectOutputStream out = new ObjectOutputStream(primaryJarStream);
         out.writeObject(object);
-        out.flush();
+        out.flush();        
         primaryJarStream.closeEntry();
     }
 

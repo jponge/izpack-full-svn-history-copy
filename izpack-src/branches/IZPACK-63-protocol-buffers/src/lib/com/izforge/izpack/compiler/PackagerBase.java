@@ -26,10 +26,13 @@ import com.izforge.izpack.CustomData;
 import com.izforge.izpack.GUIPrefs;
 import com.izforge.izpack.Info;
 import com.izforge.izpack.Panel;
+import com.izforge.izpack.util.JarOutputStream;
+import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.compressor.PackCompressor;
 import com.izforge.izpack.compressor.PackCompressorFactory;
 import com.izforge.izpack.installer.InstallerRequirement;
 import com.izforge.izpack.rules.Condition;
+import com.google.protobuf.CodedOutputStream;
 
 import java.io.File;
 import java.io.FilterOutputStream;
@@ -368,7 +371,7 @@ public abstract class PackagerBase implements IPackager
         // an included jar
         writeSkeletonInstaller();
 
-        writeInstallerObject("info", info);
+        writeInfo("info", info);
         writeInstallerObject("vars", variables);
         writeInstallerObject("GUIPrefs", guiPrefs);
         writeInstallerObject("panelsOrder", panelList);
@@ -383,6 +386,41 @@ public abstract class PackagerBase implements IPackager
 
         // Pack File Data may be written to separate jars
         writePacks();
+    }
+
+    protected abstract JarOutputStream getPrimaryJarStream();
+
+    protected void writeInfo(String entryName, Info info) throws IOException
+    {
+        getPrimaryJarStream().putNextEntry(new org.apache.tools.zip.ZipEntry(entryName));
+        List<IzPackProtos.Author> authors = new ArrayList<IzPackProtos.Author>();
+        for (Info.Author author : info.getAuthors())
+        {
+            authors.add(IzPackProtos.Author.newBuilder()
+                    .setName(author.getName())
+                    .setEmail(author.getEmail())
+                    .build());
+        }
+        IzPackProtos.Info infoBuffer = IzPackProtos.Info.newBuilder()
+                .setAppName(info.getAppName())
+                .setAppURL(info.getAppURL())
+                .setAppVersion(info.getAppVersion())
+                .addAllAuthors(authors)
+                .setInstallationSubPath(info.getInstallationSubPath())
+                .setInstallerBase(info.getInstallerBase())
+                .setJavaVersion(info.getJavaVersion())
+                .setJdkRequired(info.isJdkRequired())
+                .setPack200Compression(info.isPack200Compression())
+                .setPackDecoderClassName(info.getPackDecoderClassName())
+                .setSummaryLogFilePath(info.getSummaryLogFilePath())
+                .setUninstallerCondition(info.getUninstallerCondition())
+                .setUninstallerName(info.getUninstallerName())
+                .setUnpackerClassName(info.getUnpackerClassName())
+                .setWebDirURL(info.getWebDirURL())
+                .setWriteInstallationInformation(info.isWriteInstallationInformation())
+                .build();
+        infoBuffer.writeTo(getPrimaryJarStream());
+        getPrimaryJarStream().closeEntry();
     }
 
     protected abstract void writeInstallerObject(String entryName, Object object) throws IOException;
