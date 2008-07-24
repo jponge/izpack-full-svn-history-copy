@@ -292,6 +292,7 @@
             <include name="com/izforge/izpack/util/JarOutputStream.java"/>
             <include name="com/izforge/izpack/rules/*.java"/>
             <include name="net/n3/nanoxml/*.java"/>
+            <include name="com/google/protobuf/*.java"/>
         </javac>
         <copy todir="${build.dir}/com/izforge/izpack/ant/langpacks">
             <fileset dir="${src.dir}/com/izforge/izpack/ant/langpacks"/>
@@ -397,6 +398,7 @@
             <include name="com/izforge/izpack/rules/*.java"/>
             <include name="com/izforge/izpack/compiler/DynamicVariable.java"/>
             <include name="net/n3/nanoxml/*.java"/>
+            <include name="com/google/protobuf/*.java"/>
         </javac>
     </target>
 
