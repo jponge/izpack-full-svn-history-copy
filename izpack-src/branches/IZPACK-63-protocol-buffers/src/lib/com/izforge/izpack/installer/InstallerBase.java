@@ -78,8 +78,7 @@ public class InstallerBase
         }
 
         // We load the Info data
-        Info inf;
-        inf = readInfoData();
+        Info inf = readInfoData();
 
         // We put the Info data as variables
         installdata.setVariable(ScriptParser.APP_NAME, inf.getAppName());
