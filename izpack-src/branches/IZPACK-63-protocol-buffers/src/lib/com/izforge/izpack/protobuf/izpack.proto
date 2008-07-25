@@ -26,3 +26,24 @@ message Author {
     optional string name = 1;
     optional string email = 2;
 }
+
+message PackFile {
+    optional string targetPath = 1;
+    optional uint64 length = 2;
+    optional sint64 mtime = 3;
+    optional bool isDirectory = 4;
+    optional int32 override = 5;
+    optional string previousPackId = 6;
+    optional sint64 offsetInPreviousPack = 7;
+    optional bool pack200Jar = 8;
+    optional string condition = 9;
+    repeated OsConstraint osConstraints = 10;
+}
+
+message OsConstraint {
+    optional string arch = 1;
+    optional string family = 2;
+    optional string jre = 3;
+    optional string name = 4;
+    optional string version = 5;
+}
