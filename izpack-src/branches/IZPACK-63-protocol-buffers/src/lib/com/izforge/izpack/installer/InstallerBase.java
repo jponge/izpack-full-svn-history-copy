@@ -24,9 +24,11 @@ package com.izforge.izpack.installer;
 import com.izforge.izpack.CustomData;
 import com.izforge.izpack.Info;
 import com.izforge.izpack.Pack;
+import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.util.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.InetAddress;
@@ -76,10 +78,8 @@ public class InstallerBase
         }
 
         // We load the Info data
-        in = InstallerBase.class.getResourceAsStream("/info");
-        objIn = new ObjectInputStream(in);
-        Info inf = (Info) objIn.readObject();
-        objIn.close();
+        Info inf;
+        inf = readInfoData();
 
         // We put the Info data as variables
         installdata.setVariable(ScriptParser.APP_NAME, inf.getAppName());
@@ -220,6 +220,36 @@ public class InstallerBase
         // Load custom action data.
         loadCustomData(installdata);
 
+    }
+
+    private Info readInfoData() throws IOException, ClassNotFoundException
+    {
+        InputStream in = InstallerBase.class.getResourceAsStream("/info");
+        IzPackProtos.Info infoBuffer = IzPackProtos.Info.parseFrom(in);
+        Info info = new Info();
+
+        info.setAppName(infoBuffer.getAppName());
+        info.setAppURL(infoBuffer.getAppURL());
+        info.setAppVersion(infoBuffer.getAppVersion());
+        info.setInstallationSubPath(infoBuffer.getInstallationSubPath());
+        info.setInstallerBase(infoBuffer.getInstallerBase());
+        info.setJavaVersion(infoBuffer.getJavaVersion());
+        info.setJdkRequired(infoBuffer.getJdkRequired());
+        info.setPack200Compression(infoBuffer.getPack200Compression());
+        info.setPackDecoderClassName(infoBuffer.getPackDecoderClassName());
+        info.setSummaryLogFilePath(infoBuffer.getSummaryLogFilePath());
+        info.setUninstallerCondition(infoBuffer.getUninstallerCondition());
+        info.setUninstallerName(infoBuffer.getUninstallerName());
+        info.setUnpackerClassName(infoBuffer.getUnpackerClassName());
+        info.setWebDirURL(infoBuffer.getWebDirURL());
+        info.setWriteInstallationInformation(infoBuffer.getWriteInstallationInformation());
+        for (IzPackProtos.Author authorBuffer : infoBuffer.getAuthorsList())
+        {
+            info.addAuthor(new Info.Author(authorBuffer.getName(), authorBuffer.getEmail()));
+        }
+
+        in.close();
+        return info;
     }
 
     /**

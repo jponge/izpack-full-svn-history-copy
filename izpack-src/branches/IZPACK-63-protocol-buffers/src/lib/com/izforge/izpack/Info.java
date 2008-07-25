@@ -301,12 +301,12 @@ public class Info implements Serializable
         /**
          * The author name
          */
-        private String name;
+        private String name = "";
 
         /**
          * The author email
          */
-        private String email;
+        private String email = "";
 
         /**
          * Gets the author name.
