@@ -26,13 +26,12 @@ import com.izforge.izpack.CustomData;
 import com.izforge.izpack.GUIPrefs;
 import com.izforge.izpack.Info;
 import com.izforge.izpack.Panel;
-import com.izforge.izpack.util.JarOutputStream;
-import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.compressor.PackCompressor;
 import com.izforge.izpack.compressor.PackCompressorFactory;
 import com.izforge.izpack.installer.InstallerRequirement;
+import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.rules.Condition;
-import com.google.protobuf.CodedOutputStream;
+import com.izforge.izpack.util.JarOutputStream;
 
 import java.io.File;
 import java.io.FilterOutputStream;
@@ -379,8 +378,8 @@ public abstract class PackagerBase implements IPackager
         writeInstallerObject("langpacks.info", langpackNameList);
         writeInstallerObject("rules", rules);
         writeInstallerObject("dynvariables", dynamicvariables);
-        writeInstallerObject("installerrequirements",installerrequirements);
-        
+        writeInstallerObject("installerrequirements", installerrequirements);
+
         writeInstallerResources();
         writeIncludedJars();
 
@@ -401,25 +400,54 @@ public abstract class PackagerBase implements IPackager
                     .setEmail(author.getEmail())
                     .build());
         }
-        IzPackProtos.Info infoBuffer = IzPackProtos.Info.newBuilder()
-                .setAppName(info.getAppName())
-                .setAppURL(info.getAppURL())
+
+        IzPackProtos.Info.Builder builder = IzPackProtos.Info.newBuilder();
+        builder.setAppName(info.getAppName())
                 .setAppVersion(info.getAppVersion())
                 .addAllAuthors(authors)
-                .setInstallationSubPath(info.getInstallationSubPath())
-                .setInstallerBase(info.getInstallerBase())
                 .setJavaVersion(info.getJavaVersion())
                 .setJdkRequired(info.isJdkRequired())
-                .setPack200Compression(info.isPack200Compression())
-                .setPackDecoderClassName(info.getPackDecoderClassName())
                 .setSummaryLogFilePath(info.getSummaryLogFilePath())
-                .setUninstallerCondition(info.getUninstallerCondition())
-                .setUninstallerName(info.getUninstallerName())
-                .setUnpackerClassName(info.getUnpackerClassName())
-                .setWebDirURL(info.getWebDirURL())
-                .setWriteInstallationInformation(info.isWriteInstallationInformation())
-                .build();
-        infoBuffer.writeTo(getPrimaryJarStream());
+                .setUninstallerName(info.getUninstallerName());
+
+        if (info.getInstallationSubPath() != null)
+        {
+            builder.setInstallationSubPath(info.getInstallationSubPath());
+        }
+        if (info.getAppURL() != null)
+        {
+            builder.setAppURL(info.getAppURL());
+        }
+        if (info.getInstallerBase() != null)
+        {
+            builder.setInstallerBase(info.getInstallerBase());
+        }
+        if (info.getWebDirURL() != null)
+        {
+            builder.setWebDirURL(info.getWebDirURL());
+        }
+        if (info.getUninstallerCondition() != null)
+        {
+            builder.setUninstallerCondition(info.getUninstallerCondition());
+        }
+        if (info.getPackDecoderClassName() != null)
+        {
+            builder.setPackDecoderClassName(info.getPackDecoderClassName());
+        }
+        if (info.getUnpackerClassName() != null)
+        {
+            builder.setUnpackerClassName(info.getUnpackerClassName());
+        }
+        if (!info.isWriteInstallationInformation())
+        {
+            builder.setWriteInstallationInformation(false);
+        }
+        if (info.isPack200Compression())
+        {
+            builder.setPack200Compression(true);
+        }
+
+        builder.build().writeTo(getPrimaryJarStream());
         getPrimaryJarStream().closeEntry();
     }
 
@@ -453,6 +481,6 @@ public abstract class PackagerBase implements IPackager
 
     public void addInstallerRequirements(List<InstallerRequirement> conditions)
     {
-        this.installerrequirements = conditions;        
+        this.installerrequirements = conditions;
     }
 }

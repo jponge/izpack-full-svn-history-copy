@@ -22,19 +22,19 @@ package com.izforge.izpack.compiler;
 
 import com.izforge.izpack.Pack;
 import com.izforge.izpack.PackFile;
-import com.izforge.izpack.Info;
 import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.util.FileUtil;
 import com.izforge.izpack.util.JarOutputStream;
+import com.izforge.izpack.util.OsConstraint;
 import net.n3.nanoxml.XMLElement;
 import net.n3.nanoxml.XMLWriter;
 
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Pack200;
-import java.util.jar.JarEntry;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -164,7 +164,7 @@ public class Packager extends PackagerBase
         primaryJarStream.putNextEntry(new org.apache.tools.zip.ZipEntry(entryName));
         ObjectOutputStream out = new ObjectOutputStream(primaryJarStream);
         out.writeObject(object);
-        out.flush();        
+        out.flush();
         primaryJarStream.closeEntry();
     }
 
@@ -312,7 +312,7 @@ public class Packager extends PackagerBase
                     addFile = false;
                 }
 
-                objOut.writeObject(pf); // base info
+                writePackFile(objOut, pf);
 
                 if (addFile && !pf.isDirectory())
                 {
@@ -437,6 +437,67 @@ public class Packager extends PackagerBase
         }
     }
 
+    private void writePackFile(OutputStream out, PackFile pf) throws IOException
+    {
+        List<IzPackProtos.OsConstraint> constraintsBuffers = new ArrayList<IzPackProtos.OsConstraint>();
+        for (OsConstraint osc : pf.osConstraints())
+        {
+            IzPackProtos.OsConstraint.Builder builder = IzPackProtos.OsConstraint.newBuilder();
+            if (osc.getArch() != null)
+            {
+                builder.setArch(osc.getArch());
+            }
+            if (osc.getFamily() != null)
+            {
+                builder.setFamily(osc.getFamily());
+            }
+            if (osc.getName() != null)
+            {
+                builder.setName(osc.getName());
+            }
+            if (osc.getVersion() != null)
+            {
+                builder.setVersion(osc.getVersion());
+            }
+            constraintsBuffers.add(builder.build());
+        }
+
+        IzPackProtos.PackFile.Builder builder = IzPackProtos.PackFile.newBuilder();
+        builder.setTargetPath(pf.getTargetPath());
+        builder.setLength(pf.length());
+        builder.setMtime(pf.lastModified());
+        if (pf.isDirectory())
+        {
+            builder.setIsDirectory(true);
+        }
+        if (pf.override() != PackFile.OVERRIDE_FALSE)
+        {
+            builder.setOverride(pf.override());
+        }
+        if (pf.previousPackId != null)
+        {
+            builder.setPreviousPackId(pf.previousPackId);
+        }
+        if (pf.offsetInPreviousPack != -1)
+        {
+            builder.setOffsetInPreviousPack(pf.offsetInPreviousPack);
+        }
+        if (pf.isPack200Jar())
+        {
+            builder.setPack200Jar(true);
+        }
+        if (!constraintsBuffers.isEmpty())
+        {
+            builder.addAllOsConstraints(constraintsBuffers);
+        }
+        if (pf.getCondition() != null)
+        {
+            builder.setCondition(pf.getCondition());
+        }
+
+        builder.build().writeTo(out);
+    }
+
     private Pack200.Packer createAgressivePack200Packer()
     {
         Pack200.Packer packer = Pack200.newPacker();
@@ -446,7 +507,7 @@ public class Packager extends PackagerBase
         m.put(Pack200.Packer.KEEP_FILE_ORDER, Pack200.Packer.FALSE);
         m.put(Pack200.Packer.DEFLATE_HINT, Pack200.Packer.FALSE);
         m.put(Pack200.Packer.MODIFICATION_TIME, Pack200.Packer.LATEST);
-        m.put(Pack200.Packer.CODE_ATTRIBUTE_PFX +"LineNumberTable", Pack200.Packer.STRIP);
+        m.put(Pack200.Packer.CODE_ATTRIBUTE_PFX + "LineNumberTable", Pack200.Packer.STRIP);
         m.put(Pack200.Packer.CODE_ATTRIBUTE_PFX + "LocalVariableTable", Pack200.Packer.STRIP);
         m.put(Pack200.Packer.CODE_ATTRIBUTE_PFX + "SourceFile", Pack200.Packer.STRIP);
         return packer;

@@ -228,20 +228,47 @@ public class InstallerBase
         Info info = new Info();
 
         info.setAppName(infoBuffer.getAppName());
-        info.setAppURL(infoBuffer.getAppURL());
+        if (infoBuffer.hasAppURL())
+        {
+            info.setAppURL(infoBuffer.getAppURL());
+        }
         info.setAppVersion(infoBuffer.getAppVersion());
-        info.setInstallationSubPath(infoBuffer.getInstallationSubPath());
-        info.setInstallerBase(infoBuffer.getInstallerBase());
+        if (infoBuffer.hasInstallationSubPath())
+        {
+            info.setInstallationSubPath(infoBuffer.getInstallationSubPath());
+        }
+        if (infoBuffer.hasInstallerBase())
+        {
+            info.setInstallerBase(infoBuffer.getInstallerBase());
+        }
         info.setJavaVersion(infoBuffer.getJavaVersion());
         info.setJdkRequired(infoBuffer.getJdkRequired());
-        info.setPack200Compression(infoBuffer.getPack200Compression());
-        info.setPackDecoderClassName(infoBuffer.getPackDecoderClassName());
+        if (infoBuffer.hasPack200Compression())
+        {
+            info.setPack200Compression(infoBuffer.getPack200Compression());
+        }
+        if (infoBuffer.hasPackDecoderClassName())
+        {
+            info.setPackDecoderClassName(infoBuffer.getPackDecoderClassName());
+        }
         info.setSummaryLogFilePath(infoBuffer.getSummaryLogFilePath());
-        info.setUninstallerCondition(infoBuffer.getUninstallerCondition());
+        if (infoBuffer.hasUninstallerCondition())
+        {
+            info.setUninstallerCondition(infoBuffer.getUninstallerCondition());
+        }
         info.setUninstallerName(infoBuffer.getUninstallerName());
-        info.setUnpackerClassName(infoBuffer.getUnpackerClassName());
-        info.setWebDirURL(infoBuffer.getWebDirURL());
-        info.setWriteInstallationInformation(infoBuffer.getWriteInstallationInformation());
+        if (infoBuffer.hasUnpackerClassName())
+        {
+            info.setUnpackerClassName(infoBuffer.getUnpackerClassName());
+        }
+        if (infoBuffer.hasWebDirURL())
+        {
+            info.setWebDirURL(infoBuffer.getWebDirURL());
+        }
+        if (infoBuffer.hasWriteInstallationInformation())
+        {
+            info.setWriteInstallationInformation(infoBuffer.getWriteInstallationInformation());
+        }
         for (IzPackProtos.Author authorBuffer : infoBuffer.getAuthorsList())
         {
             info.addAuthor(new Info.Author(authorBuffer.getName(), authorBuffer.getEmail()));

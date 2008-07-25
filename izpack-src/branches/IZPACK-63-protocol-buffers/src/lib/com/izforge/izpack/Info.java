@@ -42,7 +42,7 @@ public class Info implements Serializable
     /**
      * The installation subpath
      */
-    private String installationSubPath = "";
+    private String installationSubPath = null;
 
     /**
      * The application authors
@@ -52,7 +52,7 @@ public class Info implements Serializable
     /**
      * The application URL
      */
-    private String appURL = "";
+    private String appURL = null;
 
     /**
      * The required Java version (min)
@@ -67,12 +67,12 @@ public class Info implements Serializable
     /**
      * The name of the installer file (name without jar suffix)
      */
-    private String installerBase = "";
+    private String installerBase = null;
 
     /**
      * The application Web Directory URL
      */
-    private String webDirURL = "";
+    private String webDirURL = null;
 
     /**
      * The uninstaller name
@@ -81,7 +81,7 @@ public class Info implements Serializable
     /**
      * condition for writing the uninstaller
      */
-    private String uninstallerCondition = "";
+    private String uninstallerCondition = null;
 
     /**
      * The path of the summary log file
@@ -92,9 +92,9 @@ public class Info implements Serializable
      * The full qualified name of the class which should be
      * used for decoding the packs.
      */
-    private String packDecoderClassName = "";
+    private String packDecoderClassName = null;
 
-    private String unpackerClassName = "";
+    private String unpackerClassName = null;
 
     private boolean writeInstallationInformation = true;
 
