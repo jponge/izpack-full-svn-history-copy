@@ -10,6 +10,7 @@
 
     <property name="ver_major" value="1"/>
     <property name="ver_minor" value="0-beta1"/>
+    <property name="app_name"  value="TestLangPacks utility for IzPack installer"/>
 
     <property environment="env"/>
     <property name="debuglevel" value="source,lines,vars"/>
@@ -50,13 +51,15 @@
 	
 
     <!-- Makes all: compiles, makes jar, copies files and makes zipped file -->
-    <target description="Creates jar file." name="all" depends="create.jar, task.copy.dist-files, task.copy.docs, task.copy.jar, task.copy.xmls, create.zip">
+    <target description="Creates jar file." name="all" depends="task.copy.dist-files, task.copy.docs, task.copy.jar, task.copy.xmls, replace.dist.versionnumber, create.jar, create.zip">
 	</target>
     	
     <!-- Package for TestLangPacks.jar -->
     <target description="Creates jar file." name="create.jar" depends="build">
         <jar jarfile="bin/TestLangPacks.jar">
             <manifest>
+            	<attribute name="Implementation-Title" value="${app_name}"/>
+            	<attribute name="Implementation-Version" value="${ver_major}.${ver_minor}"/>
                 <attribute name="Main-Class" value="IzPack.TestLangPacks.Main" />
             </manifest>
             <fileset dir="bin/">
@@ -99,6 +102,11 @@
     <!-- Copies distribution files -->
 	<!-- These files will go into the root of the program directory. -->
     <target description="Copies distribution files." name="task.copy.dist-files">
+        <copy todir="./_dist/izpack-testlangpacks"
+            file="./src/dist-files/version.txt"
+            verbose="true"
+            overwrite="yes"
+            preservelastmodified="true"/>
         <copy todir="./_dist/izpack-testlangpacks" preservelastmodified="true">
 	        <fileset dir="./src/dist-files">
 	            <include name="*.bat" />
@@ -126,5 +134,26 @@
 	        </fileset>
     	</copy>
     </target>
+
+	<!-- Cleans distribution directory -->
+    <target name="clean.dist">
+        <delete dir="./_dist/izpack-testlangpacks" includes="**/*" includeEmptyDirs="true"/>
+    </target>
+
+	<!-- Update version information -->
+    <target name="replace.dist.versionnumber" depends="task.copy.dist-files">
+        <replace file="./_dist/izpack-testlangpacks/version.txt"
+                 token="@app_name@"
+                 value="${app_name}"
+                 summary="yes"/>
+        <replace file="./_dist/izpack-testlangpacks/version.txt"
+                 token="@version@"
+                 value="${ver_major}.${ver_minor}"
+                 summary="yes"/>
+        <replace file="./_dist/izpack-testlangpacks/doc/_ReadThisFirst.txt"
+                 token="@version@"
+                 value="${ver_major}.${ver_minor}"
+                 summary="yes"/>
+	</target>
 
 </project>
