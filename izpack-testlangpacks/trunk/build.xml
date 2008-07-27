@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project basedir="." default="build" name="IzPack-TestLangPacks">
+<project basedir="." default="all" name="IzPack-TestLangPacks">
 
 <!--
-	27.3.2008	Initial auto-created of build.xml. Modified by Ari Voutilainen.
+    27.3.2008: (by Ari Voutilainen)
+        Initial auto-created of build.xml.
+    27.7.2008: (by Ari Voutilainen)
+        Added distribution dir and files and some other tasks. Added zip creation.
 -->
+
+    <property name="ver_major" value="1"/>
+    <property name="ver_minor" value="0-beta1"/>
 
     <property environment="env"/>
     <property name="debuglevel" value="source,lines,vars"/>
@@ -41,9 +47,14 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
+	
 
+    <!-- Makes all: compiles, makes jar, copies files and makes zipped file -->
+    <target description="Creates jar file." name="all" depends="create.jar, task.copy.dist-files, task.copy.docs, task.copy.jar, task.copy.xmls, create.zip">
+	</target>
+    	
     <!-- Package for TestLangPacks.jar -->
-    <target name="jar.TestLangPacks" depends="build">
+    <target description="Creates jar file." name="create.jar" depends="build">
         <jar jarfile="bin/TestLangPacks.jar">
             <manifest>
                 <attribute name="Main-Class" value="IzPack.TestLangPacks.Main" />
@@ -52,6 +63,68 @@
                 <include name="IzPack/TestLangPacks/*.class" />
             </fileset>
         </jar>
+    </target>
+
+    <!-- Creates distribution zipped file -->
+    <target description="Creates distribution zipped file" name="create.zip" depends="clean.zip">
+        <property name="izpack-testlangpacks.zip" value="./_dist/TestLangPacks_${ver_major}.${ver_minor}.zip"/>
+        <zip destfile="${izpack-testlangpacks.zip}" basedir="./_dist"/>
+    </target>
+	
+    <!-- Deletes distribution zipped file -->
+    <target description="Deletes distribution zipped file" name="clean.zip">
+        <property name="izpack-testlangpacks.zip" value="./_dist/TestLangPacks_${ver_major}.${ver_minor}.zip"/>
+    	<delete file="${izpack-testlangpacks.zip}"/>
+    </target>
+	
+
+    <!-- Copies and makes jar -->
+    <target description="Copies TestLangPacks.jar to the dist directory." name="task.copy.jar" depends="create.jar">
+        <copy todir="./_dist/izpack-testlangpacks"
+            file="./bin/TestLangPacks.jar"
+            verbose="true"
+            overwrite="yes"
+            preservelastmodified="true"/>
+    </target>
+
+    <!-- Copies doc files -->
+    <target description="Copies the documentation files to the dist directory." name="task.copy.docs">
+        <copy todir="./_dist/izpack-testlangpacks/doc" preservelastmodified="true">
+	        <fileset dir="./doc">
+	            <include name="*.txt" />
+	        </fileset>
+		</copy>
+    </target>
+
+    <!-- Copies distribution files -->
+	<!-- These files will go into the root of the program directory. -->
+    <target description="Copies distribution files." name="task.copy.dist-files">
+        <copy todir="./_dist/izpack-testlangpacks" preservelastmodified="true">
+	        <fileset dir="./src/dist-files">
+	            <include name="*.bat" />
+	        </fileset>
+    	</copy>
+        <copy todir="./_dist/izpack-testlangpacks" preservelastmodified="true">
+	        <fileset dir="./src/dist-files">
+	            <include name="*.sh" />
+	        </fileset>
+    	</copy>
+    </target>
+
+    <!-- Copies all found XML files in distribution files directory -->
+	<!-- 
+		 This makes possible to add language files into zipped file.
+		 This helps translators not to worry about utilities and related files.
+		 However some developer had to have source files of TestLangPacks to do this.
+		 Included XML files must be copied first into the directory: ./src/dist-files.
+	-->
+	<!-- These files will go into the root of the program directory. -->
+    <target description="Copies XML files to the dist directory." name="task.copy.xmls">
+        <copy todir="./_dist/izpack-testlangpacks" preservelastmodified="true">
+	        <fileset dir="./src/dist-files">
+	            <include name="*.xml" />
+	        </fileset>
+    	</copy>
     </target>
 
 </project>
