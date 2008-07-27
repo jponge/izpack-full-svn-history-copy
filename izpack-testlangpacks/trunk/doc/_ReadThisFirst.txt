@@ -2,8 +2,9 @@
 =====================================================
 TestLangPacks utility for IzPack installation program
 =====================================================
-version 0.?
-6.7.2008/Ari Voutilainen
+Version @version@
+27-July-2008
+Ari Voutilainen
 
 -------
 Purpose
@@ -14,6 +15,9 @@ language files. The program will produce listings which can be used to
 find strings which must be translated. Also other testings are done
 for the specified language file.
 
+This utility is under maintenance of IzPack installer:
+- http://izpack.org/
+- http://izpack.codehaus.org/
 
 -------------
 Documentation
@@ -56,10 +60,21 @@ Finding possible same strings (finding with last word in the ID which
    so "headline" words are searched. This helps to find translations
    in same context to check if they are translated as a same way. This
    is helpfull when there have been several persons translating the
-   language files).
+   language file).
 
 The program is totally independent: it won't need any IzPack's classes
 to compile or run.
+
+
+To get help
+-----------
+In command line write:
+
+   java -jar TestLangPack.jar -?
+or
+   java -jar TestLangPack.jar -h
+
+to get current command line switches available.
 
 
 Future features
@@ -73,4 +88,3 @@ Requirements
 ------------
 
 To run: Java 5.
-To get into IDE: IDE which will recognise Java 5.

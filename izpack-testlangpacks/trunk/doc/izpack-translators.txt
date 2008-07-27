@@ -7,46 +7,42 @@ This file is the help file for IzPack language file translators
 (IzPack installer users or persons who just translate the files).
 
 
-You are IzPack installer user and:
-1) you want to translate yourself the language file.
-2) you don't want to translate but someone can do that: a friend or
-   other person who wants to translate the language file.
+Preparations
+------------
+Download latest version of TestLangPacks utility from:
+
+   http://dist.codehaus.org/izpack/testlangpacks/
 
 
-1) You want to translate yourself the language file
-   ------------------------------------------------
-   Drop the following file:
-
-   TestLangPack.jar
-
-   into the directory:
-
-      [IzPack_install_directory]/bin/langpacks/installer
-
-      For example (in Windows):
-      C:\Program Files\IzPack-4.0.0\bin\langpacks\installer
-
-   Go to the step 3).
-
-
-2) You don't want to translate but someone can do that
-   ---------------------------------------------------
-   You need to deliver following files:
-
-   TestLangPack.jar
-   eng.xml
-   [your_langugage_file].xml
-
-   Instruct to drop files into previously created directory
+1) IzPack installer in use
+   -----------------------
+   Unzip the zipped file into the directory where IzPack is installed,
    for example:
 
-      izpack-translate
+      C:\Program Files\IzPack
 
-   Go to the step 3).
+   Goto to the step 3).
 
+
+2) Standalone usage of TestLangPacks
+   ---------------------------------
+   Unzip the zipped file into the root of the hard drive:
+
+      C:\
+
+   Goto to the step 3).
 
 3) Further guidance
    ----------------
+   During the unzipping the directory: izpack-testlangpacks
+   is created.
+
+   Download base file eng.xml from:
+
+      http://svn.codehaus.org/izpack/izpack-src/trunk/bin/langpacks/installer/
+
+   and [your_langugage_file].xml too.
+
 
    Run utility:
 
@@ -81,7 +77,8 @@ You are IzPack installer user and:
       Testcase included : None
       Patch Submitted   : [leave unchecked]
 
-   Note that creating JIRA issue needs registration. If you haven't
+
+   NOTE that creating JIRA issue needs registration. If you haven't
    registered yet you can do it here:
 
       http://xircles.codehaus.org/signup
@@ -90,10 +87,26 @@ You are IzPack installer user and:
    There are two batch files which can be used to get rid of too long
    command line:
 
-   testlang.bat   The command file for Windows.
-   testlang.sh    The shell script for Linux/Unix.
+      Following patch files are used when language files are located
+      in the same directory as TestLangPacks.jar:
+
+      testlang.bat   The command file for Windows.
+      testlang.sh    The shell script for Linux/Unix.
+
+      Following patch files are used when TestLangPacks.jar is
+      installed under IzPack:
+
+      testlang2.bat  The command file for Windows.
+      testlang2.sh   The shell script for Linux/Unix.
 
 
 Latest language files mainly are located at:
 
    http://svn.codehaus.org/izpack/izpack-src/trunk/bin/langpacks/installer/
+
+
+Version checking
+----------------
+   To check the version of the utility you can:
+   - to run utility without any parameters
+   - see the content of the version.txt file.

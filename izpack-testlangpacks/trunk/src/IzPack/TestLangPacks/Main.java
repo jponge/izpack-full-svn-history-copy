@@ -21,6 +21,7 @@
 
 package IzPack.TestLangPacks;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -35,9 +36,6 @@ import java.util.Map;
  */
 public class Main
 {
-   /* */
-   private static final String APP_VERSION = "0.2";
-
    /**
     * Main method to run.
     *
@@ -45,7 +43,7 @@ public class Main
     */
    public static void main(String[] args)
    {
-      System.out.println("\nTestLangPacks for IzPack    version " + APP_VERSION);
+      System.out.println("\n" + getNameAndVersionInfo());
       System.out.println("");
 
       // We need at least one argument.
@@ -346,10 +344,7 @@ public class Main
     * @return  Returns the number of the items in 'sameStringArray'.
     */
    private static int collectStrings(ArrayList<LanguageItem> sameStringArray, Hashtable<String, ArrayList<LanguageItem>> sameStringsHastTable)
-   {  // Vähentää listasta löydetyt eli pienentää listan pituutta.
-      // Palauttaa uuden listan.
-      // Ikiluuppi, koska lista pienenee koko ajan
-
+   {
       // Get first id word.
       // Remove it from the list.
       // Loop for the rest id words in the list. If the same id word is found save it and remove it from the list.
@@ -457,6 +452,45 @@ public class Main
       }
 
       return msg;
+   }
+   
+   /**
+    * Gets the name and the version of this application.
+    * These will be taken from TestLangPacks.jar and from /meta-inf/Manifest.mf file.
+    * If not found returns short name and debug version without version number. 
+    */
+   private static String getNameAndVersionInfo()
+   {
+      Class<IzPack.TestLangPacks.Main> clazz = IzPack.TestLangPacks.Main.class ;
+
+      String className = clazz.getSimpleName();
+      String classFileName = className + ".class";
+      String pathToThisClass = clazz.getResource(classFileName).toString();
+
+      int mark = pathToThisClass.indexOf("!") ;
+      String pathToManifest = pathToThisClass.toString().substring(0,mark+1) ;
+      pathToManifest += "/META-INF/MANIFEST.MF" ;
+
+      java.util.jar.Manifest manifest = null;
+      String appName = null;
+      String version = null;
+      try
+      {
+         // Let's load manifest file.
+         manifest = new java.util.jar.Manifest(new java.net.URL(pathToManifest).openStream());
+         java.util.jar.Attributes attr = manifest.getMainAttributes();
+         // Get application name and version.
+         appName = attr.getValue("Implementation-Title");
+         version = attr.getValue("Implementation-Version");
+      }
+      catch (IOException e)
+      {
+         // What ever exception occures we'll make name and version strings anyway. 
+         appName = "TestLangPacks";
+         version = "for DEBUGGING";
+      }
+      String retVal = appName + "     version " + version;
+      return retVal;
    }
 
    /**

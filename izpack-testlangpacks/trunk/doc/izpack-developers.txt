@@ -7,54 +7,53 @@ This file is the help file for IzPack developers who want to translate
 language files.
 
 
-To update language files use Update in your subversion (svn) client
-program.
-
-Drop following file:
-
-   TestLangPack.jar
-
-into the directory:
-
-   [your_eclipse_workspace]/IzPack/bin/langpacks/installer
+Possibilities:
+1) just translate language file
+2) develop or investigate utility
 
 
-Run utility:
-
-   java -jar TestLangPack.jar [your_langugage_file].xml -s
-
-If you want results into the file write:
-
-   java -jar TestLangPack.jar [your_langugage_file].xml -s >translate.txt
-
-See results and check needed actions and translate strings.
-
-After translation have [your_langugage_file].xml. Make JIRA issue
-into:
-
-   http://jira.codehaus.org/secure/CreateIssue!default.jspa
-
-Check that Project is "IzPack" and Issue Type is "Task".
-
-Other details:
-   Summary           : Update for [your_langugage_name].
-   Priority          : Trivial
-   Due date          : [not needed]
-   Component/s       : Translations
-   Affects Version/s : (select your IzPack version)
-   Fix Version/s     : (you can leave this unselected. Project
-                       manager will select this)
-   Assignee          : Unassigned
-   Environment       : [not needed]
-   Description       : [not needed]
-   Original Estimate : [not needed]
-   Attachment        : [your_langugage_file].xml
-   Testcase included : None
-   Patch Submitted   : [leave unchecked]
+1) Just translate language file
+   ----------------------------
+   Read the file: izpack-translators.txt
 
 
-There are two batch files which can be used to get rid of too long
-command line:
+2) Develop or investigate utility
+   ------------------------------
+   To update language files use Update in your subversion (svn) client
+   program.
 
-testlang.bat   The command file for Windows.
-testlang.sh    The shell script for Linux/Unix.
+
+   Developing TestLangPacks
+   ------------------------
+   TestLangPacks utility is under maintenance of IzPack Installer. You
+   can get from Codehaus.org:
+
+      https://svn.codehaus.org/izpack/izpack-testlangpacks/trunk
+
+   You need client software which has "subversion" functionality.
+
+   Test and beta versions can be obtained from Snapshot area (if any):
+
+      http://snapshots.dist.codehaus.org/izpack/testlangpacks
+
+
+   Hint for debugging
+   ------------------
+   If you debug this routine inside Eclipse current working directory
+   will be project directory: for example workspace\IzPack-
+   TestLangPacks. All file operations will be done to this directory
+   if file with path isn't specified in the command line of the
+   TestLangPacks.jar. If omitting path you have to copy all needed
+   language files into project root directory.
+
+
+Version checking advanced
+-------------------------
+   In addition to izpack-translators.txt file guidance concerning
+   version checking you can check the version of the jar file. Open
+   TestLangPacks.jar with GUI zip utility (WinZip or equivalent) or
+   unzip the jar content into somewhere. See the content of the file:
+
+      /meta-inf/Manifest.mf
+
+   Find attribute: "Implementation-Version".
