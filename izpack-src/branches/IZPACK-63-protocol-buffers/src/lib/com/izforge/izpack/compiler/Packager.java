@@ -459,6 +459,10 @@ public class Packager extends PackagerBase
             {
                 builder.setVersion(osc.getVersion());
             }
+            if (osc.getJre() != null)
+            {
+                builder.setJre(osc.getJre());
+            }
             constraintsBuffers.add(builder.build());
         }
 
@@ -495,7 +499,9 @@ public class Packager extends PackagerBase
             builder.setCondition(pf.getCondition());
         }
 
-        builder.build().writeTo(out);
+        byte[] buffer = builder.build().toByteArray();
+        out.write(buffer.length);
+        out.write(buffer);
     }
 
     private Pack200.Packer createAgressivePack200Packer()

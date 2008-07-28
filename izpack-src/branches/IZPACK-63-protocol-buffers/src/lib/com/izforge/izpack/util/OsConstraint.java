@@ -330,6 +330,16 @@ public class OsConstraint
         return arch;
     }    // end getArch()
 
+    public String getJre()
+    {
+        return jre;
+    }
+
+    public void setJre(String jre)
+    {
+        this.jre = jre;
+    }
+
     public String toString()
     {
         StringBuffer retval = new StringBuffer();

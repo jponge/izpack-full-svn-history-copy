@@ -110,6 +110,13 @@ public class PackFile implements Serializable
     private String condition = null;
 
     /**
+     * Default constructor. 
+     */
+    public PackFile()
+    {
+    }
+
+    /**
      * Constructs and initializes from a source file.
      *
      * @param baseDir  the baseDirectory of the Fileselection/compilation or null
@@ -319,5 +326,45 @@ public class PackFile implements Serializable
     public void setPack200Jar(boolean pack200Jar)
     {
         this.pack200Jar = pack200Jar;
+    }
+
+    public void setTargetPath(String targetPath)
+    {
+        this.targetPath = targetPath;
+    }
+
+    public void setLength(long length)
+    {
+        this.length = length;
+    }
+
+    public void setMtime(long mtime)
+    {
+        this.mtime = mtime;
+    }
+
+    public void setOverride(int override)
+    {
+        this.override = override;
+    }
+
+    public void setPreviousPackId(String previousPackId)
+    {
+        this.previousPackId = previousPackId;
+    }
+
+    public void setOffsetInPreviousPack(long offsetInPreviousPack)
+    {
+        this.offsetInPreviousPack = offsetInPreviousPack;
+    }
+
+    public void setDirectory(boolean directory)
+    {
+        isDirectory = directory;
+    }
+
+    public void setOsConstraints(List<OsConstraint> osConstraints)
+    {
+        this.osConstraints = osConstraints;
     }
 }

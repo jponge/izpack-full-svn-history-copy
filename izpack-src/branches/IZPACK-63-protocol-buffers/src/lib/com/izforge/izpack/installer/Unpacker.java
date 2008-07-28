@@ -23,6 +23,7 @@
 package com.izforge.izpack.installer;
 
 import com.izforge.izpack.*;
+import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.event.InstallerListener;
 import com.izforge.izpack.util.*;
 
@@ -131,7 +132,8 @@ public class Unpacker extends UnpackerBase
                 for (int j = 0; j < nfiles; j++)
                 {
                     // We read the header
-                    PackFile pf = (PackFile) objIn.readObject();
+                    PackFile pf = readPackFile(objIn);
+                    
                     // TODO: reaction if condition can not be checked
                     if (pf.hasCondition() && (rules != null))
                     {
@@ -519,6 +521,60 @@ public class Unpacker extends UnpackerBase
         {
             removeFromInstances();
         }
+    }
+
+    private PackFile readPackFile(InputStream in) throws IOException, ClassNotFoundException
+    {
+        int bufferSize = in.read();
+        byte[] buffer = new byte[bufferSize];
+        in.read(buffer);
+        IzPackProtos.PackFile pfBuffer = IzPackProtos.PackFile.parseFrom(buffer);
+
+        PackFile pf = new PackFile();
+        pf.setTargetPath(pfBuffer.getTargetPath());
+        pf.setLength(pfBuffer.getLength());
+        pf.setMtime(pfBuffer.getMtime());
+
+        if (pfBuffer.hasIsDirectory())
+        {
+            pf.setDirectory(pfBuffer.getIsDirectory());
+        }
+        if (pfBuffer.hasOverride())
+        {
+            pf.setOverride(pfBuffer.getOverride());
+        }
+        if (pfBuffer.hasPreviousPackId())
+        {
+            pf.setPreviousPackId(pfBuffer.getPreviousPackId());
+        }
+        if (pfBuffer.hasOffsetInPreviousPack())
+        {
+            pf.setOffsetInPreviousPack(pfBuffer.getOffsetInPreviousPack());
+        }
+        if (pfBuffer.hasPack200Jar())
+        {
+            pf.setPack200Jar(pfBuffer.getPack200Jar());
+        }
+        if (pfBuffer.hasCondition())
+        {
+            pf.setCondition(pfBuffer.getCondition());
+        }
+        if (!pfBuffer.getOsConstraintsList().isEmpty())
+        {
+            List<OsConstraint> osConstraints = new ArrayList<OsConstraint>();
+            for (IzPackProtos.OsConstraint oscBuffer : pfBuffer.getOsConstraintsList())
+            {
+                String arch = oscBuffer.hasArch() ? oscBuffer.getArch() : null;
+                String family = oscBuffer.hasFamily() ? oscBuffer.getFamily() : null;
+                String name = oscBuffer.hasName() ? oscBuffer.getName() : null;
+                String version = oscBuffer.hasVersion() ? oscBuffer.getVersion() : null;
+                String jre = oscBuffer.hasJre() ? oscBuffer.getJre() : null;
+                osConstraints.add(new OsConstraint(family, name, version, arch, jre));
+            }
+            pf.setOsConstraints(osConstraints);
+        }
+
+        return pf;
     }
 
     private Pack200.Unpacker getPack200Unpacker()
