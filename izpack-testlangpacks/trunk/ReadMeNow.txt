@@ -1,7 +1,6 @@
 
 TestLangPacks utility for IzPack installation program
-version 0.?
-6.7.2008/Ari Voutilainen
+Ari Voutilainen
 
 
 Motivation
@@ -56,12 +55,3 @@ Requesting on-line help
 java -jar TestLangPacks.jar -?
    or
 java -jar TestLangPacks.jar -h
-
-
-Batch files
-
-There are two batch files which can be used to get rid of too long
-command line:
-
-testlang.bat   The command file for Windows.
-testlang.sh    The shell script for Linux/Unix.
