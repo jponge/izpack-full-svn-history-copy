@@ -74,10 +74,11 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/izpack/izpack-maven/trunk</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/izpack/izpack-maven/trunk</developerConnection>
-    <url>http://svn.codehaus.org/izpack/izpack-maven/trunk</url>
+    <connection>scm:svn:http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven</developerConnection>
+    <url>http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven</url>
   </scm>
+  
 
   <!-- Developers listed by PMC Chair, PMC, Committers, Contributers, all alphabetical-->
   <developers>
@@ -237,17 +238,6 @@
       <url>dav:https://dav.codehaus.org/izpack/maven</url> <!-- dont want to overwrite the main page yet-->
     </site>
   </distributionManagement>
-
-  <repositories>
-    <repository>
-      <id>codehaus.org</id>
-      <name>Maven Central Development Repository</name>
-      <url>http://snapshots.repository.codehaus.org</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
 
   <build>
     <extensions>

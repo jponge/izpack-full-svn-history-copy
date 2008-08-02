@@ -23,6 +23,12 @@
 
   <url>http://izpack.codehaus.org/izpack-maven-plugin/</url>
 
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin</developerConnection>
+    <url>http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin</url>
+  </scm>
+
   <distributionManagement>
     <site>
       <id>codehaus.org</id>

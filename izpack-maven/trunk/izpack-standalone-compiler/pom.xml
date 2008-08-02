@@ -18,6 +18,21 @@
   
 
   <packaging>jar</packaging>  
+  
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/izpack/trunk/izpack-standalone-compiler</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/izpack/trunk/izpack-standalone-compiler</developerConnection>
+    <url>http://svn.codehaus.org/izpack/trunk/izpack-standalone-compiler</url>
+  </scm>
+  
+
+  <distributionManagement>
+    <site>
+      <id>codehaus.org</id>
+      <name>IZPack Website</name>
+      <url>dav:https://dav.codehaus.org/izpack/izpack-standalone-compiler</url>
+    </site>
+  </distributionManagement>
 
   <!--
     Use maven to extract the standalone-compiler.jar and the associated javadoc and sources from an existing izpack installation.
