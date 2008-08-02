@@ -1,0 +1,78 @@
+ ------
+ Maven IzPack Plugin - Usage Scenarios
+ ------
+ Dan T. Tran
+ ------
+ 15 June 2008
+ -----
+
+
+Maven IzPack Plugin
+
+ This plug-in compiles {{{http://izpack.org} IzPack installer xml configuration}} and produces IzPack installer.
+ 
+ The recommended practice is:
+ 
+   * Use the helps from  maven-resource-plugin,maven-assembly-plugin, maven-ant-plugin, maven-dependency-plugin, 
+     etc to copy, assemble, interpolate all required files and directories to a staging directory
+     prior to <package> phase. 
+     
+   * Invoke this plugin at <package> phase to produce the final installer using the staging area.
+     If you need to install/deploy the output installer to local/remote repositories, invoke
+     this plugin at <install/deploy> phase.
+    
+  []
+
+* How to Use
+
+  In your pom.xml, insert this segment:
+
+-------------------
+<project>
+  ...
+  
+    <dependencies>
+      <dependency>
+        <groupId>org.codehaus.izpack</groupId>
+        <artifactId>izpack-standalone-compiler</artifactId>
+        <version>${your.standalone.version}</version>
+      </dependency>
+    </dependencies>
+    
+    <build>
+      ...
+      <plugins>
+        
+        <plugin>
+          <!-- use the helps from other Maven plugin to produce a staging area prior to package phase, example target/staging -->
+        </plugin>
+        
+        <plugin>
+          <groupId>org.codehaus.izpack</groupId>
+          <artifactId>izpack-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>izpack</goal>
+              </goals>
+              <configuration>
+                 <izpackBasedir>${your.staging.dir}</izpackBasedir>
+                 .....
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        ...
+      </plugins>
+      ...
+    </build>
+  ...
+</project>
+-------------------
+
+  Refer to {{{plugin-info.html}this plugin documentation }} 
+  to override default configurations if neccessary.
+  
+  A {{{http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it/sample/} live example}}
+  is available at http://svn.codehause.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it
