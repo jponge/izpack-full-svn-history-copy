@@ -18,7 +18,7 @@
     <dependency>
       <groupId>org.codehaus.izpack</groupId>
       <artifactId>izpack-standalone-compiler</artifactId>
-      <version>4.0.0-SNAPSHOT</version>
+      <version>4.0.1</version>
       <!-- dont want to download this artifact when retrieve the installer as transitive dependency -->
       <optional>true</optional>
     </dependency>
