@@ -1,4 +1,4 @@
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
     <artifactId>izpack-parent</artifactId>
@@ -15,7 +15,7 @@
 
   <name>IzPack Maven Plugin</name>
 
-  <version>1.0-alpha-1-SNAPSHOT</version>
+  <version>1.0-alpha-1</version>
 
   <description>Maven plugin which assembles files an IzPack Installer</description>
 
@@ -24,9 +24,9 @@
   <url>http://izpack.codehaus.org/izpack-maven-plugin/</url>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin</developerConnection>
-    <url>http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin</url>
+    <connection>scm:svn:http://svn.codehaus.org/izpack/izpack-maven/tags/izpack-maven-plugin-1.0-alpha-1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/izpack/izpack-maven/tags/izpack-maven-plugin-1.0-alpha-1</developerConnection>
+    <url>http://svn.codehaus.org/izpack/izpack-maven/tags/izpack-maven-plugin-1.0-alpha-1</url>
   </scm>
 
   <distributionManagement>
