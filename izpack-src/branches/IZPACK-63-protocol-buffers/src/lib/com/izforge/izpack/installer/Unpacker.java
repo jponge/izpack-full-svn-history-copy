@@ -23,8 +23,8 @@
 package com.izforge.izpack.installer;
 
 import com.izforge.izpack.*;
-import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.event.InstallerListener;
+import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.util.*;
 
 import java.io.*;
@@ -133,7 +133,7 @@ public class Unpacker extends UnpackerBase
                 {
                     // We read the header
                     PackFile pf = readPackFile(objIn);
-                    
+
                     // TODO: reaction if condition can not be checked
                     if (pf.hasCondition() && (rules != null))
                     {
@@ -388,7 +388,7 @@ public class Unpacker extends UnpackerBase
                 int numParsables = objIn.readInt();
                 for (int k = 0; k < numParsables; k++)
                 {
-                    ParsableFile pf = (ParsableFile) objIn.readObject();
+                    ParsableFile pf = readParsableFile(objIn);
                     if (pf.hasCondition() && (rules != null))
                     {
                         if (!rules.isConditionTrue(pf.getCondition()))
@@ -523,12 +523,38 @@ public class Unpacker extends UnpackerBase
         }
     }
 
+    private ParsableFile readParsableFile(InputStream in) throws IOException
+    {
+        IzPackProtos.ParsableFile pfBuffer = IzPackProtos.ParsableFile.parseFrom(readProtocolBuffer(in));
+
+        ParsableFile pf = new ParsableFile();
+        if (pfBuffer.hasCondition())
+        {
+            pf.setCondition(pfBuffer.getCondition());
+        }
+        if (pfBuffer.hasEncoding())
+        {
+            pf.encoding = pfBuffer.getEncoding();
+        }
+        if (pfBuffer.hasPath())
+        {
+            pf.path = pfBuffer.getPath();
+        }
+        if (pfBuffer.hasType())
+        {
+            pf.type = pfBuffer.getType();
+        }
+        if (!pfBuffer.getOsConstraintsList().isEmpty())
+        {
+            pf.osConstraints = getOsConstraints(pfBuffer.getOsConstraintsList());
+        }
+
+        return pf;
+    }
+
     private PackFile readPackFile(InputStream in) throws IOException, ClassNotFoundException
     {
-        int bufferSize = in.read();
-        byte[] buffer = new byte[bufferSize];
-        readAll(in, buffer);
-        IzPackProtos.PackFile pfBuffer = IzPackProtos.PackFile.parseFrom(buffer);
+        IzPackProtos.PackFile pfBuffer = IzPackProtos.PackFile.parseFrom(readProtocolBuffer(in));
 
         PackFile pf = new PackFile();
         pf.setTargetPath(pfBuffer.getTargetPath());
@@ -561,20 +587,34 @@ public class Unpacker extends UnpackerBase
         }
         if (!pfBuffer.getOsConstraintsList().isEmpty())
         {
-            List<OsConstraint> osConstraints = new ArrayList<OsConstraint>();
-            for (IzPackProtos.OsConstraint oscBuffer : pfBuffer.getOsConstraintsList())
-            {
-                String arch = oscBuffer.hasArch() ? oscBuffer.getArch() : null;
-                String family = oscBuffer.hasFamily() ? oscBuffer.getFamily() : null;
-                String name = oscBuffer.hasName() ? oscBuffer.getName() : null;
-                String version = oscBuffer.hasVersion() ? oscBuffer.getVersion() : null;
-                String jre = oscBuffer.hasJre() ? oscBuffer.getJre() : null;
-                osConstraints.add(new OsConstraint(family, name, version, arch, jre));
-            }
-            pf.setOsConstraints(osConstraints);
+            pf.setOsConstraints(getOsConstraints(pfBuffer.getOsConstraintsList()));
         }
 
         return pf;
+    }
+
+    protected List<OsConstraint> getOsConstraints(List<IzPackProtos.OsConstraint> constraintBuffers)
+    {
+        List<OsConstraint> osConstraints = new ArrayList<OsConstraint>();
+        for (IzPackProtos.OsConstraint oscBuffer : constraintBuffers)
+        {
+            String arch = oscBuffer.hasArch() ? oscBuffer.getArch() : null;
+            String family = oscBuffer.hasFamily() ? oscBuffer.getFamily() : null;
+            String name = oscBuffer.hasName() ? oscBuffer.getName() : null;
+            String version = oscBuffer.hasVersion() ? oscBuffer.getVersion() : null;
+            String jre = oscBuffer.hasJre() ? oscBuffer.getJre() : null;
+            osConstraints.add(new OsConstraint(family, name, version, arch, jre));
+        }
+        return osConstraints;
+    }
+
+    protected byte[] readProtocolBuffer(InputStream in)
+            throws IOException
+    {
+        int bufferSize = in.read();
+        byte[] buffer = new byte[bufferSize];
+        readAll(in, buffer);
+        return buffer;
     }
 
     private Pack200.Unpacker getPack200Unpacker()

@@ -35,8 +35,12 @@ public final class IzPackProtos {
       "onstraints\030\n \003(\0132).com.izforge.izpack.pr" +
       "otobuf.OsConstraint\"X\n\014OsConstraint\022\014\n\004a" +
       "rch\030\001 \001(\t\022\016\n\006family\030\002 \001(\t\022\013\n\003jre\030\003 \001(\t\022\014" +
-      "\n\004name\030\004 \001(\t\022\017\n\007version\030\005 \001(\tB+\n\033com.izf" +
-      "orge.izpack.protobufB\014IzPackProtos";
+      "\n\004name\030\004 \001(\t\022\017\n\007version\030\005 \001(\t\"\221\001\n\014Parsab" +
+      "leFile\022\014\n\004path\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\020\n\010en" +
+      "coding\030\003 \001(\t\022\021\n\tcondition\030\004 \001(\t\022@\n\rosCon" +
+      "straints\030\005 \003(\0132).com.izforge.izpack.prot" +
+      "obuf.OsConstraintB+\n\033com.izforge.izpack." +
+      "protobufB\014IzPackProtos";
     try {
       return com.google.protobuf.Descriptors.FileDescriptor
         .internalBuildGeneratedFileFrom(descriptorData,
@@ -1441,6 +1445,294 @@ public final class IzPackProtos {
     }
   }
   
+  public static final class ParsableFile extends
+      com.google.protobuf.GeneratedMessage {
+    // Use ParsableFile.newBuilder() to construct.
+    private ParsableFile() {}
+    
+    private static final ParsableFile defaultInstance = new ParsableFile();
+    public static ParsableFile getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public ParsableFile getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.izforge.izpack.protobuf.IzPackProtos.internal_static_com_izforge_izpack_protobuf_ParsableFile_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.izforge.izpack.protobuf.IzPackProtos.internal_static_com_izforge_izpack_protobuf_ParsableFile_fieldAccessorTable;
+    }
+    
+    // optional string path = 1;
+    private boolean hasPath;
+    private java.lang.String path_ = "";
+    public boolean hasPath() { return hasPath; }
+    public java.lang.String getPath() { return path_; }
+    
+    // optional string type = 2;
+    private boolean hasType;
+    private java.lang.String type_ = "";
+    public boolean hasType() { return hasType; }
+    public java.lang.String getType() { return type_; }
+    
+    // optional string encoding = 3;
+    private boolean hasEncoding;
+    private java.lang.String encoding_ = "";
+    public boolean hasEncoding() { return hasEncoding; }
+    public java.lang.String getEncoding() { return encoding_; }
+    
+    // optional string condition = 4;
+    private boolean hasCondition;
+    private java.lang.String condition_ = "";
+    public boolean hasCondition() { return hasCondition; }
+    public java.lang.String getCondition() { return condition_; }
+    
+    // repeated .com.izforge.izpack.protobuf.OsConstraint osConstraints = 5;
+    private java.util.List<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint> osConstraints_ =
+      java.util.Collections.emptyList();
+    public java.util.List<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint> getOsConstraintsList() {
+      return osConstraints_;
+    }
+    public int getOsConstraintsCount() { return osConstraints_.size(); }
+    public com.izforge.izpack.protobuf.IzPackProtos.OsConstraint getOsConstraints(int index) {
+      return osConstraints_.get(index);
+    }
+    
+    public static com.izforge.izpack.protobuf.IzPackProtos.ParsableFile parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ParsableFile parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ParsableFile parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ParsableFile parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ParsableFile parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ParsableFile parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ParsableFile parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ParsableFile parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return new Builder(); }
+    public Builder newBuilderForType() { return new Builder(); }
+    public static Builder newBuilder(com.izforge.izpack.protobuf.IzPackProtos.ParsableFile prototype) {
+      return new Builder().mergeFrom(prototype);
+    }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      // Construct using com.izforge.izpack.protobuf.IzPackProtos.ParsableFile.newBuilder()
+      private Builder() {}
+      
+      com.izforge.izpack.protobuf.IzPackProtos.ParsableFile result = new com.izforge.izpack.protobuf.IzPackProtos.ParsableFile();
+      
+      protected com.izforge.izpack.protobuf.IzPackProtos.ParsableFile internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        result = new com.izforge.izpack.protobuf.IzPackProtos.ParsableFile();
+        return this;
+      }
+      
+      public Builder clone() {
+        return new Builder().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.izforge.izpack.protobuf.IzPackProtos.ParsableFile.getDescriptor();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.ParsableFile getDefaultInstanceForType() {
+        return com.izforge.izpack.protobuf.IzPackProtos.ParsableFile.getDefaultInstance();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.ParsableFile build() {
+        if (!isInitialized()) {
+          throw new com.google.protobuf.UninitializedMessageException(
+            result);
+        }
+        return buildPartial();
+      }
+      
+      private com.izforge.izpack.protobuf.IzPackProtos.ParsableFile buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw new com.google.protobuf.UninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.ParsableFile buildPartial() {
+        if (result.osConstraints_ != java.util.Collections.EMPTY_LIST) {
+          result.osConstraints_ =
+            java.util.Collections.unmodifiableList(result.osConstraints_);
+        }
+        com.izforge.izpack.protobuf.IzPackProtos.ParsableFile returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      
+      // optional string path = 1;
+      public boolean hasPath() {
+        return result.hasPath();
+      }
+      public java.lang.String getPath() {
+        return result.getPath();
+      }
+      public Builder setPath(java.lang.String value) {
+        result.hasPath = true;
+        result.path_ = value;
+        return this;
+      }
+      public Builder clearPath() {
+        result.hasPath = false;
+        result.path_ = "";
+        return this;
+      }
+      
+      // optional string type = 2;
+      public boolean hasType() {
+        return result.hasType();
+      }
+      public java.lang.String getType() {
+        return result.getType();
+      }
+      public Builder setType(java.lang.String value) {
+        result.hasType = true;
+        result.type_ = value;
+        return this;
+      }
+      public Builder clearType() {
+        result.hasType = false;
+        result.type_ = "";
+        return this;
+      }
+      
+      // optional string encoding = 3;
+      public boolean hasEncoding() {
+        return result.hasEncoding();
+      }
+      public java.lang.String getEncoding() {
+        return result.getEncoding();
+      }
+      public Builder setEncoding(java.lang.String value) {
+        result.hasEncoding = true;
+        result.encoding_ = value;
+        return this;
+      }
+      public Builder clearEncoding() {
+        result.hasEncoding = false;
+        result.encoding_ = "";
+        return this;
+      }
+      
+      // optional string condition = 4;
+      public boolean hasCondition() {
+        return result.hasCondition();
+      }
+      public java.lang.String getCondition() {
+        return result.getCondition();
+      }
+      public Builder setCondition(java.lang.String value) {
+        result.hasCondition = true;
+        result.condition_ = value;
+        return this;
+      }
+      public Builder clearCondition() {
+        result.hasCondition = false;
+        result.condition_ = "";
+        return this;
+      }
+      
+      // repeated .com.izforge.izpack.protobuf.OsConstraint osConstraints = 5;
+      public java.util.List<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint> getOsConstraintsList() {
+        return java.util.Collections.unmodifiableList(result.osConstraints_);
+      }
+      public int getOsConstraintsCount() {
+        return result.getOsConstraintsCount();
+      }
+      public com.izforge.izpack.protobuf.IzPackProtos.OsConstraint getOsConstraints(int index) {
+        return result.getOsConstraints(index);
+      }
+      public Builder setOsConstraints(int index, com.izforge.izpack.protobuf.IzPackProtos.OsConstraint value) {
+        result.osConstraints_.set(index, value);
+        return this;
+      }
+      public Builder setOsConstraints(int index, com.izforge.izpack.protobuf.IzPackProtos.OsConstraint.Builder builderForValue) {
+        result.osConstraints_.set(index, builderForValue.build());
+        return this;
+      }
+      public Builder addOsConstraints(com.izforge.izpack.protobuf.IzPackProtos.OsConstraint value) {
+        if (result.osConstraints_.isEmpty()) {
+          result.osConstraints_ = new java.util.ArrayList<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint>();
+        }
+        result.osConstraints_.add(value);
+        return this;
+      }
+      public Builder addOsConstraints(com.izforge.izpack.protobuf.IzPackProtos.OsConstraint.Builder builderForValue) {
+        if (result.osConstraints_.isEmpty()) {
+          result.osConstraints_ = new java.util.ArrayList<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint>();
+        }
+        result.osConstraints_.add(builderForValue.build());
+        return this;
+      }
+      public Builder addAllOsConstraints(
+          java.lang.Iterable<? extends com.izforge.izpack.protobuf.IzPackProtos.OsConstraint> values) {
+        if (result.osConstraints_.isEmpty()) {
+          result.osConstraints_ = new java.util.ArrayList<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint>();
+        }
+        super.addAll(values, result.osConstraints_);
+        return this;
+      }
+      public Builder clearOsConstraints() {
+        result.osConstraints_ = java.util.Collections.emptyList();
+        return this;
+      }
+    }
+  }
+  
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_izforge_izpack_protobuf_Info_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -1485,4 +1777,15 @@ public final class IzPackProtos {
           new java.lang.String[] { "Arch", "Family", "Jre", "Name", "Version", },
           com.izforge.izpack.protobuf.IzPackProtos.OsConstraint.class,
           com.izforge.izpack.protobuf.IzPackProtos.OsConstraint.Builder.class);
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_izforge_izpack_protobuf_ParsableFile_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_izforge_izpack_protobuf_ParsableFile_fieldAccessorTable = new
+        com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+          internal_static_com_izforge_izpack_protobuf_ParsableFile_descriptor,
+          new java.lang.String[] { "Path", "Type", "Encoding", "Condition", "OsConstraints", },
+          com.izforge.izpack.protobuf.IzPackProtos.ParsableFile.class,
+          com.izforge.izpack.protobuf.IzPackProtos.ParsableFile.Builder.class);
 }

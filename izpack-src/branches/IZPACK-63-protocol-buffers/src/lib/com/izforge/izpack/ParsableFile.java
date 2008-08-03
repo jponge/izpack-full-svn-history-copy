@@ -63,6 +63,13 @@ public class ParsableFile implements Serializable
     private String condition = null;
 
     /**
+     * Default constructor.
+     */
+    public ParsableFile()
+    {
+    }
+
+    /**
      * Constructs and initializes a new instance.
      *
      * @param path          the file path

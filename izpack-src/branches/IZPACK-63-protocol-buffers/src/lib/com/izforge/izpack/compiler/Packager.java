@@ -22,10 +22,12 @@ package com.izforge.izpack.compiler;
 
 import com.izforge.izpack.Pack;
 import com.izforge.izpack.PackFile;
+import com.izforge.izpack.ParsableFile;
 import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.util.FileUtil;
 import com.izforge.izpack.util.JarOutputStream;
 import com.izforge.izpack.util.OsConstraint;
+import com.google.protobuf.AbstractMessage;
 import net.n3.nanoxml.XMLElement;
 import net.n3.nanoxml.XMLWriter;
 
@@ -355,7 +357,7 @@ public class Packager extends PackagerBase
             iter = packInfo.getParsables().iterator();
             while (iter.hasNext())
             {
-                objOut.writeObject(iter.next());
+                writeParseableFile(objOut, (ParsableFile) iter.next());
             }
 
             // Write out information about executable files
@@ -437,10 +439,10 @@ public class Packager extends PackagerBase
         }
     }
 
-    private void writePackFile(OutputStream out, PackFile pf) throws IOException
+    private List<IzPackProtos.OsConstraint> buildOsConstraintBuffersList(List<OsConstraint> constraints)
     {
         List<IzPackProtos.OsConstraint> constraintsBuffers = new ArrayList<IzPackProtos.OsConstraint>();
-        for (OsConstraint osc : pf.osConstraints())
+        for (OsConstraint osc : constraints)
         {
             IzPackProtos.OsConstraint.Builder builder = IzPackProtos.OsConstraint.newBuilder();
             if (osc.getArch() != null)
@@ -465,7 +467,49 @@ public class Packager extends PackagerBase
             }
             constraintsBuffers.add(builder.build());
         }
+        return constraintsBuffers;
+    }
 
+    private void writeParseableFile(OutputStream out, ParsableFile file) throws IOException
+    {
+        IzPackProtos.ParsableFile.Builder builder = IzPackProtos.ParsableFile.newBuilder();
+        List<IzPackProtos.OsConstraint> constraintsBuffers = buildOsConstraintBuffersList(file.osConstraints);
+        if (file.encoding != null)
+        {
+            builder.setEncoding(file.encoding);
+        }
+        if (file.getCondition() != null)
+        {
+            builder.setCondition(file.getCondition());
+        }
+        if (file.path != null)
+        {
+            builder.setPath(file.path);
+        }
+        if (file.type != null)
+        {
+            builder.setType(file.type);
+        }
+        if (!constraintsBuffers.isEmpty())
+        {
+            builder.addAllOsConstraints(constraintsBuffers);
+        }
+
+        writeProtocolBuffer(out, builder);
+    }
+
+    private void writeProtocolBuffer(OutputStream out, AbstractMessage.Builder builder)
+            throws IOException
+    {
+        byte[] buffer = builder.build().toByteArray();
+        out.write(buffer.length);
+        out.write(buffer);
+    }
+
+    private void writePackFile(OutputStream out, PackFile pf) throws IOException
+    {
+        List<IzPackProtos.OsConstraint> constraintsBuffers = buildOsConstraintBuffersList(pf.osConstraints());
+        
         IzPackProtos.PackFile.Builder builder = IzPackProtos.PackFile.newBuilder();
         builder.setTargetPath(pf.getTargetPath());
         builder.setLength(pf.length());
@@ -499,9 +543,7 @@ public class Packager extends PackagerBase
             builder.setCondition(pf.getCondition());
         }
 
-        byte[] buffer = builder.build().toByteArray();
-        out.write(buffer.length);
-        out.write(buffer);
+        writeProtocolBuffer(out, builder);
     }
 
     private Pack200.Packer createAgressivePack200Packer()

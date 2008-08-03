@@ -47,3 +47,11 @@ message OsConstraint {
     optional string name = 4;
     optional string version = 5;
 }
+
+message ParsableFile {
+    optional string path = 1;
+    optional string type = 2;
+    optional string encoding = 3;
+    optional string condition = 4;
+    repeated OsConstraint osConstraints = 5;
+}
