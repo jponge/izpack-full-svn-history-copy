@@ -55,3 +55,15 @@ message ParsableFile {
     optional string condition = 4;
     repeated OsConstraint osConstraints = 5;
 }
+
+message ExecutableFile {
+       optional string path = 1;
+       optional int32 executionStage = 2;
+       optional string mainClass = 3;
+       optional int32 type = 4;
+       optional int32 onFailure = 5;
+       repeated string argList = 6;
+       repeated OsConstraint osList = 7;
+       optional bool keepFile = 8;
+       optional string condition = 9;
+}

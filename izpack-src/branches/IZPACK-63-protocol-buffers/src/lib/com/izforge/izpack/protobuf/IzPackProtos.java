@@ -39,8 +39,14 @@ public final class IzPackProtos {
       "leFile\022\014\n\004path\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\020\n\010en" +
       "coding\030\003 \001(\t\022\021\n\tcondition\030\004 \001(\t\022@\n\rosCon" +
       "straints\030\005 \003(\0132).com.izforge.izpack.prot" +
-      "obuf.OsConstraintB+\n\033com.izforge.izpack." +
-      "protobufB\014IzPackProtos";
+      "obuf.OsConstraint\"\333\001\n\016ExecutableFile\022\014\n\004" +
+      "path\030\001 \001(\t\022\026\n\016executionStage\030\002 \001(\005\022\021\n\tma" +
+      "inClass\030\003 \001(\t\022\014\n\004type\030\004 \001(\005\022\021\n\tonFailure" +
+      "\030\005 \001(\005\022\017\n\007argList\030\006 \003(\t\0229\n\006osList\030\007 \003(\0132" +
+      ").com.izforge.izpack.protobuf.OsConstrai" +
+      "nt\022\020\n\010keepFile\030\010 \001(\010\022\021\n\tcondition\030\t \001(\tB" +
+      "+\n\033com.izforge.izpack.protobufB\014IzPackPr" +
+      "otos";
     try {
       return com.google.protobuf.Descriptors.FileDescriptor
         .internalBuildGeneratedFileFrom(descriptorData,
@@ -1733,6 +1739,415 @@ public final class IzPackProtos {
     }
   }
   
+  public static final class ExecutableFile extends
+      com.google.protobuf.GeneratedMessage {
+    // Use ExecutableFile.newBuilder() to construct.
+    private ExecutableFile() {}
+    
+    private static final ExecutableFile defaultInstance = new ExecutableFile();
+    public static ExecutableFile getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public ExecutableFile getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.izforge.izpack.protobuf.IzPackProtos.internal_static_com_izforge_izpack_protobuf_ExecutableFile_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.izforge.izpack.protobuf.IzPackProtos.internal_static_com_izforge_izpack_protobuf_ExecutableFile_fieldAccessorTable;
+    }
+    
+    // optional string path = 1;
+    private boolean hasPath;
+    private java.lang.String path_ = "";
+    public boolean hasPath() { return hasPath; }
+    public java.lang.String getPath() { return path_; }
+    
+    // optional int32 executionStage = 2;
+    private boolean hasExecutionStage;
+    private int executionStage_ = 0;
+    public boolean hasExecutionStage() { return hasExecutionStage; }
+    public int getExecutionStage() { return executionStage_; }
+    
+    // optional string mainClass = 3;
+    private boolean hasMainClass;
+    private java.lang.String mainClass_ = "";
+    public boolean hasMainClass() { return hasMainClass; }
+    public java.lang.String getMainClass() { return mainClass_; }
+    
+    // optional int32 type = 4;
+    private boolean hasType;
+    private int type_ = 0;
+    public boolean hasType() { return hasType; }
+    public int getType() { return type_; }
+    
+    // optional int32 onFailure = 5;
+    private boolean hasOnFailure;
+    private int onFailure_ = 0;
+    public boolean hasOnFailure() { return hasOnFailure; }
+    public int getOnFailure() { return onFailure_; }
+    
+    // repeated string argList = 6;
+    private java.util.List<java.lang.String> argList_ =
+      java.util.Collections.emptyList();
+    public java.util.List<java.lang.String> getArgListList() {
+      return argList_;
+    }
+    public int getArgListCount() { return argList_.size(); }
+    public java.lang.String getArgList(int index) {
+      return argList_.get(index);
+    }
+    
+    // repeated .com.izforge.izpack.protobuf.OsConstraint osList = 7;
+    private java.util.List<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint> osList_ =
+      java.util.Collections.emptyList();
+    public java.util.List<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint> getOsListList() {
+      return osList_;
+    }
+    public int getOsListCount() { return osList_.size(); }
+    public com.izforge.izpack.protobuf.IzPackProtos.OsConstraint getOsList(int index) {
+      return osList_.get(index);
+    }
+    
+    // optional bool keepFile = 8;
+    private boolean hasKeepFile;
+    private boolean keepFile_ = false;
+    public boolean hasKeepFile() { return hasKeepFile; }
+    public boolean getKeepFile() { return keepFile_; }
+    
+    // optional string condition = 9;
+    private boolean hasCondition;
+    private java.lang.String condition_ = "";
+    public boolean hasCondition() { return hasCondition; }
+    public java.lang.String getCondition() { return condition_; }
+    
+    public static com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return new Builder(); }
+    public Builder newBuilderForType() { return new Builder(); }
+    public static Builder newBuilder(com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile prototype) {
+      return new Builder().mergeFrom(prototype);
+    }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      // Construct using com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile.newBuilder()
+      private Builder() {}
+      
+      com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile result = new com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile();
+      
+      protected com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        result = new com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile();
+        return this;
+      }
+      
+      public Builder clone() {
+        return new Builder().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile.getDescriptor();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile getDefaultInstanceForType() {
+        return com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile.getDefaultInstance();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile build() {
+        if (!isInitialized()) {
+          throw new com.google.protobuf.UninitializedMessageException(
+            result);
+        }
+        return buildPartial();
+      }
+      
+      private com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw new com.google.protobuf.UninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile buildPartial() {
+        if (result.argList_ != java.util.Collections.EMPTY_LIST) {
+          result.argList_ =
+            java.util.Collections.unmodifiableList(result.argList_);
+        }
+        if (result.osList_ != java.util.Collections.EMPTY_LIST) {
+          result.osList_ =
+            java.util.Collections.unmodifiableList(result.osList_);
+        }
+        com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      
+      // optional string path = 1;
+      public boolean hasPath() {
+        return result.hasPath();
+      }
+      public java.lang.String getPath() {
+        return result.getPath();
+      }
+      public Builder setPath(java.lang.String value) {
+        result.hasPath = true;
+        result.path_ = value;
+        return this;
+      }
+      public Builder clearPath() {
+        result.hasPath = false;
+        result.path_ = "";
+        return this;
+      }
+      
+      // optional int32 executionStage = 2;
+      public boolean hasExecutionStage() {
+        return result.hasExecutionStage();
+      }
+      public int getExecutionStage() {
+        return result.getExecutionStage();
+      }
+      public Builder setExecutionStage(int value) {
+        result.hasExecutionStage = true;
+        result.executionStage_ = value;
+        return this;
+      }
+      public Builder clearExecutionStage() {
+        result.hasExecutionStage = false;
+        result.executionStage_ = 0;
+        return this;
+      }
+      
+      // optional string mainClass = 3;
+      public boolean hasMainClass() {
+        return result.hasMainClass();
+      }
+      public java.lang.String getMainClass() {
+        return result.getMainClass();
+      }
+      public Builder setMainClass(java.lang.String value) {
+        result.hasMainClass = true;
+        result.mainClass_ = value;
+        return this;
+      }
+      public Builder clearMainClass() {
+        result.hasMainClass = false;
+        result.mainClass_ = "";
+        return this;
+      }
+      
+      // optional int32 type = 4;
+      public boolean hasType() {
+        return result.hasType();
+      }
+      public int getType() {
+        return result.getType();
+      }
+      public Builder setType(int value) {
+        result.hasType = true;
+        result.type_ = value;
+        return this;
+      }
+      public Builder clearType() {
+        result.hasType = false;
+        result.type_ = 0;
+        return this;
+      }
+      
+      // optional int32 onFailure = 5;
+      public boolean hasOnFailure() {
+        return result.hasOnFailure();
+      }
+      public int getOnFailure() {
+        return result.getOnFailure();
+      }
+      public Builder setOnFailure(int value) {
+        result.hasOnFailure = true;
+        result.onFailure_ = value;
+        return this;
+      }
+      public Builder clearOnFailure() {
+        result.hasOnFailure = false;
+        result.onFailure_ = 0;
+        return this;
+      }
+      
+      // repeated string argList = 6;
+      public java.util.List<java.lang.String> getArgListList() {
+        return java.util.Collections.unmodifiableList(result.argList_);
+      }
+      public int getArgListCount() {
+        return result.getArgListCount();
+      }
+      public java.lang.String getArgList(int index) {
+        return result.getArgList(index);
+      }
+      public Builder setArgList(int index, java.lang.String value) {
+        result.argList_.set(index, value);
+        return this;
+      }
+      public Builder addArgList(java.lang.String value) {
+        if (result.argList_.isEmpty()) {
+          result.argList_ = new java.util.ArrayList<java.lang.String>();
+        }
+        result.argList_.add(value);
+        return this;
+      }
+      public Builder addAllArgList(
+          java.lang.Iterable<? extends java.lang.String> values) {
+        if (result.argList_.isEmpty()) {
+          result.argList_ = new java.util.ArrayList<java.lang.String>();
+        }
+        super.addAll(values, result.argList_);
+        return this;
+      }
+      public Builder clearArgList() {
+        result.argList_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // repeated .com.izforge.izpack.protobuf.OsConstraint osList = 7;
+      public java.util.List<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint> getOsListList() {
+        return java.util.Collections.unmodifiableList(result.osList_);
+      }
+      public int getOsListCount() {
+        return result.getOsListCount();
+      }
+      public com.izforge.izpack.protobuf.IzPackProtos.OsConstraint getOsList(int index) {
+        return result.getOsList(index);
+      }
+      public Builder setOsList(int index, com.izforge.izpack.protobuf.IzPackProtos.OsConstraint value) {
+        result.osList_.set(index, value);
+        return this;
+      }
+      public Builder setOsList(int index, com.izforge.izpack.protobuf.IzPackProtos.OsConstraint.Builder builderForValue) {
+        result.osList_.set(index, builderForValue.build());
+        return this;
+      }
+      public Builder addOsList(com.izforge.izpack.protobuf.IzPackProtos.OsConstraint value) {
+        if (result.osList_.isEmpty()) {
+          result.osList_ = new java.util.ArrayList<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint>();
+        }
+        result.osList_.add(value);
+        return this;
+      }
+      public Builder addOsList(com.izforge.izpack.protobuf.IzPackProtos.OsConstraint.Builder builderForValue) {
+        if (result.osList_.isEmpty()) {
+          result.osList_ = new java.util.ArrayList<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint>();
+        }
+        result.osList_.add(builderForValue.build());
+        return this;
+      }
+      public Builder addAllOsList(
+          java.lang.Iterable<? extends com.izforge.izpack.protobuf.IzPackProtos.OsConstraint> values) {
+        if (result.osList_.isEmpty()) {
+          result.osList_ = new java.util.ArrayList<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint>();
+        }
+        super.addAll(values, result.osList_);
+        return this;
+      }
+      public Builder clearOsList() {
+        result.osList_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // optional bool keepFile = 8;
+      public boolean hasKeepFile() {
+        return result.hasKeepFile();
+      }
+      public boolean getKeepFile() {
+        return result.getKeepFile();
+      }
+      public Builder setKeepFile(boolean value) {
+        result.hasKeepFile = true;
+        result.keepFile_ = value;
+        return this;
+      }
+      public Builder clearKeepFile() {
+        result.hasKeepFile = false;
+        result.keepFile_ = false;
+        return this;
+      }
+      
+      // optional string condition = 9;
+      public boolean hasCondition() {
+        return result.hasCondition();
+      }
+      public java.lang.String getCondition() {
+        return result.getCondition();
+      }
+      public Builder setCondition(java.lang.String value) {
+        result.hasCondition = true;
+        result.condition_ = value;
+        return this;
+      }
+      public Builder clearCondition() {
+        result.hasCondition = false;
+        result.condition_ = "";
+        return this;
+      }
+    }
+  }
+  
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_izforge_izpack_protobuf_Info_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -1788,4 +2203,15 @@ public final class IzPackProtos {
           new java.lang.String[] { "Path", "Type", "Encoding", "Condition", "OsConstraints", },
           com.izforge.izpack.protobuf.IzPackProtos.ParsableFile.class,
           com.izforge.izpack.protobuf.IzPackProtos.ParsableFile.Builder.class);
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_izforge_izpack_protobuf_ExecutableFile_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_izforge_izpack_protobuf_ExecutableFile_fieldAccessorTable = new
+        com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+          internal_static_com_izforge_izpack_protobuf_ExecutableFile_descriptor,
+          new java.lang.String[] { "Path", "ExecutionStage", "MainClass", "Type", "OnFailure", "ArgList", "OsList", "KeepFile", "Condition", },
+          com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile.class,
+          com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile.Builder.class);
 }

@@ -26,6 +26,7 @@ import com.izforge.izpack.*;
 import com.izforge.izpack.event.InstallerListener;
 import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.util.*;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -405,7 +406,7 @@ public class Unpacker extends UnpackerBase
                 int numExecutables = objIn.readInt();
                 for (int k = 0; k < numExecutables; k++)
                 {
-                    ExecutableFile ef = (ExecutableFile) objIn.readObject();
+                    ExecutableFile ef = readExecutableFile(objIn);
                     if (ef.hasCondition() && (rules != null))
                     {
                         if (!rules.isConditionTrue(ef.getCondition()))
@@ -521,6 +522,30 @@ public class Unpacker extends UnpackerBase
         {
             removeFromInstances();
         }
+    }
+
+    private ExecutableFile readExecutableFile(InputStream in) throws IOException
+    {
+        IzPackProtos.ExecutableFile efBuffer = IzPackProtos.ExecutableFile.parseFrom(readProtocolBuffer(in));
+
+        ExecutableFile ef = new ExecutableFile();
+        if (efBuffer.hasCondition())
+        {
+            ef.setCondition(efBuffer.getCondition());
+        }
+        if (efBuffer.hasMainClass())
+        {
+            ef.mainClass = efBuffer.getMainClass();
+        }
+        ef.osList = getOsConstraints(efBuffer.getOsListList());
+        ef.executionStage = efBuffer.getExecutionStage();
+        ef.keepFile = efBuffer.getKeepFile();
+        ef.onFailure = efBuffer.getOnFailure();
+        ef.path = efBuffer.getPath();
+        ef.type = efBuffer.getType();
+        ef.argList = efBuffer.getArgListList();
+
+        return ef;
     }
 
     private ParsableFile readParsableFile(InputStream in) throws IOException

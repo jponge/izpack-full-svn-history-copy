@@ -23,6 +23,7 @@ package com.izforge.izpack.compiler;
 import com.izforge.izpack.Pack;
 import com.izforge.izpack.PackFile;
 import com.izforge.izpack.ParsableFile;
+import com.izforge.izpack.ExecutableFile;
 import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.util.FileUtil;
 import com.izforge.izpack.util.JarOutputStream;
@@ -365,7 +366,7 @@ public class Packager extends PackagerBase
             iter = packInfo.getExecutables().iterator();
             while (iter.hasNext())
             {
-                objOut.writeObject(iter.next());
+                writeExecutableFile(objOut, (ExecutableFile) iter.next());
             }
 
             // Write out information about updatecheck files
@@ -468,6 +469,32 @@ public class Packager extends PackagerBase
             constraintsBuffers.add(builder.build());
         }
         return constraintsBuffers;
+    }
+
+    private void writeExecutableFile(OutputStream out, ExecutableFile executableFile) throws IOException
+    {
+        IzPackProtos.ExecutableFile.Builder builder = IzPackProtos.ExecutableFile.newBuilder();
+        List<IzPackProtos.OsConstraint> osBuffers = buildOsConstraintBuffersList(executableFile.osList);
+        if (!osBuffers.isEmpty())
+        {
+            builder.addAllOsList(osBuffers);
+        }
+        if (executableFile.getCondition() != null)
+        {
+            builder.setCondition(executableFile.getCondition());
+        }
+        builder.setExecutionStage(executableFile.executionStage);
+        builder.setKeepFile(executableFile.keepFile);
+        if (executableFile.mainClass != null)
+        {
+            builder.setMainClass(executableFile.mainClass);
+        }
+        builder.setOnFailure(executableFile.onFailure);
+        builder.setPath(executableFile.path);
+        builder.setType(executableFile.type);
+        builder.addAllArgList(executableFile.argList);
+
+        writeProtocolBuffer(out, builder);
     }
 
     private void writeParseableFile(OutputStream out, ParsableFile file) throws IOException
