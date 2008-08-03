@@ -924,5 +924,24 @@ public abstract class UnpackerBase implements IUnpacker
         oout.close();
         fout.close();
     }
+
+    /**
+     * Reads all bytes from a stream to a pre-allocated buffer. This is a workaround InputStream#read(byte[]) which
+     * may not read enough bytes.
+     *
+     * @param in The input stream.
+     * @param buffer The pre-allocated buffer to read <code>buffer.length</code> bytes from.
+     * @throws IOException
+     */
+    protected void readAll(InputStream in, byte[] buffer) throws IOException
+    {
+        int offset = 0;
+        int nread;
+        while (offset != buffer.length)
+        {
+            nread = in.read(buffer, offset, buffer.length - offset);
+            offset = offset + nread;
+        }
+    }
 }
 

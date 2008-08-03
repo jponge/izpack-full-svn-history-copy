@@ -527,7 +527,7 @@ public class Unpacker extends UnpackerBase
     {
         int bufferSize = in.read();
         byte[] buffer = new byte[bufferSize];
-        in.read(buffer);
+        readAll(in, buffer);
         IzPackProtos.PackFile pfBuffer = IzPackProtos.PackFile.parseFrom(buffer);
 
         PackFile pf = new PackFile();
