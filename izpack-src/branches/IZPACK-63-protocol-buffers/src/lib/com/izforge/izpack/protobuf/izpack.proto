@@ -67,3 +67,9 @@ message ExecutableFile {
        optional bool keepFile = 8;
        optional string condition = 9;
 }
+
+message UpdateCheck {
+       optional bool caseSensitive = 1;
+       repeated string includesList = 2;
+       repeated string excludesList = 3;
+}

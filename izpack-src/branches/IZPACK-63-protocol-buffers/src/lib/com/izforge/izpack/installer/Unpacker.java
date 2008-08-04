@@ -440,7 +440,7 @@ public class Unpacker extends UnpackerBase
 
                 for (int k = 0; k < numUpdateChecks; k++)
                 {
-                    UpdateCheck uc = (UpdateCheck) objIn.readObject();
+                    UpdateCheck uc = readUpdateCheck(objIn);
 
                     updatechecks.add(uc);
                 }
@@ -522,6 +522,21 @@ public class Unpacker extends UnpackerBase
         {
             removeFromInstances();
         }
+    }
+
+    private UpdateCheck readUpdateCheck(InputStream in) throws IOException
+    {
+        IzPackProtos.UpdateCheck ucBuffer = IzPackProtos.UpdateCheck.parseFrom(readProtocolBuffer(in));
+        UpdateCheck uc = new UpdateCheck();
+
+        if (ucBuffer.hasCaseSensitive())
+        {
+            uc.caseSensitive = ucBuffer.getCaseSensitive();
+        }
+        uc.includesList = ucBuffer.getIncludesListList();
+        uc.excludesList = ucBuffer.getExcludesListList();
+
+        return uc;
     }
 
     private ExecutableFile readExecutableFile(InputStream in) throws IOException

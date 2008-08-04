@@ -20,10 +20,7 @@
 
 package com.izforge.izpack.compiler;
 
-import com.izforge.izpack.Pack;
-import com.izforge.izpack.PackFile;
-import com.izforge.izpack.ParsableFile;
-import com.izforge.izpack.ExecutableFile;
+import com.izforge.izpack.*;
 import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.util.FileUtil;
 import com.izforge.izpack.util.JarOutputStream;
@@ -374,7 +371,7 @@ public class Packager extends PackagerBase
             iter = packInfo.getUpdateChecks().iterator();
             while (iter.hasNext())
             {
-                objOut.writeObject(iter.next());
+                writeUpdateCheck(objOut, (UpdateCheck) iter.next());
             }
 
             // Cleanup
@@ -495,6 +492,24 @@ public class Packager extends PackagerBase
         builder.addAllArgList(executableFile.argList);
 
         writeProtocolBuffer(out, builder);
+    }
+
+    private void writeUpdateCheck(OutputStream out, UpdateCheck updateCheck) throws IOException
+    {
+        IzPackProtos.UpdateCheck.Builder builder = IzPackProtos.UpdateCheck.newBuilder();
+        if (!updateCheck.caseSensitive)
+        {
+            builder.setCaseSensitive(false);
+        }
+        if (updateCheck.includesList != null && !updateCheck.includesList.isEmpty())
+        {
+            builder.addAllIncludesList(updateCheck.includesList);
+        }
+        if (updateCheck.excludesList != null && !updateCheck.excludesList.isEmpty())
+        {
+            builder.addAllExcludesList(updateCheck.excludesList);
+        }
+        writeProtocolBuffer(out, builder);        
     }
 
     private void writeParseableFile(OutputStream out, ParsableFile file) throws IOException

@@ -44,9 +44,11 @@ public final class IzPackProtos {
       "inClass\030\003 \001(\t\022\014\n\004type\030\004 \001(\005\022\021\n\tonFailure" +
       "\030\005 \001(\005\022\017\n\007argList\030\006 \003(\t\0229\n\006osList\030\007 \003(\0132" +
       ").com.izforge.izpack.protobuf.OsConstrai" +
-      "nt\022\020\n\010keepFile\030\010 \001(\010\022\021\n\tcondition\030\t \001(\tB" +
-      "+\n\033com.izforge.izpack.protobufB\014IzPackPr" +
-      "otos";
+      "nt\022\020\n\010keepFile\030\010 \001(\010\022\021\n\tcondition\030\t \001(\t\"" +
+      "P\n\013UpdateCheck\022\025\n\rcaseSensitive\030\001 \001(\010\022\024\n" +
+      "\014includesList\030\002 \003(\t\022\024\n\014excludesList\030\003 \003(" +
+      "\tB+\n\033com.izforge.izpack.protobufB\014IzPack" +
+      "Protos";
     try {
       return com.google.protobuf.Descriptors.FileDescriptor
         .internalBuildGeneratedFileFrom(descriptorData,
@@ -2148,6 +2150,260 @@ public final class IzPackProtos {
     }
   }
   
+  public static final class UpdateCheck extends
+      com.google.protobuf.GeneratedMessage {
+    // Use UpdateCheck.newBuilder() to construct.
+    private UpdateCheck() {}
+    
+    private static final UpdateCheck defaultInstance = new UpdateCheck();
+    public static UpdateCheck getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public UpdateCheck getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.izforge.izpack.protobuf.IzPackProtos.internal_static_com_izforge_izpack_protobuf_UpdateCheck_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.izforge.izpack.protobuf.IzPackProtos.internal_static_com_izforge_izpack_protobuf_UpdateCheck_fieldAccessorTable;
+    }
+    
+    // optional bool caseSensitive = 1;
+    private boolean hasCaseSensitive;
+    private boolean caseSensitive_ = false;
+    public boolean hasCaseSensitive() { return hasCaseSensitive; }
+    public boolean getCaseSensitive() { return caseSensitive_; }
+    
+    // repeated string includesList = 2;
+    private java.util.List<java.lang.String> includesList_ =
+      java.util.Collections.emptyList();
+    public java.util.List<java.lang.String> getIncludesListList() {
+      return includesList_;
+    }
+    public int getIncludesListCount() { return includesList_.size(); }
+    public java.lang.String getIncludesList(int index) {
+      return includesList_.get(index);
+    }
+    
+    // repeated string excludesList = 3;
+    private java.util.List<java.lang.String> excludesList_ =
+      java.util.Collections.emptyList();
+    public java.util.List<java.lang.String> getExcludesListList() {
+      return excludesList_;
+    }
+    public int getExcludesListCount() { return excludesList_.size(); }
+    public java.lang.String getExcludesList(int index) {
+      return excludesList_.get(index);
+    }
+    
+    public static com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return new Builder(); }
+    public Builder newBuilderForType() { return new Builder(); }
+    public static Builder newBuilder(com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck prototype) {
+      return new Builder().mergeFrom(prototype);
+    }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      // Construct using com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck.newBuilder()
+      private Builder() {}
+      
+      com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck result = new com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck();
+      
+      protected com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        result = new com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck();
+        return this;
+      }
+      
+      public Builder clone() {
+        return new Builder().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck.getDescriptor();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck getDefaultInstanceForType() {
+        return com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck.getDefaultInstance();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck build() {
+        if (!isInitialized()) {
+          throw new com.google.protobuf.UninitializedMessageException(
+            result);
+        }
+        return buildPartial();
+      }
+      
+      private com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw new com.google.protobuf.UninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck buildPartial() {
+        if (result.includesList_ != java.util.Collections.EMPTY_LIST) {
+          result.includesList_ =
+            java.util.Collections.unmodifiableList(result.includesList_);
+        }
+        if (result.excludesList_ != java.util.Collections.EMPTY_LIST) {
+          result.excludesList_ =
+            java.util.Collections.unmodifiableList(result.excludesList_);
+        }
+        com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      
+      // optional bool caseSensitive = 1;
+      public boolean hasCaseSensitive() {
+        return result.hasCaseSensitive();
+      }
+      public boolean getCaseSensitive() {
+        return result.getCaseSensitive();
+      }
+      public Builder setCaseSensitive(boolean value) {
+        result.hasCaseSensitive = true;
+        result.caseSensitive_ = value;
+        return this;
+      }
+      public Builder clearCaseSensitive() {
+        result.hasCaseSensitive = false;
+        result.caseSensitive_ = false;
+        return this;
+      }
+      
+      // repeated string includesList = 2;
+      public java.util.List<java.lang.String> getIncludesListList() {
+        return java.util.Collections.unmodifiableList(result.includesList_);
+      }
+      public int getIncludesListCount() {
+        return result.getIncludesListCount();
+      }
+      public java.lang.String getIncludesList(int index) {
+        return result.getIncludesList(index);
+      }
+      public Builder setIncludesList(int index, java.lang.String value) {
+        result.includesList_.set(index, value);
+        return this;
+      }
+      public Builder addIncludesList(java.lang.String value) {
+        if (result.includesList_.isEmpty()) {
+          result.includesList_ = new java.util.ArrayList<java.lang.String>();
+        }
+        result.includesList_.add(value);
+        return this;
+      }
+      public Builder addAllIncludesList(
+          java.lang.Iterable<? extends java.lang.String> values) {
+        if (result.includesList_.isEmpty()) {
+          result.includesList_ = new java.util.ArrayList<java.lang.String>();
+        }
+        super.addAll(values, result.includesList_);
+        return this;
+      }
+      public Builder clearIncludesList() {
+        result.includesList_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // repeated string excludesList = 3;
+      public java.util.List<java.lang.String> getExcludesListList() {
+        return java.util.Collections.unmodifiableList(result.excludesList_);
+      }
+      public int getExcludesListCount() {
+        return result.getExcludesListCount();
+      }
+      public java.lang.String getExcludesList(int index) {
+        return result.getExcludesList(index);
+      }
+      public Builder setExcludesList(int index, java.lang.String value) {
+        result.excludesList_.set(index, value);
+        return this;
+      }
+      public Builder addExcludesList(java.lang.String value) {
+        if (result.excludesList_.isEmpty()) {
+          result.excludesList_ = new java.util.ArrayList<java.lang.String>();
+        }
+        result.excludesList_.add(value);
+        return this;
+      }
+      public Builder addAllExcludesList(
+          java.lang.Iterable<? extends java.lang.String> values) {
+        if (result.excludesList_.isEmpty()) {
+          result.excludesList_ = new java.util.ArrayList<java.lang.String>();
+        }
+        super.addAll(values, result.excludesList_);
+        return this;
+      }
+      public Builder clearExcludesList() {
+        result.excludesList_ = java.util.Collections.emptyList();
+        return this;
+      }
+    }
+  }
+  
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_izforge_izpack_protobuf_Info_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -2214,4 +2470,15 @@ public final class IzPackProtos {
           new java.lang.String[] { "Path", "ExecutionStage", "MainClass", "Type", "OnFailure", "ArgList", "OsList", "KeepFile", "Condition", },
           com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile.class,
           com.izforge.izpack.protobuf.IzPackProtos.ExecutableFile.Builder.class);
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_izforge_izpack_protobuf_UpdateCheck_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_izforge_izpack_protobuf_UpdateCheck_fieldAccessorTable = new
+        com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+          internal_static_com_izforge_izpack_protobuf_UpdateCheck_descriptor,
+          new java.lang.String[] { "CaseSensitive", "IncludesList", "ExcludesList", },
+          com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck.class,
+          com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck.Builder.class);
 }

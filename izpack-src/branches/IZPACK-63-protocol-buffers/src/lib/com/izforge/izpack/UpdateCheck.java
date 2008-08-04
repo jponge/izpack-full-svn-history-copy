@@ -22,7 +22,7 @@
 package com.izforge.izpack;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Encloses information about an update check.
@@ -37,17 +37,17 @@ public class UpdateCheck implements Serializable
     /**
      * ant-fileset-like list of include patterns, based on INSTALL_PATH if relative
      */
-    public ArrayList<String> includesList = null;
+    public List<String> includesList = null;
 
     /**
      * ant-fileset-like list of exclude patterns, based on INSTALL_PATH if relative
      */
-    public ArrayList<String> excludesList = null;
+    public List<String> excludesList = null;
 
     /**
      * Whether pattern matching is performed case-sensitive
      */
-    boolean caseSensitive = true;
+    public boolean caseSensitive = true;
 
     /**
      * Constructs a new uninitialized instance.
@@ -62,7 +62,7 @@ public class UpdateCheck implements Serializable
      * @param includes The patterns to include in the check.
      * @param excludes The patterns to exclude from the check.
      */
-    public UpdateCheck(ArrayList<String> includes, ArrayList<String> excludes)
+    public UpdateCheck(List<String> includes, List<String> excludes)
     {
         this.includesList = includes;
         this.excludesList = excludes;
@@ -75,7 +75,7 @@ public class UpdateCheck implements Serializable
      * @param excludes      The patterns to exclude from the check.
      * @param casesensitive If "yes", matches are performed case sensitive.
      */
-    public UpdateCheck(ArrayList<String> includes, ArrayList<String> excludes, String casesensitive)
+    public UpdateCheck(List<String> includes, List<String> excludes, String casesensitive)
     {
         this.includesList = includes;
         this.excludesList = excludes;
