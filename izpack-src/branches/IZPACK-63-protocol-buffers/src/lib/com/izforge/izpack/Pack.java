@@ -42,14 +42,14 @@ public class Pack implements Serializable
     /**
      * Flag for store files of this pack outside the installation jar file
      */
-    public boolean loose;
+    public boolean loose = false;
 
     /**
      * If true, all files of the pack will be deleted during uninstallation, if
      * false they are only removed if uninstaller force delete option is
      * activated.
      */
-    public boolean uninstall;
+    public boolean uninstall = true;
 
     /**
      * The pack name.
@@ -111,7 +111,7 @@ public class Pack implements Serializable
     /**
      * True if the pack is required.
      */
-    public boolean required;
+    public boolean required = false;
 
     /**
      * The bumber of bytes contained in the pack.
@@ -121,7 +121,7 @@ public class Pack implements Serializable
     /**
      * Whether this pack is suggested (preselected for installation).
      */
-    public boolean preselected;
+    public boolean preselected = true;
 
     /**
      * Parent pack name to display it in the TreePacksPanel (optional)
@@ -152,6 +152,13 @@ public class Pack implements Serializable
      * black colour
      */
     public final static int BLACK = 2;
+
+    /**
+     * Default constructor.
+     */
+    public Pack()
+    {
+    }
 
     /**
      * The constructor.

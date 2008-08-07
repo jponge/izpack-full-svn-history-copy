@@ -47,8 +47,17 @@ public final class IzPackProtos {
       "nt\022\020\n\010keepFile\030\010 \001(\010\022\021\n\tcondition\030\t \001(\t\"" +
       "P\n\013UpdateCheck\022\025\n\rcaseSensitive\030\001 \001(\010\022\024\n" +
       "\014includesList\030\002 \003(\t\022\024\n\014excludesList\030\003 \003(" +
-      "\tB+\n\033com.izforge.izpack.protobufB\014IzPack" +
-      "Protos";
+      "\t\"\361\002\n\004Pack\022\014\n\004name\030\001 \001(\t\022\n\n\002id\030\002 \001(\t\022\025\n\r" +
+      "installGroups\030\003 \003(\t\022\024\n\014excludeGroup\030\004 \001(" +
+      "\t\022\r\n\005group\030\005 \001(\t\022\023\n\013description\030\006 \001(\t\022@\n" +
+      "\rosConstraints\030\007 \003(\0132).com.izforge.izpac" +
+      "k.protobuf.OsConstraint\022\021\n\tcondition\030\010 \001" +
+      "(\t\022\024\n\014dependencies\030\t \003(\t\022\027\n\017revDependenc" +
+      "ies\030\n \003(\t\022\020\n\010required\030\013 \001(\010\022\016\n\006nbytes\030\014 " +
+      "\001(\004\022\023\n\013preselected\030\r \001(\010\022\016\n\006parent\030\016 \001(\t" +
+      "\022\021\n\tpackImgId\030\017 \001(\t\022\021\n\tuninstall\030\020 \001(\010\022\r" +
+      "\n\005loose\030\021 \001(\010B+\n\033com.izforge.izpack.prot" +
+      "obufB\014IzPackProtos";
     try {
       return com.google.protobuf.Descriptors.FileDescriptor
         .internalBuildGeneratedFileFrom(descriptorData,
@@ -2404,6 +2413,657 @@ public final class IzPackProtos {
     }
   }
   
+  public static final class Pack extends
+      com.google.protobuf.GeneratedMessage {
+    // Use Pack.newBuilder() to construct.
+    private Pack() {}
+    
+    private static final Pack defaultInstance = new Pack();
+    public static Pack getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public Pack getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.izforge.izpack.protobuf.IzPackProtos.internal_static_com_izforge_izpack_protobuf_Pack_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.izforge.izpack.protobuf.IzPackProtos.internal_static_com_izforge_izpack_protobuf_Pack_fieldAccessorTable;
+    }
+    
+    // optional string name = 1;
+    private boolean hasName;
+    private java.lang.String name_ = "";
+    public boolean hasName() { return hasName; }
+    public java.lang.String getName() { return name_; }
+    
+    // optional string id = 2;
+    private boolean hasId;
+    private java.lang.String id_ = "";
+    public boolean hasId() { return hasId; }
+    public java.lang.String getId() { return id_; }
+    
+    // repeated string installGroups = 3;
+    private java.util.List<java.lang.String> installGroups_ =
+      java.util.Collections.emptyList();
+    public java.util.List<java.lang.String> getInstallGroupsList() {
+      return installGroups_;
+    }
+    public int getInstallGroupsCount() { return installGroups_.size(); }
+    public java.lang.String getInstallGroups(int index) {
+      return installGroups_.get(index);
+    }
+    
+    // optional string excludeGroup = 4;
+    private boolean hasExcludeGroup;
+    private java.lang.String excludeGroup_ = "";
+    public boolean hasExcludeGroup() { return hasExcludeGroup; }
+    public java.lang.String getExcludeGroup() { return excludeGroup_; }
+    
+    // optional string group = 5;
+    private boolean hasGroup;
+    private java.lang.String group_ = "";
+    public boolean hasGroup() { return hasGroup; }
+    public java.lang.String getGroup() { return group_; }
+    
+    // optional string description = 6;
+    private boolean hasDescription;
+    private java.lang.String description_ = "";
+    public boolean hasDescription() { return hasDescription; }
+    public java.lang.String getDescription() { return description_; }
+    
+    // repeated .com.izforge.izpack.protobuf.OsConstraint osConstraints = 7;
+    private java.util.List<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint> osConstraints_ =
+      java.util.Collections.emptyList();
+    public java.util.List<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint> getOsConstraintsList() {
+      return osConstraints_;
+    }
+    public int getOsConstraintsCount() { return osConstraints_.size(); }
+    public com.izforge.izpack.protobuf.IzPackProtos.OsConstraint getOsConstraints(int index) {
+      return osConstraints_.get(index);
+    }
+    
+    // optional string condition = 8;
+    private boolean hasCondition;
+    private java.lang.String condition_ = "";
+    public boolean hasCondition() { return hasCondition; }
+    public java.lang.String getCondition() { return condition_; }
+    
+    // repeated string dependencies = 9;
+    private java.util.List<java.lang.String> dependencies_ =
+      java.util.Collections.emptyList();
+    public java.util.List<java.lang.String> getDependenciesList() {
+      return dependencies_;
+    }
+    public int getDependenciesCount() { return dependencies_.size(); }
+    public java.lang.String getDependencies(int index) {
+      return dependencies_.get(index);
+    }
+    
+    // repeated string revDependencies = 10;
+    private java.util.List<java.lang.String> revDependencies_ =
+      java.util.Collections.emptyList();
+    public java.util.List<java.lang.String> getRevDependenciesList() {
+      return revDependencies_;
+    }
+    public int getRevDependenciesCount() { return revDependencies_.size(); }
+    public java.lang.String getRevDependencies(int index) {
+      return revDependencies_.get(index);
+    }
+    
+    // optional bool required = 11;
+    private boolean hasRequired;
+    private boolean required_ = false;
+    public boolean hasRequired() { return hasRequired; }
+    public boolean getRequired() { return required_; }
+    
+    // optional uint64 nbytes = 12;
+    private boolean hasNbytes;
+    private long nbytes_ = 0L;
+    public boolean hasNbytes() { return hasNbytes; }
+    public long getNbytes() { return nbytes_; }
+    
+    // optional bool preselected = 13;
+    private boolean hasPreselected;
+    private boolean preselected_ = false;
+    public boolean hasPreselected() { return hasPreselected; }
+    public boolean getPreselected() { return preselected_; }
+    
+    // optional string parent = 14;
+    private boolean hasParent;
+    private java.lang.String parent_ = "";
+    public boolean hasParent() { return hasParent; }
+    public java.lang.String getParent() { return parent_; }
+    
+    // optional string packImgId = 15;
+    private boolean hasPackImgId;
+    private java.lang.String packImgId_ = "";
+    public boolean hasPackImgId() { return hasPackImgId; }
+    public java.lang.String getPackImgId() { return packImgId_; }
+    
+    // optional bool uninstall = 16;
+    private boolean hasUninstall;
+    private boolean uninstall_ = false;
+    public boolean hasUninstall() { return hasUninstall; }
+    public boolean getUninstall() { return uninstall_; }
+    
+    // optional bool loose = 17;
+    private boolean hasLoose;
+    private boolean loose_ = false;
+    public boolean hasLoose() { return hasLoose; }
+    public boolean getLoose() { return loose_; }
+    
+    public static com.izforge.izpack.protobuf.IzPackProtos.Pack parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.Pack parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.Pack parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.Pack parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.Pack parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.Pack parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.Pack parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.Pack parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return new Builder(); }
+    public Builder newBuilderForType() { return new Builder(); }
+    public static Builder newBuilder(com.izforge.izpack.protobuf.IzPackProtos.Pack prototype) {
+      return new Builder().mergeFrom(prototype);
+    }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      // Construct using com.izforge.izpack.protobuf.IzPackProtos.Pack.newBuilder()
+      private Builder() {}
+      
+      com.izforge.izpack.protobuf.IzPackProtos.Pack result = new com.izforge.izpack.protobuf.IzPackProtos.Pack();
+      
+      protected com.izforge.izpack.protobuf.IzPackProtos.Pack internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        result = new com.izforge.izpack.protobuf.IzPackProtos.Pack();
+        return this;
+      }
+      
+      public Builder clone() {
+        return new Builder().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.izforge.izpack.protobuf.IzPackProtos.Pack.getDescriptor();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.Pack getDefaultInstanceForType() {
+        return com.izforge.izpack.protobuf.IzPackProtos.Pack.getDefaultInstance();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.Pack build() {
+        if (!isInitialized()) {
+          throw new com.google.protobuf.UninitializedMessageException(
+            result);
+        }
+        return buildPartial();
+      }
+      
+      private com.izforge.izpack.protobuf.IzPackProtos.Pack buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw new com.google.protobuf.UninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.Pack buildPartial() {
+        if (result.installGroups_ != java.util.Collections.EMPTY_LIST) {
+          result.installGroups_ =
+            java.util.Collections.unmodifiableList(result.installGroups_);
+        }
+        if (result.osConstraints_ != java.util.Collections.EMPTY_LIST) {
+          result.osConstraints_ =
+            java.util.Collections.unmodifiableList(result.osConstraints_);
+        }
+        if (result.dependencies_ != java.util.Collections.EMPTY_LIST) {
+          result.dependencies_ =
+            java.util.Collections.unmodifiableList(result.dependencies_);
+        }
+        if (result.revDependencies_ != java.util.Collections.EMPTY_LIST) {
+          result.revDependencies_ =
+            java.util.Collections.unmodifiableList(result.revDependencies_);
+        }
+        com.izforge.izpack.protobuf.IzPackProtos.Pack returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      
+      // optional string name = 1;
+      public boolean hasName() {
+        return result.hasName();
+      }
+      public java.lang.String getName() {
+        return result.getName();
+      }
+      public Builder setName(java.lang.String value) {
+        result.hasName = true;
+        result.name_ = value;
+        return this;
+      }
+      public Builder clearName() {
+        result.hasName = false;
+        result.name_ = "";
+        return this;
+      }
+      
+      // optional string id = 2;
+      public boolean hasId() {
+        return result.hasId();
+      }
+      public java.lang.String getId() {
+        return result.getId();
+      }
+      public Builder setId(java.lang.String value) {
+        result.hasId = true;
+        result.id_ = value;
+        return this;
+      }
+      public Builder clearId() {
+        result.hasId = false;
+        result.id_ = "";
+        return this;
+      }
+      
+      // repeated string installGroups = 3;
+      public java.util.List<java.lang.String> getInstallGroupsList() {
+        return java.util.Collections.unmodifiableList(result.installGroups_);
+      }
+      public int getInstallGroupsCount() {
+        return result.getInstallGroupsCount();
+      }
+      public java.lang.String getInstallGroups(int index) {
+        return result.getInstallGroups(index);
+      }
+      public Builder setInstallGroups(int index, java.lang.String value) {
+        result.installGroups_.set(index, value);
+        return this;
+      }
+      public Builder addInstallGroups(java.lang.String value) {
+        if (result.installGroups_.isEmpty()) {
+          result.installGroups_ = new java.util.ArrayList<java.lang.String>();
+        }
+        result.installGroups_.add(value);
+        return this;
+      }
+      public Builder addAllInstallGroups(
+          java.lang.Iterable<? extends java.lang.String> values) {
+        if (result.installGroups_.isEmpty()) {
+          result.installGroups_ = new java.util.ArrayList<java.lang.String>();
+        }
+        super.addAll(values, result.installGroups_);
+        return this;
+      }
+      public Builder clearInstallGroups() {
+        result.installGroups_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // optional string excludeGroup = 4;
+      public boolean hasExcludeGroup() {
+        return result.hasExcludeGroup();
+      }
+      public java.lang.String getExcludeGroup() {
+        return result.getExcludeGroup();
+      }
+      public Builder setExcludeGroup(java.lang.String value) {
+        result.hasExcludeGroup = true;
+        result.excludeGroup_ = value;
+        return this;
+      }
+      public Builder clearExcludeGroup() {
+        result.hasExcludeGroup = false;
+        result.excludeGroup_ = "";
+        return this;
+      }
+      
+      // optional string group = 5;
+      public boolean hasGroup() {
+        return result.hasGroup();
+      }
+      public java.lang.String getGroup() {
+        return result.getGroup();
+      }
+      public Builder setGroup(java.lang.String value) {
+        result.hasGroup = true;
+        result.group_ = value;
+        return this;
+      }
+      public Builder clearGroup() {
+        result.hasGroup = false;
+        result.group_ = "";
+        return this;
+      }
+      
+      // optional string description = 6;
+      public boolean hasDescription() {
+        return result.hasDescription();
+      }
+      public java.lang.String getDescription() {
+        return result.getDescription();
+      }
+      public Builder setDescription(java.lang.String value) {
+        result.hasDescription = true;
+        result.description_ = value;
+        return this;
+      }
+      public Builder clearDescription() {
+        result.hasDescription = false;
+        result.description_ = "";
+        return this;
+      }
+      
+      // repeated .com.izforge.izpack.protobuf.OsConstraint osConstraints = 7;
+      public java.util.List<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint> getOsConstraintsList() {
+        return java.util.Collections.unmodifiableList(result.osConstraints_);
+      }
+      public int getOsConstraintsCount() {
+        return result.getOsConstraintsCount();
+      }
+      public com.izforge.izpack.protobuf.IzPackProtos.OsConstraint getOsConstraints(int index) {
+        return result.getOsConstraints(index);
+      }
+      public Builder setOsConstraints(int index, com.izforge.izpack.protobuf.IzPackProtos.OsConstraint value) {
+        result.osConstraints_.set(index, value);
+        return this;
+      }
+      public Builder setOsConstraints(int index, com.izforge.izpack.protobuf.IzPackProtos.OsConstraint.Builder builderForValue) {
+        result.osConstraints_.set(index, builderForValue.build());
+        return this;
+      }
+      public Builder addOsConstraints(com.izforge.izpack.protobuf.IzPackProtos.OsConstraint value) {
+        if (result.osConstraints_.isEmpty()) {
+          result.osConstraints_ = new java.util.ArrayList<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint>();
+        }
+        result.osConstraints_.add(value);
+        return this;
+      }
+      public Builder addOsConstraints(com.izforge.izpack.protobuf.IzPackProtos.OsConstraint.Builder builderForValue) {
+        if (result.osConstraints_.isEmpty()) {
+          result.osConstraints_ = new java.util.ArrayList<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint>();
+        }
+        result.osConstraints_.add(builderForValue.build());
+        return this;
+      }
+      public Builder addAllOsConstraints(
+          java.lang.Iterable<? extends com.izforge.izpack.protobuf.IzPackProtos.OsConstraint> values) {
+        if (result.osConstraints_.isEmpty()) {
+          result.osConstraints_ = new java.util.ArrayList<com.izforge.izpack.protobuf.IzPackProtos.OsConstraint>();
+        }
+        super.addAll(values, result.osConstraints_);
+        return this;
+      }
+      public Builder clearOsConstraints() {
+        result.osConstraints_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // optional string condition = 8;
+      public boolean hasCondition() {
+        return result.hasCondition();
+      }
+      public java.lang.String getCondition() {
+        return result.getCondition();
+      }
+      public Builder setCondition(java.lang.String value) {
+        result.hasCondition = true;
+        result.condition_ = value;
+        return this;
+      }
+      public Builder clearCondition() {
+        result.hasCondition = false;
+        result.condition_ = "";
+        return this;
+      }
+      
+      // repeated string dependencies = 9;
+      public java.util.List<java.lang.String> getDependenciesList() {
+        return java.util.Collections.unmodifiableList(result.dependencies_);
+      }
+      public int getDependenciesCount() {
+        return result.getDependenciesCount();
+      }
+      public java.lang.String getDependencies(int index) {
+        return result.getDependencies(index);
+      }
+      public Builder setDependencies(int index, java.lang.String value) {
+        result.dependencies_.set(index, value);
+        return this;
+      }
+      public Builder addDependencies(java.lang.String value) {
+        if (result.dependencies_.isEmpty()) {
+          result.dependencies_ = new java.util.ArrayList<java.lang.String>();
+        }
+        result.dependencies_.add(value);
+        return this;
+      }
+      public Builder addAllDependencies(
+          java.lang.Iterable<? extends java.lang.String> values) {
+        if (result.dependencies_.isEmpty()) {
+          result.dependencies_ = new java.util.ArrayList<java.lang.String>();
+        }
+        super.addAll(values, result.dependencies_);
+        return this;
+      }
+      public Builder clearDependencies() {
+        result.dependencies_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // repeated string revDependencies = 10;
+      public java.util.List<java.lang.String> getRevDependenciesList() {
+        return java.util.Collections.unmodifiableList(result.revDependencies_);
+      }
+      public int getRevDependenciesCount() {
+        return result.getRevDependenciesCount();
+      }
+      public java.lang.String getRevDependencies(int index) {
+        return result.getRevDependencies(index);
+      }
+      public Builder setRevDependencies(int index, java.lang.String value) {
+        result.revDependencies_.set(index, value);
+        return this;
+      }
+      public Builder addRevDependencies(java.lang.String value) {
+        if (result.revDependencies_.isEmpty()) {
+          result.revDependencies_ = new java.util.ArrayList<java.lang.String>();
+        }
+        result.revDependencies_.add(value);
+        return this;
+      }
+      public Builder addAllRevDependencies(
+          java.lang.Iterable<? extends java.lang.String> values) {
+        if (result.revDependencies_.isEmpty()) {
+          result.revDependencies_ = new java.util.ArrayList<java.lang.String>();
+        }
+        super.addAll(values, result.revDependencies_);
+        return this;
+      }
+      public Builder clearRevDependencies() {
+        result.revDependencies_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // optional bool required = 11;
+      public boolean hasRequired() {
+        return result.hasRequired();
+      }
+      public boolean getRequired() {
+        return result.getRequired();
+      }
+      public Builder setRequired(boolean value) {
+        result.hasRequired = true;
+        result.required_ = value;
+        return this;
+      }
+      public Builder clearRequired() {
+        result.hasRequired = false;
+        result.required_ = false;
+        return this;
+      }
+      
+      // optional uint64 nbytes = 12;
+      public boolean hasNbytes() {
+        return result.hasNbytes();
+      }
+      public long getNbytes() {
+        return result.getNbytes();
+      }
+      public Builder setNbytes(long value) {
+        result.hasNbytes = true;
+        result.nbytes_ = value;
+        return this;
+      }
+      public Builder clearNbytes() {
+        result.hasNbytes = false;
+        result.nbytes_ = 0L;
+        return this;
+      }
+      
+      // optional bool preselected = 13;
+      public boolean hasPreselected() {
+        return result.hasPreselected();
+      }
+      public boolean getPreselected() {
+        return result.getPreselected();
+      }
+      public Builder setPreselected(boolean value) {
+        result.hasPreselected = true;
+        result.preselected_ = value;
+        return this;
+      }
+      public Builder clearPreselected() {
+        result.hasPreselected = false;
+        result.preselected_ = false;
+        return this;
+      }
+      
+      // optional string parent = 14;
+      public boolean hasParent() {
+        return result.hasParent();
+      }
+      public java.lang.String getParent() {
+        return result.getParent();
+      }
+      public Builder setParent(java.lang.String value) {
+        result.hasParent = true;
+        result.parent_ = value;
+        return this;
+      }
+      public Builder clearParent() {
+        result.hasParent = false;
+        result.parent_ = "";
+        return this;
+      }
+      
+      // optional string packImgId = 15;
+      public boolean hasPackImgId() {
+        return result.hasPackImgId();
+      }
+      public java.lang.String getPackImgId() {
+        return result.getPackImgId();
+      }
+      public Builder setPackImgId(java.lang.String value) {
+        result.hasPackImgId = true;
+        result.packImgId_ = value;
+        return this;
+      }
+      public Builder clearPackImgId() {
+        result.hasPackImgId = false;
+        result.packImgId_ = "";
+        return this;
+      }
+      
+      // optional bool uninstall = 16;
+      public boolean hasUninstall() {
+        return result.hasUninstall();
+      }
+      public boolean getUninstall() {
+        return result.getUninstall();
+      }
+      public Builder setUninstall(boolean value) {
+        result.hasUninstall = true;
+        result.uninstall_ = value;
+        return this;
+      }
+      public Builder clearUninstall() {
+        result.hasUninstall = false;
+        result.uninstall_ = false;
+        return this;
+      }
+      
+      // optional bool loose = 17;
+      public boolean hasLoose() {
+        return result.hasLoose();
+      }
+      public boolean getLoose() {
+        return result.getLoose();
+      }
+      public Builder setLoose(boolean value) {
+        result.hasLoose = true;
+        result.loose_ = value;
+        return this;
+      }
+      public Builder clearLoose() {
+        result.hasLoose = false;
+        result.loose_ = false;
+        return this;
+      }
+    }
+  }
+  
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_izforge_izpack_protobuf_Info_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -2481,4 +3141,15 @@ public final class IzPackProtos {
           new java.lang.String[] { "CaseSensitive", "IncludesList", "ExcludesList", },
           com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck.class,
           com.izforge.izpack.protobuf.IzPackProtos.UpdateCheck.Builder.class);
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_izforge_izpack_protobuf_Pack_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_izforge_izpack_protobuf_Pack_fieldAccessorTable = new
+        com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+          internal_static_com_izforge_izpack_protobuf_Pack_descriptor,
+          new java.lang.String[] { "Name", "Id", "InstallGroups", "ExcludeGroup", "Group", "Description", "OsConstraints", "Condition", "Dependencies", "RevDependencies", "Required", "Nbytes", "Preselected", "Parent", "PackImgId", "Uninstall", "Loose", },
+          com.izforge.izpack.protobuf.IzPackProtos.Pack.class,
+          com.izforge.izpack.protobuf.IzPackProtos.Pack.Builder.class);
 }

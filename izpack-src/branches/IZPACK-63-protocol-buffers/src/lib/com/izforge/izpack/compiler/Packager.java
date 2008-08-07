@@ -20,12 +20,12 @@
 
 package com.izforge.izpack.compiler;
 
+import com.google.protobuf.AbstractMessage;
 import com.izforge.izpack.*;
 import com.izforge.izpack.protobuf.IzPackProtos;
 import com.izforge.izpack.util.FileUtil;
 import com.izforge.izpack.util.JarOutputStream;
 import com.izforge.izpack.util.OsConstraint;
-import com.google.protobuf.AbstractMessage;
 import net.n3.nanoxml.XMLElement;
 import net.n3.nanoxml.XMLWriter;
 
@@ -419,7 +419,7 @@ public class Packager extends PackagerBase
         while (i.hasNext())
         {
             PackInfo pack = i.next();
-            out.writeObject(pack.getPack());
+            writePack(out, pack.getPack());
         }
         out.flush();
         primaryJarStream.closeEntry();
@@ -494,6 +494,70 @@ public class Packager extends PackagerBase
         writeProtocolBuffer(out, builder);
     }
 
+    private void writePack(OutputStream out, Pack pack) throws IOException
+    {
+        IzPackProtos.Pack.Builder builder = IzPackProtos.Pack.newBuilder();
+        if (pack.getCondition() != null)
+        {
+            builder.setCondition(pack.getCondition());
+        }
+        if (pack.getDependencies() != null)
+        {
+            builder.addAllDependencies(pack.getDependencies());
+        }
+        builder.setDescription(pack.description);
+        if (pack.excludeGroup != null)
+        {
+            builder.setExcludeGroup(pack.excludeGroup);
+        }
+        if (pack.group != null)
+        {
+            builder.setGroup(pack.group);
+        }
+        builder.setId(pack.id);
+        if (!pack.installGroups.isEmpty())
+        {
+            builder.addAllInstallGroups(pack.installGroups);
+        }
+        if (pack.loose)
+        {
+            builder.setLoose(true);
+        }
+        builder.setName(pack.name);
+        builder.setNbytes(pack.nbytes);
+        if (pack.osConstraints != null)
+        {
+            builder.addAllOsConstraints(buildOsConstraintBuffersList(pack.osConstraints));
+        }
+        if (pack.packImgId != null)
+        {
+            builder.setPackImgId(pack.packImgId);
+        }
+        if (pack.parent != null)
+        {
+            builder.setParent(pack.parent);
+        }
+        if (!pack.preselected)
+        {
+            builder.setPreselected(false);
+        }
+        if (pack.required)
+        {
+            builder.setRequired(true);
+        }
+        if (pack.revDependencies != null)
+        {
+            builder.addAllDependencies(pack.revDependencies);
+        }
+        if (!pack.uninstall)
+        {
+            builder.setUninstall(false);
+        }
+
+        writeProtocolBuffer(out, builder);        
+    }
+
+
     private void writeUpdateCheck(OutputStream out, UpdateCheck updateCheck) throws IOException
     {
         IzPackProtos.UpdateCheck.Builder builder = IzPackProtos.UpdateCheck.newBuilder();
@@ -509,7 +573,7 @@ public class Packager extends PackagerBase
         {
             builder.addAllExcludesList(updateCheck.excludesList);
         }
-        writeProtocolBuffer(out, builder);        
+        writeProtocolBuffer(out, builder);
     }
 
     private void writeParseableFile(OutputStream out, ParsableFile file) throws IOException
@@ -551,7 +615,7 @@ public class Packager extends PackagerBase
     private void writePackFile(OutputStream out, PackFile pf) throws IOException
     {
         List<IzPackProtos.OsConstraint> constraintsBuffers = buildOsConstraintBuffersList(pf.osConstraints());
-        
+
         IzPackProtos.PackFile.Builder builder = IzPackProtos.PackFile.newBuilder();
         builder.setTargetPath(pf.getTargetPath());
         builder.setLength(pf.length());

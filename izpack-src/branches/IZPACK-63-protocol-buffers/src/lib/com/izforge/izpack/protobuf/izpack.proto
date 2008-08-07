@@ -57,19 +57,39 @@ message ParsableFile {
 }
 
 message ExecutableFile {
-       optional string path = 1;
-       optional int32 executionStage = 2;
-       optional string mainClass = 3;
-       optional int32 type = 4;
-       optional int32 onFailure = 5;
-       repeated string argList = 6;
-       repeated OsConstraint osList = 7;
-       optional bool keepFile = 8;
-       optional string condition = 9;
+    optional string path = 1;
+    optional int32 executionStage = 2;
+    optional string mainClass = 3;
+    optional int32 type = 4;
+    optional int32 onFailure = 5;
+    repeated string argList = 6;
+    repeated OsConstraint osList = 7;
+    optional bool keepFile = 8;
+    optional string condition = 9;
 }
 
 message UpdateCheck {
-       optional bool caseSensitive = 1;
-       repeated string includesList = 2;
-       repeated string excludesList = 3;
+    optional bool caseSensitive = 1;
+    repeated string includesList = 2;
+    repeated string excludesList = 3;
+}
+
+message Pack {
+    optional string name = 1;
+    optional string id = 2;
+    repeated string installGroups = 3;
+    optional string excludeGroup = 4;
+    optional string group = 5;
+    optional string description = 6;
+    repeated OsConstraint osConstraints = 7;
+    optional string condition = 8;
+    repeated string dependencies = 9;
+    repeated string revDependencies = 10;
+    optional bool required = 11;
+    optional uint64 nbytes = 12;
+    optional bool preselected = 13;
+    optional string parent = 14;
+    optional string packImgId = 15;
+    optional bool uninstall = 16;
+    optional bool loose = 17;
 }
