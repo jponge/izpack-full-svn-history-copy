@@ -56,8 +56,11 @@ public final class IzPackProtos {
       "ies\030\n \003(\t\022\020\n\010required\030\013 \001(\010\022\016\n\006nbytes\030\014 " +
       "\001(\004\022\023\n\013preselected\030\r \001(\010\022\016\n\006parent\030\016 \001(\t" +
       "\022\021\n\tpackImgId\030\017 \001(\t\022\021\n\tuninstall\030\020 \001(\010\022\r" +
-      "\n\005loose\030\021 \001(\010B+\n\033com.izforge.izpack.prot" +
-      "obufB\014IzPackProtos";
+      "\n\005loose\030\021 \001(\010\"I\n\tStringMap\022<\n\007entries\030\001 " +
+      "\003(\0132+.com.izforge.izpack.protobuf.String" +
+      "MapEntry\",\n\016StringMapEntry\022\013\n\003key\030\001 \002(\t\022" +
+      "\r\n\005value\030\002 \002(\tB+\n\033com.izforge.izpack.pro" +
+      "tobufB\014IzPackProtos";
     try {
       return com.google.protobuf.Descriptors.FileDescriptor
         .internalBuildGeneratedFileFrom(descriptorData,
@@ -3064,6 +3067,378 @@ public final class IzPackProtos {
     }
   }
   
+  public static final class StringMap extends
+      com.google.protobuf.GeneratedMessage {
+    // Use StringMap.newBuilder() to construct.
+    private StringMap() {}
+    
+    private static final StringMap defaultInstance = new StringMap();
+    public static StringMap getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public StringMap getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.izforge.izpack.protobuf.IzPackProtos.internal_static_com_izforge_izpack_protobuf_StringMap_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.izforge.izpack.protobuf.IzPackProtos.internal_static_com_izforge_izpack_protobuf_StringMap_fieldAccessorTable;
+    }
+    
+    // repeated .com.izforge.izpack.protobuf.StringMapEntry entries = 1;
+    private java.util.List<com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry> entries_ =
+      java.util.Collections.emptyList();
+    public java.util.List<com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry> getEntriesList() {
+      return entries_;
+    }
+    public int getEntriesCount() { return entries_.size(); }
+    public com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry getEntries(int index) {
+      return entries_.get(index);
+    }
+    
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMap parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMap parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMap parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMap parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMap parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMap parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMap parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMap parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return new Builder(); }
+    public Builder newBuilderForType() { return new Builder(); }
+    public static Builder newBuilder(com.izforge.izpack.protobuf.IzPackProtos.StringMap prototype) {
+      return new Builder().mergeFrom(prototype);
+    }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      // Construct using com.izforge.izpack.protobuf.IzPackProtos.StringMap.newBuilder()
+      private Builder() {}
+      
+      com.izforge.izpack.protobuf.IzPackProtos.StringMap result = new com.izforge.izpack.protobuf.IzPackProtos.StringMap();
+      
+      protected com.izforge.izpack.protobuf.IzPackProtos.StringMap internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        result = new com.izforge.izpack.protobuf.IzPackProtos.StringMap();
+        return this;
+      }
+      
+      public Builder clone() {
+        return new Builder().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.izforge.izpack.protobuf.IzPackProtos.StringMap.getDescriptor();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.StringMap getDefaultInstanceForType() {
+        return com.izforge.izpack.protobuf.IzPackProtos.StringMap.getDefaultInstance();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.StringMap build() {
+        if (!isInitialized()) {
+          throw new com.google.protobuf.UninitializedMessageException(
+            result);
+        }
+        return buildPartial();
+      }
+      
+      private com.izforge.izpack.protobuf.IzPackProtos.StringMap buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw new com.google.protobuf.UninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.StringMap buildPartial() {
+        if (result.entries_ != java.util.Collections.EMPTY_LIST) {
+          result.entries_ =
+            java.util.Collections.unmodifiableList(result.entries_);
+        }
+        com.izforge.izpack.protobuf.IzPackProtos.StringMap returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      
+      // repeated .com.izforge.izpack.protobuf.StringMapEntry entries = 1;
+      public java.util.List<com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry> getEntriesList() {
+        return java.util.Collections.unmodifiableList(result.entries_);
+      }
+      public int getEntriesCount() {
+        return result.getEntriesCount();
+      }
+      public com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry getEntries(int index) {
+        return result.getEntries(index);
+      }
+      public Builder setEntries(int index, com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry value) {
+        result.entries_.set(index, value);
+        return this;
+      }
+      public Builder setEntries(int index, com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry.Builder builderForValue) {
+        result.entries_.set(index, builderForValue.build());
+        return this;
+      }
+      public Builder addEntries(com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry value) {
+        if (result.entries_.isEmpty()) {
+          result.entries_ = new java.util.ArrayList<com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry>();
+        }
+        result.entries_.add(value);
+        return this;
+      }
+      public Builder addEntries(com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry.Builder builderForValue) {
+        if (result.entries_.isEmpty()) {
+          result.entries_ = new java.util.ArrayList<com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry>();
+        }
+        result.entries_.add(builderForValue.build());
+        return this;
+      }
+      public Builder addAllEntries(
+          java.lang.Iterable<? extends com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry> values) {
+        if (result.entries_.isEmpty()) {
+          result.entries_ = new java.util.ArrayList<com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry>();
+        }
+        super.addAll(values, result.entries_);
+        return this;
+      }
+      public Builder clearEntries() {
+        result.entries_ = java.util.Collections.emptyList();
+        return this;
+      }
+    }
+  }
+  
+  public static final class StringMapEntry extends
+      com.google.protobuf.GeneratedMessage {
+    // Use StringMapEntry.newBuilder() to construct.
+    private StringMapEntry() {}
+    
+    private static final StringMapEntry defaultInstance = new StringMapEntry();
+    public static StringMapEntry getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public StringMapEntry getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.izforge.izpack.protobuf.IzPackProtos.internal_static_com_izforge_izpack_protobuf_StringMapEntry_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.izforge.izpack.protobuf.IzPackProtos.internal_static_com_izforge_izpack_protobuf_StringMapEntry_fieldAccessorTable;
+    }
+    
+    // required string key = 1;
+    private boolean hasKey;
+    private java.lang.String key_ = "";
+    public boolean hasKey() { return hasKey; }
+    public java.lang.String getKey() { return key_; }
+    
+    // required string value = 2;
+    private boolean hasValue;
+    private java.lang.String value_ = "";
+    public boolean hasValue() { return hasValue; }
+    public java.lang.String getValue() { return value_; }
+    
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistry extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return new Builder(); }
+    public Builder newBuilderForType() { return new Builder(); }
+    public static Builder newBuilder(com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry prototype) {
+      return new Builder().mergeFrom(prototype);
+    }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      // Construct using com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry.newBuilder()
+      private Builder() {}
+      
+      com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry result = new com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry();
+      
+      protected com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        result = new com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry();
+        return this;
+      }
+      
+      public Builder clone() {
+        return new Builder().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry.getDescriptor();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry getDefaultInstanceForType() {
+        return com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry.getDefaultInstance();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry build() {
+        if (!isInitialized()) {
+          throw new com.google.protobuf.UninitializedMessageException(
+            result);
+        }
+        return buildPartial();
+      }
+      
+      private com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw new com.google.protobuf.UninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry buildPartial() {
+        com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      
+      // required string key = 1;
+      public boolean hasKey() {
+        return result.hasKey();
+      }
+      public java.lang.String getKey() {
+        return result.getKey();
+      }
+      public Builder setKey(java.lang.String value) {
+        result.hasKey = true;
+        result.key_ = value;
+        return this;
+      }
+      public Builder clearKey() {
+        result.hasKey = false;
+        result.key_ = "";
+        return this;
+      }
+      
+      // required string value = 2;
+      public boolean hasValue() {
+        return result.hasValue();
+      }
+      public java.lang.String getValue() {
+        return result.getValue();
+      }
+      public Builder setValue(java.lang.String value) {
+        result.hasValue = true;
+        result.value_ = value;
+        return this;
+      }
+      public Builder clearValue() {
+        result.hasValue = false;
+        result.value_ = "";
+        return this;
+      }
+    }
+  }
+  
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_izforge_izpack_protobuf_Info_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -3152,4 +3527,26 @@ public final class IzPackProtos {
           new java.lang.String[] { "Name", "Id", "InstallGroups", "ExcludeGroup", "Group", "Description", "OsConstraints", "Condition", "Dependencies", "RevDependencies", "Required", "Nbytes", "Preselected", "Parent", "PackImgId", "Uninstall", "Loose", },
           com.izforge.izpack.protobuf.IzPackProtos.Pack.class,
           com.izforge.izpack.protobuf.IzPackProtos.Pack.Builder.class);
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_izforge_izpack_protobuf_StringMap_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_izforge_izpack_protobuf_StringMap_fieldAccessorTable = new
+        com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+          internal_static_com_izforge_izpack_protobuf_StringMap_descriptor,
+          new java.lang.String[] { "Entries", },
+          com.izforge.izpack.protobuf.IzPackProtos.StringMap.class,
+          com.izforge.izpack.protobuf.IzPackProtos.StringMap.Builder.class);
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_izforge_izpack_protobuf_StringMapEntry_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_izforge_izpack_protobuf_StringMapEntry_fieldAccessorTable = new
+        com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+          internal_static_com_izforge_izpack_protobuf_StringMapEntry_descriptor,
+          new java.lang.String[] { "Key", "Value", },
+          com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry.class,
+          com.izforge.izpack.protobuf.IzPackProtos.StringMapEntry.Builder.class);
 }

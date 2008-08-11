@@ -93,3 +93,12 @@ message Pack {
     optional bool uninstall = 16;
     optional bool loose = 17;
 }
+
+message StringMap {
+    repeated StringMapEntry entries = 1;
+}
+
+message StringMapEntry {
+    required string key = 1;
+    required string value = 2;
+}

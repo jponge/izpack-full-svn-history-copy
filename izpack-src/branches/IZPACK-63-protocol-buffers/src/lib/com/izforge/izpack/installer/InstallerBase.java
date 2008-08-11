@@ -68,14 +68,7 @@ public class InstallerBase
         int i;
 
         // We load the variables
-        Properties variables = null;
-        in = InstallerBase.class.getResourceAsStream("/vars");
-        if (null != in)
-        {
-            objIn = new ObjectInputStream(in);
-            variables = (Properties) objIn.readObject();
-            objIn.close();
-        }
+        Properties variables = readVariables();
 
         // We load the Info data
         Info inf = readInfoData();
@@ -219,6 +212,21 @@ public class InstallerBase
         // Load custom action data.
         loadCustomData(installdata);
 
+    }
+
+    private Properties readVariables() throws IOException
+    {
+        Properties props = new Properties();
+        InputStream in = InstallerBase.class.getResourceAsStream("/vars");
+        IzPackProtos.StringMap buffer = IzPackProtos.StringMap.parseFrom(in);
+
+        for (IzPackProtos.StringMapEntry entry : buffer.getEntriesList())
+        {
+            props.put(entry.getKey(), entry.getValue());
+        }
+
+        in.close();
+        return props;
     }
 
     private Pack readPack(InputStream in) throws IOException

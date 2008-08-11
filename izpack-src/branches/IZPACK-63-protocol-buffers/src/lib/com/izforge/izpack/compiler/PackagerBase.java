@@ -371,7 +371,7 @@ public abstract class PackagerBase implements IPackager
         writeSkeletonInstaller();
 
         writeInfo("info", info);
-        writeInstallerObject("vars", variables);
+        writeVariables("vars", variables);
         writeInstallerObject("GUIPrefs", guiPrefs);
         writeInstallerObject("panelsOrder", panelList);
         writeInstallerObject("customData", customDataList);
@@ -388,6 +388,22 @@ public abstract class PackagerBase implements IPackager
     }
 
     protected abstract JarOutputStream getPrimaryJarStream();
+
+    protected void writeVariables(String entryName, Properties variables) throws IOException
+    {
+        getPrimaryJarStream().putNextEntry(new org.apache.tools.zip.ZipEntry(entryName));
+
+        IzPackProtos.StringMap.Builder builder = IzPackProtos.StringMap.newBuilder();
+        for (Object key : variables.keySet())
+        {
+            builder.addEntries(IzPackProtos.StringMapEntry.newBuilder()
+                    .setKey((String) key)
+                    .setValue((String) variables.get(key)).build());
+        }
+
+        builder.build().writeTo(getPrimaryJarStream());
+        getPrimaryJarStream().closeEntry();
+    }
 
     protected void writeInfo(String entryName, Info info) throws IOException
     {
