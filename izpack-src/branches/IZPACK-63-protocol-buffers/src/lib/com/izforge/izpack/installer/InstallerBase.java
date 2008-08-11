@@ -105,7 +105,7 @@ public class InstallerBase
         ArrayList<Pack> allPacks = new ArrayList<Pack>();
         for (i = 0; i < size; i++)
         {
-            Pack pk = (Pack) objIn.readObject();
+            Pack pk = readPack(objIn);
             allPacks.add(pk);
             if (OsConstraint.oneMatchesCurrentSystem(pk.osConstraints))
             {
@@ -219,6 +219,73 @@ public class InstallerBase
         // Load custom action data.
         loadCustomData(installdata);
 
+    }
+
+    private Pack readPack(InputStream in) throws IOException
+    {
+        byte[] buffer = new byte[in.read()];
+        Unpacker.readAll(in, buffer);
+        IzPackProtos.Pack packBuffer = IzPackProtos.Pack.parseFrom(buffer);
+        Pack pack = new Pack();
+
+        if (packBuffer.hasCondition())
+        {
+            pack.setCondition(packBuffer.getCondition());
+        }
+        if (packBuffer.getDependenciesCount() > 0)
+        {
+            pack.dependencies = packBuffer.getDependenciesList();
+        }
+        pack.description = packBuffer.getDescription();
+        if (packBuffer.hasExcludeGroup())
+        {
+            pack.excludeGroup = packBuffer.getExcludeGroup();
+        }
+        if (packBuffer.hasGroup())
+        {
+            pack.group = packBuffer.getGroup();
+        }
+        pack.id = packBuffer.getId();
+        if (packBuffer.getInstallGroupsCount() > 0)
+        {
+            pack.installGroups.addAll(packBuffer.getInstallGroupsList());
+        }
+        if (packBuffer.hasLoose())
+        {
+            pack.loose = packBuffer.getLoose();
+        }
+        pack.name = packBuffer.getName();
+        pack.nbytes = packBuffer.getNbytes();
+        if (packBuffer.getOsConstraintsCount() > 0)
+        {
+            pack.osConstraints = Unpacker.getOsConstraints(packBuffer.getOsConstraintsList());
+        }
+        if (packBuffer.hasPackImgId())
+        {
+            pack.packImgId = packBuffer.getPackImgId();
+        }
+        if (packBuffer.hasParent())
+        {
+            pack.parent = packBuffer.getParent();
+        }
+        if (packBuffer.hasPreselected())
+        {
+            pack.preselected = packBuffer.getPreselected();
+        }
+        if (packBuffer.hasRequired())
+        {
+            pack.required = packBuffer.getRequired();
+        }
+        if (packBuffer.getRevDependenciesCount() > 0)
+        {
+            pack.revDependencies = packBuffer.getRevDependenciesList();
+        }
+        if (packBuffer.hasUninstall())
+        {
+            pack.uninstall = packBuffer.getUninstall();
+        }
+        
+        return pack;
     }
 
     private Info readInfoData() throws IOException, ClassNotFoundException

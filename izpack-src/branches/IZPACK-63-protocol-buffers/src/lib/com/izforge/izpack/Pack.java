@@ -74,7 +74,7 @@ public class Pack implements Serializable
      * is a string and serves are key identifying each group of mutually
      * exclusive packs.
      */
-    public String excludeGroup = "";
+    public String excludeGroup;
 
     /**
      * The group the pack is associated with. The pack group identifies
@@ -116,7 +116,7 @@ public class Pack implements Serializable
     /**
      * The bumber of bytes contained in the pack.
      */
-    public long nbytes;
+    public long nbytes = 0;
 
     /**
      * Whether this pack is suggested (preselected for installation).
@@ -131,7 +131,7 @@ public class Pack implements Serializable
     /**
      * The color of the node. This is used for the dependency graph algorithms
      */
-    public int color;
+    public int color = WHITE;
 
     /**
      * The id to use if we want to obtain this pack's image resource

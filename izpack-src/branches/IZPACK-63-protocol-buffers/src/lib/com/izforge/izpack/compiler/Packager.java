@@ -547,7 +547,7 @@ public class Packager extends PackagerBase
         }
         if (pack.revDependencies != null)
         {
-            builder.addAllDependencies(pack.revDependencies);
+            builder.addAllRevDependencies(pack.revDependencies);
         }
         if (!pack.uninstall)
         {

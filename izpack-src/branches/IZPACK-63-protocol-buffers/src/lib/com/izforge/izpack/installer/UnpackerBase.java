@@ -324,7 +324,7 @@ public abstract class UnpackerBase implements IUnpacker
      * @param recompiler The regular expression compiler (used to speed up RE compiling).
      * @return List of org.apache.regexp.RE
      */
-    private List<RE> preparePatterns(ArrayList<String> list, RECompiler recompiler)
+    private List<RE> preparePatterns(List<String> list, RECompiler recompiler)
     {
         ArrayList<RE> result = new ArrayList<RE>();
 
@@ -933,7 +933,7 @@ public abstract class UnpackerBase implements IUnpacker
      * @param buffer The pre-allocated buffer to read <code>buffer.length</code> bytes from.
      * @throws IOException
      */
-    protected void readAll(InputStream in, byte[] buffer) throws IOException
+    public static void readAll(InputStream in, byte[] buffer) throws IOException
     {
         int offset = 0;
         int nread;

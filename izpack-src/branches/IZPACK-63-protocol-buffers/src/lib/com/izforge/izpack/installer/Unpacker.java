@@ -633,7 +633,7 @@ public class Unpacker extends UnpackerBase
         return pf;
     }
 
-    protected List<OsConstraint> getOsConstraints(List<IzPackProtos.OsConstraint> constraintBuffers)
+    public static List<OsConstraint> getOsConstraints(List<IzPackProtos.OsConstraint> constraintBuffers)
     {
         List<OsConstraint> osConstraints = new ArrayList<OsConstraint>();
         for (IzPackProtos.OsConstraint oscBuffer : constraintBuffers)
