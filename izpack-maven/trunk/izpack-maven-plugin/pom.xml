@@ -50,7 +50,13 @@
       <name>Miguel Griffa</name>
       <email>miguel.griffa@gmail.com</email>
       <roles>
-        <role>Original Contributer</role>
+        <role>Original Creator</role>
+      </roles>      
+    </developer>
+    <developer>
+      <name>Markus Hoofe</name>
+      <roles>
+        <role>Contributer</role>
       </roles>      
     </developer>
   </developers>
