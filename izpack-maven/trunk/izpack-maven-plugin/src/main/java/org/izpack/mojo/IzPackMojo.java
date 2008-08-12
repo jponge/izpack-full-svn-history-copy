@@ -221,7 +221,8 @@ public class IzPackMojo
             String basedir = izpackBasedir.getAbsolutePath();
 
             CompilerConfig c = new CompilerConfig( config, basedir, kind, installerFile.getAbsolutePath() );
-
+            CompilerConfig.setIzpackHome(basedir);
+            
             c.executeCompiler();
 
             if ( !c.wasSuccessful() )
