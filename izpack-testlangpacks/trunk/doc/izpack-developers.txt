@@ -16,12 +16,26 @@ Possibilities:
    ----------------------------
    Read the file: izpack-translators.txt
 
+   As a developer you can update language files using subversion (svn)
+   client program. Language files are located at:
+
+   http://svn.codehaus.org/izpack/izpack-src/trunk/bin/langpacks/installer/
+
+   Please note that IzPack could have beta release tag which can
+   also contain its own language files. Beta release could be the
+   release which is updated more frequently than codes in trunk. But
+   after actual release has been came out, its codebase is merged into
+   trunk. This might be the reason why there could be untranslated
+   strings when version will come out.
+
+   Only developers can update language files (and other source files)
+   into subversion database. Others have to make JIRA issue and
+   include the file into it. To make JIRA issue and what to fill into
+   it please read "4) JIRA issue" in the file izpack-translators.txt.
+
 
 2) Develop or investigate utility
    ------------------------------
-   To update language files use Update in your subversion (svn) client
-   program.
-
 
    Developing TestLangPacks
    ------------------------
@@ -30,7 +44,8 @@ Possibilities:
 
       https://svn.codehaus.org/izpack/izpack-testlangpacks/trunk
 
-   You need client software which has "subversion" functionality.
+   You need client software which has "subversion" functionality (e.g.
+   TortoiseSVN in Windows).
 
    Test and beta versions can be obtained from Snapshot area (if any):
 
@@ -47,8 +62,8 @@ Possibilities:
    language files into project root directory.
 
 
-Version checking advanced
--------------------------
+Version checking: advanced
+--------------------------
    In addition to izpack-translators.txt file guidance concerning
    version checking you can check the version of the jar file. Open
    TestLangPacks.jar with GUI zip utility (WinZip or equivalent) or
@@ -57,3 +72,24 @@ Version checking advanced
       /meta-inf/Manifest.mf
 
    Find attribute: "Implementation-Version".
+
+
+How to follow-up language file changes
+--------------------------------------
+   If you follow-up language files in trunk
+   (http://svn.codehaus.org/izpack/izpack-src/trunk/bin/langpacks/installer/)
+
+   all your translations won't perhaps be in your language file.
+
+   One solution is to subscribe to IzPack developer mailing list
+   (dev@izpack.codehaus.org) which will have announcement when
+   branch is scheduled to happen. Before that branch you will make
+   desired translations if any.
+
+   Mailing lists are found at:
+
+      http://xircles.codehaus.org/projects/izpack/lists
+
+   Mailing list announce@izpack.codehaus.org will have announcements
+   about IzPack releases. Do not rely on these messages: when you
+   receive this message you are late to do translations.

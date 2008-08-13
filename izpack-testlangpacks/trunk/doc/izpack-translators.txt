@@ -54,6 +54,9 @@ Download latest version of TestLangPacks utility from:
 
    See results and check needed actions and translate strings.
 
+4) JIRA issue
+   ----------
+
    After translation have [your_langugage_file].xml. Make JIRA issue
    into:
 
