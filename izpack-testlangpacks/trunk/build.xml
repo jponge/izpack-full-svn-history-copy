@@ -9,11 +9,12 @@
 -->
 
     <property name="ver_major" value="1"/>
-    <property name="ver_minor" value="0-beta1"/>
+    <property name="ver_minor" value="0"/>
     <property name="app_name"  value="TestLangPacks utility for IzPack installer"/>
 
     <property environment="env"/>
-    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="debug" value="off"/>
+    <property name="debuglevel" value=""/>
     <property name="target" value="1.5"/>
     <property name="source" value="1.5"/>
     <path id="IzPack-TestLangPacks.classpath">
@@ -24,7 +25,7 @@
     <target name="clean">
         <delete dir="bin/IzPack"/>
     </target>
-    <target depends="clean" name="cleanall"/>
+    <target depends="clean, clean.dist, clean.zip" name="cleanall"/>
     <target depends="build-subprojects,build-project" name="build"/>
     <target name="build-subprojects"/>
     <target depends="init" name="build-project">
