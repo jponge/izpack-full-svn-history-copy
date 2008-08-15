@@ -6,12 +6,12 @@
     <author email="dantran at gmail.com">Dan T. Tran</author>
   </properties>
   <body>
-    <release version="1.0-alpha-2" date="2008-08-06">
-      <action dev="dtran" type="fix" issue="IZPACK-142>
+    <release version="1.0-alpha-2" date="2008-08-06" description="Bug fixes">
+      <action dev="dtran" type="fix" issue="IZPACK-142">
         Custom panel jars are not found with maven plugin.
       </action>
     </release>
-    <release version="1.0-alpha-1" date="2008-08-01">
+    <release version="1.0-alpha-1" date="2008-08-01" description="Intial alpha release">
       <action dev="dtran" type="add">
         Initial version
       </action>
