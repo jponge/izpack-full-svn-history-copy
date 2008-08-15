@@ -3,13 +3,20 @@
 <document>
   <properties>
     <title>IzPack plugin project</title>
-    <author email="miguel.griffa@gmail.com">Miguel Griffa</author>
+    <author email="dantran at gmail.com">Dan T. Tran</author>
   </properties>
   <body>
-    <release version="1.0-SNAPSHOT" date="2006-01-30">
-      <action dev="mgriffa" type="add">
+    <release version="1.0-alpha-2" date="2008-08-06">
+      <action dev="dtran" type="fix" issue="IZPACK-142>
+        Custom panel jars are not found with maven plugin.
+      </action>
+    </release>
+    <release version="1.0-alpha-1" date="2008-08-01">
+      <action dev="dtran" type="add">
         Initial version
       </action>
     </release>
+    
+    
   </body>
 </document>
