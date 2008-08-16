@@ -1,0 +1,111 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <artifactId>izpack-parent</artifactId>
+    <groupId>org.codehaus.izpack</groupId>
+    <version>1</version>
+    <relativePath>../izpack-parent</relativePath>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>izpack-maven-plugin</artifactId>
+
+  <packaging>maven-plugin</packaging>
+
+  <name>IzPack Maven Plugin</name>
+
+  <version>1.0-alpha-2</version>
+
+  <description>Maven plugin which assembles files an IzPack Installer</description>
+
+  <inceptionYear>2008</inceptionYear>
+
+  <url>http://izpack.codehaus.org/izpack-maven-plugin/</url>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/izpack/izpack-maven/tags/izpack-maven-plugin-1.0-alpha-2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/izpack/izpack-maven/tags/izpack-maven-plugin-1.0-alpha-2</developerConnection>
+    <url>http://svn.codehaus.org/izpack/izpack-maven/tags/izpack-maven-plugin-1.0-alpha-2</url>
+  </scm>
+
+  <distributionManagement>
+    <site>
+      <id>codehaus.org</id>
+      <name>IZPack Website</name>
+      <url>dav:https://dav.codehaus.org/izpack/izpack-maven-plugin</url>
+    </site>
+  </distributionManagement>
+
+
+  <developers>
+    <developer>
+      <name>Dan Tran</name>
+      <email>Dan T. Tran@gmail.com</email>
+      <roles>
+        <role>Project Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Miguel Griffa</name>
+      <email>miguel.griffa@gmail.com</email>
+      <roles>
+        <role>Original Creator</role>
+      </roles>      
+    </developer>
+    <developer>
+      <name>Markus Hoofe</name>
+      <roles>
+        <role>Contributer</role>
+      </roles>      
+    </developer>
+  </developers>
+
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>2.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-project</artifactId>
+      <version>2.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.5.1</version>
+    </dependency>
+
+    <!-- to build this plugin only, at runtime, this plugin will use the one in user's dependency list  --> 
+    <dependency>
+      <groupId>org.codehaus.izpack</groupId>
+      <artifactId>izpack-standalone-compiler</artifactId>
+      <version>4.0.1</version>
+    </dependency>
+
+  </dependencies>
+  
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.0</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>changes-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+  
+</project>
