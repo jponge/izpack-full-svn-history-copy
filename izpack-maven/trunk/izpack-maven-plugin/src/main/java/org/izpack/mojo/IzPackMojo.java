@@ -97,7 +97,7 @@ public class IzPackMojo
      * @since alpha 3
      */
     private boolean attach = true;
-    
+
     /**
      * Internal Maven's project
      * @parameter expression="${project}"
@@ -129,8 +129,9 @@ public class IzPackMojo
     private String classifier;
 
     /**
-     * The installer output file. Default to ${project.build.finalName)-classifier.fileExtension
-     * Must be unique among Maven's executions
+     * The installer output file. Default to ${project.build.directory}/${project.build.finalName)-classifier.fileExtension
+     * Must be unique among Maven's executions. 
+     * @parameter
      */
     private File installerFile;
 
@@ -147,8 +148,11 @@ public class IzPackMojo
     {
         classifier = this.kind;
 
-        installerFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-"
-            + classifier + "." + fileExtension );
+        if ( installerFile == null )
+        {
+            installerFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-"
+                + classifier + "." + fileExtension );
+        }
 
         File dir = installerFile.getParentFile();
         if ( !dir.exists() )
