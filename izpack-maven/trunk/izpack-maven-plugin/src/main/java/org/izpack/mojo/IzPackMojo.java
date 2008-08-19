@@ -177,7 +177,8 @@ public class IzPackMojo
     private File interpolateDescriptorFile()
         throws MojoExecutionException
     {
-        Properties p = new Properties( project.getProperties() );
+        Properties  p = new Properties ();
+        p.putAll( this.project.getProperties() );
         p.putAll( System.getProperties() );
         Reader fileReader = null;
         StringWriter stringWriter = new StringWriter();
@@ -287,7 +288,7 @@ public class IzPackMojo
 
         try
         {
-            //make user prepared customer panel jar files available the the classpath
+            //make user prepared custom panel jar files available the the classpath
             URL customerPanelUrl = this.customPanelDirectory.toURI().toURL();
             classpathURLs.add( customerPanelUrl );
             getLog().debug( "Added to classpath " + customPanelDirectory );

@@ -55,7 +55,6 @@
         
           <groupId>org.codehaus.izpack</groupId>
           <artifactId>izpack-maven-plugin</artifactId>
-          <version>1.0-alpha-1-SNAPSHOT</version>
           
           <!-- common configuration by all executions -->
           <configuration>
@@ -96,6 +95,7 @@
   
   <properties>
     <staging.dir>${project.build.directory}/staging</staging.dir>
+    <project.name>${project.name}</project.name>
   </properties>
 
 </project>
