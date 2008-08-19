@@ -6,12 +6,20 @@
     <author email="dantran at gmail.com">Dan T. Tran</author>
   </properties>
   <body>
-    <release version="1.0-alpha-2" date="2008-08-06" description="Bug fixes">
+    <release version="1.0-alpha-3" date="2008-08-23" description="Bug fixes">
+      <action dev="dtran" type="fix" issue="IZPACK-146">
+        Interpolate system properties
+      </action>
+      <action dev="dtran" type="add" issue="IZPACK-145">
+        Ability to diable the attach artifact to Maven project
+      </action>
+    </release>
+    <release version="1.0-alpha-2" date="2008-08-16" description="Bug fixes">
       <action dev="dtran" type="fix" issue="IZPACK-142">
         Custom panel jars are not found with maven plugin.
       </action>
     </release>
-    <release version="1.0-alpha-1" date="2008-08-01" description="Intial alpha release">
+    <release version="1.0-alpha-1" date="2008-08-01" description="Initial alpha release">
       <action dev="dtran" type="add">
         Initial version
       </action>
