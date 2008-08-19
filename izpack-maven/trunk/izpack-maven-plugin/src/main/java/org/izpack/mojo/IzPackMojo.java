@@ -92,6 +92,13 @@ public class IzPackMojo
     private File customPanelDirectory;
 
     /**
+     * Enable the built installer output to be attached to Maven project for install/deploy purposes.
+     * @parameter default-value="true"
+     * @since alpha 3
+     */
+    private boolean attach = true;
+    
+    /**
      * Internal Maven's project
      * @parameter expression="${project}"
      * @readonly
@@ -152,7 +159,10 @@ public class IzPackMojo
             }
         }
 
-        checkForDuplicateAttachArtifact();
+        if ( this.attach )
+        {
+            checkForDuplicateAttachArtifact();
+        }
     }
 
     /**
@@ -243,7 +253,10 @@ public class IzPackMojo
             }
         }
 
-        projectHelper.attachArtifact( project, fileExtension, classifier, installerFile );
+        if ( this.attach )
+        {
+            projectHelper.attachArtifact( project, fileExtension, classifier, installerFile );
+        }
     }
 
     private void checkForDuplicateAttachArtifact()
