@@ -163,7 +163,8 @@ public class IzPackMojo
     private File interpolateDescriptorFile()
         throws MojoExecutionException
     {
-        Properties p = project.getProperties();
+        Properties p = new Properties( project.getProperties() );
+        p.putAll( System.getProperties() );
         Reader fileReader = null;
         StringWriter stringWriter = new StringWriter();
 
@@ -221,8 +222,8 @@ public class IzPackMojo
             String basedir = izpackBasedir.getAbsolutePath();
 
             CompilerConfig c = new CompilerConfig( config, basedir, kind, installerFile.getAbsolutePath() );
-            CompilerConfig.setIzpackHome(basedir);
-            
+            CompilerConfig.setIzpackHome( basedir );
+
             c.executeCompiler();
 
             if ( !c.wasSuccessful() )
@@ -273,8 +274,7 @@ public class IzPackMojo
             URL customerPanelUrl = this.customPanelDirectory.toURI().toURL();
             classpathURLs.add( customerPanelUrl );
             getLog().debug( "Added to classpath " + customPanelDirectory );
-            
-            
+
             for ( int i = 0; i < classpathElements.size(); i++ )
             {
                 String element = (String) classpathElements.get( i );
