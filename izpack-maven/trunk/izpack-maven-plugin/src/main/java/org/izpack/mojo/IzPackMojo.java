@@ -15,28 +15,23 @@ package org.izpack.mojo;
  */
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.InterpolationFilterReader;
+import org.apache.maven.shared.filtering.MavenProjectValueSource;
+import org.apache.maven.shared.filtering.MavenResourcesExecution;
+import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 
 import com.izforge.izpack.compiler.CompilerConfig;
 
@@ -120,6 +115,21 @@ public class IzPackMojo
      */
     private List classpathElements;
 
+    /**
+     * @component role="org.apache.maven.shared.filtering.MavenResourcesFiltering"
+     *            role-hint="default"
+     * @readonly
+     * @since 1.0-alpha-3
+     */
+    private MavenResourcesFiltering mavenResourcesFiltering;
+
+    /**
+     * @parameter expression="${session}"
+     * @readonly
+     * @since 1.0-alpha-3
+     */
+    private MavenSession session;
+
     //////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -177,52 +187,41 @@ public class IzPackMojo
     private File interpolateDescriptorFile()
         throws MojoExecutionException
     {
-        Properties  p = new Properties ();
-        p.putAll( this.project.getProperties() );
-        p.putAll( System.getProperties() );
-        Reader fileReader = null;
-        StringWriter stringWriter = new StringWriter();
+        //TODO use the MavenFileFilter instead
+        
+        Resource resource = new Resource();
+        resource.setDirectory( descriptor.getAbsoluteFile().getParent() );
 
-        //first interpolate @{}
+        String descriptorFileName = this.descriptor.getName();
+
+        List includes = new ArrayList();
+        includes.add( descriptorFileName );
+        resource.setIncludes( includes );
+        resource.setFiltering( true );
+
+        List resources = new ArrayList();
+        resources.add( resource );
+
+        MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution( resources, izpackBasedir,
+                                                                                       project, null, null, null,
+                                                                                       session );
+
+        mavenResourcesExecution.setUseDefaultFilterWrappers( true );
+
+        // support @{} izpack ant format
+        mavenResourcesExecution.addFilerWrapper( new MavenProjectValueSource( project, true ), "\\@", "(.+?)\\}",
+                                                 "@{", "}" );
+
         try
         {
-            fileReader = new FileReader( descriptor );
-            Reader reader = new InterpolationFilterReader( fileReader, p, "@{", "}" );
-
-            IOUtil.copy( reader, stringWriter );
+            mavenResourcesFiltering.filterResources( mavenResourcesExecution );
         }
-        catch ( IOException e )
+        catch ( Exception e )
         {
-            throw new MojoExecutionException( "Error while interpolating pkginfo.", e );
-        }
-        finally
-        {
-            IOUtil.close( fileReader );
+            throw new MojoExecutionException( "Unable to perform filtering", e );
         }
 
-        //interpolate ${}
-        File interpolatedFile = new File( izpackBasedir, descriptor.getName() );
-        Writer fileWriter = null;
-        try
-        {
-            String string = stringWriter.getBuffer().toString();
-            StringReader stringReader = new StringReader( string );
-            Reader reader = new InterpolationFilterReader( stringReader, p );
-
-            fileWriter = new FileWriter( interpolatedFile );
-            IOUtil.copy( reader, fileWriter );
-
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "Error while interpolating pkginfo.", e );
-        }
-        finally
-        {
-            IOUtil.close( fileWriter );
-        }
-
-        return interpolatedFile;
+        return new File( izpackBasedir, descriptorFileName );
     }
 
     private void buildInstaller()

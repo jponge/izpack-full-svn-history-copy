@@ -95,7 +95,6 @@
   
   <properties>
     <staging.dir>${project.build.directory}/staging</staging.dir>
-    <project.name>${project.name}</project.name>
   </properties>
 
 </project>
