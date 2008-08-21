@@ -29,6 +29,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
+import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenProjectValueSource;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
@@ -57,6 +58,13 @@ public class IzPackMojo
      */
     private File descriptor;
 
+    /**
+     * The descriptor's encoding format. Default is null to use the native system encoding
+     * @parameter  
+     * @since alpha 3
+     */
+    private String descriptorEncoding;
+    
     /**
      * IzPack base directory.  This is the recommended place for staging
      * area as well.  Do not set it to any of the source tree directory
@@ -185,41 +193,35 @@ public class IzPackMojo
      * @throws MojoExecutionException
      */
     private File interpolateDescriptorFile()
-        throws MojoExecutionException
+        throws MavenFilteringException
     {
         //TODO use the MavenFileFilter instead
-        
+
         Resource resource = new Resource();
+        resource.setFiltering( true );
         resource.setDirectory( descriptor.getAbsoluteFile().getParent() );
 
         String descriptorFileName = this.descriptor.getName();
-
         List includes = new ArrayList();
         includes.add( descriptorFileName );
+        
         resource.setIncludes( includes );
-        resource.setFiltering( true );
+       
 
         List resources = new ArrayList();
         resources.add( resource );
 
         MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution( resources, izpackBasedir,
-                                                                                       project, null, null, null,
+                                                                                       project, this.descriptorEncoding, null, null,
                                                                                        session );
 
         mavenResourcesExecution.setUseDefaultFilterWrappers( true );
 
         // support @{} izpack ant format
-        mavenResourcesExecution.addFilerWrapper( new MavenProjectValueSource( project, true ), "\\@", "(.+?)\\}",
-                                                 "@{", "}" );
+        mavenResourcesExecution.addFilerWrapper( new MavenProjectValueSource( project, true ), "\\@", "(.+?)\\}", "@{",
+                                                 "}" );
 
-        try
-        {
-            mavenResourcesFiltering.filterResources( mavenResourcesExecution );
-        }
-        catch ( Exception e )
-        {
-            throw new MojoExecutionException( "Unable to perform filtering", e );
-        }
+        mavenResourcesFiltering.filterResources( mavenResourcesExecution );
 
         return new File( izpackBasedir, descriptorFileName );
     }
@@ -287,7 +289,7 @@ public class IzPackMojo
 
         try
         {
-            //make user prepared custom panel jar files available the the classpath
+            //make user's custom panel jar files available in the classpath
             URL customerPanelUrl = this.customPanelDirectory.toURI().toURL();
             classpathURLs.add( customerPanelUrl );
             getLog().debug( "Added to classpath " + customPanelDirectory );
