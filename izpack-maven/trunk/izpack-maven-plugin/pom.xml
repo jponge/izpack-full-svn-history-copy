@@ -15,7 +15,7 @@
 
   <name>IzPack Maven Plugin</name>
 
-  <version>1.0-alpha-3</version>
+  <version>1.0-alpha-4-SNAPSHOT</version>
 
   <description>Maven plugin which assembles files an IzPack Installer</description>
 
@@ -29,9 +29,9 @@
   </prerequisites>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/izpack/izpack-maven/tags/izpack-maven-plugin-1.0-alpha-3</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/izpack/izpack-maven/tags/izpack-maven-plugin-1.0-alpha-3</developerConnection>
-    <url>http://svn.codehaus.org/izpack/izpack-maven/tags/izpack-maven-plugin-1.0-alpha-3</url>
+    <connection>scm:svn:http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin</developerConnection>
+    <url>http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin</url>
   </scm>
 
   <distributionManagement>
