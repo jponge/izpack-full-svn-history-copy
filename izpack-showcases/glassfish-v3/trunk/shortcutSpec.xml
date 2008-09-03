@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<shortcuts>
+  <skipIfNotSupported/>
+
+  <programGroup defaultName="Glassfish"
+                location="applications"/>
+
+  <shortcut
+    name="Admin tool"
+    target="$INSTALL_PATH\bin\asadmin.bat"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH\bin"
+    description="Start the administration tool"
+    initialState="normal"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no">
+  </shortcut>
+
+  <shortcut
+    name="Update center"
+    target="$INSTALL_PATH\bin\updatetool.bat"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH\updatecenter\bin"
+    description="Update Glassfish and get additional modules."
+    initialState="normal"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no">
+  </shortcut>
+
+  <shortcut
+    name="Uninstall"
+    target="$INSTALL_PATH\Uninstaller\uninstaller.jar"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH"
+    description="Uninstall Glassfish"
+    initialState="normal"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no">
+  </shortcut>
+
+</shortcuts>
+

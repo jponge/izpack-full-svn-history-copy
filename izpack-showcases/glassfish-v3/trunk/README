@@ -1,0 +1,39 @@
+Notes
+-----
+
+This installer is "pure-Java", i.e., it does not leverage any Windows-specific
+feature such as dealing with the registry and so on.
+
+Also, please note that it only uses a minimal subset of the IzPack features :-)
+
+
+How to generate an installer
+----------------------------
+
+Grab the official GlassFish installers from http://glassfish.org/
+
+I recommend putting them in a directory called 'vendor', but you may well
+proceed differently. The rest of the workflow is as follows.
+
+1. Extract the installers contents to:
+
+   * 'win32' for the Windows version
+   * 'linux' for the Linux version
+   * 'darwin' for the Mac OS X version
+   * 'solaris_x86' for the Solaris x86 version
+   * 'solaris_sparc' for the Solaris sparc version
+
+2. Run the 'generate.rb' script. It requires Ruby 1.8.
+
+3. Call IzPack on the generated 'glassfish-install.xml' IzPack descriptor.
+
+4. Optionnaly, use 'izpack2exe' and 'izpack2app' to wrap the installer in
+   a Windows self-extracting archive and in a Mac OS X application bundle.
+
+   Please note that Windows VISTA may only provide a user rights escalation
+   through a Windows executable named "liked an installer" (e.g., setup.exe).
+   The traditional IzPack Jar installer may not be allowed to write to
+   'Program Files' otherwise.
+
+--
+Julien Ponge <julien.ponge@gmail.com>

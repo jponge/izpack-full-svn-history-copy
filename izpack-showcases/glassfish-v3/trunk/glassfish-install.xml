@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2007, 2008 Julien Ponge. All rights reserved.
+
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation
+  files (the "Software"), to deal in the Software without
+  restriction, including without limitation the rights to use,
+  copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the
+  Software is furnished to do so, subject to the following
+  conditions:
+
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  OTHER DEALINGS IN THE SOFTWARE.
+-->
+<installation version="1.0">
+
+  <info>
+    <appname>Glassfish</appname>
+    <appversion>v3-latest</appversion>
+    <authors>
+      <author email="" name="Julien Ponge (packager)"/>
+      <author email="" name="Sun Microsystems and the GlassFish community"/>
+    </authors>
+    <url>http://glassfish.org/</url>
+    <javaversion>1.5</javaversion>
+    <requiresjdk>yes</requiresjdk>
+  </info>
+  
+  <conditions>
+    <condition type="variable" id="start.glassfish">
+      <name>gf_start_domain</name>
+      <value>true</value>
+    </condition>
+  </conditions>
+  
+  <guiprefs height="600" resizable="yes" width="800">
+    <modifier key="allXGap" value="5"/>
+    <modifier key="allYGap" value="5"/>
+    <modifier key="paragraphYGap" value="15"/>
+    <modifier key="useHeadingPanel" value="yes"/>
+    <modifier key="headingLineCount" value="1"/>
+    <modifier key="headingFontSize" value="2"/>
+    <modifier key="headingBackgroundColor" value="0x00ffffff"/>
+    <modifier key="headingPanelCounter" value="text"/>
+    <modifier key="headingPanelCounterPos" value="inHeading"/>
+  </guiprefs>
+  
+  <locale>
+    <langpack iso3="eng"/>
+    <langpack iso3="fra"/>
+  </locale>
+  
+  <resources>
+    <res src="process-panel.xml" id="ProcessPanel.Spec.xml"/>
+    <res src="glassfish-readme.html" id="HTMLInfoPanel.info"/>
+    <res src="glassfish-readme-fra.html" id="HTMLInfoPanel.info_fra"/>
+    <res src="glassfish-license.html" id="HTMLLicencePanel.licence"/>
+    <res src="glassfish.png" id="Heading.image"/>
+    <res src="splash.png" id="installer.langsel.img"/>
+    <res id="userInputSpec.xml" src="userinput.xml" />
+    <res id="userInputLang.xml_eng" src="userinput-eng.xml" />
+    <res id="userInputLang.xml_fra" src="userinput-fra.xml" />
+    <res src="RegistrySpec.xml" id="RegistrySpec.xml"/>
+    <res src="shortcutSpec.xml" id="shortcutSpec.xml"/>
+  </resources>
+
+  <panels>
+    <panel classname="HTMLInfoPanel" id="htmlinfopanel"/>
+    <panel classname="HTMLLicencePanel" id="httmllicencepanel"/>
+    <panel classname="TargetPanel" id="targetpanel"/>
+    <panel classname="UserInputPanel" id="userinputpanel"/>
+    <panel classname="InstallPanel" id="installpanel"/>
+    <panel classname="ProcessPanel" id="processpanel"/>
+    <panel classname="ShortcutPanel" id="shortcutpanel"/> 
+    <panel classname="SimpleFinishPanel" id="simplefinishpanel"/>
+  </panels>
+  
+  <listeners>
+    <listener installer="SummaryLoggerInstallerListener"/>
+    <listener installer="RegistryInstallerListener"
+              uninstaller="RegistryUninstallerListener">
+      <os family="windows"/>
+    </listener>
+  </listeners>
+  
+  <packs>
+    <pack name="Glassfish" required="yes">
+      <description>Glassfish</description>   
+      
+      <file src="launch-browser.sh" targetdir="$INSTALL_PATH/bin" condition="izpack.linuxinstall" />
+      <file src="launch-browser.sh" targetdir="$INSTALL_PATH/bin" condition="izpack.macinstall" />
+      <file src="launch-browser.sh" targetdir="$INSTALL_PATH/bin" condition="izpack.solarisinstall" />
+      <file src="bootstrap.properties" targetdir="$INSTALL_PATH/pkg" />
+      
+      <fileset dir="vendor/v3" targetdir="$INSTALL_PATH">
+        <include name="**/*"/>
+        <include name=".org.opensolaris,pkg"/>
+      </fileset>
+      
+      <executable targetfile="$INSTALL_PATH/bin/launch-browser.sh" stage="never" os="unix" />
+      <executable targetfile="$INSTALL_PATH/bin/asadmin" stage="never" os="unix" />
+      <executable targetfile="$INSTALL_PATH/bin/pkg" stage="never" os="unix" />
+      <executable targetfile="$INSTALL_PATH/bin/updatetool" stage="never" os="unix" />
+      
+      <parsable   targetfile="$INSTALL_PATH/bin/launch-browser.sh" os="unix" /> 
+      <parsable   targetfile="$INSTALL_PATH/pkg/bootstrap.properties" />
+    </pack>
+    
+  </packs>
+  
+  <native type="izpack" name="ShellLink.dll">
+    <os family="windows"/>
+  </native>
+  
+  <native type="3rdparty" name="COIOSHelper.dll" stage="both">
+    <os family="windows"/>
+  </native>
+  
+</installation>
