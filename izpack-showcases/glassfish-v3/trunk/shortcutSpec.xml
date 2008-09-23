@@ -21,7 +21,7 @@
 
   <shortcut
     name="Update center"
-    target="$INSTALL_PATH\bin\updatetool.bat"
+    target="$INSTALL_PATH\updatetool\bin\updatetool.exe"
     commandLine=""
     workingDirectory="$INSTALL_PATH\updatecenter\bin"
     description="Update GlassFish and get additional modules."

@@ -34,7 +34,6 @@
     </authors>
     <url>http://glassfish.org/</url>
     <javaversion>1.5</javaversion>
-    <requiresjdk>yes</requiresjdk>
   </info>
   
   <conditions>
@@ -72,7 +71,8 @@
     <res id="userInputLang.xml_eng" src="userinput-eng.xml" />
     <res id="userInputLang.xml_fra" src="userinput-fra.xml" />
     <res src="RegistrySpec.xml" id="RegistrySpec.xml"/>
-    <res src="shortcutSpec.xml" id="shortcutSpec.xml"/>
+	<res id="Win_NT_shortcutSpec.xml" src="shortcutSpec.xml" />
+    <res id="shortcutSpec.xml" src="empty-shortcuts.xml" />
   </resources>
 
   <panels>
@@ -114,7 +114,7 @@
       <executable targetfile="$INSTALL_PATH/bin/updatetool" stage="never" os="unix" />
       
       <parsable   targetfile="$INSTALL_PATH/bin/launch-browser.sh" os="unix" /> 
-      <parsable   targetfile="$INSTALL_PATH/pkg/bootstrap.properties" />
+      <parsable   targetfile="$INSTALL_PATH/pkg/bootstrap.properties" type="javaprop" />
     </pack>
     
   </packs>

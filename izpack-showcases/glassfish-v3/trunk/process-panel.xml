@@ -26,10 +26,20 @@
 <processing>
 
   <job name="Update center bootstrap">
+	<os family="unix"/>
     <executefile name="java">
       <arg>-jar</arg>
       <arg>$INSTALL_PATH/pkg/lib/pkg-bootstrap.jar</arg>
       <arg>$INSTALL_PATH/pkg/bootstrap.properties</arg>
+    </executefile>
+  </job>
+
+  <job name="Update center bootstrap">
+	<os family="windows"/>
+    <executefile name="java.exe">
+      <arg>-jar</arg>
+	  <arg>"$INSTALL_PATH/pkg/lib/pkg-bootstrap.jar"</arg>
+	  <arg>"$INSTALL_PATH/pkg/bootstrap.properties"</arg>
     </executefile>
   </job>
   
