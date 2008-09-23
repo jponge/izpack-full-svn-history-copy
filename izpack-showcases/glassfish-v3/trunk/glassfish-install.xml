@@ -26,7 +26,7 @@
 <installation version="1.0">
 
   <info>
-    <appname>Glassfish</appname>
+    <appname>GlassFish</appname>
     <appversion>v3-latest</appversion>
     <authors>
       <author email="" name="Julien Ponge (packager)"/>
@@ -95,8 +95,8 @@
   </listeners>
   
   <packs>
-    <pack name="Glassfish" required="yes">
-      <description>Glassfish</description>   
+    <pack name="GlassFish" required="yes">
+      <description>GlassFish</description>   
       
       <file src="launch-browser.sh" targetdir="$INSTALL_PATH/bin" condition="izpack.linuxinstall" />
       <file src="launch-browser.sh" targetdir="$INSTALL_PATH/bin" condition="izpack.macinstall" />

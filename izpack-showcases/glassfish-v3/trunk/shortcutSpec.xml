@@ -2,7 +2,7 @@
 <shortcuts>
   <skipIfNotSupported/>
 
-  <programGroup defaultName="Glassfish"
+  <programGroup defaultName="GlassFish"
                 location="applications"/>
 
   <shortcut
@@ -24,7 +24,7 @@
     target="$INSTALL_PATH\bin\updatetool.bat"
     commandLine=""
     workingDirectory="$INSTALL_PATH\updatecenter\bin"
-    description="Update Glassfish and get additional modules."
+    description="Update GlassFish and get additional modules."
     initialState="normal"
     programGroup="yes"
     desktop="no"
@@ -38,7 +38,7 @@
     target="$INSTALL_PATH\Uninstaller\uninstaller.jar"
     commandLine=""
     workingDirectory="$INSTALL_PATH"
-    description="Uninstall Glassfish"
+    description="Uninstall GlassFish"
     initialState="normal"
     programGroup="yes"
     desktop="no"

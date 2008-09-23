@@ -33,13 +33,13 @@
     </executefile>
   </job>
   
-  <job name="Glassfish Startup" conditionid="start.glassfish">
+  <job name="GlassFish Startup" conditionid="start.glassfish">
     <os family="windows" />
     <executefile name="$INSTALL_PATH\bin\asadmin.bat">
       <arg>start-domain</arg>
     </executefile>
   </job>  
-  <job name="Glassfish Startup" conditionid="start.glassfish">
+  <job name="GlassFish Startup" conditionid="start.glassfish">
     <os family="unix" />
     <executefile name="$INSTALL_PATH/bin/asadmin">
       <arg>start-domain</arg>

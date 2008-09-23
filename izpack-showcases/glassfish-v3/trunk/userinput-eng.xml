@@ -25,5 +25,5 @@
 -->
 <langpack>
   <str id="text.proxy.url" txt="Proxy URL (http://host:port/ or leave blank):" />  
-  <str id="check.startdomain" txt="Start Glassfish after installation" />
+  <str id="check.startdomain" txt="Start GlassFish after installation" />
 </langpack>

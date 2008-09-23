@@ -36,7 +36,7 @@
     <field type="space" />
 
     <field type="check" variable="gf_start_domain">
-      <spec txt="Start Glassfish after installation" id="check.startdomain" true="true" false="false" set="true"/>
+      <spec txt="Start GlassFish after installation" id="check.startdomain" true="true" false="false" set="true"/>
     </field>
         
   </panel>
