@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.izpack</groupId>
   <artifactId>izpack-parent</artifactId>
-  <version>2</version>
+  <version>3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>IzPack Parent</name>
   <url>http://izpack.org</url>
@@ -74,9 +74,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/izpack/izpack-maven/tags/izpack-parent-2</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/izpack/izpack-maven/tags/izpack-parent-2</developerConnection>
-    <url>http://svn.codehaus.org/izpack/izpack-maven/tags/izpack-parent-2</url>
+    <connection>scm:svn:http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven</developerConnection>
+    <url>http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven</url>
   </scm>
   
 
