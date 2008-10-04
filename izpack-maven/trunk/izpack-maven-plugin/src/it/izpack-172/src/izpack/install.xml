@@ -3,13 +3,14 @@
 <installation version="1.0">
 
     <info>
-        <appname>${project.name}</appname>
-        <appversion>@{app.version.static}</appversion>    <!-- make sure we can interpolate this -->
-        <authors>
-            <author name="${user.name}" email="jpz@superman.org"/>
-            <author name="Hidden Man" email="hidden@hisdomain.com"/>
-        </authors>
-        <url>http://www.anotherworld-inspace-website.net/</url>
+      <appname>${project.name}</appname>
+      <appversion>@{app.version.static}</appversion>    <!-- make sure we can interpolate this -->
+      <authors>
+        <author name="${user.name}" email="jpz@superman.org"/>
+        <author name="Hidden Man" email="hidden@hisdomain.com"/>
+        <author name="${app.group}" email="@{app.group}@domain.com"/>
+      </authors>
+      <url>http://www.anotherworld-inspace-website.net/</url>
     </info>
     
     <locale>
