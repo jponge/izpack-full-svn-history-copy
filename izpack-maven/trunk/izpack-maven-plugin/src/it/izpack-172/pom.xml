@@ -9,9 +9,9 @@
   <name>izpack-172-it</name>
 
   <build>
- 
+
     <defaultGoal>package</defaultGoal>
-    
+
     <finalName>${project.artifactId}</finalName>
     <plugins>
       <plugin>
@@ -19,13 +19,13 @@
         <artifactId>izpack-maven-plugin</artifactId>
         <version>${version}</version>
         <executions>
-            <execution>
-              <id>standard-installer</id>
-              <phase>package</phase>
-              <goals>
-                <goal>izpack</goal>
-              </goals>
-            </execution>
+          <execution>
+            <id>standard-installer</id>
+            <phase>package</phase>
+            <goals>
+              <goal>izpack</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
     </plugins>
@@ -38,9 +38,9 @@
     <app.title>${project.name}</app.title>
     <app.subpath>${project.artifactId}-${project.version}</app.subpath>
     <app.version>${project.version}</app.version>
-    <app.version.static>1.5.3</app.version.static>
+    <app.version.static>some.dummy.version</app.version.static>
     <app>theApp</app>
-    
+
   </properties>
 
 </project>

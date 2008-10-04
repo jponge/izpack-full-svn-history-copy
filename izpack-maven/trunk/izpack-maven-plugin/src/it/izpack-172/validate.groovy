@@ -6,4 +6,4 @@ content = new File(basedir,'target/izpack/install.xml').text;
 assert content.contains( 'name="org.codehaus.izpack"' )
 assert content.contains( 'email="org.codehaus.izpack@domain.com"' )
 assert ! content.contains( '@{app.version.static}' )
-assert content.contains( '1.5.6' )
+assert content.contains( '<appversion>some.dummy.version</appversion>' )

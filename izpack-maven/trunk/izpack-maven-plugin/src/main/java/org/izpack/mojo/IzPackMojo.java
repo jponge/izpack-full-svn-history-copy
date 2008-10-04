@@ -33,6 +33,7 @@ import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenProjectValueSource;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
+import org.apache.maven.shared.filtering.PropertiesEscapingBackSlashValueSource;
 
 import com.izforge.izpack.compiler.CompilerConfig;
 
@@ -216,10 +217,13 @@ public class IzPackMojo
                                                                                        session );
 
         mavenResourcesExecution.setUseDefaultFilterWrappers( true );
-
+        
         // support @{} izpack ant format
-        mavenResourcesExecution.addFilerWrapper( new MavenProjectValueSource( project, true ), "\\@", "(.+?)\\}", "@{",
-                                                 "}" );
+        mavenResourcesExecution.addFilerWrapperWithEscaping( new PropertiesEscapingBackSlashValueSource( true, project
+            .getProperties() ), "@{", "}", null );
+
+        mavenResourcesExecution.addFilerWrapperWithEscaping( new MavenProjectValueSource( project, true ), "@{", "}",
+                                                             null );
 
         mavenResourcesFiltering.filterResources( mavenResourcesExecution );
 
