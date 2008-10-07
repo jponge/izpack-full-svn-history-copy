@@ -1,0 +1,16 @@
+<assembly>
+  <id>izpack2app</id>
+  <baseDirectory>izpack2app</baseDirectory>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  
+  <fileSets>
+    <fileSet>
+      <directory>${izpack.dir}/utils/izpack2app</directory>
+      <outputDirectory>izpack2app</outputDirectory>
+    </fileSet>
+  </fileSets>
+ 
+</assembly>
