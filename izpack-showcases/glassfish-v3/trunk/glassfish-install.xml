@@ -27,13 +27,14 @@
 
   <info>
     <appname>GlassFish</appname>
-    <appversion>v3-latest</appversion>
+    <appversion>v3 Prelude</appversion>
     <authors>
       <author email="" name="Julien Ponge (packager)"/>
       <author email="" name="Sun Microsystems and the GlassFish community"/>
     </authors>
     <url>http://glassfish.org/</url>
     <javaversion>1.5</javaversion>
+	<run-privileged/>
   </info>
   
   <conditions>
