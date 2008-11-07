@@ -33,6 +33,6 @@ end
 izpack_home = ARGV[0]
 
 puts "Compiling the installers..."
-system "#{izpack_home}/bin/compile glassfish-install.xml -h #{izpack_home} -o glassfish-v3-latest-install.jar -c deflate -l 9"
+system "#{izpack_home}/bin/compile glassfish-install.xml -h #{izpack_home} -o glassfish-v3-prelude-install.jar -c deflate -l 9"
 
 puts "Done"
