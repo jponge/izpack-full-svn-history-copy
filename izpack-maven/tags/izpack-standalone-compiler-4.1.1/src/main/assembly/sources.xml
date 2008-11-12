@@ -1,0 +1,16 @@
+<assembly>
+  <id>sources</id>
+  <baseDirectory>sources</baseDirectory>
+  <formats>
+    <format>jar</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  
+  <fileSets>
+    <fileSet>
+      <directory>${izpack.dir}/src/lib</directory>
+      <outputDirectory></outputDirectory>
+    </fileSet>
+  </fileSets>
+ 
+</assembly>
