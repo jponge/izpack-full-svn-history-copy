@@ -26,7 +26,7 @@
 <installation version="1.0">
 
   <info>
-    <appname>GlassFish</appname>
+    <appname>GlassFish v3 Prelude</appname>
     <appversion>v3 Prelude</appversion>
     <authors>
       <author email="" name="Julien Ponge (packager)"/>
