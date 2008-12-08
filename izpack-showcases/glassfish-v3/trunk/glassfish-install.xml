@@ -44,7 +44,7 @@
     </condition>
   </conditions>
   
-  <guiprefs height="600" resizable="yes" width="800">
+  <guiprefs height="650" resizable="yes" width="800">
     <modifier key="allXGap" value="5"/>
     <modifier key="allYGap" value="5"/>
     <modifier key="paragraphYGap" value="15"/>
@@ -115,6 +115,7 @@
       <executable targetfile="$INSTALL_PATH/bin/updatetool" stage="never" os="unix" />
       
       <parsable   targetfile="$INSTALL_PATH/bin/launch-browser.sh" os="unix" /> 
+      <parsable   targetfile="$INSTALL_PATH/bin/asadmin" stage="never" os="unix" />
       <parsable   targetfile="$INSTALL_PATH/pkg/bootstrap.properties" type="javaprop" />
     </pack>
     

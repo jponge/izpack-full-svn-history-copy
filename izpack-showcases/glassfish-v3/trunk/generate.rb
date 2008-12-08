@@ -32,6 +32,9 @@ end
 
 izpack_home = ARGV[0]
 
+puts "Replacing some scripts in bin/..."
+FileUtils.cp 'fixed-asadmin', 'vendor/v3/bin/asadmin'
+
 puts "Compiling the installers..."
 system "#{izpack_home}/bin/compile glassfish-install.xml -h #{izpack_home} -o glassfish-v3-prelude-install.jar -c deflate -l 9"
 
