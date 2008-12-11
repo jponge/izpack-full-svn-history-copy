@@ -5,7 +5,9 @@
       <question>Adding custom panels without rebuilding standalone-compiler.jar?</question>
       <answer>
         <p>
-          http://www.nabble.com/Adding-custom-panels-without-rebuilding-standalone-compiler.jar-td18297470.html
+          <a href="http://www.nabble.com/Adding-custom-panels-without-rebuilding-standalone-compiler.jar-td18297470.html">
+            http://www.nabble.com/Adding-custom-panels-without-rebuilding-standalone-compiler.jar-td18297470.html
+          </a>
         </p>
       </answer>
     </faq>
