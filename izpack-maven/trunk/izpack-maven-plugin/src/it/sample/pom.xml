@@ -1,7 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-
   <groupId>org.codehaus.izpack</groupId>
   <artifactId>izpack-maven-plugin-example</artifactId>
   <version>1.0-SNAPSHOT</version>
@@ -10,7 +9,6 @@
 
   <packaging>pom</packaging>
   
-  
   <dependencies>
     
     <!-- this will override the one in the plugin -->
@@ -18,7 +16,6 @@
       <groupId>org.codehaus.izpack</groupId>
       <artifactId>izpack-standalone-compiler</artifactId>
       <version>4.1.1</version>
-      <!-- dont want to download this artifact when retrieve the installer as transitive dependency -->
       <optional>true</optional>
     </dependency>
   </dependencies>
@@ -52,12 +49,14 @@
           <artifactId>maven-jar-plugin</artifactId>
           <version>2.2</version>
           <executions>
-            <!-- package each panel jar from the built classes and place where standalone can pickup     -->
-            <!-- note if a panels are build outside of this project, you can use maven-dependency-plugin -->
-            <!-- to unpack it, and use jar plugins repackage customer panel to the right place           -->
+            <!-- package each panel jar from the built classes and place where standalone compiler can pickup -->
             
-            <!-- or you can use maven-assembly-plugin, assemble all the panel jars in to to another jar  -->
-            <!-- and use dependency plugin to unpack it to the right place place                         -->
+            <!-- Another option is to build all panels into a jar outside of this proejct, then use -->
+            <!-- maven-dependency-plugin to unpack it, and use jar plugins repackage customer panel -->
+            <!-- to the right place           -->
+            
+            <!-- or use maven-assembly-plugin to assemble all the panel jars in to to another jar  -->
+            <!-- and use dependency plugin to unpack it to the right place place                   -->
             
             <!-- see http://www.nabble.com/Adding-custom-panels-without-rebuilding-standalone-compiler.jar-td18297470.html -->
             
@@ -81,6 +80,7 @@
           </executions>
         </plugin>
 
+        <!--  copy other checked resource into staging area, expected by install.xml -->
         <plugin>
           <artifactId>maven-antrun-plugin</artifactId>
           <version>1.1</version>
@@ -103,16 +103,15 @@
           </executions>
         </plugin>
 
+        <!--  see install.xml to see how MyHelloPanel is used -->
         <plugin>
-        
           <groupId>org.codehaus.izpack</groupId>
           <artifactId>izpack-maven-plugin</artifactId>
-          
+          <version>1.0-alpha-4</version>
           <configuration>
             <izpackBasedir>${staging.dir}</izpackBasedir>
             <customPanelDirectory>${staging.dir}</customPanelDirectory>
           </configuration>
-          
           <executions>
             <execution>
               <id>standard-installer</id>
@@ -125,10 +124,8 @@
         </plugin>
         
       </plugins>
-      
   
   </build>
-
   
   <properties>
     <staging.dir>${project.build.directory}/staging</staging.dir>

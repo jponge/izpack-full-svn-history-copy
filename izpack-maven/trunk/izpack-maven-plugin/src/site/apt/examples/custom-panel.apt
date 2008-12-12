@@ -1,0 +1,21 @@
+ ------
+ Maven IzPack Plugin - Custom Panel Example
+ ------
+ Dan T. Tran
+ ------
+ 12 December 2008
+ -----
+
+A Simple example with custom panel
+
+  This example demonstrates how to use maven to build custom panel. 
+  
+  The live example is at {{{http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it/sample}
+  http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it/sample}}
+  
+  However in order to understand the example pom.xml, you must read the
+  {{{../faq.html} FAQ}}
+  
+   
+
+ 
