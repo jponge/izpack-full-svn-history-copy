@@ -8,7 +8,8 @@
 
 A Simple example with custom panel
 
-  This example demonstrates how to use maven to build custom panel. 
+  This example shows how to compile, package, and place custom panel jars 
+  to staging area to be picked up by standalone compiler.
   
   The live example is at {{{http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it/sample}
   http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it/sample}}
