@@ -7,7 +7,7 @@
 
   <name>Empty Example</name>
 
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
   
   <dependencies>
     
