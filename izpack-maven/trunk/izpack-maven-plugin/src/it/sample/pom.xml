@@ -26,24 +26,17 @@
     
       <plugins>
 
-        <!-- since it is under a pom packaging, we need to compile all the panel classes ourselves -->
+        <!-- configure the compiler to use 1.5  -->
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>precompile</id>
-              <phase>compile</phase>
-              <goals>
-                <goal>compile</goal>
-              </goals>
-              <configuration>
-                <encoding>${project.build.sourceEncoding}</encoding>
-                <source>1.5</source>
-                <target>1.5</target>
-              </configuration>
-            </execution>
-          </executions>
+          <configuration>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <source>1.5</source>
+            <target>1.5</target>
+          </configuration>
         </plugin>
+        
+        <!--  package built classes into the panels into ${staging}/bin/panel -->        
         
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
