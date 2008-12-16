@@ -25,7 +25,7 @@
     </menu>
 
     <menu name="Examples">
-      <item name="Simple Example" href="http://svn.codehaus.org/izpack/izpack-maven/trunk/izpack-maven-plugin/src/it/sample"/>
+      <item name="Custom Panel Example" href="examples/custom-panel.html"/>
       <item name="Groovy Example" href="examples/groovy.html"/>
     </menu>
 

@@ -18,6 +18,13 @@
       <version>4.1.1</version>
       <optional>true</optional>
     </dependency>
+    
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.5.6</version>
+    </dependency>
+    
   </dependencies>
   
   <build>
@@ -95,6 +102,28 @@
             
           </executions>
         </plugin>
+
+        <!--  prepare depedencies so that izpack jar tag to pickup at compile time -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.0</version>
+          <executions>
+            <execution>
+              <id>standard-installer</id>
+              <phase>process-resources</phase>
+              <goals>
+                <goal>copy-dependencies</goal>
+              </goals>
+              <configuration>
+                <stripVersion>true</stripVersion>
+                <excludeGroupIds>org.codehaus.izpack</excludeGroupIds> <!-- dont want standalone compiler -->
+                <outputDirectory>${staging.dir}/dependency</outputDirectory>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
 
         <!--  see install.xml to see how MyHelloPanel is used -->
         <plugin>
