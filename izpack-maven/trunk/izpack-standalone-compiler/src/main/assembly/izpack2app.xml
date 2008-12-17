@@ -8,7 +8,7 @@
   
   <fileSets>
     <fileSet>
-      <directory>${izpack.dir}/utils/izpack2app</directory>
+      <directory>${izpack.dir}/utils/wrappers/izpack2app</directory>
       <outputDirectory>izpack2app</outputDirectory>
     </fileSet>
   </fileSets>
