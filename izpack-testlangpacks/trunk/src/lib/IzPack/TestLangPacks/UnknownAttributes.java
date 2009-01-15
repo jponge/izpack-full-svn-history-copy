@@ -41,7 +41,7 @@ public class UnknownAttributes extends LangPackData
    /**
     * Constructor of the class with parameter(s).
     *
-    * @see LangPackData for parameters.
+    * @see LangPackData#LangPackData(java.util.ArrayList languageItemsBase, java.util.ArrayList languageItemsTest)
     */
    public UnknownAttributes (ArrayList<LanguageItem> languageItemsBase, ArrayList<LanguageItem> languageItemsTest)
    {
@@ -54,7 +54,7 @@ public class UnknownAttributes extends LangPackData
     * @note This will return LanguageItem objects which will contain Array of
     *       unknown attributes.
     *
-    * @see See also LangPackData.getResult()
+    * @see LangPackData.getResult()
     */
    @Override
    public Hashtable<String,ArrayList<LanguageItem>> getResult ()

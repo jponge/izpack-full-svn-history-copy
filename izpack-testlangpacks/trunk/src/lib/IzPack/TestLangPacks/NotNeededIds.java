@@ -40,7 +40,7 @@ public class NotNeededIds extends LangPackData
    /**
     * Constructor of the class with parameter(s).
     *
-    * @see LangPackData for parameters.
+    * @see LangPackData#LangPackData(java.util.ArrayList languageItemsBase, java.util.ArrayList languageItemsTest)
     */
    public NotNeededIds (ArrayList<LanguageItem> languageItemsBase, ArrayList<LanguageItem> languageItemsTest)
    {
@@ -50,7 +50,7 @@ public class NotNeededIds extends LangPackData
    /**
     * Finding ID's which are not needed anymore.
     *
-    * @see See also LangPackData.getResult()
+    * @see LangPackData.getResult()
     */
    @Override
    public Hashtable<String, ArrayList<LanguageItem>> getResult()
