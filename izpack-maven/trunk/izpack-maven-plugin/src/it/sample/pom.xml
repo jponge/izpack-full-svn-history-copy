@@ -6,16 +6,15 @@
   <version>1.0-SNAPSHOT</version>
 
   <name>Empty Example</name>
-
+  
   <packaging>jar</packaging>
   
   <dependencies>
     
-    <!-- this will override the one in the plugin -->
     <dependency>
       <groupId>org.codehaus.izpack</groupId>
       <artifactId>izpack-standalone-compiler</artifactId>
-      <version>4.1.1</version>
+      <version>${izpack-standalone.version}</version>
       <optional>true</optional>
     </dependency>
     
@@ -42,43 +41,6 @@
             <target>1.5</target>
           </configuration>
         </plugin>
-        
-        <!--  package built classes into the panels into ${staging}/bin/panel -->        
-        
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>2.2</version>
-          <executions>
-            <!-- package each panel jar from the built classes and place where standalone compiler can pickup -->
-            
-            <!-- Another option is to build all panels into a jar outside of this proejct, then use -->
-            <!-- maven-dependency-plugin to unpack it, and use jar plugins repackage customer panel -->
-            <!-- to the right place           -->
-            
-            <!-- or use maven-assembly-plugin to assemble all the panel jars in to to another jar  -->
-            <!-- and use dependency plugin to unpack it to the right place place                   -->
-            
-            <!-- see http://www.nabble.com/Adding-custom-panels-without-rebuilding-standalone-compiler.jar-td18297470.html -->
-            
-            <execution>
-              <id>create-myhellopanel-jar</id>
-              <phase>process-classes</phase>
-              <goals>
-                <goal>jar</goal>
-              </goals>
-              <configuration>
-                <archive>
-                  <addMavenDescriptor>false</addMavenDescriptor>
-                </archive>              
-                <includes>
-                  <include>**/MyHelloPanel.class</include>
-                </includes>
-                <finalName>MyHelloPanel</finalName>
-                <outputDirectory>${staging.dir}/bin/panels</outputDirectory>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
 
         <!--  copy other checked resource into staging area, expected by install.xml -->
         <plugin>
@@ -99,11 +61,10 @@
                 </tasks>
               </configuration>
             </execution>
-            
           </executions>
         </plugin>
 
-        <!--  prepare depedencies so that izpack jar tag to pickup at compile time -->
+        <!--  prepare dependencies so that izpack jar tag to pickup at compile time -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
@@ -124,12 +85,18 @@
           </executions>
         </plugin>
 
-
         <!--  see install.xml to see how MyHelloPanel is used -->
         <plugin>
           <groupId>org.codehaus.izpack</groupId>
           <artifactId>izpack-maven-plugin</artifactId>
           <version>1.0-alpha-4</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.codehaus.izpack</groupId>
+              <artifactId>izpack-standalone-compiler</artifactId>
+              <version>${izpack-standalone.version}</version>
+            </dependency>
+          </dependencies>
           <configuration>
             <izpackBasedir>${staging.dir}</izpackBasedir>
             <customPanelDirectory>${staging.dir}</customPanelDirectory>
@@ -151,6 +118,7 @@
   
   <properties>
     <staging.dir>${project.build.directory}/staging</staging.dir>
+    <izpack-standalone.version>4.2.1-SNAPSHOT</izpack-standalone.version>
   </properties>
 
 </project>
