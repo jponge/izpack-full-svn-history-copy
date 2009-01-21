@@ -45,7 +45,7 @@
         We indicate here which panels we want to use. The order will be respected.
     -->
     <panels>
-        <panel classname="MyHelloPanel"/>
+        <panel classname="com.company.izpack.panels.MyHelloPanel"/>
         <panel classname="InfoPanel"/>
         <panel classname="LicencePanel"/>
         <panel classname="TargetPanel"/>
@@ -55,6 +55,7 @@
     </panels>
 
     <jar src="dependency/plexus-utils.jar"/>
+    <jar src="../izpack-maven-plugin-example.jar"/>
 
     <!-- 
         The packs section.

@@ -30,6 +30,8 @@
      
     <defaultGoal>package</defaultGoal>
     
+    <finalName>${project.artifactId}</finalName>
+    
       <plugins>
 
         <!-- configure the compiler to use 1.5  -->

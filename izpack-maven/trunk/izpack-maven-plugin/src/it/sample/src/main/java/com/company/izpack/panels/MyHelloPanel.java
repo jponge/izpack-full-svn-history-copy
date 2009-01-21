@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package com.izforge.izpack.panels;
+package com.company.izpack.panels;
 
 import com.izforge.izpack.Info;
 import com.izforge.izpack.gui.IzPanelLayout;
