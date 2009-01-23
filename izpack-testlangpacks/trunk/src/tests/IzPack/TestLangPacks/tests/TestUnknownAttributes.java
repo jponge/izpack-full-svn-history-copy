@@ -94,5 +94,26 @@ public class TestUnknownAttributes extends TestBase
       
       // There should 2 unknown attributes.
       assertEquals(2, resultItems2.size());
+      
+      // Check that there really are those what there should be.
+      LanguageItem item;
+      String[] attributes = null;
+      String[] splitted = null;
+      
+      // Get first bunch of attributes.
+      item = resultItems2.get(0);
+      attributes = item.getUnknownAttributes();
+      // Split using character '='.
+      splitted = attributes[0].split("=");
+      assertEquals("abc", splitted[0]);
+      splitted = attributes[1].split("=");
+      assertEquals("ttx", splitted[0]);
+      
+      // Second bunch.
+      item = resultItems2.get(1);
+      attributes = item.getUnknownAttributes();
+      // Split using character '='.
+      splitted = attributes[0].split("=");
+      assertEquals("di", splitted[0]);
    }
 }
