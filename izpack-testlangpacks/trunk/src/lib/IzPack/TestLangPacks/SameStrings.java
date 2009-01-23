@@ -38,6 +38,7 @@ public class SameStrings extends LangPackData
    /**
     * Default constructor of the class.
     */
+   @SuppressWarnings("unused")
    private SameStrings()
    {
       super();

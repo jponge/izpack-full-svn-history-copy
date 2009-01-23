@@ -21,7 +21,11 @@
 
 package IzPack.TestLangPacks.tests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -29,15 +33,18 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import IzPack.TestLangPacks.LanguageItem;
+import IzPack.TestLangPacks.UnknownAttributes;
+
 /**
- *
- * @author ari
+ * Tests unknown attributes.
  */
-public class TestCreateLangPacks extends TestBase
+public class TestUnknownAttributes extends TestBase
 {
 
-   public TestCreateLangPacks()
+   public TestUnknownAttributes()
    {
+      super();
    }
 
    @BeforeClass
@@ -61,36 +68,31 @@ public class TestCreateLangPacks extends TestBase
    }
 
    /**
-    * Tests XML base file creation
+    * Gets the results and checks them.
     */
    @Test
-   public void createLangPackBase()
+   public void getResults()
    {
       try
       {
          createLangPackBase(fileXmlBase);
+         createLangPackTest(xmlTestFile);
       }
       catch (Exception e)
       {
-         String msg = "Error in base file.\n   " + e.getMessage();
+         String msg = "Error in notNeededIds().\n   " + e.getMessage();
          assertNotNull(msg, null);
       }
-   }
-
-   /**
-    * Tests the creation of the XML file to be tested.
-    */
-   @Test
-   public void createLangPackTest()
-   {
-      try
-      {
-         createLangPackTest(xmlTestFile /*fileMissingIds*/ );
-      }
-      catch (Exception e)
-      {
-         String msg = "Error in file to be tested.\n   " + e.getMessage();
-         assertNotNull(msg, null);
-      }
+      
+      // Create desired object.
+      UnknownAttributes unknownAttributes = new UnknownAttributes(langItemsBase, langItemsTest);
+      // Get results.
+      Hashtable<String,ArrayList<LanguageItem>> result = unknownAttributes.getResult();
+      
+      // Get result without knowing anything about the key.
+      ArrayList<LanguageItem> resultItems2 = result.values().iterator().next();
+      
+      // There should 2 unknown attributes.
+      assertEquals(2, resultItems2.size());
    }
 }

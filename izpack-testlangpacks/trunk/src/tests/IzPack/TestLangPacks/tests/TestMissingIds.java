@@ -21,16 +21,20 @@
 
 package IzPack.TestLangPacks.tests;
 
-import IzPack.TestLangPacks.LanguageItem;
-import IzPack.TestLangPacks.MissingIds;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import IzPack.TestLangPacks.LanguageItem;
+import IzPack.TestLangPacks.MissingIds;
 
 /**
  * Tests missing ID's.

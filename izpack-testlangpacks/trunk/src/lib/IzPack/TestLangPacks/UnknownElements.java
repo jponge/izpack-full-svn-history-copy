@@ -33,6 +33,7 @@ public class UnknownElements extends LangPackData
    /**
     * Default constructore of the class.
     */
+   @SuppressWarnings("unused")
    private UnknownElements()
    {
       super();

@@ -51,7 +51,7 @@ public class UnknownAttributes extends LangPackData
    /**
     * Check unknown attributes.
     *
-    * @note This will return LanguageItem objects which will contain Array of
+    * @note This will return LanguageItem objects which will contain only Array of
     *       unknown attributes.
     *
     * @see LangPackData.getResult()
