@@ -65,7 +65,7 @@ public class UnknownAttributes extends LangPackData
       }
 
       binResult = new Hashtable<String,ArrayList<LanguageItem>>();
-      binResult.put("result", this.languageItemsTest);
+      binResult.put("result", getUnknownAttributes());
       return this.binResult;
    }
 
@@ -113,5 +113,24 @@ public class UnknownAttributes extends LangPackData
       }
 
       return this.txtResult;
+   }
+   
+   /**
+    * Returns only those language item objects which will have unknown attribute String set.
+    */
+   private ArrayList<LanguageItem> getUnknownAttributes()
+   {
+      ArrayList<LanguageItem> unknownAttributes = new ArrayList<LanguageItem>();
+      
+      Iterator<LanguageItem> iter = this.languageItemsTest.iterator();
+      while (iter.hasNext())
+      {
+         LanguageItem item = iter.next();
+         if (item.getUnknownAttributes() != null)
+         {
+            unknownAttributes.add(item);
+         }
+      }
+      return unknownAttributes;
    }
 }
