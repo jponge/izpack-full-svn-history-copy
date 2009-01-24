@@ -69,10 +69,15 @@ public final class Utils
     */
    public static final String getLastWord(String idString)
    {
+      if (idString==null || idString=="")
+      {
+         return null;
+      }
+      
       String strReturn = null;
       String[] sArr = idString.split("\\x2e"); // "."
       int size = sArr.length;
-      if (size > 1)
+      if (size > 1)  // 'idString' must contain more than one string.
       {
          strReturn = sArr[size - 1];
       }

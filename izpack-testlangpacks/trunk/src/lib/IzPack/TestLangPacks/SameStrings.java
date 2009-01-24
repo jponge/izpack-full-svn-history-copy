@@ -168,6 +168,10 @@ public class SameStrings extends LangPackData
       {
          LanguageItem temp = iter.next();
          String currentKey = Utils.getLastWord(temp.getKey());
+         if (currentKey==null)
+         {
+            return 0;
+         }
          // If found,
          if (currentKey.equalsIgnoreCase(keyWord))
          {
