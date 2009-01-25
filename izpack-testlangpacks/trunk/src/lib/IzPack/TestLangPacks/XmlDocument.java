@@ -274,7 +274,7 @@ public class XmlDocument
    }
 
    /**
-    * Returns all attributes which are not id or txt.
+    * Returns attributes due to filtering information.
     * 
     * @param   attributes  Attributes for the element.
     * @param   filterAttrs true: selects only attributes 'id' AND 'txt'. These are supported attributes
