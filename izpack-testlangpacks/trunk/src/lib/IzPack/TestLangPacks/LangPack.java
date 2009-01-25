@@ -107,7 +107,7 @@ public class LangPack
          langArrayList.add(langItem);
          if (notFound)
          {
-            langItem.setUnknownAttributes(getUnknownAttributes(attributes));
+            langItem.setUnknownAttributes(xmlDoc.getAttributes(attributes, true));
          }
       }
    }
@@ -128,27 +128,5 @@ public class LangPack
    public String[] getUnknownElements()
    {
       return xmlDoc.getUnknownElements();
-   }
-
-   /**
-    * Gets unknown attributes fo the current element.
-    * @param node Node whose attributes are to be scanned.
-    * @return     Returns array table containing unknown attributes.
-    *             String[].length will be 0 if there isn't any elements.
-    */
-   private String[] getUnknownAttributes(NamedNodeMap attributes)
-   {
-      ArrayList<String> unknown = new ArrayList<String>();
-      int max = attributes.getLength();
-      for (int x=0; x < max; x++)
-      {
-         Node attrNode = attributes.item(x);
-         if (attrNode.getNodeName().compareTo("id".toLowerCase())!=0 && attrNode.getNodeName().compareTo("txt".toLowerCase())!=0)
-         {
-            unknown.add(attrNode.getNodeName()+"=\""+attrNode.getNodeValue()+"\"");
-         }
-      }
-      String[] tmp = new String[0]; // Make empty String array. This makes to use "T[] toArray(T[] a)" in ArrayList.
-      return unknown.toArray(tmp);  // Return ArrayList items in String[].
    }
 }

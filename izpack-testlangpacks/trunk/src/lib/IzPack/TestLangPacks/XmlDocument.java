@@ -38,6 +38,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 
@@ -233,12 +234,74 @@ public class XmlDocument
          nodeName = node.getNodeName();
          if (!nodeName.equals("str"))
          {
-            unknownElemString = nodeName+" "+node.getTextContent();
+            NamedNodeMap attributes = node.getAttributes();
+            unknownElemString = nodeName + collectAttributes(attributes);
             elems.add(unknownElemString);
          }
       }
 
       String[] templateArray = new String[0];// Make empty String array. This makes to use "T[] toArray(T[] a)" in ArrayList.
       return elems.toArray(templateArray);   // Return ArrayList items as String[].
+   }
+   
+   /**
+    * Collects all attributes of the element and returns them as a String.
+    * 
+    * @param   attributes  Attributes for the element.
+    * @return  Returns all attributes of the element as a String or empty string if not any.
+    * @note    Contains '=' if there is any attributes. If not any returns only empty string "".
+    */
+   private String collectAttributes(NamedNodeMap attributes)
+   {
+      String[] attrs = getAttributes(attributes, false);
+      int len = attrs.length;
+      if (len == 0)
+      {
+         return "";
+      }
+      
+      String returnStr = " ";
+      for (int x=0; x < len; x++)
+      {
+         String str = attrs[x];
+         returnStr += str;
+         if (x < len-1)
+         {
+            returnStr += " ";
+         }
+      }
+      return returnStr;
+   }
+
+   /**
+    * Returns all attributes which are not id or txt.
+    * 
+    * @param   attributes  Attributes for the element.
+    * @param   filterAttrs true: selects only attributes 'id' AND 'txt'. These are supported attributes
+    *                      in IzPack language files.
+    *                      false: selects all which can be found.
+    * @return  Returns all attributes of the element in String array.
+    */
+   public String[] getAttributes(NamedNodeMap attributes, boolean filterAttrs)
+   {
+      ArrayList<String> unknown = new ArrayList<String>();
+      int max = attributes.getLength();
+      for (int x=0; x < max; x++)
+      {
+         Node attrNode = attributes.item(x);
+         if (filterAttrs==true)
+         {
+            if (attrNode.getNodeName().compareTo("id".toLowerCase())!=0 && attrNode.getNodeName().compareTo("txt".toLowerCase())!=0)
+            {
+               unknown.add(attrNode.getNodeName()+"=\""+attrNode.getNodeValue()+"\"");
+            }
+         }
+         else
+         {
+            unknown.add(attrNode.getNodeName()+"=\""+attrNode.getNodeValue()+"\"");
+         }
+      }
+      String[] tmp = new String[0]; // Make empty String array. This makes to use "T[] toArray(T[] a)" in ArrayList.
+      return unknown.toArray(tmp);  // Return ArrayList items in String[].
    }
 }

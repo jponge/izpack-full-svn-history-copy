@@ -95,6 +95,6 @@ public class TestUnknownElements extends TestBase
       // Check that there really are those what there should be.
       LanguageItem item = resultItems2.get(0);
       String[] unknownElementNames = item.getUnknownAttributes();
-      assertEquals("srt", unknownElementNames[0]);
+      assertEquals(true, unknownElementNames[0].startsWith("srt"));
   }
 }
