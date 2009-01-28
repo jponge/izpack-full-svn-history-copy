@@ -6,10 +6,12 @@
         Initial auto-created of build.xml.
     27.7.2008: (by Ari Voutilainen)
         Added distribution dir and files and some other tasks. Added zip creation.
+    28.1.2009: (by Ari Voutilainen)
+    	Changed source directory. Chanhed '_' to '-' in target file name.
 -->
 
-    <property name="ver_major" value="1"/>
-    <property name="ver_minor" value="0"/>
+    <property name="ver_major" value="2"/>
+    <property name="ver_minor" value="0-beta1"/>
     <property name="app_name"  value="TestLangPacks utility for IzPack installer"/>
 
     <property environment="env"/>
@@ -31,7 +33,7 @@
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
-            <src path="src"/>
+            <src path="src/lib"/>
             <classpath refid="IzPack-TestLangPacks.classpath"/>
         </javac>
     </target>
@@ -71,7 +73,7 @@
 
     <!-- Creates distribution zipped file -->
     <target description="Creates distribution zipped file" name="create.zip" depends="clean.zip">
-        <property name="izpack-testlangpacks.zip" value="./_dist/TestLangPacks_${ver_major}.${ver_minor}.zip"/>
+        <property name="izpack-testlangpacks.zip" value="./_dist/TestLangPacks-${ver_major}.${ver_minor}.zip"/>
         <zip destfile="${izpack-testlangpacks.zip}" basedir="./_dist"/>
     </target>
 	

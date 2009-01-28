@@ -56,7 +56,7 @@ public class LangPack
 
       if (xmlDoc.isWellFormed())
       {
-         Main.printMessage(System.out, null, "XML file is well-formed.");
+         CmdLineConsole.printMessage(System.out, null, "XML file is well-formed.");
       }
       else
       {

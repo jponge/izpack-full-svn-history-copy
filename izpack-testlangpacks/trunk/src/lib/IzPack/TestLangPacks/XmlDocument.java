@@ -139,7 +139,7 @@ public class XmlDocument
             msg = "Parameter name is incompatible with the expected value type.";
          }
 
-         Main.printMessage(System.err, "Error in normalize parameters", msg);
+         CmdLineConsole.printMessage(System.err, "Error in normalize parameters", msg);
          throw new LangPackException();
       }
 
@@ -182,7 +182,7 @@ public class XmlDocument
             msg = "Parameter name is incompatible with the expected value type.";
          }
 
-         Main.printMessage(System.err, "Normalize parameters", msg);
+         CmdLineConsole.printMessage(System.err, "Normalize parameters", msg);
       }
    }
 
