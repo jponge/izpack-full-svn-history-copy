@@ -86,7 +86,7 @@ public class UnknownAttributes extends LangPackData
       ArrayList<LanguageItem> resultItems = binResult.values().iterator().next();
       if (!resultItems.isEmpty())
       {
-         this.txtResult = "";
+         String msg = "";
          
          Iterator<LanguageItem> iter = resultItems.iterator();
          while (iter.hasNext())
@@ -95,7 +95,7 @@ public class UnknownAttributes extends LangPackData
             String[] unknownAttrs = item.getUnknownAttributes();
             if (unknownAttrs != null)
             {
-               String msg = "   Found unknown attributes in";
+               msg = "   Found unknown attributes in\n";
                msg = msg + Utils.makeKeyValueString(item.getKey(), item.getValue());
                msg = msg + ":" + "\n";
                int max = unknownAttrs.length;
@@ -106,6 +106,7 @@ public class UnknownAttributes extends LangPackData
                unknownAttrs = null;
             }
          }
+         this.txtResult = msg;
       }
       else
       {
