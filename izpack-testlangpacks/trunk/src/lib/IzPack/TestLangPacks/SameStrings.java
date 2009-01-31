@@ -86,6 +86,8 @@ public class SameStrings extends LangPackData
 
       this.txtResult = "";
       
+      getResult();
+
       // Collect same strings.
       if (this.binResult.size() > 0)
       {
@@ -170,7 +172,7 @@ public class SameStrings extends LangPackData
          String currentKey = Utils.getLastWord(temp.getKey());
          if (currentKey==null)
          {
-            return 0;
+            return sameStringArray.size();
          }
          // If found,
          if (currentKey.equalsIgnoreCase(keyWord))
