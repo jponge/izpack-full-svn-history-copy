@@ -130,145 +130,35 @@ public class CmdLineConsole extends LangPackFileHandling
 
       // Finding missing string ID's.
       // ---------------------------
-      System.out.println("\nFinding ID's which should be added ("+xmlBaseFile+" => "+xmlTestFile+"):");
+      System.out.println("Finding ID's which should be added ("+xmlBaseFile+" => "+xmlTestFile+"):");
       MissingIds missingIds = new MissingIds(this.langItemsBase, this.langItemsTest);
       System.out.println(missingIds.getResultString());
-//
-//      for (LanguageItem itemBase : langItemsBase)
-//      {
-//         key = itemBase.getKey();
-//         // If there isn't any ID string,
-//         if (key==null)
-//         {
-//            continue;   // just go to next.
-//         }
-//         for (LanguageItem itemToCheck : langItemsTest)
-//         {
-//            String checkKey = itemToCheck.getKey();
-//            if (checkKey!=null)
-//            {
-//               if (key.equals(checkKey))
-//               {
-//                  if (itemToCheck.getValue() != null)
-//                  {
-//                     found = true;  // Only filled id and txt will procedure true!
-//                  }
-//               }
-//            }
-//         }
-//
-//         if (!found)
-//         {
-//            System.out.println(makeKeyValueString(key, itemBase.getValue()));
-//            itemPrinted = true;
-//         }
-//         found = false;
-//      }
-//
-//      if (!itemPrinted)
-//      {
-//         System.out.println("   (none)");
-//      }
 
       // Finding ID's which are not needed anymore.
       // -----------------------------------------
-      System.out.println("\nFinding ID's which are not needed anymore in " + xmlTestFile + ":");
+      System.out.println("Finding ID's which are not needed anymore in " + xmlTestFile + ":");
       NotNeededIds notNeededIds = new NotNeededIds(this.langItemsBase, this.langItemsTest);
       System.out.println(notNeededIds.getResultString());
-//       key = null;
-//       found = false;
-//       itemPrinted = false;
-//       for (LanguageItem itemToCheck : langItemsTest)
-//       {
-//          key = itemToCheck.getKey();
-//          // If there isn't any ID string,
-//          if (key == null)
-//          {
-//             continue;   // just go to the next.
-//          }
-//          for (LanguageItem itemBase : langItemsBase)
-//          {
-//             String checkKey = itemBase.getKey();
-//             String checkValue = itemBase.getValue();
-//             if (checkKey != null && checkValue != null)
-//             {
-//                if (checkKey.equals(key))
-//                {
-//                   if (checkValue != null)
-//                   {
-//                      found = true;  // Only filled id and txt will procedure true!
-//                   }
-//                }
-//             }
-//          }
-
-//          if (!found)
-//          {
-//             System.out.println(Utils.makeKeyValueString(key, itemToCheck.getValue()));
-//             itemPrinted = true;
-//          }
-//          found = false;
-//       }
-
-//       if (!itemPrinted)
-//       {
-//          System.out.println("   (none)");
-//       }
 
       // Check unknown attributes.
       // ------------------------
-      System.out.println("\nFinding unknown attributes in " + xmlTestFile + ":");
+      System.out.println("Finding unknown attributes in " + xmlTestFile + ":");
       UnknownAttributes unknownAttributes = new UnknownAttributes(this.langItemsBase, this.langItemsTest);
       System.out.println(unknownAttributes.getResultString());
-//       found = false;
-//       for (LanguageItem itemToCheck : langItemsTest)
-//       {
-//          String[] unknownAttrs = itemToCheck.getUnknownAttributes();
-//          if (unknownAttrs != null)
-//          {
-//             String msg = "   Found unknown attributes in";
-//             msg = msg + Utils.makeKeyValueString(itemToCheck.getKey(), itemToCheck.getValue());
-//             System.out.println(msg + ":");
-//             int max = unknownAttrs.length;
-//             for (int x = 0; x < max; x++)
-//             {
-//                System.out.println("      " + unknownAttrs[x]);
-//             }
-//             unknownAttrs = null;
-//             found = true;
-//          }
-//       }
-
-//       if (!found)
-//       {
-//          System.out.println("   (none)");
-//       }
 
       // Finding unknown elements.
       // ------------------------
-      System.out.println("\nFinding unknown elements in " + xmlTestFile + ":");
+      System.out.println("Finding unknown elements in " + xmlTestFile + ":");
       System.out.println("(means elements which are not supported)");
       UnknownElements unknownElements = new UnknownElements(this.langPackTest);
       System.out.println(unknownElements.getResultString());
-//      String[] unknownElements = langPackTest.getUnknownElements();
-//      if (unknownElements.length == 0)
-//      {
-//         System.out.println("   (none)");
-//      }
-//      else
-//      {
-//         for (String elem : unknownElements)
-//         {
-//            System.out.println("   <" + elem + " ... />");
-//         }
-//      }
 
       if (printSameStrings)
       {
          // Finding possible same strings (finding with last word in the ID which
          // consists of two words or more).
          // ---------------------------------------------------------------------
-         System.out.println("\nFinding possible same strings in " + xmlTestFile + ":");
+         System.out.println("Finding possible same strings in " + xmlTestFile + ":");
          System.out.println("   (Checks that translations are congruent (meaning the strings in same context");
          System.out.println("    have been translated at the same way). This also produces incorrect");
          System.out.println("    results!)\n");
@@ -276,39 +166,6 @@ public class CmdLineConsole extends LangPackFileHandling
 
          SameStrings sameStrings = new SameStrings(this.langItemsTest);
          System.out.println(sameStrings.getResultString());
-//         // Collect same strings.
-//         Hashtable<String, ArrayList<LanguageItem>> sameStrings = getSameStrings(langItemsTest);
-//         if (sameStrings.size() > 0)
-//         {
-//            Set<Map.Entry<String, ArrayList<LanguageItem>>> keyValuePairs = sameStrings.entrySet();
-//            Iterator<Map.Entry<String, ArrayList<LanguageItem>>> iter = keyValuePairs.iterator();
-//
-//            // 'while' handles the "heading" for the same strings.
-//            while (iter.hasNext())
-//            {
-//               java.util.Map.Entry<String, ArrayList<LanguageItem>> keyValuePair = iter.next();
-//               String sameKey = keyValuePair.getKey();
-//               ArrayList<LanguageItem> values = keyValuePair.getValue();
-//               int numValues = values.size();
-//               if (numValues > 1)
-//               {
-//                  System.out.println("\n   \"" + sameKey + "\":");
-//                  // 'for' handles all str elements for the "heading".
-//                  for (int i = 0; i < numValues; i++)
-//                  {
-//                     String itemKey = "      \"";
-//                     String itemValue = "          \"";
-//                     itemKey += values.get(i).getKey() + "\"";
-//                     itemValue += values.get(i).getValue() + "\"";
-//                     System.out.println(itemKey + ":\n" + itemValue);
-//                  }
-//               }
-//            }
-//         }
-//         else
-//         {
-//            System.out.println("   (none)");
-//         }
       }
    }
 
