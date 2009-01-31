@@ -72,7 +72,7 @@ public class TestCreateLangPacks extends TestBase
       }
       catch (Exception e)
       {
-         String msg = "Error in base file.\n   " + e.getMessage();
+         String msg = "Error in base class .\n   " + e.getMessage();
          assertNotNull(msg, null);
       }
    }

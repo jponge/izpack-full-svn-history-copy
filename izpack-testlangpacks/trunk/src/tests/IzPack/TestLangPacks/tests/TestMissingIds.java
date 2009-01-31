@@ -27,6 +27,8 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,9 +43,24 @@ import IzPack.TestLangPacks.MissingIds;
  */
 public class TestMissingIds extends TestBase
 {
+   private MissingIds missingIds;
+
    public TestMissingIds()
    {
       super();
+      try
+      {
+         createLangPackBase(fileXmlBase);
+         createLangPackTest(xmlTestFile /*fileMissingIds*/ );
+      }
+      catch (Exception e)
+      {
+         String msg = "Error in " + this.getClass().toString() + "().\n   " + e.getMessage();
+         assertNotNull(msg, null);
+      }
+
+      // Create desired object.
+      missingIds = new MissingIds(langItemsBase, langItemsTest);
    }
 
    @BeforeClass
@@ -72,21 +89,9 @@ public class TestMissingIds extends TestBase
    @Test
    public void getResults()
    {
-      try
-      {
-         createLangPackBase(fileXmlBase);
-         createLangPackTest(xmlTestFile /*fileMissingIds*/ );
-      }
-      catch (Exception e)
-      {
-         String msg = "Error in getResults().\n   " + e.getMessage();
-         assertNotNull(msg, null);
-      }
-
-      // Create desired object.
-      MissingIds missingIds = new MissingIds(langItemsBase, langItemsTest);
       // Get results.
       Hashtable<String,ArrayList<LanguageItem>> result = missingIds.getResult();
+      assertNotNull(result);
 
       // Get result with key.
       ArrayList<LanguageItem> resultItems = result.get("result");
@@ -98,5 +103,16 @@ public class TestMissingIds extends TestBase
       // Get result without knowing anything about the key.
       ArrayList<LanguageItem> resultItems2 = result.values().iterator().next();
       assertEquals(1, resultItems2.size());
+   }
+   
+   /**
+    * Test whether string result is null or "". If it is its error.
+    */
+   @Test
+   public void getResultString()
+   {
+      String result = missingIds.getResultString();
+      assertNotNull(result);
+      Assert.assertNotSame("", result);
    }
 }

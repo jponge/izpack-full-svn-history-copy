@@ -27,6 +27,8 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,9 +43,23 @@ import IzPack.TestLangPacks.UnknownElements;
  */
 public class TestUnknownElements extends TestBase
 {
+   private UnknownElements unknownElements;
 
    public TestUnknownElements()
    {
+      try
+      {
+         createLangPackBase(fileXmlBase);
+         createLangPackTest(xmlTestFile);
+      }
+      catch (Exception e)
+      {
+         String msg = "Error in " + this.getClass().toString() + "().\n   " + e.getMessage();
+         assertNotNull(msg, null);
+      }
+      
+      // Create desired object.
+      unknownElements = new UnknownElements(langPackTest);
    }
 
    @BeforeClass
@@ -72,21 +88,9 @@ public class TestUnknownElements extends TestBase
    @Test
    public void getResults()
    {
-      try
-      {
-         createLangPackBase(fileXmlBase);
-         createLangPackTest(xmlTestFile);
-      }
-      catch (Exception e)
-      {
-         String msg = "Error in notNeededIds().\n   " + e.getMessage();
-         assertNotNull(msg, null);
-      }
-      
-      // Create desired object.
-      UnknownElements unknownElements = new UnknownElements(langPackTest);
       // Get results.
       Hashtable<String,ArrayList<LanguageItem>> result = unknownElements.getResult();
+      assertNotNull(result);
       
       // Get result without knowing anything about the key.
       ArrayList<LanguageItem> resultItems2 = result.values().iterator().next();
@@ -97,4 +101,15 @@ public class TestUnknownElements extends TestBase
       String[] unknownElementNames = item.getUnknownAttributes();
       assertEquals(true, unknownElementNames[0].startsWith("srt"));
   }
+   
+   /**
+    * Test whether string result is null or "". If it is its error.
+    */
+   @Test
+   public void getResultString()
+   {
+      String result = unknownElements.getResultString();
+      assertNotNull(result);
+      Assert.assertNotSame("", result);
+   }
 }

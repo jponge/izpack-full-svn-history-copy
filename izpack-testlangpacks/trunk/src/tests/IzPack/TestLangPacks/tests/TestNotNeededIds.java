@@ -27,6 +27,8 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,10 +43,24 @@ import IzPack.TestLangPacks.NotNeededIds;
  */
 public class TestNotNeededIds extends TestBase
 {
+   private NotNeededIds notNeededIds;
 
    public TestNotNeededIds()
    {
       super();
+      try
+      {
+         createLangPackBase(fileXmlBase);
+         createLangPackTest(xmlTestFile);
+      }
+      catch (Exception e)
+      {
+         String msg = "Error in " + this.getClass().toString() + "().\n   " + e.getMessage();
+         assertNotNull(msg, null);
+      }
+      
+      // Create desired object.
+      notNeededIds = new NotNeededIds(langItemsBase, langItemsTest);
    }
 
    @BeforeClass
@@ -73,21 +89,9 @@ public class TestNotNeededIds extends TestBase
    @Test
    public void getResults()
    {
-      try
-      {
-         createLangPackBase(fileXmlBase);
-         createLangPackTest(xmlTestFile);
-      }
-      catch (Exception e)
-      {
-         String msg = "Error in notNeededIds().\n   " + e.getMessage();
-         assertNotNull(msg, null);
-      }
-      
-      // Create desired object.
-      NotNeededIds notNeededIds = new NotNeededIds(langItemsBase, langItemsTest);
       // Get results.
       Hashtable<String,ArrayList<LanguageItem>> result = notNeededIds.getResult();
+      assertNotNull(result);
       
       // Get result without knowing anything about the key.
       ArrayList<LanguageItem> resultItems2 = result.values().iterator().next();
@@ -96,6 +100,16 @@ public class TestNotNeededIds extends TestBase
       // Check that there really are those what there should be.
       LanguageItem item = resultItems2.get(0);
       assertEquals("Error2", item.getKey());
-
+   }
+   
+   /**
+    * Test whether string result is null or "". If it is its error.
+    */
+   @Test
+   public void getResultString()
+   {
+      String result = notNeededIds.getResultString();
+      assertNotNull(result);
+      Assert.assertNotSame("", result);
    }
 }

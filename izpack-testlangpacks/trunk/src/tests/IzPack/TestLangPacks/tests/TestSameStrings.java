@@ -27,6 +27,8 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,10 +44,24 @@ import IzPack.TestLangPacks.SameStrings;
  */
 public class TestSameStrings extends TestBase
 {
+   private SameStrings sameStrings;
 
    public TestSameStrings()
    {
       super();
+      try
+      {
+         createLangPackBase(fileXmlBase);
+         createLangPackTest(xmlTestFile);
+      }
+      catch (Exception e)
+      {
+         String msg = "Error in " + this.getClass().toString() + "().\n   " + e.getMessage();
+         assertNotNull(msg, null);
+      }
+      
+      // Create desired object.
+      sameStrings = new SameStrings(langItemsTest);
    }
 
    @BeforeClass
@@ -74,28 +90,23 @@ public class TestSameStrings extends TestBase
    @Test
    public void getResults()
    {
-      try
-      {
-         createLangPackBase(fileXmlBase);
-         createLangPackTest(xmlTestFile);
-      }
-      catch (Exception e)
-      {
-         String msg = "Error in notNeededIds().\n   " + e.getMessage();
-         assertNotNull(msg, null);
-      }
-      
-      // Create desired object.
-      SameStrings sameStrings = new SameStrings(langItemsTest);
       // Get results.
       Hashtable<String,ArrayList<LanguageItem>> result = sameStrings.getResult();
+      assertNotNull(result);
       
-      // Note: result size is now 0! If XML file content is changed amount has to be changed accordingly.
-      if (result.size() > 0)
-      {
-         // Get result without knowing anything about the key.
-         ArrayList<LanguageItem> resultItems2 = result.values().iterator().next();
-         assertEquals(1, resultItems2.size());
-      }
+      // Get result without knowing anything about the key.
+      ArrayList<LanguageItem> resultItems2 = result.values().iterator().next();
+      assertEquals(3, resultItems2.size());
+   }
+   
+   /**
+    * Test whether string result is null or "". If it is its error.
+    */
+   @Test
+   public void getResultString()
+   {
+      String result = sameStrings.getResultString();
+      assertNotNull(result);
+      Assert.assertNotSame("", result);
    }
 }

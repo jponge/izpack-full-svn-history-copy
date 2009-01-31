@@ -27,6 +27,8 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,10 +43,23 @@ import IzPack.TestLangPacks.UnknownAttributes;
  */
 public class TestUnknownAttributes extends TestBase
 {
-
+   private UnknownAttributes unknownAttributes;
+   
    public TestUnknownAttributes()
    {
       super();
+      try
+      {
+         createLangPackBase(fileXmlBase);
+         createLangPackTest(xmlTestFile);
+      }
+      catch (Exception e)
+      {
+         String msg = "Error in " + this.getClass().toString() + "().\n   " + e.getMessage();
+         assertNotNull(msg, null);
+      }
+      // Create desired object.
+      unknownAttributes = new UnknownAttributes(langItemsBase, langItemsTest);
    }
 
    @BeforeClass
@@ -73,21 +88,9 @@ public class TestUnknownAttributes extends TestBase
    @Test
    public void getResults()
    {
-      try
-      {
-         createLangPackBase(fileXmlBase);
-         createLangPackTest(xmlTestFile);
-      }
-      catch (Exception e)
-      {
-         String msg = "Error in notNeededIds().\n   " + e.getMessage();
-         assertNotNull(msg, null);
-      }
-      
-      // Create desired object.
-      UnknownAttributes unknownAttributes = new UnknownAttributes(langItemsBase, langItemsTest);
       // Get results.
       Hashtable<String,ArrayList<LanguageItem>> result = unknownAttributes.getResult();
+      assertNotNull(result);
       
       // Get result without knowing anything about the key.
       ArrayList<LanguageItem> resultItems2 = result.values().iterator().next();
@@ -115,5 +118,16 @@ public class TestUnknownAttributes extends TestBase
       // Split using character '='.
       splitted = attributes[0].split("=");
       assertEquals("di", splitted[0]);
+   }
+
+   /**
+    * Test whether string result is null or "". If it is its error.
+    */
+   @Test
+   public void getResultString()
+   {
+      String result = unknownAttributes.getResultString();
+      assertNotNull(result);
+      Assert.assertNotSame("", result);
    }
 }
