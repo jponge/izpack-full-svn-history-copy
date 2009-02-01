@@ -153,6 +153,10 @@
                  value="${app_name}"
                  summary="yes"/>
         <replace file="./_dist/izpack-testlangpacks/version.txt"
+	             token="@date@"
+	             value="${date}"
+                 summary="yes"/>
+        <replace file="./_dist/izpack-testlangpacks/version.txt"
                  token="@version@"
                  value="${ver_major}.${ver_minor}"
                  summary="yes"/>

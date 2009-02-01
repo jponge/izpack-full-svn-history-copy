@@ -1,2 +1,3 @@
 @app_name@
 Version @version@
+@date@
