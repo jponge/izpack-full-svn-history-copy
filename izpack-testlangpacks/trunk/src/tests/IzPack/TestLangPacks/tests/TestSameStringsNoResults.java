@@ -39,20 +39,21 @@ import IzPack.TestLangPacks.LanguageItem;
 import IzPack.TestLangPacks.SameStrings;
 
 /**
- * Tests possible same strings (finding with last word in the ID which
+ * Tests situation where there are any same strings (finding with last word in the ID which
  * consists of two words or more).
+ * @see TestSameStrings().
  */
-public class TestSameStrings extends TestBase
+public class TestSameStringsNoResults extends TestBase
 {
    private SameStrings sameStrings;
 
-   public TestSameStrings()
+   public TestSameStringsNoResults()
    {
       super();
       try
       {
          createLangPackBase(fileXmlBase);
-         createLangPackTest(xmlTestFile);
+         createLangPackTest(xmlTestFile3);   // This hans't any same strings.
       }
       catch (Exception e)
       {
@@ -93,10 +94,10 @@ public class TestSameStrings extends TestBase
       // Get results.
       Hashtable<String,ArrayList<LanguageItem>> result = sameStrings.getResult();
       assertNotNull(result);
+      // There must 0 results.
+      assertEquals(0, result.size());
       
-      // Get result without knowing anything about the key.
-      ArrayList<LanguageItem> resultItems2 = result.values().iterator().next();
-      assertEquals(4, resultItems2.size());
+      // There won't be results. Don't get result item.
    }
    
    /**
@@ -108,5 +109,8 @@ public class TestSameStrings extends TestBase
       String result = sameStrings.getResultString();
       assertNotNull(result);
       Assert.assertNotSame("", result);
+      
+      // For empty results there must be "none".
+      assertEquals(true, result.contains("none"));
    }
- }
+}

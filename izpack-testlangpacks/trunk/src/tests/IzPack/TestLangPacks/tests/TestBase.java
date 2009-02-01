@@ -30,6 +30,7 @@ import IzPack.TestLangPacks.LangPackFileHandling;
 public class TestBase extends LangPackFileHandling
 {
    protected final String xmlTestFile = "./src/tests/IzPack/TestLangPacks/tests/test1.xml";
+   protected final String xmlTestFile3 = "./src/tests/IzPack/TestLangPacks/tests/test3.xml";
 
    protected final String path = "./src/tests/IzPack/TestLangPacks/tests/";
 
