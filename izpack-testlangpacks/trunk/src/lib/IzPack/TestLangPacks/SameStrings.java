@@ -158,17 +158,22 @@ public class SameStrings extends LangPackData
       // Loop for the rest id words in the list. If the same id word is found save it and remove it from the list.
       // After looping return reduced list.
 
-      // Get first word and save it.
-      String keyWord = Utils.getLastWord(sameStringArray.get(0).getKey());
-      // Remove first item.
-      sameStringArray.remove(0);
-      // Go through the rest items and find same strings
-      java.util.Iterator<LanguageItem> iter = sameStringArray.iterator();
       // Array list where to save found words.
       ArrayList<LanguageItem> words = new ArrayList<LanguageItem>();
+      // Get first language item.
+      LanguageItem temp = sameStringArray.get(0);
+      // Add this item into array list.
+      words.add(temp);
+      // Get first word and save it.
+      String keyWord = Utils.getLastWord(temp.getKey());
+      // Remove first item.
+      sameStringArray.remove(0);
+
+      // Go through the rest items and find same strings
+      java.util.Iterator<LanguageItem> iter = sameStringArray.iterator();
       while (iter.hasNext())
       {
-         LanguageItem temp = iter.next();
+         temp = iter.next();
          String currentKey = Utils.getLastWord(temp.getKey());
          if (currentKey==null)
          {
