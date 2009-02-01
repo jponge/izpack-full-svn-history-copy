@@ -7,12 +7,15 @@
     27.7.2008: (by Ari Voutilainen)
         Added distribution dir and files and some other tasks. Added zip creation.
     28.1.2009: (by Ari Voutilainen)
-    	Changed source directory. Chanhed '_' to '-' in target file name.
+    	Changed source directory. Changed '_' to '-' in target file name.
+    1.2.2009: (by Ari Voutilainen)
+    	Added new property: date.
 -->
 
     <property name="ver_major" value="2"/>
     <property name="ver_minor" value="0-beta1"/>
     <property name="app_name"  value="TestLangPacks utility for IzPack installer"/>
+    <property name="date"      value="1-Feb-2009"/>
 
     <property environment="env"/>
     <property name="debug" value="off"/>
@@ -156,6 +159,10 @@
         <replace file="./_dist/izpack-testlangpacks/doc/_ReadThisFirst.txt"
                  token="@version@"
                  value="${ver_major}.${ver_minor}"
+                 summary="yes"/>
+        <replace file="./_dist/izpack-testlangpacks/doc/_ReadThisFirst.txt"
+	             token="@date@"
+	             value="${date}"
                  summary="yes"/>
 	</target>
 

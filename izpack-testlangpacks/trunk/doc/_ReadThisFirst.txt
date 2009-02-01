@@ -3,7 +3,7 @@
 TestLangPacks utility for IzPack installation program
 =====================================================
 Version @version@
-13-Aug-2008
+@date@
 Ari Voutilainen
 
 -------

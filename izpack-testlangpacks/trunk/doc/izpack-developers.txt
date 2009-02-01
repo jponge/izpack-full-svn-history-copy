@@ -51,6 +51,12 @@ Possibilities:
 
       http://snapshots.dist.codehaus.org/izpack/testlangpacks
 
+   There are project configuration files for Eclipse.
+   The file build.xml is used for making release version. To use it
+   open it into Eclipse, open Outline window and select with mouse
+   right button "all [default]". In the pop-up menu select
+   "Run As -> Ant Build".
+
 
    Hint for debugging
    ------------------
