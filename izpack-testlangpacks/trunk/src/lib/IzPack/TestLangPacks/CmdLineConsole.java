@@ -153,6 +153,12 @@ public class CmdLineConsole extends LangPackFileHandling
       UnknownElements unknownElements = new UnknownElements(this.langPackTest);
       System.out.println(unknownElements.getResultString());
 
+      // Finding multiple same ID's.
+      // --------------------------
+      System.out.println("Finding multiple same ID's in " + xmlTestFile + ":");
+      MultipleIds multipleIds = new MultipleIds(this.langItemsTest);
+      System.out.println(multipleIds.getResultString());
+      
       if (printSameStrings)
       {
          // Finding possible same strings (finding with last word in the ID which

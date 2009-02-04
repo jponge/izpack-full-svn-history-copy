@@ -25,12 +25,13 @@ import IzPack.TestLangPacks.LangPackFileHandling;
 
 /**
  *
- * @author Ari Voutilainen, 2008
+ * @author Ari Voutilainen, 2008-2009
  */
 public class TestBase extends LangPackFileHandling
 {
    protected final String xmlTestFile = "./src/tests/IzPack/TestLangPacks/tests/test1.xml";
    protected final String xmlTestFile3 = "./src/tests/IzPack/TestLangPacks/tests/test3.xml";
+   protected final String xmlTestFile4 = "./src/tests/IzPack/TestLangPacks/tests/test4.xml";
 
    protected final String path = "./src/tests/IzPack/TestLangPacks/tests/";
 
