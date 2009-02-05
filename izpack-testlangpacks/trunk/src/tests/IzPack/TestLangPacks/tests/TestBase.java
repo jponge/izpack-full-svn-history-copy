@@ -35,7 +35,7 @@ public class TestBase extends LangPackFileHandling
 
    protected final String path = "./src/tests/IzPack/TestLangPacks/tests/";
 
-   protected final String fileXmlBase           = path + "eng.xml";
+   protected final String fileXmlBase           = path + "base.xml";
 
    protected final String fileMissingIds        = path + "MissingIds.xml";
    protected final String fileMultipleIds       = path + "MultipleIds.xml";
