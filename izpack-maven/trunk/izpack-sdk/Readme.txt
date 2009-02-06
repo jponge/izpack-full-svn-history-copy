@@ -1,6 +1,5 @@
 Current Usage
 -------------
+A checkout from svn is done automatically in the process-resources phase. 
 
-With mvn scm:bootstrap a checkout from svn is done to prepare the build environment. 
-
-do a mvn install afterwards to create the sdk module. 
+Just use the normal maven goals like package and install to build the sdk module.  
