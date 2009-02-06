@@ -16,7 +16,9 @@
 
 	<name>IzPack SDK module</name>
 
-	<description>Creates an artifact containing all interfaces and base classes needed for custom development.
+	<description>
+		Creates an artifact containing all interfaces and base classes
+		needed for custom development.
 	</description>
 	<packaging>jar</packaging>
 
@@ -51,9 +53,6 @@
 		<defaultGoal>package</defaultGoal>
 
 		<plugins>
-			<!-- 
-				
-			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-scm-plugin</artifactId>
@@ -62,7 +61,18 @@
 					<checkoutDirectory>
 						${basedir}\src\main\java
 					</checkoutDirectory>
+					<!-- don't overwrite local changes  -->
+					<skipCheckoutIfExists>true</skipCheckoutIfExists>					
 				</configuration>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<id>checkout</id>
+						<goals>
+							<goal>checkout</goal>													
+						</goals>						
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
@@ -81,22 +91,44 @@
 				<configuration>
 					<includes>
 						<!-- Events -->
-						<include>com/izforge/izpack/event/ActionBase*</include>
-						<include>com/izforge/izpack/event/CompilerListener*</include>
-						<include>com/izforge/izpack/event/SimpleCompilerListener*</include>
-						<include>com/izforge/izpack/event/InstallerListener*</include>
-						<include>com/izforge/izpack/event/SimpleInstallerListener*</include>
-						<include>com/izforge/izpack/event/UninstallerListener*</include>
-						<include>com/izforge/izpack/event/SimpleUninstallerListener*</include>
+						<include>
+							com/izforge/izpack/event/ActionBase*
+						</include>
+						<include>
+							com/izforge/izpack/event/CompilerListener*
+						</include>
+						<include>
+							com/izforge/izpack/event/SimpleCompilerListener*
+						</include>
+						<include>
+							com/izforge/izpack/event/InstallerListener*
+						</include>
+						<include>
+							com/izforge/izpack/event/SimpleInstallerListener*
+						</include>
+						<include>
+							com/izforge/izpack/event/UninstallerListener*
+						</include>
+						<include>
+							com/izforge/izpack/event/SimpleUninstallerListener*
+						</include>
 						<!-- Rules -->
-						<include>com/izforge/izpack/rules/Condition*</include>
-						
+						<include>
+							com/izforge/izpack/rules/Condition*
+						</include>
+
 						<!-- UI -->
-						<include>com/izforge/izpack/panels/ProcessingClient*</include>
-						<include>com/izforge/izpack/panels/RuleInputField*</include>
-						<include>com/izforge/izpack/panels/InstallPanel*</include>
+						<include>
+							com/izforge/izpack/panels/ProcessingClient*
+						</include>
+						<include>
+							com/izforge/izpack/panels/RuleInputField*
+						</include>
+						<include>
+							com/izforge/izpack/panels/InstallPanel*
+						</include>
 						<!-- COI -->
-						<include>com/coi/tools/os/**/*</include>											
+						<include>com/coi/tools/os/**/*</include>
 					</includes>
 				</configuration>
 			</plugin>
