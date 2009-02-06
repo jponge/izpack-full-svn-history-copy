@@ -1,0 +1,122 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<groupId>org.codehaus.izpack</groupId>
+		<artifactId>izpack-parent</artifactId>
+		<version>2</version>
+		<relativePath>../izpack-parent</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>izpack-sdk</artifactId>
+	<version>4.2.1-SNAPSHOT</version>
+
+	<name>IzPack SDK module</name>
+
+	<description>Creates an artifact containing all interfaces and base classes needed for custom development.
+	</description>
+	<packaging>jar</packaging>
+
+	<scm>
+		<connection>
+			scm:svn:http://svn.codehaus.org/izpack/izpack-src/trunk/src/lib
+		</connection>
+		<developerConnection>
+			scm:svn:https://svn.codehaus.org/izpack/izpack-src/trunk/src/lib
+		</developerConnection>
+		<url>
+			http://svn.codehaus.org/izpack/izpack-src/trunk/src/lib
+		</url>
+	</scm>
+
+	<!-- 
+		<distributionManagement>
+		<site>
+		<id>codehaus.org</id>
+		<name>IZPack Website</name>
+		<url>dav:https://dav.codehaus.org/izpack/izpack-standalone-compiler</url>
+		</site>
+		</distributionManagement>
+	-->
+	<!--
+		Use maven to extract the standalone-compiler.jar and the associated javadoc and sources from an existing izpack installation.
+		So make sure to have the IzPack installed with the same version as this pom's
+	-->
+
+	<build>
+
+		<defaultGoal>package</defaultGoal>
+
+		<plugins>
+			<!-- 
+				
+			-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.1</version>
+				<configuration>
+					<checkoutDirectory>
+						${basedir}\src\main\java
+					</checkoutDirectory>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<!-- put your configurations here -->
+					<debug>true</debug>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<includes>
+						<!-- Events -->
+						<include>com/izforge/izpack/event/ActionBase*</include>
+						<include>com/izforge/izpack/event/CompilerListener*</include>
+						<include>com/izforge/izpack/event/SimpleCompilerListener*</include>
+						<include>com/izforge/izpack/event/InstallerListener*</include>
+						<include>com/izforge/izpack/event/SimpleInstallerListener*</include>
+						<include>com/izforge/izpack/event/UninstallerListener*</include>
+						<include>com/izforge/izpack/event/SimpleUninstallerListener*</include>
+						<!-- Rules -->
+						<include>com/izforge/izpack/rules/Condition*</include>
+						
+						<!-- UI -->
+						<include>com/izforge/izpack/panels/ProcessingClient*</include>
+						<include>com/izforge/izpack/panels/RuleInputField*</include>
+						<include>com/izforge/izpack/panels/InstallPanel*</include>
+						<!-- COI -->
+						<include>com/coi/tools/os/**/*</include>											
+					</includes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+			<version>1.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>bsf</groupId>
+			<artifactId>bsf</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta-regexp</groupId>
+			<artifactId>jakarta-regexp</artifactId>
+			<version>1.4</version>
+		</dependency>
+	</dependencies>
+</project>
