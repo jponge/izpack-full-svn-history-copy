@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2007, 2008 Julien Ponge. All rights reserved.
+  Copyright (c) 2007, 2009 Julien Ponge. All rights reserved.
 
   Permission is hereby granted, free of charge, to any person
   obtaining a copy of this software and associated documentation
@@ -26,16 +26,15 @@
 <installation version="1.0">
 
   <info>
-    <appname>GlassFish v2 ur2 b04</appname>
-    <appversion>v2 ur2 b04</appversion>
+    <appname>GlassFish v2.1 b60e</appname>
+    <appversion>v2.1 b60e</appversion>
     <authors>
       <author email="" name="Julien Ponge (packager)"/>
       <author email="" name="Sun Microsystems and the GlassFish community"/>
     </authors>
     <url>http://glassfish.org/</url>
     <javaversion>1.5</javaversion>
-    <requiresjdk>yes</requiresjdk>
-    <run-privileged/>
+    <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
   </info>
   
   <conditions>

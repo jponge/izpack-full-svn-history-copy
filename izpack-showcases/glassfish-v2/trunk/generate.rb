@@ -36,8 +36,8 @@ end
 
 izpack_home = ARGV[0]
 platforms   = [:win32, :darwin, :linux, :solaris_x86, :solaris_sparc]
-version     = 'v2ur2'
-build       = 'b04'
+version     = 'v2.1'
+build       = 'b60e'
 
 # Download the official binaries
 if not File.exist? 'vendor'
@@ -54,7 +54,9 @@ if not File.exist? 'vendor'
   
   name_mapping.each do |variant, target|
     puts "    #{variant}"
-    open("http://www.java.net/download/javaee5/#{version}/promoted/#{variant}/glassfish-installer-#{version}-#{build}-#{target[0]}.jar") do |input|
+    url = "http://java.net/download/javaee5/#{version}_branch/promoted/#{variant}/glassfish-installer-#{version}-#{build}-#{target[0]}.jar"
+    puts "    >>> #{url}"
+    open(url) do |input|
       output = open("vendor/#{variant}.jar", 'w')
       begin
         loop do
