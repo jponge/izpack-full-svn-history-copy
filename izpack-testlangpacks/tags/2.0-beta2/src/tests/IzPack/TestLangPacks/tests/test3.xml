@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<!-- The TEST 3 langpack -->
+<!--
+	 This XML file is for SameString tests. This won't contain
+     any results for the test.
+-->
+
+<langpack>
+    <!-- Heading messages START -->
+    <srt id="Error1" txt="Typo in element."/>
+    <str id="Error2" ttx="Typo txt attribute. Additional attribute." abc="xyz"/>
+    <str di="Error3" txt="Typo in ID attribute."/>
+</langpack>
