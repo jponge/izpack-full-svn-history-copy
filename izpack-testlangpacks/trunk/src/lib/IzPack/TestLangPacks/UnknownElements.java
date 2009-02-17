@@ -123,7 +123,7 @@ public class UnknownElements extends LangPackData
       {
          for (String elem : unknownElements)
          {
-            this.txtResult += "   <" + elem + " ... />";
+            this.txtResult += "   <" + elem + " ... />\n";
          }
       }
 

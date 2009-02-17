@@ -100,15 +100,13 @@ public class MultipleIds extends LangPackData
             int numValues = values.size();
             if (numValues > 1)
             {
-               this.txtResult += "\n   \"" + sameKey + "\":";
+               this.txtResult += "\n   \"" + sameKey + "\":\n";
                // 'for' handles all str elements for the "heading".
                for (int i = 0; i < numValues; i++)
                {
-                  String itemKey = "      \"";
-                  String itemValue = "          \"";
-                  itemKey += values.get(i).getKey() + "\"";
+                  String itemValue = "      \"";
                   itemValue += values.get(i).getValue() + "\"";
-                  this.txtResult += itemKey + ":\n" + itemValue;
+                  this.txtResult += itemValue + "\n";
                }
             }
          }
