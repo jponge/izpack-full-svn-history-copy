@@ -13,9 +13,9 @@
 -->
 
     <property name="ver_major" value="2"/>
-    <property name="ver_minor" value="0-beta1"/>
+    <property name="ver_minor" value="0-beta2"/>
     <property name="app_name"  value="TestLangPacks utility for IzPack installer"/>
-    <property name="date"      value="1-Feb-2009"/>
+    <property name="date"      value="17-Feb-2009"/>
 
     <property environment="env"/>
     <!-- <property name="debug" value="off"/>
