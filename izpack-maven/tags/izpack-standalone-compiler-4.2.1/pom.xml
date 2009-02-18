@@ -1,0 +1,127 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.codehaus.izpack</groupId>
+    <artifactId>izpack-parent</artifactId>
+    <version>2</version>
+    <relativePath>../izpack-parent</relativePath>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  
+  <artifactId>izpack-standalone-compiler</artifactId>
+  <version>4.2.1</version>
+  
+  <name>IzPack Standalone Compiler</name>
+
+  <description>standlone-compiler.jar extracting from an official IzPack Installation</description>
+  
+
+  <packaging>jar</packaging>  
+  
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/izpack/izpack-maven/tags/izpack-standalone-compiler-4.2.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/izpack/izpack-maven/tags/izpack-standalone-compiler-4.2.1</developerConnection>
+    <url>http://svn.codehaus.org/izpack/izpack-maven/tags/izpack-standalone-compiler-4.2.1</url>
+  </scm>
+  
+
+  <distributionManagement>
+    <site>
+      <id>codehaus.org</id>
+      <name>IZPack Website</name>
+      <url>dav:https://dav.codehaus.org/izpack/izpack-standalone-compiler</url>
+    </site>
+  </distributionManagement>
+
+  <!--
+    Use maven to extract the standalone-compiler.jar and the associated javadoc and sources from an existing izpack installation.
+    So make sure to have the IzPack installed with the same version as this pom's
+  -->
+  
+  <build>
+  
+    <defaultGoal>package</defaultGoal>
+    
+     <plugins>
+     
+      <!-- user assembly to reassemble javadoc and sources jars -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-2</version>
+        <executions>
+          <execution>
+            <id>package-javadoc</id>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/javadoc.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+          <execution>
+            <id>package-sources</id>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/sources.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+          <execution>
+            <id>package-izpack2exe</id>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/izpack2exe.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+          <execution>
+            <id>package-izpack2app</id>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/izpack2app.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+     
+      <!-- copy the real standlone-compiler to this project and overwrite the implicit jar already built by the jar packaging -->
+      <plugin>
+         <artifactId>maven-antrun-plugin</artifactId>
+         <executions>
+           <execution>
+             <id>staging</id>
+             <goals><goal>run</goal></goals>
+             <phase>package</phase>
+             <configuration>
+               <tasks>
+                  <copy file="${izpack.dir}/lib/standalone-compiler.jar" tofile="${project.build.directory}/${project.build.finalName}.jar" overwrite="true" />
+               </tasks>
+             </configuration>
+           </execution>
+         </executions>
+       </plugin>
+     </plugins>
+  </build>
+  
+  <properties>
+    <!-- change this according to your local copy of your izpack installation -->
+    <izpack.dir>c:/program files/izpack</izpack.dir>
+  </properties>
+</project>
