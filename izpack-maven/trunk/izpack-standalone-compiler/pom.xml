@@ -122,6 +122,6 @@
   
   <properties>
     <!-- change this according to your local copy of your izpack installation -->
-    <izpack.dir>g:/program files/izpack</izpack.dir>
+    <izpack.dir>c:/program files/izpack</izpack.dir>
   </properties>
 </project>
