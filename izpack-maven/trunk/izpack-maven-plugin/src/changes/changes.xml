@@ -6,6 +6,11 @@
     <author email="dantran at gmail.com">Dan T. Tran</author>
   </properties>
   <body>
+    <release version="1.0-alpha-5" date="2008-02-18" description="Bug fixes">
+      <action dev="dtran" type="add" issue="IZPACK-228">
+        Pick up enhancement in IZPACK-226
+      </action>
+    </release>
     <release version="1.0-alpha-4" date="2008-10-07" description="Bug fixes">
       <action dev="dtran" type="add" issue="IZPACK-150">
         Add integration test suite infrastructure
