@@ -66,7 +66,7 @@
 				</configuration>
 				<executions>
 					<execution>
-						<phase>process-resources</phase>
+						<phase>generate-sources</phase>
 						<id>checkout</id>
 						<goals>
 							<goal>checkout</goal>													
