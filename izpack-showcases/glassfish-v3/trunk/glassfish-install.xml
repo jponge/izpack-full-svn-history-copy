@@ -36,14 +36,14 @@
     <javaversion>1.5</javaversion>
 	<run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
   </info>
-  
+
   <conditions>
     <condition type="variable" id="start.glassfish">
       <name>gf_start_domain</name>
       <value>true</value>
     </condition>
   </conditions>
-  
+
   <guiprefs height="650" resizable="yes" width="800">
     <modifier key="allXGap" value="5"/>
     <modifier key="allYGap" value="5"/>
@@ -55,16 +55,18 @@
     <modifier key="headingPanelCounter" value="text"/>
     <modifier key="headingPanelCounterPos" value="inHeading"/>
   </guiprefs>
-  
+
   <locale>
     <langpack iso3="eng"/>
+    <langpack iso3="fin"/>
     <langpack iso3="fra"/>
     <langpack iso3="jpn"/>
   </locale>
-  
+
   <resources>
     <res src="process-panel.xml" id="ProcessPanel.Spec.xml"/>
     <res src="glassfish-readme.html" id="HTMLInfoPanel.info"/>
+    <res src="glassfish-readme-fin.html" id="HTMLInfoPanel.info_fin"/>
     <res src="glassfish-readme-fra.html" id="HTMLInfoPanel.info_fra"/>
     <res src="glassfish-readme-jpn.html" id="HTMLInfoPanel.info_jpn"/>
     <res src="glassfish-license.html" id="HTMLLicencePanel.licence"/>
@@ -72,6 +74,7 @@
     <res src="splash.png" id="installer.langsel.img"/>
     <res id="userInputSpec.xml" src="userinput.xml" />
     <res id="userInputLang.xml_eng" src="userinput-eng.xml" />
+    <res id="userInputLang.xml_fin" src="userinput-fin.xml" />
     <res id="userInputLang.xml_fra" src="userinput-fra.xml" />
     <res id="userInputLang.xml_jpn" src="userinput-jpn.xml" />
     <res src="RegistrySpec.xml" id="RegistrySpec.xml"/>
@@ -86,10 +89,10 @@
     <panel classname="UserInputPanel" id="userinputpanel"/>
     <panel classname="InstallPanel" id="installpanel"/>
     <panel classname="ProcessPanel" id="processpanel"/>
-    <panel classname="ShortcutPanel" id="shortcutpanel"/> 
+    <panel classname="ShortcutPanel" id="shortcutpanel"/>
     <panel classname="SimpleFinishPanel" id="simplefinishpanel"/>
   </panels>
-  
+
   <listeners>
     <listener installer="SummaryLoggerInstallerListener"/>
     <listener installer="RegistryInstallerListener"
@@ -97,39 +100,39 @@
       <os family="windows"/>
     </listener>
   </listeners>
-  
+
   <packs>
     <pack name="GlassFish" required="yes">
-      <description>GlassFish</description>   
-      
+      <description>GlassFish</description>
+
       <file src="launch-browser.sh" targetdir="$INSTALL_PATH/bin" condition="izpack.linuxinstall" />
       <file src="launch-browser.sh" targetdir="$INSTALL_PATH/bin" condition="izpack.macinstall" />
       <file src="launch-browser.sh" targetdir="$INSTALL_PATH/bin" condition="izpack.solarisinstall" />
       <file src="bootstrap.properties" targetdir="$INSTALL_PATH/pkg" />
-      
+
       <fileset dir="vendor/v3" targetdir="$INSTALL_PATH">
         <include name="**/*"/>
         <include name=".org.opensolaris,pkg"/>
       </fileset>
-      
+
       <executable targetfile="$INSTALL_PATH/bin/launch-browser.sh" stage="never" os="unix" />
       <executable targetfile="$INSTALL_PATH/bin/asadmin" stage="never" os="unix" />
       <executable targetfile="$INSTALL_PATH/bin/pkg" stage="never" os="unix" />
       <executable targetfile="$INSTALL_PATH/bin/updatetool" stage="never" os="unix" />
-      
-      <parsable   targetfile="$INSTALL_PATH/bin/launch-browser.sh" os="unix" /> 
+
+      <parsable   targetfile="$INSTALL_PATH/bin/launch-browser.sh" os="unix" />
       <parsable   targetfile="$INSTALL_PATH/bin/asadmin" stage="never" os="unix" />
       <parsable   targetfile="$INSTALL_PATH/pkg/bootstrap.properties" type="javaprop" />
     </pack>
-    
+
   </packs>
-  
+
   <native type="izpack" name="ShellLink.dll">
     <os family="windows"/>
   </native>
-  
+
   <native type="3rdparty" name="COIOSHelper.dll" stage="both">
     <os family="windows"/>
   </native>
-  
+
 </installation>
