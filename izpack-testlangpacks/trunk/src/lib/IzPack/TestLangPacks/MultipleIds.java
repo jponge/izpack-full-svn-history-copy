@@ -55,7 +55,7 @@ public class MultipleIds extends LangPackData
    }
 
    /**
-    * @see LangPackData.getResult()
+    * @see LangPackData#getResult()
     */
    @Override
    public Hashtable<String,ArrayList<LanguageItem>> getResult ()
@@ -71,7 +71,7 @@ public class MultipleIds extends LangPackData
    }
 
    /**
-    * @see LangPackData.getResultString()
+    * @see LangPackData#getResultString()
     */
    @Override
    public String getResultString ()

@@ -42,7 +42,7 @@ public class UnknownElements extends LangPackData
    /**
     * Constructor of the class with parameter(s).
     *
-    * @param langItemsTest Language items to be tested.
+    * @param langPackTest Language items to be tested.
     */
    public UnknownElements(LangPack langPackTest)
    {
@@ -54,7 +54,7 @@ public class UnknownElements extends LangPackData
    /**
     * Returns unknown elements. Actual result is found inside LanguageItem object,
     * which contains "String[] unknownAttributes".
-    * @see LangPackData.getResult()
+    * @see LangPackData#getResult()
     */
    @Override
    public Hashtable<String, ArrayList<LanguageItem>> getResult()
@@ -88,7 +88,7 @@ public class UnknownElements extends LangPackData
    }
 
    /**
-    * @see LangPackData.getResultString()
+    * @see LangPackData#getResultString()
     */
    @Override
    public String getResultString()

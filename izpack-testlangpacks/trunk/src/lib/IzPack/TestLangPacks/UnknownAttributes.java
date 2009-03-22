@@ -54,7 +54,7 @@ public class UnknownAttributes extends LangPackData
     * @note This will return LanguageItem objects which will contain only Array of
     *       unknown attributes.
     *
-    * @see LangPackData.getResult()
+    * @see LangPackData#getResult()
     */
    @Override
    public Hashtable<String,ArrayList<LanguageItem>> getResult ()
@@ -70,7 +70,7 @@ public class UnknownAttributes extends LangPackData
    }
 
    /**
-    * @see LangPackData.getResultString()
+    * @see LangPackData#getResultString()
     */
    @Override
    public String getResultString ()

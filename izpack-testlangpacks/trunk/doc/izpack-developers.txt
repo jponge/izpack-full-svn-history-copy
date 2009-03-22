@@ -37,6 +37,11 @@ Possibilities:
 2) Develop or investigate utility
    ------------------------------
 
+   NOTE: This guidance has been done with following applications:
+         - Eclipse 3.4.2
+         - jUnit 4
+         - Ant 1.7
+
    Developing TestLangPacks
    ------------------------
    TestLangPacks utility is under maintenance of IzPack Installer. You
@@ -55,7 +60,23 @@ Possibilities:
    The file build.xml is used for making release version. To use it
    open it into Eclipse, open Outline window and select with mouse
    right button "all [default]". In the pop-up menu select
-   "Run As -> Ant Build".
+   "Run As -> Ant Build". Using Ant will generate the release based
+   on information found in build.xml. By the default debugging
+   information is OFF.
+
+   Please note: build.xml will build only TestLangPacks sources,
+   NOT unit tests! It is used only to generate distribute package!
+   To compile unit tests as well you have to use Eclipse's
+   "Build Project". Before using it, activate the project
+   "IzPack-TestLangPacks" and select then "Project" -> "Clean".
+   Using other development IDEs you have add manually unit tests
+   sources and jUnit 4 library into the IDE's project (if its import
+   won't do it).
+
+   During developing and debugging it would be good idea to
+   switch ON "Build Automatically" feature in Eclipse (see menu
+   Project). It will inform immedialtelly about possible coding
+   errors.
 
 
    Hint for debugging
@@ -66,6 +87,29 @@ Possibilities:
    if file with path isn't specified in the command line of the
    TestLangPacks.jar. If omitting path you have to copy all needed
    language files into project root directory.
+
+
+   Generating documentation
+   ------------------------
+   If you want to change document generation you can select from two
+   opportunities: 1) update build.xml of TestLangPacks or 2) make
+   separate file. If you are familiar with Ant you can
+   select option 1). Otherwise you can use Eclipse to generate the
+   file for you. The content of the file can be used to update
+   the content of build.xml file (task: "task.gen.javadoc_and_zip").
+   
+   If you want to include tests or change settings of the
+   documentation generate documentation in IDE:
+   "Project" -> "Javadoc". Wizard will open. Make the needed
+   checkings on the window and press Next button to go through the
+   windowses. Finally press Finish button. Save the settings to the
+   default file: javadoc.xml. You can now leave it there (won't then
+   disturb build.xml content) or you can copy it into build.xml
+   task: "task.gen.javadoc_and_zip" (don't overwrite Ant properties!).
+
+   NOTE: If you desided to copy settings into build.xml and intended
+         these changes for your use only be aware not to commit them
+         into version database!
 
 
 Version checking: advanced

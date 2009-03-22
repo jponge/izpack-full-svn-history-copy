@@ -50,7 +50,7 @@ public class NotNeededIds extends LangPackData
    /**
     * Finding ID's which are not needed anymore.
     *
-    * @see LangPackData.getResult()
+    * @see LangPackData#getResult()
     */
    @Override
    public Hashtable<String, ArrayList<LanguageItem>> getResult()
@@ -103,7 +103,7 @@ public class NotNeededIds extends LangPackData
    }
 
    /**
-    * @see LangPackData.getResultString()
+    * @see LangPackData#getResultString()
     */
    @Override
    public String getResultString()

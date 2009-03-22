@@ -58,7 +58,7 @@ public class SameStrings extends LangPackData
 
    /**
     * Returns possible same strings.
-    * @see LangPackData.getResult()
+    * @see LangPackData#getResult()
     */
    @Override
    public Hashtable<String, ArrayList<LanguageItem>> getResult()
@@ -74,7 +74,7 @@ public class SameStrings extends LangPackData
    }
 
    /**
-    * @see LangPackData.getResultString()
+    * @see LangPackData#getResultString()
     */
    @Override
    public String getResultString()

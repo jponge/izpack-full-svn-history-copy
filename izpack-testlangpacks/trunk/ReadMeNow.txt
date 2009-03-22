@@ -28,6 +28,7 @@ Finds ID's which are not needed anymore
 Finds unknown attributes in elements
 Finds unknown elements (means elements which are not supported)
 Check only base file (no other xml files needed)
+Finding multiple same ID's.
 Finding possible same strings (finding with last word in the ID which
    consists of two words or more, e.g. id="CheckedHelloPanel.headline"
    so "headline" words are searched. This helps to find translations
