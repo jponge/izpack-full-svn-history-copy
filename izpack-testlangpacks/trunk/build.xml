@@ -10,6 +10,8 @@
     	Changed source directory. Changed '_' to '-' in target file name.
     1.2.2009: (by Ari Voutilainen)
     	Added new property: date.
+    23.3.2009: (by Ari Voutilainen)
+    	Added javadoc generation and added API doc to the zipped release package.
 -->
 
     <property name="ver_major" value="2"/>
@@ -59,7 +61,7 @@
 	
 
     <!-- Makes all: compiles, makes jar, copies files and makes zipped file -->
-    <target description="Creates jar file." name="all" depends="task.copy.dist-files, task.copy.docs, task.copy.jar, task.copy.xmls, replace.dist.versionnumber, create.jar, create.zip">
+    <target description="Creates jar file." name="all" depends="task.copy.dist-files, task.copy.docs, task.copy.jar, task.copy.xmls, replace.dist.versionnumber, create.jar, create.zip, task.gen.javadoc_and_zip">
 	</target>
     	
     <!-- Package for TestLangPacks.jar -->
@@ -79,7 +81,9 @@
     <!-- Creates distribution zipped file -->
     <target description="Creates distribution zipped file" name="create.zip" depends="clean.zip">
         <property name="izpack-testlangpacks.zip" value="./_dist/TestLangPacks-${ver_major}.${ver_minor}.zip"/>
-        <zip destfile="${izpack-testlangpacks.zip}" basedir="./_dist"/>
+        <zip destfile="${izpack-testlangpacks.zip}" basedir="./_dist">
+			<include name="**/*.*"/>
+        </zip>
     </target>
 	
     <!-- Deletes distribution zipped file -->
@@ -96,6 +100,38 @@
             verbose="true"
             overwrite="yes"
             preservelastmodified="true"/>
+    </target>
+	
+	<!-- Makes zip file from javadoc files -->
+    <target description="Generates javadoc and creates zip file from it." name="task.gen.javadoc_and_zip" depends="build-project">
+    	<mkdir dir="./_dist/izpack-testlangpacks/doc"/>
+        <javadoc access="protected"
+	    		author="true" 
+	        	classpath="" 
+	        	destdir="./doc/javadoc" 
+	        	doctitle="TestLangPacks ${ver_major}.${ver_minor}"
+	        	nodeprecated="false" 
+	        	nodeprecatedlist="false" 
+	        	noindex="false" 
+	        	nonavbar="false" 
+	        	notree="false" 
+	        	source="${source}" 
+	        	sourcepath="src/lib" 
+	        	splitindex="true" 
+	        	use="true" 
+	        	version="true"
+	        	windowtitle="Version ${ver_major}.${ver_minor}">
+        	<tag name="note" scope="all" description="Note(s):"/>
+        </javadoc>
+		<zip destfile="./doc/testlangpacks_${ver_major}.${ver_minor}-javadoc.zip"
+			basedir="./doc"
+			includes="javadoc/**/*.*"
+			comment="Documentation for TestLangPacks ${ver_major}.${ver_minor}"
+			update="true"
+		/>
+    	<copy file="./doc/testlangpacks_${ver_major}.${ver_minor}-javadoc.zip"
+			todir="./_dist/izpack-testlangpacks/doc"
+    	/>
     </target>
 
     <!-- Copies doc files -->
