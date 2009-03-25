@@ -61,7 +61,7 @@
 	
 
     <!-- Makes all: compiles, makes jar, copies files and makes zipped file -->
-    <target description="Creates jar file." name="all" depends="task.copy.dist-files, task.copy.docs, task.copy.jar, task.copy.xmls, replace.dist.versionnumber, create.jar, create.zip, task.gen.javadoc_and_zip">
+    <target description="Creates jar file." name="all" depends="task.copy.dist-files, task.copy.docs, task.copy.jar, task.copy.xmls, replace.dist.versionnumber, create.jar, task.gen.javadoc_and_zip, create.zip">
 	</target>
     	
     <!-- Package for TestLangPacks.jar -->
