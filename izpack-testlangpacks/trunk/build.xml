@@ -81,9 +81,11 @@
     <!-- Creates distribution zipped file -->
     <target description="Creates distribution zipped file" name="create.zip" depends="clean.zip">
         <property name="izpack-testlangpacks.zip" value="./_dist/TestLangPacks-${ver_major}.${ver_minor}.zip"/>
-        <zip destfile="${izpack-testlangpacks.zip}" basedir="./_dist">
-			<include name="**/*.*"/>
-        </zip>
+        <zip destfile="${izpack-testlangpacks.zip}"
+			basedir="./_dist"
+			includes="**/*.*"
+			comment="TestLangPacks version ${ver_major}.${ver_minor} for IzPack language packs testing."
+        />
     </target>
 	
     <!-- Deletes distribution zipped file -->
