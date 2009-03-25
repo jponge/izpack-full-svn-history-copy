@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<!-- The TEST 2 langpack -->
+
+<langpack>
+    <!--
+    Error: element which won't end.
+
+    This is hard place for Java 1.5.0 XML support: both row and column numbers
+    won't be correct. Row will be the row of </langpack> element.
+    This behaviour will be in FireFox 2.0, FireFox 3.0 and Internet Explorer 6.0.
+    Only way to find this is to find either strings  _> or "> ( _ stands for space
+    not underline character).
+    -->
+
+    <str id="HardError" txt="Element without ending." >
+
+    <str id="CheckedHelloPanel.headline" txt="Welcome"/>
+    <str id="CompilePanel.headline" txt="Compile Java Sources"/>
+    <str id="ConditionalUserInputPanel.headline" txt="User Data"/>
+    <str id="ExtendedInstallPanel.headline" txt="Installation and Configuration"/>
+</langpack>

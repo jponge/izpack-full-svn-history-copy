@@ -1,0 +1,115 @@
+
+=====================================================
+TestLangPacks utility for IzPack installation program
+=====================================================
+
+This file is the help file for IzPack language file translators
+(IzPack installer users or persons who just translate the files).
+
+
+Preparations
+------------
+Download latest version of TestLangPacks utility from:
+
+   http://dist.codehaus.org/izpack/testlangpacks/
+
+
+1) IzPack installer in use
+   -----------------------
+   Unzip the zipped file into the directory where IzPack is installed,
+   for example:
+
+      C:\Program Files\IzPack
+
+   Goto to the step 3).
+
+
+2) Standalone usage of TestLangPacks
+   ---------------------------------
+   Unzip the zipped file into the root of the hard drive:
+
+      C:\
+
+   Goto to the step 3).
+
+3) Further guidance
+   ----------------
+   During the unzipping the directory: izpack-testlangpacks
+   is created.
+
+   Download base file eng.xml from:
+
+      http://svn.codehaus.org/izpack/izpack-src/trunk/bin/langpacks/installer/
+
+   and [your_langugage_file].xml too.
+
+
+   Run utility:
+
+      java -jar TestLangPack.jar [your_langugage_file].xml -s
+
+   If you want results into the file write:
+
+      java -jar TestLangPack.jar [your_langugage_file].xml -s >translate.txt
+
+   See results and check needed actions and translate strings.
+
+4) JIRA issue
+   ----------
+
+   After translation have [your_langugage_file].xml. Make JIRA issue
+   into:
+
+      http://jira.codehaus.org/secure/CreateIssue!default.jspa
+
+   Check that Project is "IzPack" and Issue Type is "Task".
+
+   Other details:
+      Summary           : Update for [your_langugage_name].
+      Priority          : Trivial
+      Due date          : [not needed]
+      Component/s       : Translations
+      Affects Version/s : (select your IzPack version)
+      Fix Version/s     : (you can leave this unselected. Project
+                          manager will select this)
+      Assignee          : Unassigned
+      Environment       : [not needed]
+      Description       : [not needed]
+      Original Estimate : [not needed]
+      Attachment        : [your_langugage_file].xml
+      Testcase included : None
+      Patch Submitted   : [leave unchecked]
+
+
+   NOTE that creating JIRA issue needs registration. If you haven't
+   registered yet you can do it here:
+
+      http://xircles.codehaus.org/signup
+
+
+   There are two batch files which can be used to get rid of too long
+   command line:
+
+      Following patch files are used when language files are located
+      in the same directory as TestLangPacks.jar:
+
+      testlang.bat   The command file for Windows.
+      testlang.sh    The shell script for Linux/Unix.
+
+      Following patch files are used when TestLangPacks.jar is
+      installed under IzPack:
+
+      testlang2.bat  The command file for Windows.
+      testlang2.sh   The shell script for Linux/Unix.
+
+
+Latest language files mainly are located at:
+
+   http://svn.codehaus.org/izpack/izpack-src/trunk/bin/langpacks/installer/
+
+
+Version checking
+----------------
+   To check the version of the utility you can:
+   - to run utility without any parameters
+   - see the content of the version.txt file.
