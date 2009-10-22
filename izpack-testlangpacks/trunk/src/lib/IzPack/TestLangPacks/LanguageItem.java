@@ -97,7 +97,7 @@ public class LanguageItem
     */
    public void setUnknownAttributes(String[] unknownAttrs)
    {
-      if (unknownAttrs.length > 0)
+      if (unknownAttrs.length >= 0)
       {
          this.unknownAttrs = unknownAttrs;
       }
