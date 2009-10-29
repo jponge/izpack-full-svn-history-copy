@@ -36,8 +36,8 @@ end
 
 izpack_home = ARGV[0]
 platforms   = [:win32, :darwin, :linux, :solaris_x86, :solaris_sparc]
-version     = 'v2.1'
-build       = 'b60e'
+version     = 'v2.1.1'
+build       = 'b31g'
 
 # Download the official binaries
 if not File.exist? 'vendor'
