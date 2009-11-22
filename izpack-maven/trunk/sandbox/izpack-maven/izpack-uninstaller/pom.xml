@@ -9,16 +9,15 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>izpack-installer</artifactId>
+  <artifactId>izpack-uninstaller</artifactId>
 
-  <name>IZPack Installer</name>
+  <name>IZPack Uninstaller</name>
 
-
-  <description>IZPack Installer</description>
+  <description>IZPack Uninstaller</description>
 
   <build>
     <plugins>
-    
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-scm-plugin</artifactId>
@@ -30,20 +29,20 @@
               <goal>checkout</goal>
             </goals>
             <configuration>
-              <connectionUrl>${source.url.root}/src/img/installer/img</connectionUrl>
+              <connectionUrl>${source.url.root}/src/img/uninstaller/img</connectionUrl>
               <checkoutDirectory>${basedir}/src/main/resources</checkoutDirectory>
             </configuration>
           </execution>
         </executions>
       </plugin>
-          
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
             <id>copy-izpack-core</id>
-            <phase>process-classes</phase>
+            <phase>validate</phase>
             <goals>
               <goal>copy</goal>
             </goals>
@@ -76,24 +75,19 @@
               <fileset>
                 <directory>${project.build.directory}/izpack-core.jar</directory>
                 <includes>
-                  <include>com/izforge/izpack/panels/PathSelectionPanel.*</include>
-                  <include>com/izforge/izpack/*</include>
-                  <include>com/izforge/izpack/gui/*</include>
-                  <include>com/izforge/izpack/io/*</include>
-                  <include>com/izforge/izpack/installer/*</include>
-                  <include>com/izforge/izpack/util/*</include>
-                  <include>com/izforge/izpack/util/**</include>
-                  <include>com/izforge/izpack/panels/NextMedia*.*</include>
-                  <include>com/izforge/izpack/rules/*</include>
-                  <include>com/izforge/izpack/uninstaller/SelfModifier*.*</include>
-                  <include>com/izforge/izpack/rules/*.class</include>
-                  <include>com/izforge/izpack/compiler/DynamicVariable.*</include>
-                  <include>com/izforge/izpack/compiler/CompilerException.*</include>
-                  <include>com/izforge/izpack/panels/Validator*.*</include>
-                  <include>com/izforge/izpack/adaptator/**</include>
-                  <include>com/izforge/izpack/adaptator/*</include>
-                  <include>com/izforge/izpack/panels/HelpWindow.*</include>
-                  <include>com/izforge/izpack/event/*InstallerListener.*</include>
+                  <include>com/izforge/izpack/LocaleDatabase.class</include>
+                  <include>com/izforge/izpack/gui/*.class</include>
+                  <exclude>com/izforge/izpack/gui/IzPackKMetalTheme.class</exclude>
+                  <include>com/izforge/izpack/uninstaller/*.class</include>
+                  <include>com/izforge/izpack/ExecutableFile.class</include>
+                  <include>com/izforge/izpack/adaptator/**/*.class</include>
+                  <include>com/izforge/izpack/adaptator/*.class</include>
+                  <include>com/izforge/izpack/installer/PrivilegedRunner.class</include>
+                  <include>com/izforge/izpack/installer/run-with-privileges-on-osx</include>
+                  <include>com/izforge/izpack/installer/elevate.js</include>
+                  <include>com/izforge/izpack/adaptator/styleSheet.xsl</include>
+                  <include>com/izforge/izpack/util/**/*.class</include>
+                  <include>com/izforge/izpack/event/*UninstallerListener.class</include>
                 </includes>
                 <outputDirectory>${project.build.directory}/classes</outputDirectory>
               </fileset>
@@ -109,7 +103,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>com.izforge.izpack.installer.Installer</mainClass>
+              <mainClass>com.izforge.izpack.uninstaller.Uninstaller</mainClass>
             </manifest>
           </archive>
         </configuration>

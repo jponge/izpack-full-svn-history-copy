@@ -40,6 +40,7 @@
     <module>izpack-core</module>
     <module>izpack-compiler</module>
     <module>izpack-installer</module>
+    <module>izpack-uninstaller</module>
   </modules>
   
   <properties>
@@ -102,6 +103,33 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireJavaVersion>
+                  <version>[1.5,)</version>
+                </requireJavaVersion>
+                <requireMavenVersion>
+                  <version>[2.2.1,)</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    
   </build>
   
   <profiles>
