@@ -1,7 +1,7 @@
 This is an attempt to port the current IZPack Ant build to Maven. 
 At the first stage, it contains only Maven POMs which automatically 
-expect izpack source to maven source tree following Maven source structure
-standard, the source fetch only happpens once.  If this project ever materialized,
+fetch izpack source to maven source tree following Maven build structure.
+The source is fetched only happpens once.  If this project ever materialized,
 the fetched source code will be check back into source control.
 
 To build
