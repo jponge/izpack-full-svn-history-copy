@@ -1,0 +1,177 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <artifactId>izpack</artifactId>
+    <groupId>org.codehaus.izpack</groupId>
+    <version>5.0.0-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>izpack-core</artifactId>
+
+  <name>IZPack Core</name>
+
+
+  <description>IZPack Core</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.7.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.ant</groupId>
+          <artifactId>ant-launcher</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>bsf</groupId>
+      <artifactId>bsf</artifactId>
+      <version>2.4.0</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta-regexp</groupId>
+      <artifactId>jakarta-regexp</artifactId>
+      <version>1.4</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <defaultGoal>package</defaultGoal>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <id>checkout-java</id>
+            <goals>
+              <goal>checkout</goal>
+            </goals>
+            <configuration>
+              <connectionUrl>${source.url.root}/src/lib/com</connectionUrl>
+              <checkoutDirectory>${basedir}/src/main/java</checkoutDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>separate-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <copy todir="${basedir}/src/main/resources/com/izforge/izpack/ant/langpacks">
+                  <fileset dir="${basedir}/src/main/java/com/izforge/izpack/ant/langpacks" />
+                </copy>
+                <delete>
+                  <fileset dir="${basedir}/src/main/java/com/izforge/izpack/ant/langpacks">
+                    <exclude name="*.java"/>
+                  </fileset>
+                </delete>
+                <copy todir="${basedir}/src/main/resources/com/izforge/izpack/adaptator" >
+                  <fileset dir="${basedir}/src/main/java/com/izforge/izpack/adaptator">
+                    <exclude name="**/*.java"/>
+                  </fileset>
+                </copy>
+                <delete>
+                  <fileset dir="${basedir}/src/main/java/com/izforge/izpack/adaptator">
+                    <exclude name="**/*.java"/>
+                  </fileset>
+                </delete>
+                <copy todir="${basedir}/src/main/resources/com/izforge/izpack/installer">
+                  <fileset dir="${basedir}/src/main/java/com/izforge/izpack/installer">
+                    <exclude name="*.java"/>
+                  </fileset>
+                </copy>
+                <delete>
+                  <fileset dir="${basedir}/src/main/java/com/izforge/izpack/installer">
+                    <exclude name="*.java"/>
+                  </fileset>
+                </delete>
+
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <id>package-compiler</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>compiler</classifier>
+              <includes>
+                <include>com/izforge/izpack/*</include>
+                <include>com/izforge/izpack/io/*</include>
+                <include>com/izforge/izpack/compiler/*</include>
+                <include>com/izforge/izpack/compressor/*</include>
+                <include>com/izforge/izpack/ant/**</include>
+                <include>com/izforge/izpack/util/Debug.*</include>
+                <include>com/izforge/izpack/util/OsConstraint.*</include>
+                <include>com/izforge/izpack/util/JarOutputStream.*</include>
+                <include>com/izforge/izpack/rules/*</include>
+                <include>com/izforge/izpack/adaptator/**</include>
+              </includes>
+              <archive>
+                <manifest>
+                  <addClasspath>true</addClasspath>
+                  <mainClass>com.izforge.izpack.compiler.Compiler</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>clean-scm</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>pre-clean</id>
+                <phase>pre-clean</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <tasks>
+                    <delete dir="${basedir}/src/main" />
+                  </tasks>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>
