@@ -42,6 +42,7 @@
     <module>izpack-installer</module>
     <module>izpack-uninstaller</module>
     <module>izpack-panels</module>
+    <module>izpack-events</module>
   </modules>
   
   <properties>

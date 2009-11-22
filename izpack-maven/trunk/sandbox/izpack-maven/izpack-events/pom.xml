@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <artifactId>izpack</artifactId>
+    <groupId>org.codehaus.izpack</groupId>
+    <version>5.0.0-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>izpack-events</artifactId>
+  
+  <name>IZPack Events</name>
+
+  <description>IZPack Events</description>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <forceCreation>true</forceCreation> <!-- so that we can override the default jar -->
+          <classesDirectory>${basedir}/../izpack-core/target/classes</classesDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <!--  this one overrides the implicit jar built maven maven at begining of package phase -->
+            <phase>package</phase>
+            <id>extract-izpack-pannel-base</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <includes>
+                <include>com/izforge/izpack/event/*</include>
+                <include>com/izforge/izpack/util/IoHelper.class</include>
+              </includes>
+            </configuration>
+          </execution>
+          <execution>
+            <phase>package</phase>
+            <id>extract-izpack-event-AntActionInstallerListener</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>AntActionInstallerListener</classifier>
+              <includes>
+                <include>com/izforge/izpack/event/AntActionInstallerListener.*</include>
+                <include>com/izforge/izpack/event/AntAction.*</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+
+      </plugin>
+
+    </plugins>
+  </build>
+
+
+</project>
