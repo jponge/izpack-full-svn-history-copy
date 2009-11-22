@@ -39,11 +39,12 @@
   <modules>
     <module>izpack-core</module>
     <module>izpack-compiler</module>
+    <module>izpack-installer</module>
   </modules>
   
   <properties>
     <project.build.java.target>1.5</project.build.java.target>
-    <source.url.root>scm:svn:https://svn.codehaus.org/izpack/izpack-src/branches/4.3</source.url.root>
+    <source.url.root>scm:svn:http://svn.codehaus.org/izpack/izpack-src/branches/4.3</source.url.root>
   </properties>
   
   <dependencyManagement>
@@ -103,5 +104,32 @@
     </pluginManagement>
   </build>
   
+  <profiles>
+    <profile>
+      <id>clean-scm</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>pre-clean</id>
+                <phase>pre-clean</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <tasks>
+                    <delete dir="${basedir}/src/main" />
+                  </tasks>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
     
 </project>

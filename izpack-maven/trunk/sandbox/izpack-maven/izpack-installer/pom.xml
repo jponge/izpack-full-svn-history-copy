@@ -9,22 +9,41 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>izpack-compiler</artifactId>
+  <artifactId>izpack-installer</artifactId>
 
-  <name>IZPack Compiler</name>
+  <name>IZPack Installer</name>
 
 
-  <description>IZPack Compiler</description>
+  <description>IZPack Installer</description>
 
   <build>
     <plugins>
+    
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <id>checkout-java</id>
+            <goals>
+              <goal>checkout</goal>
+            </goals>
+            <configuration>
+              <connectionUrl>${source.url.root}/src/img/installer/img</connectionUrl>
+              <checkoutDirectory>${basedir}/src/main/resources</checkoutDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+          
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
             <id>copy-izpack-core</id>
-            <phase>validate</phase>
+            <phase>process-classes</phase>
             <goals>
               <goal>copy</goal>
             </goals>
@@ -57,26 +76,23 @@
               <fileset>
                 <directory>${project.build.directory}/izpack-core.jar</directory>
                 <includes>
-                  <include>com/izforge/izpack/*.class</include>
-                  <include>com/izforge/izpack/io/*.class</include>
-                  <include>com/izforge/izpack/compiler/*.class</include>
-                  <include>com/izforge/izpack/compressor/*.class</include>
-                  <include>com/izforge/izpack/util/OsConstraint.class</include>
-                  <include>com/izforge/izpack/util/Debug.class</include>
-                  <include>com/izforge/izpack/util/*Validator.class</include>
-                  <include>com/izforge/izpack/util/*Processor.class</include>
-                  <include>com/izforge/izpack/util/VariableSubstitutor.class</include>
-                  <include>com/izforge/izpack/util/JarOutputStream.class</include>
-                  <include>com/izforge/izpack/util/FileUtil.class</include>
-                  <include>com/izforge/izpack/ant/*.class</include>
-                  <include>com/izforge/izpack/ant/langpacks/*.properties</include>
-                  <include>com/izforge/izpack/adaptator/*.xsl</include>
-                  <include>com/izforge/izpack/event/CompilerListener.class</include>
-                  <include>com/izforge/izpack/event/SimpleCompilerListener.class</include>
+                  <include>com/izforge/izpack/panels/PathSelectionPanel.*</include>
+                  <include>com/izforge/izpack/*</include>
+                  <include>com/izforge/izpack/gui/*</include>
+                  <include>com/izforge/izpack/io/*</include>
+                  <include>com/izforge/izpack/installer/*</include>
+                  <include>com/izforge/izpack/util/*</include>
+                  <include>com/izforge/izpack/util/**</include>
+                  <include>com/izforge/izpack/panels/NextMedia*.*</include>
+                  <include>com/izforge/izpack/rules/*</include>
+                  <include>com/izforge/izpack/uninstaller/SelfModifier*.*</include>
                   <include>com/izforge/izpack/rules/*.class</include>
-                  <include>com/izforge/izpack/installer/*.class</include>
-                  <include>com/izforge/izpack/adaptator/**/*.class</include>
-                  <include>com/izforge/izpack/adaptator/*.class</include>
+                  <include>com/izforge/izpack/compiler/DynamicVariable.*</include>
+                  <include>com/izforge/izpack/compiler/CompilerException.*</include>
+                  <include>com/izforge/izpack/panels/Validator*.*</include>
+                  <include>com/izforge/izpack/adaptator/**</include>
+                  <include>com/izforge/izpack/adaptator/*</include>
+                  <include>com/izforge/izpack/panels/HelpWindow.*</include>
                 </includes>
                 <outputDirectory>${project.build.directory}/classes</outputDirectory>
               </fileset>
@@ -92,7 +108,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>com.izforge.izpack.compiler.Compiler</mainClass>
+              <mainClass>com.izforge.izpack.installer.Installer</mainClass>
             </manifest>
           </archive>
         </configuration>
