@@ -8,7 +8,7 @@ To build
 To work  with Eclipse
 
 
-1. run 'mvn eclipse:create-workspace'
+1. run 'mvn eclipse:create-workspace -Pconfigure-workspace -N'
 
 2. run mvn eclipse:eclipse
 
