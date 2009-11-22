@@ -7,9 +7,17 @@ To build
 To work  with Eclipse
 
 
-1. run 'mvn eclipse:create-workspace -Pconfigure-workspace -N'
+1. run 
 
-2. run mvn eclipse:eclipse
+   * Run mvn install -Pconfigure-workspace -N
+   
+   * mvn eclipse:create-workspace -Pconfigure-workspace -N
+   
+   Must be in this order,and run only once to setup eclipse workspace
+
+2. run 'mvn eclipse:eclipse'
+
+   Run once only until there is depdenency changes
 
 3. Start eclipse and point it to this directory as it workspace
 
