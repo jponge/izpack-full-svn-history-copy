@@ -41,6 +41,7 @@
     <module>izpack-compiler</module>
     <module>izpack-installer</module>
     <module>izpack-uninstaller</module>
+    <module>izpack-panels</module>
   </modules>
   
   <properties>
