@@ -1,9 +1,8 @@
-This directory is an attempt to port the current IZPack Ant build to Maven.
+This is an attempt to port the current IZPack Ant build to Maven.
 
 To build
 
-1. Run 'mvn'
-
+1. Run 'mvn install -DskipTests=true'
 
 To work  with Eclipse
 
